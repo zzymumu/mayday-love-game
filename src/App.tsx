@@ -39,6 +39,8 @@ type ChatRound = { incoming: string; choices: ChatChoice[] }
 type CallLogEntry = { id: string; character: RouteCharacterId; status: 'answered' | 'missed'; time: string }
 type CallTranscriptLine = { speaker: RouteCharacterId | 'me'; text: string }
 type SaveSlotData = { version: 1; savedAt: string; gameDate: string; gameTime: string; stage: StoryStage; stageLabel: string; data: Record<string, string> }
+type MonthVisitChoice = { text: string; response: string[]; affection: number }
+type MonthVisitRoute = { label: string; subtitle: string; location: string; title: string; kicker: string; blocks: StoryBlock[]; choices: MonthVisitChoice[]; ending: StoryBlock[] }
 
 const SAVE_SLOT_IDS = [1, 2, 3] as const
 const SAVE_SLOT_PREFIX = 'mayday-save-slot-'
@@ -49,7 +51,7 @@ const storyStageLabels: Record<StoryStage, string> = {
   ending: '回家後', completed: '第一章完成', greetings: '晚間訊息', classroom: '課堂中的邀約',
   'masa-checkin': '關心瑪莎', 'stone-checkin': '關心石頭', 'ice-date': '下課吃冰', stroll: '傍晚散步',
   'day2-diary': '寫下第二篇日記', 'free-time': '自由活動', 'free-chat': '自由聊天',
-  'day2-complete': '第二天結束', paused: '故事暫停',
+  'day2-complete': '第二天結束', 'month-free-time': '一個月後・自由活動', 'month-visit': '一個月後・外出見面', 'month-visit-complete': '一個月後・見面結束', paused: '故事暫停',
 }
 const readSaveSlot = (slot: number): SaveSlotData | null => {
   try {
@@ -450,6 +452,7 @@ const characterInfo: { id: CharacterId; name: string; role: string; avatar: stri
 ]
 const greetingOrder: CharacterId[] = ['wen', 'masa', 'ashin', 'stone', 'yanming', 'youda']
 const freeTimeOrder: RouteCharacterId[] = ['wen', 'masa', 'ashin', 'stone', 'yanming']
+const monthVisitOrder: RouteCharacterId[] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
 const characterNames: Record<CharacterId, string> = {
   wen: '溫尚翊', masa: '蔡昇晏', ashin: '陳信宏', stone: '石錦航', yanming: '劉諺明', youda: '錢佑達',
 }
@@ -805,11 +808,14 @@ function App() {
   const [storyStage, setStoryStage] = useState<StoryStage>(() => {
     const saved = localStorage.getItem('mayday-story-stage')
     if (saved === 'completed' && localStorage.getItem('mayday-chapter1-complete') === 'true' && localStorage.getItem('mayday-greetings-complete') !== 'true') return 'greetings'
+    if (saved === 'completed' && localStorage.getItem('mayday-free-chat-complete') === 'true' && localStorage.getItem('mayday-month-visit-complete') !== 'true') return 'month-free-time'
+    const savedMonthVisitTarget = localStorage.getItem('mayday-month-visit-target')
+    if (saved === 'month-visit' && (!savedMonthVisitTarget || !monthVisitOrder.includes(savedMonthVisitTarget as RouteCharacterId))) return 'month-free-time'
     const savedTarget = localStorage.getItem('mayday-free-chat-target')
     const day2PlanChosen = localStorage.getItem('mayday-day2-after-ice-choice') === 'accept' || localStorage.getItem('mayday-day2-after-ice-choice') === 'decline'
     if (['free-time', 'free-chat', 'day2-complete'].includes(saved ?? '') && !day2PlanChosen) return 'ice-date'
     if (saved === 'free-time' && savedTarget && freeTimeOrder.includes(savedTarget as RouteCharacterId) && localStorage.getItem('mayday-free-chat-complete') !== 'true') return 'free-chat'
-    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete', 'paused']
+    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete', 'month-free-time', 'month-visit', 'month-visit-complete', 'paused']
     return saved && valid.includes(saved as StoryStage) ? saved as StoryStage : 'notification'
   })
   const [studioStep, setStudioStep] = useState(() => Number(localStorage.getItem('mayday-studio-step') ?? '0'))
@@ -874,6 +880,14 @@ function App() {
   })
   const [freeChatRound, setFreeChatRound] = useState(() => Number(localStorage.getItem('mayday-free-chat-round') ?? '0'))
   const [freeChatReplied, setFreeChatReplied] = useState(() => localStorage.getItem('mayday-free-chat-replied') === 'true')
+  const [monthVisitTarget, setMonthVisitTarget] = useState<RouteCharacterId | null>(() => {
+    const saved = localStorage.getItem('mayday-month-visit-target')
+    return saved && monthVisitOrder.includes(saved as RouteCharacterId) ? saved as RouteCharacterId : null
+  })
+  const [monthVisitChoice, setMonthVisitChoice] = useState<number | null>(() => {
+    const saved = localStorage.getItem('mayday-month-visit-choice')
+    return saved === '0' || saved === '1' || saved === '2' ? Number(saved) : null
+  })
   const [routeAffection, setRouteAffection] = useState<Record<RouteCharacterId, number>>(() => {
     let saved: Partial<Record<RouteCharacterId, number>> = {}
     try { saved = JSON.parse(localStorage.getItem('mayday-route-affection') ?? '{}') as Partial<Record<RouteCharacterId, number>> } catch { saved = {} }
@@ -914,7 +928,7 @@ function App() {
   const [selectedProfile, setSelectedProfile] = useState<string | null>(null)
   const [resumeStage, setResumeStage] = useState<StoryStage>(() => {
     const saved = localStorage.getItem('mayday-resume-stage')
-    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete']
+    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete', 'month-free-time', 'month-visit', 'month-visit-complete']
     return saved && valid.includes(saved as StoryStage) ? saved as StoryStage : 'reunion'
   })
   const messageScrollRef = useRef<HTMLDivElement>(null)
@@ -930,9 +944,11 @@ function App() {
                   : storyStage === 'stroll' ? '17:05'
                     : storyStage === 'day2-diary' ? '18:00'
                       : storyStage === 'free-time' || storyStage === 'free-chat' || storyStage === 'day2-complete' ? '18:20'
-                        : '17:20'
+                        : ['month-free-time', 'month-visit', 'month-visit-complete'].includes(storyStage) ? '10:30'
+                          : '17:20'
   const isSecondDay = ['classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete'].includes(storyStage)
-  const saveGameDate = isSecondDay ? '1996.10.16' : '1996.10.15'
+  const isMonthLater = ['month-free-time', 'month-visit', 'month-visit-complete'].includes(storyStage)
+  const saveGameDate = isMonthLater ? '1996.11.16' : isSecondDay ? '1996.10.16' : '1996.10.15'
 
   const saveCurrentProgress = (slot: number) => {
     if (saveSlots[slot] && !window.confirm('要覆蓋第 ' + slot + ' 格存檔嗎？原本的存檔會被新的進度取代。')) return
@@ -973,6 +989,9 @@ function App() {
     put('mayday-free-chat-target', freeChatTarget)
     put('mayday-free-chat-round', String(freeChatRound))
     put('mayday-free-chat-replied', String(freeChatReplied))
+    put('mayday-month-visit-target', monthVisitTarget)
+    put('mayday-month-visit-choice', monthVisitChoice === null ? null : String(monthVisitChoice))
+    put('mayday-month-visit-complete', localStorage.getItem('mayday-month-visit-complete'))
     put('mayday-route-affection', JSON.stringify(routeAffection))
     put('mayday-call-history', JSON.stringify(callHistory))
     put('mayday-pending-call', pendingCallCharacter)
@@ -1048,7 +1067,7 @@ function App() {
   }, [activeCallCharacter, callRoundIndex, callReplied, callTranscript])
 
   useEffect(() => {
-    if (storyStage !== 'day2-complete' || activeApp !== null || incomingCallCharacter || activeCallCharacter) return
+    if ((storyStage !== 'day2-complete' && storyStage !== 'month-visit-complete') || activeApp !== null || incomingCallCharacter || activeCallCharacter) return
     if (!pendingCallCharacter) {
       const eligible = freeTimeOrder.find((id) => routeAffection[id] >= AFFECTION_CALL_THRESHOLD && localStorage.getItem('mayday-call-v2-triggered-' + id) !== 'true')
       if (eligible) {
@@ -1421,6 +1440,47 @@ function App() {
     changeStage('day2-complete')
   }
 
+  const startMonthFreeTime = () => {
+    setMonthVisitTarget(null)
+    setMonthVisitChoice(null)
+    localStorage.removeItem('mayday-month-visit-target')
+    localStorage.removeItem('mayday-month-visit-choice')
+    localStorage.removeItem('mayday-month-visit-complete')
+    setSelectedSmsThread(null)
+    setActiveApp(null)
+    changeStage('month-free-time')
+  }
+
+  const startMonthVisit = (character: RouteCharacterId) => {
+    if (monthVisitTarget || localStorage.getItem('mayday-month-visit-target')) return
+    setMonthVisitTarget(character)
+    setMonthVisitChoice(null)
+    localStorage.setItem('mayday-month-visit-target', character)
+    localStorage.removeItem('mayday-month-visit-choice')
+    changeStage('month-visit')
+  }
+
+  const chooseMonthVisitReply = (choiceIndex: number) => {
+    if (!monthVisitTarget || monthVisitChoice !== null) return
+    const choice = monthVisitRoutes[monthVisitTarget].choices[choiceIndex]
+    if (!choice) return
+    setMonthVisitChoice(choiceIndex)
+    localStorage.setItem('mayday-month-visit-choice', String(choiceIndex))
+    addRouteAffection(monthVisitTarget, choice.affection)
+  }
+
+  const finishMonthVisit = () => {
+    if (!monthVisitTarget || monthVisitChoice === null) return
+    localStorage.setItem('mayday-month-visit-complete', 'true')
+    changeStage('month-visit-complete')
+  }
+
+  const finishMonthChapter = () => {
+    setSelectedSmsThread(null)
+    setActiveApp(null)
+    changeStage('completed')
+  }
+
   const chooseReunionReply = (key: ReunionReplyKey) => {
     const selected = reunionReplies[key]
     const nextAffection = wenAffection + selected.affection
@@ -1507,7 +1567,7 @@ function App() {
   }
 
   const resetLocalData = () => {
-    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-route-affection', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming', 'mayday-active-call-character', 'mayday-call-round-index', 'mayday-call-replied', 'mayday-call-transcript'].forEach((key) => localStorage.removeItem(key))
+    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-month-visit-target', 'mayday-month-visit-choice', 'mayday-month-visit-complete', 'mayday-route-affection', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming', 'mayday-active-call-character', 'mayday-call-round-index', 'mayday-call-replied', 'mayday-call-transcript'].forEach((key) => localStorage.removeItem(key))
     SAVE_SLOT_IDS.forEach((slot) => localStorage.removeItem(SAVE_SLOT_PREFIX + slot))
     setPlayerName('')
     setNameDraft('')
@@ -1535,6 +1595,8 @@ function App() {
     setFreeChatTarget(null)
     setFreeChatRound(0)
     setFreeChatReplied(false)
+    setMonthVisitTarget(null)
+    setMonthVisitChoice(null)
     setRouteAffection({ wen: 0, masa: 0, ashin: 0, stone: 0, yanming: 0 })
     setDay2StrollAccepted(false)
     setDay2DiaryUnlocked(false)
@@ -1589,6 +1651,8 @@ function App() {
   const latestSmsMessage = smsMessages[smsMessages.length - 1]
   const selectedContactProfile = unlockedContacts.find((contact) => contact.id === selectedProfile) ?? null
   const currentGreetingId = greetingOrder[Math.min(greetingIndex, greetingOrder.length - 1)]
+  const currentMonthVisit = monthVisitTarget ? monthVisitRoutes[monthVisitTarget] : null
+  const selectedMonthVisitChoice = currentMonthVisit && monthVisitChoice !== null ? currentMonthVisit.choices[monthVisitChoice] : null
   const currentGreetingRound = greetingChats[currentGreetingId][Math.min(greetingRound, greetingChats[currentGreetingId].length - 1)]
   const currentThreadMessages: SmsMessage[] = selectedSmsThread === 'wen'
     ? [...smsMessages, ...(chatMessages.wen ?? [])]
@@ -2692,7 +2756,7 @@ function App() {
 
       <footer className="page-footer">
         <span><Clock3 size={13} /> 故事，從一九九六年開始。</span>
-        <span>BUILD 0.4.6 · SAVE SLOTS + SUMMER QUOTE</span>
+        <span>BUILD 0.4.7 · ONE MONTH LATER</span>
       </footer>
 
       {showNameSetup && (
