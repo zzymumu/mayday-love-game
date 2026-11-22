@@ -758,7 +758,19 @@ function App() {
     if (saved) {
       try {
         const parsed = JSON.parse(saved) as Record<CharacterId, SmsMessage[]>
-        if (parsed && greetingOrder.every((id) => Array.isArray(parsed[id]))) return parsed
+        if (parsed && greetingOrder.every((id) => Array.isArray(parsed[id]))) {
+          const migrated: Record<CharacterId, SmsMessage[]> = {
+            ...parsed,
+            wen: parsed.wen.map((message) => message.text === '今天大家好像都滿喜歡妳的，尤其阿信，一直找妳聊天。'
+              ? { ...message, text: '剛剛在唱片行，妳跟阿信聊得滿開心的嘛。' }
+              : message),
+            ashin: parsed.ashin.map((message) => message.text === '剛剛在樂器行碰到你們，感覺你們今天心情很好。我也順利買到吉他弦了。'
+              ? { ...message, text: '剛剛一起逛唱片行滿開心的，妳最後有沒有挑到喜歡的？我本來還想多介紹幾張，結果得趕回去練團。' }
+              : message),
+          }
+          if (JSON.stringify(migrated) !== JSON.stringify(parsed)) localStorage.setItem('mayday-chat-messages', JSON.stringify(migrated))
+          return migrated
+        }
       } catch {
         // Rebuild the new contact threads if saved chat data is malformed.
       }
