@@ -33,6 +33,7 @@ type DinnerReplyKey = 'a' | 'b' | 'c'
 type StoryBlock = { kind: 'narration' | 'dialogue' | 'aside'; text: string; speaker?: string }
 type StoryScene = { kicker: string; title: string; blocks: StoryBlock[]; button: string }
 type SmsMessage = { id: string; date: string; time?: string; from: CharacterId | 'me'; text: string }
+type NewChatEntry = { from: CharacterId | 'me'; text: string; time?: string }
 type ChatChoice = { text: string; response: string[]; affection: number }
 type ChatRound = { incoming: string; choices: ChatChoice[] }
 
@@ -614,6 +615,31 @@ const studioScenes: StoryScene[] = [
     ],
   },
 ]
+
+
+const classroomChoices: ChatChoice[] = [
+  { text: '大忙人，你今天不練團？', response: ['今天先不用啦。', '石頭跟瑪莎翹課都被抓了，兩個人現在都被留在學校，今天練團湊不齊人。'], affection: 2 },
+  { text: '你怎麼突然想到約我吃冰？', response: ['難得有空嘛。', '石頭跟瑪莎今天翹課被抓，現在都還走不了，練團只好改天。'], affection: 1 },
+  { text: '你今天這麼閒喔？是不是又偷懶？', response: ['妳不要每次都把我想得那麼糟。', '石頭跟瑪莎翹課被抓，今天人都湊不齊，我才有空找妳。'], affection: 2 },
+]
+const masaCheckinChoices: ChatChoice[] = [
+  { text: '聽說你今天翹課被抓了？怎麼回事啊？', response: ['誰跟妳說的？怪獸喔？', '我只是出去一下，剛好被逮個正著，倒楣死了。'], affection: 2 },
+  { text: '你還好吧？怪獸說你跟石頭都被抓了。', response: ['還活著啦，沒什麼大事。', '只是被念了幾句，妳不用擔心。'], affection: 3 },
+  { text: '你今天又闖什麼禍了？', response: ['妳一開口就覺得我一定闖禍喔？', '我只是出去透個氣，誰知道剛好被看到。'], affection: 1 },
+]
+const stoneCheckinChoices: ChatChoice[] = [
+  { text: '聽說你今天跟瑪莎一起被抓了，還好嗎？', response: ['謝謝妳關心，沒事啦。', '就是被老師留下來講了幾句，讓大家等不到我們了。'], affection: 3 },
+  { text: '怪獸說你們今天都沒辦法去練團，還順利嗎？', response: ['嗯，事情已經處理好了。', '今天真的不好意思，下次練團再補上。'], affection: 2 },
+  { text: '你們兩個到底跑去哪裡，怎麼一起被抓？', response: ['說來話長，改天再跟妳說。', '反正今天算我們倒楣，妳就先別聽瑪莎亂講。'], affection: 1 },
+]
+
+const createInitialChatMessages = (): Record<CharacterId, SmsMessage[]> => {
+  const empty: Record<CharacterId, SmsMessage[]> = { wen: [], masa: [], ashin: [], stone: [], yanming: [], youda: [] }
+  if (localStorage.getItem('mayday-chapter1-complete') === 'true' && localStorage.getItem('mayday-greetings-complete') !== 'true') {
+    empty.wen = [{ id: 'greeting-wen-0', date: '10月15日・晚上', time: '21:18', from: 'wen', text: greetingChats.wen[0].incoming }]
+  }
+  return empty
+}
 
 function MessageBubble({ mine, text }: { mine: boolean; text: string }) {
   return (
