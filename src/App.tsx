@@ -65,7 +65,7 @@ const appCopy: Record<AppKey, { heading: string; body: string; detail: string }>
   },
   calendar: {
     heading: '行事曆',
-    body: '1999 年 10 月',
+    body: '1996 年 10 月',
     detail: '大學課表、練團時間和朋友的邀約，都會慢慢記錄在這裡。',
   },
   photos: {
@@ -125,7 +125,7 @@ function App() {
       <div className="ambient ambient-two" />
 
       <header className="page-heading">
-        <div className="project-mark"><Heart size={14} fill="currentColor" /> A LITTLE STORY IN 1999</div>
+        <div className="project-mark"><Heart size={14} fill="currentColor" /> A LITTLE STORY · 1996—1999</div>
         <h1>那年夏天，還有未讀訊息</h1>
         <p>五月天同人戀愛互動遊戲 · 第一階段測試版</p>
       </header>
@@ -133,7 +133,7 @@ function App() {
       <section className="device-wrap" aria-label="手機模擬器">
         <div className="phone">
           <div className="phone-top">
-            <span className="brand-word">M<span>·</span>1999</span>
+            <span className="brand-word">M<span>·</span>96</span>
             <div className="earpiece" />
             <div className="camera-dot" />
           </div>
@@ -148,9 +148,9 @@ function App() {
 
               <div className="screen-wallpaper">
                 <div className="screen-date">
-                  <span>FRIDAY</span>
+                  <span>TUESDAY</span>
                   <strong>10<span>.</span>15</strong>
-                  <small>1999 · 台北</small>
+                  <small>1996 · 台北</small>
                 </div>
                 <div className="screen-greeting">
                   <span>嗨，{playerName || '新朋友'}</span>
@@ -216,7 +216,7 @@ function App() {
                         </>
                       )}
                     </div>
-                    <div className="app-window-foot"><span>1999 / TAIPEI</span><span>BACK <ChevronRight size={11} /></span></div>
+                    <div className="app-window-foot"><span>1996 / TAIPEI</span><span>BACK <ChevronRight size={11} /></span></div>
                   </div>
                 </div>
               )}
@@ -237,13 +237,13 @@ function App() {
                 </button>
               ))}
             </div>
-            <div className="phone-bottom-label">TAIPEI · AUTUMN 1999</div>
+            <div className="phone-bottom-label">TAIPEI · 1996—1999</div>
           </div>
         </div>
       </section>
 
       <footer className="page-footer">
-        <span><Clock3 size={13} /> 一九九九年，故事還沒開始。</span>
+        <span><Clock3 size={13} /> 故事，從一九九六年開始。</span>
         <span>BUILD 0.1.0 · PREVIEW</span>
       </footer>
 
@@ -251,7 +251,7 @@ function App() {
         <div className="modal-backdrop">
           <div className="name-modal">
             <div className="modal-icon"><Smartphone size={25} /></div>
-            <span className="eyebrow">WELCOME TO TAIPEI · 1999</span>
+            <span className="eyebrow">WELCOME TO TAIPEI · 1996</span>
             <h2>先留下你的名字吧。</h2>
             <p>這支手機以後會記下你的訊息、日記，還有那些不想忘記的人。</p>
             <label htmlFor="player-name">你的名字</label>
