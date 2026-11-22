@@ -2240,7 +2240,111 @@ function App() {
                     <div className="reunion-pause-note">本次自由活動已完成。你選擇的對話與回覆都會保留在訊息列表中。</div>
                   </div>
                   <div className="story-action-bar">
-                    <button className="story-primary-button" onClick={() => { setActiveApp(null); setSelectedSmsThread(null); changeStage('completed') }}>回到手機桌面 <ChevronRight size={15} /></button>
+                    <button className="story-primary-button" onClick={startMonthFreeTime}>一個月後，看看今天的安排 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'month-free-time' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">一個月後</div>
+                    <div className="story-contact-title">
+                      <strong>難得的空閒日</strong>
+                      <small>1996 年 11 月 16 日・星期六</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">時間，悄悄往前走了一個月</div>
+                    <h2 className="story-scene-title">今天想去找誰？</h2>
+                    <StoryBlocks blocks={monthLaterIntroBlocks} />
+                    <div className="month-visit-picker">
+                      <div className="free-time-intro">
+                        <span className="profile-eyebrow">A DAY OFF · 1996.11.16</span>
+                        <strong>選一個人，去見見他吧。</strong>
+                        <p>今天難得沒有課，只能安排一個人的行程。選定之後，就會直接進入你們今天的見面。</p>
+                      </div>
+                      {monthVisitOrder.map((id) => {
+                        const person = characterInfo.find((item) => item.id === id)!
+                        const route = monthVisitRoutes[id]
+                        return (
+                          <button className="free-time-person" key={id} onClick={() => startMonthVisit(id)}>
+                            <span className="sms-avatar">{person.avatar}</span>
+                            <span><strong>{person.name}</strong><small>{route.subtitle}</small></span>
+                            <ChevronRight size={15} />
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'month-visit' && currentMonthVisit && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">一個月後</div>
+                    <div className="story-contact-title">
+                      <strong>{currentMonthVisit.label}</strong>
+                      <small>{currentMonthVisit.location} · 1996.11.16</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">{currentMonthVisit.kicker}</div>
+                    <h2 className="story-scene-title">{currentMonthVisit.title}</h2>
+                    <StoryBlocks blocks={currentMonthVisit.blocks} />
+                    {selectedMonthVisitChoice ? (
+                      <>
+                        <StoryBlocks blocks={[
+                          { kind: 'dialogue', speaker: '你', text: selectedMonthVisitChoice.text },
+                          ...selectedMonthVisitChoice.response.map((text) => ({ kind: 'dialogue' as const, speaker: currentMonthVisit.label, text })),
+                          ...currentMonthVisit.ending,
+                        ]} />
+                        <div className="reunion-pause-note">這次見面已經好好記下來了。</div>
+                      </>
+                    ) : (
+                      <div className="choice-area">
+                        <div className="choice-heading">你想怎麼回應？</div>
+                        {currentMonthVisit.choices.map((choice, index) => (
+                          <button className="reply-choice" key={index} onClick={() => chooseMonthVisitReply(index)}>
+                            <span>{choice.text}</span><ChevronRight size={15} />
+                          </button>
+                        ))}
+                        <small>選擇你的回應，看看他會怎麼接話。</small>
+                      </div>
+                    )}
+                  </div>
+                  {selectedMonthVisitChoice && (
+                    <div className="story-action-bar">
+                      <button className="story-primary-button" onClick={finishMonthVisit}>收好今天的回憶 <ChevronRight size={15} /></button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {storyStage === 'month-visit-complete' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">一個月後</div>
+                    <div className="story-contact-title">
+                      <strong>今天的見面</strong>
+                      <small>1996 年 11 月 16 日・午後</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">平凡的一天，也有值得記住的片段</div>
+                    <h2 className="story-scene-title">時間好像過得特別快</h2>
+                    <StoryBlocks blocks={[
+                      { kind: 'narration', text: '回家的路上，你想起今天和' + (currentMonthVisit?.label ?? '他') + '相處的片段。明明只是很普通的一天，卻因為特地去見了他，變得格外值得記住。' },
+                      { kind: 'narration', text: '一個月裡慢慢累積的熟悉感，好像又往前走了一點。你把這一天收進心裡，想著下次見面時，或許還有新的話題可以聊。' },
+                    ]} />
+                    <div className="reunion-pause-note">一個月後的自由活動已完成。你的選擇與好感度都已保存。</div>
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={finishMonthChapter}>回到手機桌面 <ChevronRight size={15} /></button>
                   </div>
                 </div>
               )}
