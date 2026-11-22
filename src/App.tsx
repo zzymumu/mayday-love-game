@@ -293,8 +293,11 @@ const studioScenes: StoryScene[] = [
       { kind: 'narration', text: '溫尚翊走在前面，熟門熟路地轉過樓梯口。到了二樓，他沒有敲門，只伸手推開那扇有點沉的門。' },
       { kind: 'dialogue', speaker: '溫尚翊', text: '欸，我來了。' },
       { kind: 'dialogue', speaker: '裡面的人', text: '今天還蠻準時的嘛。' },
-      { kind: 'narration', text: '你跟在他身後走進去。房間比從外面聽起來還要熱鬧，牆邊靠著幾把吉他，音箱上放著沒收好的導線，地上有幾張寫滿字的紙。空氣裡混著木頭、金屬弦和一點悶熱的味道。' },
+      { kind: 'narration', text: '你還站在門口，視線越過溫尚翊的肩膀往裡看。房間裡擺著幾把吉他和音箱，地上散著導線，剛才一路聽見的樂器聲，原來就是從這裡傳出來的。' },
+      { kind: 'dialogue', speaker: '你', text: '你們平常就在這裡練習喔？' },
+      { kind: 'dialogue', speaker: '溫尚翊', text: '對啊。' },
       { kind: 'dialogue', speaker: '溫尚翊', text: '進來啦，站門口幹嘛。' },
+      { kind: 'narration', text: '你這才跟著他走進去。房間比從外面聽起來還要熱鬧，牆邊靠著幾把吉他，音箱上放著沒收好的導線，地上有幾張寫滿字的紙。空氣裡混著木頭、金屬弦和一點悶熱的味道。' },
       { kind: 'narration', text: '他把吉他袋靠到牆邊，回頭朝裡面拍了拍手。' },
       { kind: 'dialogue', speaker: '溫尚翊', text: '欸，先介紹一下，這是我大學同學。今天帶她來看看。' },
       { kind: 'narration', text: '你朝大家點了點頭。幾個人抬眼向你打了招呼，隨後又繼續手邊的事。溫尚翊偶爾帶朋友過來，大家並不覺得奇怪。' },
@@ -763,9 +766,6 @@ function App() {
                     <div className="story-kicker">隔了好多年，再一次認出他</div>
                     <h2 className="story-scene-title">四目相對的那一刻</h2>
                     <StoryBlocks blocks={[
-                      { kind: 'narration', text: '你往裡面走了幾步，目光從靠牆的吉他和音箱間掠過，這才發現練團室裡比剛進門時看見的還要熱鬧。' },
-                      { kind: 'dialogue', speaker: '你', text: '你們平常就在這裡練習喔？' },
-                      { kind: 'dialogue', speaker: '溫尚翊', text: '對啊。' },
                       { kind: 'narration', text: '溫尚翊朝角落抬了抬下巴。你順著他的方向看過去，那個抱著貝斯的人正低著頭，指尖在弦上輕輕撥了幾下。' },
                       { kind: 'narration', text: '像是聽見你們說話，他手上的動作停了下來，抬起頭。' },
                       { kind: 'narration', text: '四目相對的那一刻，你整個人都愣住了。' },
