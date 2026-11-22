@@ -247,7 +247,7 @@ const nicknameQuestions: Record<NicknameQuestionKey, string> = {
 
 const nicknameStoryBlocks = (question: string): StoryBlock[] => [
   { kind: 'narration', text: '你原本還想問他這些年過得怎麼樣，房間另一頭卻先傳來阿信的聲音。' },
-  { kind: 'dialogue', speaker: '陳信宏', text: 'Masa，等一下那段你再幫我聽一下。' },
+  { kind: 'dialogue', speaker: '陳信宏', text: 'Masa，等一下那段你再幫我聽一下，好不好？' },
   { kind: 'narration', text: '你轉過頭，這才發現大家喊他的時候，用的根本不是他的本名。' },
   { kind: 'dialogue', speaker: '你', text: question },
   { kind: 'dialogue', speaker: '蔡昇晏', text: '這個喔？很無聊啦。' },
@@ -256,7 +256,7 @@ const nicknameStoryBlocks = (question: string): StoryBlock[] => [
   { kind: 'narration', text: '他說到這裡，朝阿信那邊看了一眼。阿信摸了摸鼻子，沒有否認。' },
   { kind: 'dialogue', speaker: '蔡昇晏', text: '有一次我們經過南京東路五段那邊的理容院，看到門口穿花襯衫、絲質西裝褲的人，就拿他們開玩笑，說那種人好像都叫 Masa 或阿龍。' },
   { kind: 'dialogue', speaker: '蔡昇晏', text: '怪獸就說我很適合叫 Masa，還說阿信應該叫阿龍。' },
-  { kind: 'dialogue', speaker: '陳信宏', text: '欸，結果阿龍根本沒人記得，只有他一直被叫到現在。' },
+  { kind: 'dialogue', speaker: '陳信宏', text: '欸，結果阿龍根本沒人記得，只有他一直被叫到現在欸。' },
   { kind: 'dialogue', speaker: '溫尚翊', text: '啊不然妳覺得他適合叫什麼？' },
   { kind: 'dialogue', speaker: '蔡昇晏', text: '你不要再亂取了啦。' },
   { kind: 'narration', text: '你終於忍不住笑了。原來大家口中的 Masa，是高中時候一個隨口開的玩笑留下來的。至少今天，在你心裡，他還是那個叫蔡昇晏的人。' },
@@ -274,12 +274,12 @@ const rehearsalBlocks: StoryBlock[] = [
   { kind: 'narration', text: '他說完才拿起吉他。走回大家身邊前，還是回頭確認了一次你有沒有把飲料放好。' },
   { kind: 'dialogue', speaker: '溫尚翊', text: '等一下如果覺得太吵就跟我說，不用硬撐。' },
   { kind: 'dialogue', speaker: '你', text: '好啦，你快去練你的。' },
-  { kind: 'dialogue', speaker: '蔡昇晏', text: '欸，溫尚翊，你今天是帶同學來，還是帶小朋友來校外教學？' },
+  { kind: 'dialogue', speaker: '蔡昇晏', text: '欸，怪獸，你今天是帶同學來，還是帶小朋友來校外教學？' },
   { kind: 'dialogue', speaker: '溫尚翊', text: '你管好你的 Bass 就好。' },
   { kind: 'dialogue', speaker: '蔡昇晏', text: '我的 Bass 好得很，是你剛剛那個和弦又按得亂七八糟。' },
   { kind: 'dialogue', speaker: '溫尚翊', text: '我剛剛是在調音。' },
   { kind: 'dialogue', speaker: '蔡昇晏', text: '每次彈錯都說在調音。' },
-  { kind: 'dialogue', speaker: '陳信宏', text: '你們兩個可不可以先把歌練完再吵？' },
+  { kind: 'dialogue', speaker: '陳信宏', text: '你們兩個先把歌練完再吵啦，好不好？' },
   { kind: 'dialogue', speaker: '錢佑達', text: '等一下，我剛剛到底要跟誰的拍子？' },
   { kind: 'dialogue', speaker: '石錦航', text: '再來一次吧，從副歌前面進。' },
   { kind: 'narration', text: '這次沒有人再接話。錢佑達先數了拍子，鼓聲落下來，溫尚翊的吉他跟著進去，低沉的 Bass 從另一側接住旋律。剛才還吵成一團的幾個人，一拿起樂器就像突然找到共同的語言。' },
@@ -287,7 +287,7 @@ const rehearsalBlocks: StoryBlock[] = [
   { kind: 'dialogue', speaker: '蔡昇晏', text: '剛剛副歌那邊又快了啦。有人是不是太想表現？' },
   { kind: 'dialogue', speaker: '溫尚翊', text: '你是在說誰？' },
   { kind: 'dialogue', speaker: '蔡昇晏', text: '誰自己心裡有數。' },
-  { kind: 'dialogue', speaker: '陳信宏', text: 'Masa，你先不要講風涼話，你剛剛也有一個音沒跟到。' },
+  { kind: 'dialogue', speaker: '陳信宏', text: 'Masa，你先不要講風涼話啦，你剛剛也有一個音沒跟到欸。' },
   { kind: 'dialogue', speaker: '蔡昇晏', text: '我那個叫留空間，懂不懂？' },
   { kind: 'dialogue', speaker: '你', text: '你這個解釋也太方便了吧。' },
   { kind: 'dialogue', speaker: '蔡昇晏', text: '欸？妳坐那邊聽得懂喔？' },
@@ -310,11 +310,11 @@ const dinnerIntroBlocks: StoryBlock[] = [
   { kind: 'dialogue', speaker: '溫尚翊', text: '附近有間熱炒還不錯，走啦。' },
   { kind: 'narration', text: '你跟著大家走進附近一間熱鬧的小店。玻璃門上沾著一點油煙，牆上的菜單用紅筆寫在白板上，廚房裡的鍋鏟聲和店員報菜名的聲音混在一起。' },
   { kind: 'narration', text: '桌上很快擺滿了幾道熱菜。阿信把筷子分給大家，石錦航替你把靠牆的位置拉開，溫尚翊則把一杯茶推到你手邊。' },
-  { kind: 'dialogue', speaker: '陳信宏', text: '妳今天第一次來，還習慣嗎？剛剛鼓聲真的滿大的。' },
+  { kind: 'dialogue', speaker: '陳信宏', text: '妳今天第一次來，還習慣嗎？剛剛鼓聲真的滿大的，有沒有嚇到馁？' },
   { kind: 'dialogue', speaker: '你', text: '還好啊，滿有趣的。' },
   { kind: 'dialogue', speaker: '石錦航', text: '那就好。下次可以坐更裡面一點。' },
   { kind: 'narration', text: '原本大家還在聊剛才練到一半的段落，沒過多久，阿信終於把話題繞回了你和瑪莎身上。' },
-  { kind: 'dialogue', speaker: '陳信宏', text: '欸，對了。妳跟 Masa 剛剛到底是怎麼回事？' },
+  { kind: 'dialogue', speaker: '陳信宏', text: '欸，對了，妳跟 Masa 剛剛到底是怎麼回事啊？' },
   { kind: 'dialogue', speaker: '石錦航', text: '你們一見面就直接叫出本名，看起來真的認識很久了。' },
   { kind: 'dialogue', speaker: '錢佑達', text: '我剛剛還以為你們認錯人，結果是真的認識喔？' },
   { kind: 'dialogue', speaker: '蔡昇晏', text: '你們是來吃飯還是來審問的？菜先吃啦。' },
@@ -324,7 +324,7 @@ const dinnerIntroBlocks: StoryBlock[] = [
   { kind: 'dialogue', speaker: '蔡昇晏', text: '我哪知道妳會跟他混在一起。' },
   { kind: 'dialogue', speaker: '溫尚翊', text: '蛤？什麼叫混在一起？' },
   { kind: 'narration', text: '桌邊立刻響起一陣笑聲。瑪莎夾了一口菜，還是一臉理直氣壯，彷彿剛才那句話完全沒有問題。' },
-  { kind: 'dialogue', speaker: '陳信宏', text: '好啦，所以你們以前就認識？怎麼認識的？' },
+  { kind: 'dialogue', speaker: '陳信宏', text: '好啦，所以你們以前就認識喔？怎麼認識的？' },
 ]
 
 const dinnerReplies: Record<DinnerReplyKey, { text: string; affection: number; blocks: StoryBlock[] }> = {
@@ -353,7 +353,7 @@ const dinnerReplies: Record<DinnerReplyKey, { text: string; affection: number; b
       { kind: 'dialogue', speaker: '你', text: '我哪有！' },
       { kind: 'dialogue', speaker: '蔡昇晏', text: '妳看，現在不就來了。' },
       { kind: 'dialogue', speaker: '溫尚翊', text: '你們以前也是這樣講話喔？' },
-      { kind: 'dialogue', speaker: '陳信宏', text: '感覺完全不用重新熟悉欸。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '感覺你們完全不用重新熟悉欸。' },
       { kind: 'dialogue', speaker: '蔡昇晏', text: '她以前就這樣，長大也沒有比較成熟。' },
       { kind: 'dialogue', speaker: '你', text: '你才沒有進步！' },
       { kind: 'narration', text: '大家笑成一團。你本來還有點擔心多年不見會不知道怎麼相處，現在看來，這個問題根本不存在。' },
@@ -365,7 +365,7 @@ const dinnerReplies: Record<DinnerReplyKey, { text: string; affection: number; b
     blocks: [
       { kind: 'dialogue', speaker: '你', text: '我們本來說好搬家後要繼續聯絡，後來卻失聯了。' },
       { kind: 'dialogue', speaker: '石錦航', text: '那真的隔很久了。' },
-      { kind: 'dialogue', speaker: '陳信宏', text: '難怪剛剛你們兩個都嚇了一跳。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '難怪剛剛你們兩個都嚇了一跳喔。' },
       { kind: 'narration', text: '瑪莎手裡的筷子停了一下，很快又若無其事地夾起菜。' },
       { kind: 'dialogue', speaker: '蔡昇晏', text: '那時候都還小嘛，誰知道會隔這麼久。' },
       { kind: 'dialogue', speaker: '你', text: '對啊，我也沒想到今天會在這裡遇到你。' },
@@ -463,11 +463,11 @@ const studioScenes: StoryScene[] = [
     title: '第一個向你打招呼的人',
     button: '繼續認識大家',
     blocks: [
-      { kind: 'narration', text: '靠近音箱的男生先停下手裡的動作。他把手上的線材放到一旁，抬起頭看了你一眼，笑容很自然，沒有讓人覺得拘束。' },
+      { kind: 'narration', text: '靠近音箱的男生先停下手邊的動作，把手上的線材放到一旁。他留著妹妹頭，抬手搔了搔頭，腼腆地抿著嘴笑了笑。' },
       { kind: 'dialogue', speaker: '陳信宏', text: '妳好，我是陳信宏。' },
       { kind: 'dialogue', speaker: '你', text: '你好。' },
-      { kind: 'narration', text: '他說話的聲音比房間裡的樂器聲輕一些，尾音帶著溫和的笑意。你還沒來得及多說什麼，他已經很自然地把旁邊的位置讓出來，讓你可以先把包包放下。' },
-      { kind: 'dialogue', speaker: '陳信宏', text: '妳先坐，等一下如果太吵再跟我們說。' },
+      { kind: 'narration', text: '他說話的聲音比房間裡的樂器聲輕一些，帶著軟軟的台灣腔，尾音總像含著笑意，輕輕地落下來。你還沒來得及多說什麼，他已經很自然地把旁邊的位置讓出來，讓你可以先把包包放下。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '妳先坐啦，等一下如果太吵再跟我們說喔。' },
       { kind: 'narration', text: '你說了聲謝謝，心裡那點剛進門的不自在，也跟著散掉了一些。' },
     ],
   },
@@ -1277,7 +1277,7 @@ function App() {
 
       <footer className="page-footer">
         <span><Clock3 size={13} /> 故事，從一九九六年開始。</span>
-        <span>BUILD 0.3.3 · FIRST CHAPTER</span>
+        <span>BUILD 0.3.4 · FIRST CHAPTER</span>
       </footer>
 
       {showNameSetup && (
