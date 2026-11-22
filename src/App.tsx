@@ -37,6 +37,7 @@ type NewChatEntry = { from: CharacterId | 'me'; text: string; time?: string }
 type ChatChoice = { text: string; response: string[]; affection: number }
 type ChatRound = { incoming: string; choices: ChatChoice[] }
 type CallLogEntry = { id: string; character: RouteCharacterId; status: 'answered' | 'missed'; time: string }
+type CallTranscriptLine = { speaker: RouteCharacterId | 'me'; text: string }
 
 type PhoneApp = {
   id: AppKey
@@ -483,13 +484,56 @@ const greetingChats: Record<CharacterId, ChatRound[]> = {
 
 const AFFECTION_CALL_THRESHOLD = 10
 
-const thresholdCallScripts: Record<RouteCharacterId, { lines: string[] }> = {
-  wen: { lines: ['妳到家了喔？剛剛回去的路上有沒有淋到雨？', '沒有啦，我只是想說今天好像還有幾句話沒跟妳講。', '下次有空再帶妳去別的地方，這次就先讓妳好好休息。'] },
-  masa: { lines: ['喂，妳現在方便講話喔？', '我剛剛突然想到，今天有些話還沒跟妳說完。', '下次不要又說我都沒找妳啦，知道了沒？'] },
-  ashin: { lines: ['喂？是我，阿信。沒有打擾妳吧？', '剛剛回家路上想到妳今天挑的那幾張唱片。', '等妳聽完再跟我說喜不喜歡，好不好？'] },
-  stone: { lines: ['喂，妳現在方便講電話嗎？', '今天看妳第一次來，怕有些地方沒照顧到。', '下次過來前跟我說一聲，我幫妳留個舒服的位置。'] },
-  yanming: { lines: ['喂，妳好，我是諺明。現在講話方便嗎？', '想到妳今天第一次來練團室，有些事情想再提醒妳。', '以後有什麼不清楚的地方，直接問就好，不用客氣。'] },
+// Every incoming call is a three-round conversation. Each round offers exactly three replies.
+const wenStrollCallScript: ChatRound[] = [
+  makeChatRound('喂，妳在忙嗎？那張明信片有沒有好好帶回家？', '有啊，放在書桌上了。', '那就好，妳剛剛挑那麼久，我還以為妳會一路收到包包最底下。', '有啊。不過我還在想，你說它很像我，到底哪裡像？', '就感覺啊。妳挑東西的眼光本來就滿有妳自己的樣子。', '你是不是其實也想要一張？我可以分你。', '蛤？那是妳挑的欸，自己留著啦。', 3),
+  makeChatRound('妳在書店翻那本攝影雜誌翻很久欸，平常也喜歡看照片喔？', '偶爾啊，看到好看的照片會想多看一下。', '嗯，我看妳剛剛是真的滿認真的。', '我比較喜歡裡面拍街道的那幾張，很有生活感。', '我也覺得那幾張不錯，不用特別擺拍就很好看。', '下次你陪我去拍照好不好？', '妳先把相機拿穩再說啦。好啦，有空再帶妳去。', 3),
+  makeChatRound('今天陪妳逛那間小書店，時間一下就過去了。', '因為你一直在旁邊吐槽我啊。', '我哪有，明明是妳每本都要翻一下。', '可是我覺得那間店很舒服，下次還想去。', '好啊，下次早一點去，妳可以慢慢看。', '那下次不准只陪我逛書店，還要一起吃飯。', '妳這個行程排得很完整欸……好啦，吃飯也可以。', 3),
+]
+const wenHomeCallScript: ChatRound[] = [
+  makeChatRound('喂，妳回到家有沒有先休息一下？剛剛走到巷口時，妳包包肩帶一直滑下來。', '有啦，我現在已經坐下來了。', '那就好，今天走了一段路，回去就不要再忙了。', '你剛剛不是已經幫我拉好了嗎？還一直記得喔。', '我只是剛好看到啦，妳不要想太多。', '你是不是因為不放心我，才特地打電話來？', '……我確認一下不行喔？妳真的很會問。', 3),
+  makeChatRound('下午妳說今天差不多了，我沒有覺得掃興啦。妳不要回家又自己亂想。', '我沒有亂想，只是今天真的有點累。', '知道啦，所以我才叫妳早點休息。', '我知道你沒有不開心，謝謝你還陪我走回家。', '順路而已啦。妳一個人走那段路我也不放心。', '其實如果你想逛，我也可以再陪你一下。', '妳今天都說要回家了，哪有叫妳硬撐的道理。下次再說啦。', 3),
+  makeChatRound('那家麵店我記得妳有興趣。下次要不要找一天去吃？', '好啊，你記得帶路，我怕我找不到。', '這有什麼問題，到時候我去接妳。', '可以啊，不過這次換我請你。', '妳不是說過要請？我有記得喔。', '那你要先答應，不准臨時說練團有事。', '哈哈，好啦，我會先把時間留起來。', 3),
+]
+const thresholdCallScripts: Record<RouteCharacterId, ChatRound[]> = {
+  wen: wenStrollCallScript,
+  masa: [
+    makeChatRound('喂，妳現在有空喔？我剛剛突然想到一件事。', '你講啊，我有在聽。', '妳這次倒是沒有嫌我囉嗦。', '怎麼啦？是不是又想到什麼小時候的糗事？', '妳怎麼每次都先想到這個啦。', '你是不是想起以前那間雜貨店了？', '……有啦。剛剛突然想到，不知道它現在還在不在。', 3),
+    makeChatRound('以前我們放學常常繞過去買東西，妳那時候每次都挑超久。', '我哪有，我明明很快就決定了。', '最好是，站在冰櫃前面半天的人不是妳喔？', '那是因為你一直在旁邊催。', '我是在提醒妳，不然老闆都要關門了。', '你是不是其實都記得啊？', '廢話，妳那麼多奇怪習慣，我哪有那麼容易忘記。', 3),
+    makeChatRound('改天有空要不要一起去看看？不一定還在啦，就當散步。', '好啊，我也想知道現在變成什麼樣子了。', '那就說好了，時間再約。', '可以，不過你要請我吃以前那家冰。', '妳怎麼什麼都記得要吃？好啦，如果還有開就請妳。', '你先把時間空出來，我可不想又等你消息等好多年。', '欸，這個就不要拿出來講了啦……我知道啦。', -1),
+  ],
+  ashin: [
+    makeChatRound('喂？是我，阿信。現在講電話方便嗎？我剛剛把今天提到的歌名抄下來了。', '方便啊，你整理得也太快了吧。', '哈哈，怕我等一下又忘記，所以先寫下來馁。', '你可以慢慢整理，不用這麼趕。', '沒關係啦，我本來就想把這幾首推薦給妳。', '你是不是還有私藏的歌沒有交出來？', '被妳發現了喔？那我下次再挑幾首比較特別的給妳。', 3),
+    makeChatRound('今天在唱片行，妳聽到喜歡的歌時眼睛都亮起來了。', '因為你介紹得很仔細啊，我真的有聽進去。', '那太好了，我還怕自己講太多會讓妳覺得無聊馁。', '你講音樂的樣子很有趣，我不會覺得無聊。', '真的嗎？那我下次可以再跟妳分享一些。', '那下次換你唱給我聽，好不好？', '欸？突然變成這個要求喔……好啦，有機會再說。', 3),
+    makeChatRound('今天認識妳很開心。希望下次見面，不會又忙到沒時間好好聊天。', '我也很開心，下次再一起聊歌。', '好啊，妳到時候記得告訴我聽完的感想馁。', '你不用特地找話題，想到什麼都可以跟我說。', '謝謝妳這樣講，跟妳聊天真的滿舒服的。', '那你下次要主動找我，不可以只說有機會。', '哈哈，好，我會記得的。那妳也要記得回我訊息喔。', 3),
+  ],
+  stone: [
+    makeChatRound('喂，妳到家了嗎？今天第一次來練團室，回去的路還順利吧？', '到了，謝謝你關心。', '那就好，第一次去不熟悉，總怕妳找不到路。', '到了啦，今天謝謝你幫我留位置。', '不客氣，那個位置比較安全，也不會擋到大家。', '你是不是一直有注意我坐得舒不舒服？', '有稍微看一下，畢竟妳是第一次來。', 3),
+    makeChatRound('剛剛整理器材時，看到妳坐的那張椅子還在原位。', '你們每天都要整理這麼多東西嗎？', '差不多，器材多，收好才不會出問題。', '那你今天也辛苦了，記得早點休息。', '謝謝妳，大家一起收其實很快。', '下次我去的時候，可以再坐那個位置嗎？', '當然可以，我幫妳留著就好。', 3),
+    makeChatRound('下次如果還想來聽練團，提前跟我說一聲就好。', '好啊，那就麻煩你了。', '不麻煩，妳來之前跟我說就好。', '你也可以直接跟我說哪天比較方便。', '好，我們再看看大家的時間。', '那你要記得幫我留位置喔，我會去的。', '放心，我記得。', 3),
+  ],
+  yanming: [
+    makeChatRound('喂，妳好，我是諺明。剛剛回去路上還順利嗎？', '很順利，謝謝諺明哥。', '那就好，第一次過來，路線可能還不熟。', '今天真的麻煩你照顧了。', '不會，大家都很歡迎妳來。', '下次我還可以直接去找你問問題嗎？', '當然可以，先傳個訊息確認我在不在就好。', 3),
+    makeChatRound('我剛剛收拾練團室，想到妳第一次看到那麼多器材，應該滿新鮮的。', '真的，很多東西我都叫不出名字。', '沒關係，慢慢認識就好，不用一次記住。', '你下次可以教我分辨那些器材嗎？', '可以啊，我有空就帶妳看一遍。', '那我下次可能會問很多問題，你不要嫌我煩喔。', '哈哈，不會，願意問就很好。', 3),
+    makeChatRound('今天大家都玩得滿開心的。妳如果還想來，先跟怪獸約好時間就行。', '好，我會先跟他說。', '嗯，這樣大家也比較好安排。', '謝謝你今天招呼我，下次見。', '不客氣，回去早點休息。', '那你也要記得休息，不要只顧著照顧他們。', '哈哈，知道了，謝謝妳提醒。', 3),
+  ],
 }
+
+// The free-chat conversation with Wen changes to reflect the afternoon route the player actually took.
+const wenStrollFreeTimeChats: ChatRound[] = [
+  makeChatRound('妳回家之後有沒有把那張明信片拿出來看？我剛剛想起妳在門口挑了好久。', '有啊，放在書桌上了。', '那就好，我還以為妳會一路收到包包最底下。', '你不是說很像我嗎？我還是不知道哪裡像。', '就感覺啊，妳挑東西的眼光本來就滿有妳自己的樣子。', '你是不是其實也想要一張？我可以分你。', '蛤？那是妳挑的欸，自己留著啦。', 3),
+  makeChatRound('妳在書店翻那本攝影雜誌翻很久欸，平常也喜歡看照片喔？', '偶爾啊，看到好看的照片會想多看一下。', '嗯，我看妳剛剛是真的滿認真的。', '我比較喜歡裡面拍街道的那幾張，很有生活感。', '我也覺得那幾張不錯，不用特別擺拍就很好看。', '下次你陪我去拍照好不好？', '妳先把相機拿穩再說啦。好啦，有空再帶妳去。', 3),
+  makeChatRound('妳最後挑的那張明信片，上面那個圖案我覺得滿適合妳的。', '你是不是很會觀察別人啊？', '哪有，我只是剛好看到。', '那你說說看，哪裡適合？', '就……看起來很自在啊。妳不要一直考我。', '你是不是早就想好要送我一張？', '沒有啦，是妳自己挑的。不要亂加戲。', 3),
+  makeChatRound('剛剛走回妳家那段路，好像一下子就到了。', '因為你一路都在跟我講話啊。', '我哪有一直講，是妳也有回我。', '我覺得那段路還滿舒服的。', '嗯，走慢一點也沒關係，反正又不趕時間。', '那下次你還要送我回家。', '妳把我當專屬接送喔？……好啦，看妳有沒有迷路。', 3),
+  makeChatRound('對了，妳今天是不是還有話想問我？在書店的時候好像講到一半。', '沒有啦，今天已經聊很多了。', '好，那妳想到再問。', '有啊，不過我想留到下次見面再問。', '妳還賣關子喔？好啦，我等妳問。', '我只是想找理由再跟你見面。', '……妳今天講話真的很直接欸。好啦，下次見面再說。', 3),
+]
+const wenHomeFreeTimeChats: ChatRound[] = [
+  makeChatRound('妳回到家了喔？剛剛走到巷口時，妳包包肩帶一直滑下來。', '有啦，現在已經坐下來了。', '那就好，今天走了一段路，回去就休息一下。', '你剛剛不是已經幫我拉好了嗎？還一直記得喔。', '我只是剛好看到啦，妳不要想太多。', '你是不是因為不放心我，才特地打電話……啊不是，傳訊息來？', '妳打字還打錯喔？我只是確認妳到家了沒。', 3),
+  makeChatRound('下午妳說今天差不多了，我沒有覺得掃興啦。妳不要回家又自己亂想。', '我沒有亂想，只是今天真的有點累。', '知道啦，所以我才叫妳早點休息。', '我知道你沒有不開心，謝謝你還陪我走回家。', '順路而已啦。妳一個人走那段路我也不放心。', '其實如果你想逛，我也可以再陪你一下。', '妳今天都說要回家了，哪有叫妳硬撐的道理。下次再說啦。', 3),
+  makeChatRound('剛剛走到妳家附近，妳說那家麵店好像不錯。', '對啊，我一直想找時間去吃。', '那下次帶妳去，應該不會讓妳失望。', '可以啊，不過這次換我請你。', '妳不是說過要請？我有記得喔。', '你要先答應，不准臨時說練團有事。', '哈哈，好啦，我會先把時間留起來。', 3),
+  makeChatRound('妳進門前有回頭看一下，我還以為妳忘了拿東西。', '我只是想看看你有沒有走啦。', '我有看到，妳快進去啦，外面有點涼。', '你不是說我進去你才走？我有確認啊。', '哈哈，妳還真的有在看喔。', '那你有沒有等到我關門才離開？', '有啦，確認妳進去了我才走。這樣可以了吧？', 3),
+  makeChatRound('今天還是滿開心的。下次有空再一起吃點東西，妳不要又說太晚。', '好啊，下次我會先把時間空出來。', '那就說好了，時間再約。', '下次換我找地方，你只要負責出現。', '好啦，交給妳安排，不過不要挑太遠。', '你要是再送我回家，我就考慮一下。', '妳還談條件喔？……好啦，這個條件我可以考慮。', 3),
+]
 
 const freeTimeChats: Record<RouteCharacterId, ChatRound[]> = {
   wen: [
@@ -828,7 +872,9 @@ function App() {
     return saved && freeTimeOrder.includes(saved as RouteCharacterId) ? saved as RouteCharacterId : null
   })
   const [activeCallCharacter, setActiveCallCharacter] = useState<RouteCharacterId | null>(null)
-  const [callLineIndex, setCallLineIndex] = useState(0)
+  const [callRoundIndex, setCallRoundIndex] = useState(0)
+  const [callReplied, setCallReplied] = useState(false)
+  const [callTranscript, setCallTranscript] = useState<CallTranscriptLine[]>([])
   const [callHistory, setCallHistory] = useState<CallLogEntry[]>(() => {
     try {
       const saved = JSON.parse(localStorage.getItem('mayday-call-history') ?? '[]') as CallLogEntry[]
@@ -1137,6 +1183,16 @@ function App() {
     changeStage('free-time')
   }
 
+  const getFreeTimeRounds = (character: RouteCharacterId): ChatRound[] => {
+    if (character === 'wen') return day2StrollAccepted ? wenStrollFreeTimeChats : wenHomeFreeTimeChats
+    return freeTimeChats[character]
+  }
+
+  const getCallRounds = (character: RouteCharacterId): ChatRound[] => {
+    if (character === 'wen') return day2StrollAccepted ? wenStrollCallScript : wenHomeCallScript
+    return thresholdCallScripts[character]
+  }
+
   const startFreeChat = (character: RouteCharacterId) => {
     if (freeChatTarget || localStorage.getItem('mayday-free-chat-target')) return
     setFreeChatTarget(character)
@@ -1145,7 +1201,7 @@ function App() {
     localStorage.setItem('mayday-free-chat-round', '0')
     setFreeChatReplied(false)
     localStorage.setItem('mayday-free-chat-replied', 'false')
-    appendChatMessages(character, [{ from: character, text: freeTimeChats[character][0].incoming, time: '18:06' }], '10月16日・傍晚')
+    appendChatMessages(character, [{ from: character, text: getFreeTimeRounds(character)[0].incoming, time: '18:06' }], '10月16日・傍晚')
     setSelectedSmsThread(character)
     setActiveApp('messages')
     changeStage('free-chat')
@@ -1153,7 +1209,7 @@ function App() {
 
   const chooseFreeChatReply = (choiceIndex: number) => {
     if (!freeChatTarget || freeChatReplied) return
-    const round = freeTimeChats[freeChatTarget][freeChatRound]
+    const round = getFreeTimeRounds(freeChatTarget)[freeChatRound]
     const choice = round?.choices[choiceIndex]
     if (!choice) return
     appendChatMessages(freeChatTarget, [
@@ -1165,13 +1221,59 @@ function App() {
       const nextRound = freeChatRound + 1
       setFreeChatRound(nextRound)
       localStorage.setItem('mayday-free-chat-round', String(nextRound))
-      appendChatMessages(freeChatTarget, [{ from: freeChatTarget, text: freeTimeChats[freeChatTarget][nextRound].incoming, time: '18:' + String(8 + nextRound).padStart(2, '0') }], '10月16日・傍晚')
+      appendChatMessages(freeChatTarget, [{ from: freeChatTarget, text: getFreeTimeRounds(freeChatTarget)[nextRound].incoming, time: '18:' + String(8 + nextRound).padStart(2, '0') }], '10月16日・傍晚')
       setFreeChatReplied(false)
       localStorage.setItem('mayday-free-chat-replied', 'false')
     } else {
       setFreeChatReplied(true)
       localStorage.setItem('mayday-free-chat-replied', 'true')
     }
+  }
+
+  const answerIncomingCall = () => {
+    if (!incomingCallCharacter) return
+    const character = incomingCallCharacter
+    const rounds = getCallRounds(character)
+    setActiveCallCharacter(character)
+    setIncomingCallCharacter(null)
+    setCallRoundIndex(0)
+    setCallReplied(false)
+    setCallTranscript([{ speaker: character, text: rounds[0].incoming }])
+    localStorage.removeItem('mayday-incoming-call')
+  }
+
+  const chooseCallReply = (choiceIndex: number) => {
+    if (!activeCallCharacter || callReplied) return
+    const rounds = getCallRounds(activeCallCharacter)
+    const currentRound = rounds[callRoundIndex]
+    const choice = currentRound?.choices[choiceIndex]
+    if (!choice) return
+
+    const nextTranscript: CallTranscriptLine[] = [
+      { speaker: 'me', text: choice.text },
+      ...choice.response.map((text) => ({ speaker: activeCallCharacter, text })),
+    ]
+    const nextRoundIndex = callRoundIndex + 1
+    if (nextRoundIndex < rounds.length) {
+      nextTranscript.push({ speaker: activeCallCharacter, text: rounds[nextRoundIndex].incoming })
+    }
+    setCallTranscript((current) => [...current, ...nextTranscript])
+    addRouteAffection(activeCallCharacter, choice.affection)
+
+    if (nextRoundIndex < rounds.length) {
+      setCallRoundIndex(nextRoundIndex)
+    } else {
+      setCallReplied(true)
+    }
+  }
+
+  const finishThresholdCall = () => {
+    if (!activeCallCharacter || !callReplied) return
+    setCallHistory((current) => [{ id: 'call-' + Date.now(), character: activeCallCharacter, status: 'answered', time: '18:38' }, ...current])
+    setActiveCallCharacter(null)
+    setCallRoundIndex(0)
+    setCallReplied(false)
+    setCallTranscript([])
   }
 
   const finishFreeChat = () => {
@@ -1302,7 +1404,9 @@ function App() {
     setPendingCallCharacter(null)
     setIncomingCallCharacter(null)
     setActiveCallCharacter(null)
-    setCallLineIndex(0)
+    setCallRoundIndex(0)
+    setCallReplied(false)
+    setCallTranscript([])
     setCallHistory([])
     setSelectedProfile(null)
     setResumeStage('reunion')
@@ -2133,7 +2237,7 @@ function App() {
                               {storyStage === 'free-chat' && freeChatTarget && selectedSmsThread === freeChatTarget && !freeChatReplied && (
                                 <div className="choice-area">
                                   <div className="choice-heading">自由活動・第 {freeChatRound + 1}/5 輪</div>
-                                  {freeTimeChats[freeChatTarget][freeChatRound].choices.map((choice, index) => (
+                                  {getFreeTimeRounds(freeChatTarget)[freeChatRound].choices.map((choice, index) => (
                                     <button className="reply-choice" key={index} onClick={() => chooseFreeChatReply(index)}>
                                       <span>{choice.text}</span><ChevronRight size={15} />
                                     </button>
@@ -2349,12 +2453,7 @@ function App() {
                         setIncomingCallCharacter(null)
                         localStorage.removeItem('mayday-incoming-call')
                       }}><X size={18}/>拒絕</button>
-                      <button className="call-answer-button" onClick={() => {
-                        setActiveCallCharacter(incomingCallCharacter)
-                        setIncomingCallCharacter(null)
-                        setCallLineIndex(0)
-                        localStorage.removeItem('mayday-incoming-call')
-                      }}><Phone size={18}/>接聽</button>
+                      <button className="call-answer-button" onClick={answerIncomingCall}><Phone size={18}/>接聽</button>
                     </div>
                   </div>
                 </div>
@@ -2362,20 +2461,34 @@ function App() {
               {activeCallCharacter && (
                 <div className="threshold-call-overlay">
                   <div className="threshold-call-card active-call-card">
-                    <span className="call-eyebrow">CONNECTED · 1996</span>
-                    <div className="call-avatar">{characterInfo.find((item) => item.id === activeCallCharacter)?.avatar}</div>
-                    <h2>{characterNames[activeCallCharacter]}</h2>
-                    <p className="call-connected-label">通話中</p>
-                    <div className="call-dialogue-line">「{thresholdCallScripts[activeCallCharacter].lines[callLineIndex]}」</div>
-                    <button className="call-answer-button call-next-button" onClick={() => {
-                      if (callLineIndex < thresholdCallScripts[activeCallCharacter].lines.length - 1) {
-                        setCallLineIndex((index) => index + 1)
-                      } else {
-                        setCallHistory((current) => [{ id: 'call-' + Date.now(), character: activeCallCharacter, status: 'answered', time: '18:38' }, ...current])
-                        setActiveCallCharacter(null)
-                        setCallLineIndex(0)
-                      }
-                    }}>{callLineIndex < thresholdCallScripts[activeCallCharacter].lines.length - 1 ? '下一句' : '掛斷電話'} <ChevronRight size={15}/></button>
+                    <div className="call-active-head">
+                      <div className="call-avatar">{characterInfo.find((item) => item.id === activeCallCharacter)?.avatar}</div>
+                      <div className="call-active-person">
+                        <strong>{characterNames[activeCallCharacter]}</strong>
+                        <small>通話中 · 1996</small>
+                      </div>
+                      <span className="call-active-indicator">●</span>
+                    </div>
+                    <div className="call-transcript" aria-live="polite">
+                      {callTranscript.map((line, index) => (
+                        <div className={'call-transcript-row' + (line.speaker === 'me' ? ' mine' : '')} key={index}>
+                          <span className="call-transcript-speaker">{line.speaker === 'me' ? '你' : characterNames[line.speaker]}</span>
+                          <div className="call-transcript-bubble">{line.text}</div>
+                        </div>
+                      ))}
+                    </div>
+                    {!callReplied ? (
+                      <div className="call-choice-area">
+                        <div className="call-choice-heading">你想怎麼回應？ <span>第 {callRoundIndex + 1}/{getCallRounds(activeCallCharacter).length} 輪</span></div>
+                        {getCallRounds(activeCallCharacter)[callRoundIndex].choices.map((choice, index) => (
+                          <button className="call-choice-button" key={index} onClick={() => chooseCallReply(index)}>
+                            <span>{choice.text}</span><ChevronRight size={14}/>
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <button className="call-finish-button" onClick={finishThresholdCall}>結束通話 <Phone size={14}/></button>
+                    )}
                   </div>
                 </div>
               )}
