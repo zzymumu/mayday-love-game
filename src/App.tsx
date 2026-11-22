@@ -677,7 +677,6 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
       { kind: 'narration', text: '你們走到圖書館旁邊那段比較安靜的走廊時，風正好從另一頭吹過來。' },
       { kind: 'narration', text: '阿信下意識抬手壓了一下被吹亂的額髮，原本被劉海稍微擋住的眉眼也跟著露出來。你這才發現，他左邊眉毛上方有一顆很小的痣，不算明顯，卻讓人莫名多看了一眼。' },
       { kind: 'narration', text: '他像是沒注意到你短暫的出神，只是偏過頭來，輕聲問你：' },
-      { kind: 'dialogue', speaker: '陳信宏', text: '怎麼了？是不是走累了？' }
     ],
     rounds: [
       {
@@ -689,7 +688,7 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
         ]
       },
       {
-        scene: '阿信聽完你的回答，眉眼間浮起一點笑意，抬手把被風吹亂的額髮撥回去。走廊比外面涼爽，窗邊擺著幾張長椅，偶爾有人抱著書從你們身邊經過。他把手裡的講義往旁邊挪了挪，留出位置讓你坐。',
+        scene: '阿信聽完你的回答，眉眼間浮起一點笑意。他看了看窗邊那幾張長椅，稍稍側身讓你先過去。走廊比外面涼爽，偶爾有人抱著書從你們身邊經過。他把手裡的講義往旁邊挪了挪，留出位置讓你坐。',
         prompt: '妳平常讀書的時候，喜歡熱鬧一點，還是安靜一點？',
         choices: [
           { text: '我喜歡靠窗的位置，可以看外面發呆。', response: ['我也是欸。', '有時候看一下外面，腦袋反而比較容易整理好。'], affection: 3 },
