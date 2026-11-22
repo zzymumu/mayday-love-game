@@ -2523,7 +2523,7 @@ function App() {
 
       <footer className="page-footer">
         <span><Clock3 size={13} /> 故事，從一九九六年開始。</span>
-        <span>BUILD 0.4.2 · AFFECTION & CALLS</span>
+        <span>BUILD 0.4.3 · INTERACTIVE CALLS</span>
       </footer>
 
       {showNameSetup && (
