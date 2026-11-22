@@ -1360,6 +1360,76 @@ function App() {
                 </div>
               )}
 
+              {storyStage === 'ice-date' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">第二天</div>
+                    <div className="story-contact-title">
+                      <strong>下課後的冰店</strong>
+                      <small>台北・校園附近・下午</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">十月十六日・午後</div>
+                    <h2 className="story-scene-title">臨時多出來的約會</h2>
+                    <StoryBlocks blocks={[
+                      { kind: 'narration', text: '下課鐘聲一響，你把筆記本塞進包裡，才剛走出教室，就看見溫尚翊靠在走廊邊等你。他手裡拿著兩張折起來的講義，像是剛剛也才匆匆收好東西。' },
+                      { kind: 'dialogue', speaker: '溫尚翊', text: '走啦，不是說好要去吃冰？' },
+                      { kind: 'dialogue', speaker: '你', text: '我還以為你會先去練團室。' },
+                      { kind: 'dialogue', speaker: '溫尚翊', text: '今天不是跟妳說了，人都被留下來了。先吃冰比較重要。' },
+                      { kind: 'narration', text: '他帶你拐進學校附近一條不算寬的巷子。冰店開在騎樓底下，門口掛著褪色的招牌，玻璃櫃裡一格一格放著紅豆、芋頭、花生和各種配料。店裡的電風扇慢慢轉著，空氣裡有糖水和碎冰的涼意。' },
+                      { kind: 'dialogue', speaker: '溫尚翊', text: '妳要吃什麼？' },
+                      { kind: 'dialogue', speaker: '你', text: '你推薦啊，你不是常來？' },
+                      { kind: 'dialogue', speaker: '溫尚翊', text: '紅豆牛奶冰不錯。妳應該會喜歡。' },
+                      { kind: 'dialogue', speaker: '你', text: '你怎麼知道我會喜歡？' },
+                      { kind: 'dialogue', speaker: '溫尚翊', text: '猜的啦。不喜歡再換我的。' },
+                      { kind: 'narration', text: '冰端上來後，你挖了一口，冰涼的甜味很快在舌尖化開。溫尚翊坐在對面，講起上午教授臨時點名的事，說到一半又嫌你笑得太大聲。你們明明只是出來吃碗冰，卻像把原本被課表和練團塞滿的一天，偷偷挪出了一小段空白。' },
+                      { kind: 'narration', text: '吃完走出店門時，溫尚翊看了一眼手錶，說還有時間，不用急著回去。你們沿著騎樓慢慢往前走，經過一間樂器行時，玻璃門剛好被人從裡面推開。' },
+                      { kind: 'narration', text: '陳信宏拿著一包吉他弦走了出來。看見你們，他先是愣了一下，隨即笑了。' },
+                      { kind: 'dialogue', speaker: '陳信宏', text: '怪獸？你們怎麼在這裡？' },
+                      { kind: 'dialogue', speaker: '溫尚翊', text: '出來吃冰啊。你不是回去了？' },
+                      { kind: 'dialogue', speaker: '陳信宏', text: '弦快用完了，想說趁還沒關門先來買一包。還好有買到，不然明天又要借別人的了。' },
+                      { kind: 'narration', text: '他這才注意到站在溫尚翊旁邊的你，手裡的紙袋往上提了提。' },
+                      { kind: 'dialogue', speaker: '陳信宏', text: '妳也在喔。今天休息得還好嗎？昨天第一次來，會不會覺得我們很吵？' },
+                      { kind: 'dialogue', speaker: '你', text: '不會啊，今天還遇到你出來買東西，真的很巧。' },
+                      { kind: 'dialogue', speaker: '陳信宏', text: '哈哈，真的滿巧的。那你們慢慢逛，我先把弦拿回去。' },
+                      { kind: 'dialogue', speaker: '溫尚翊', text: '好，明天見。' },
+                      { kind: 'narration', text: '阿信朝你們揮揮手，轉身往另一個方向走去。你看著他手裡那包吉他弦，才想起昨天在練團室裡聽見的那些聲音，原來都是這樣一點一點被準備起來的。' },
+                    ]} />
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={() => { setActiveApp(null); changeStage('free-time') }}>收起手機，看看有誰傳訊息 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'day2-complete' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">第二天</div>
+                    <div className="story-contact-title">
+                      <strong>自由活動結束</strong>
+                      <small>1996 年 10 月 16 日・傍晚</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">今天的訊息，也有好好留下來</div>
+                    <h2 className="story-scene-title">還有一些話，留到下次再說</h2>
+                    <StoryBlocks blocks={[
+                      { kind: 'narration', text: '你把手機握在手裡，剛才那幾輪訊息還停在螢幕上。有人用玩笑掩飾關心，有人認真地問你今天過得好不好，也有人只是很自然地分享了一件小事。' },
+                      { kind: 'narration', text: '你沒有辦法同時回覆所有人。今天選擇和其中一個人多聊了一會兒，其他人的訊息就先留在收件匣裡。' },
+                      { kind: 'narration', text: '傍晚的課後時間慢慢過去。你想，明天大概還會有新的事情發生。' },
+                    ]} />
+                    <div className="reunion-pause-note">本次自由活動已完成。你選擇的對話與回覆都會保留在訊息列表中。</div>
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={() => { setActiveApp(null); setSelectedSmsThread(null); changeStage('completed') }}>回到手機桌面 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
               {storyStage === 'paused' && (
                 <div className="paused-story-banner">
                   <div>
@@ -1402,6 +1472,72 @@ function App() {
                     <span>今天要不要跟我去練團室？</span>
                   </span>
                   <span className="notification-time">現在</span>
+                </button>
+              )}
+              {storyStage === 'greetings' && playerName && activeApp === null && (
+                <button className="sms-notification" onClick={() => openMessagesApp(currentGreetingId)}>
+                  <span className="notification-icon"><MessageSquare size={19} /></span>
+                  <span className="notification-copy">
+                    <strong>{characterNames[currentGreetingId]}</strong>
+                    <span>{greetingReplied ? '還想再聊幾句嗎？' : currentGreetingRound.incoming}</span>
+                    <span>新朋友傳來訊息</span>
+                  </span>
+                  <span className="notification-time">現在</span>
+                </button>
+              )}
+              {storyStage === 'classroom' && activeApp === null && (
+                <button className="sms-notification" onClick={() => openMessagesApp('wen')}>
+                  <span className="notification-icon"><MessageSquare size={19} /></span>
+                  <span className="notification-copy">
+                    <strong>溫尚翊</strong>
+                    <span>下課要不要去吃冰？</span>
+                    <span>10月16日・上課時間</span>
+                  </span>
+                  <span className="notification-time">剛剛</span>
+                </button>
+              )}
+              {storyStage === 'masa-checkin' && activeApp === null && (
+                <button className="sms-notification" onClick={() => openMessagesApp('masa')}>
+                  <span className="notification-icon"><MessageSquare size={19} /></span>
+                  <span className="notification-copy">
+                    <strong>蔡昇晏</strong>
+                    <span>{masaCheckInSent ? '查看剛才的對話' : '傳訊息問問今天的事'}</span>
+                    <span>訊息草稿</span>
+                  </span>
+                  <span className="notification-time">現在</span>
+                </button>
+              )}
+              {storyStage === 'stone-checkin' && activeApp === null && (
+                <button className="sms-notification" onClick={() => openMessagesApp('stone')}>
+                  <span className="notification-icon"><MessageSquare size={19} /></span>
+                  <span className="notification-copy">
+                    <strong>石錦航</strong>
+                    <span>{stoneCheckInSent ? '查看剛才的對話' : '傳訊息關心一下石頭'}</span>
+                    <span>訊息草稿</span>
+                  </span>
+                  <span className="notification-time">現在</span>
+                </button>
+              )}
+              {storyStage === 'free-time' && activeApp === null && (
+                <button className="sms-notification free-time-notification" onClick={() => openMessagesApp(null)}>
+                  <span className="notification-icon"><MessageSquare size={19} /></span>
+                  <span className="notification-copy">
+                    <strong>自由活動時間</strong>
+                    <span>選一位朋友傳訊息，這次只能選一位。</span>
+                    <span>至少完成五輪對話，錢佑達不在選擇名單內。</span>
+                  </span>
+                  <span className="notification-time">現在</span>
+                </button>
+              )}
+              {storyStage === 'free-chat' && freeChatTarget && activeApp === null && (
+                <button className="sms-notification" onClick={() => openMessagesApp(freeChatTarget)}>
+                  <span className="notification-icon"><MessageSquare size={19} /></span>
+                  <span className="notification-copy">
+                    <strong>{characterNames[freeChatTarget]}</strong>
+                    <span>{chatMessages[freeChatTarget]?.[chatMessages[freeChatTarget].length - 1]?.text ?? '有新訊息'}</span>
+                    <span>自由活動・第 {freeChatRound + 1}/5 輪</span>
+                  </span>
+                  <span className="notification-time">剛剛</span>
                 </button>
               )}
 
