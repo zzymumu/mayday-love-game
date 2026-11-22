@@ -40,7 +40,8 @@ type CallLogEntry = { id: string; character: RouteCharacterId; status: 'answered
 type CallTranscriptLine = { speaker: RouteCharacterId | 'me'; text: string }
 type SaveSlotData = { version: 1; savedAt: string; gameDate: string; gameTime: string; stage: StoryStage; stageLabel: string; data: Record<string, string> }
 type MonthVisitChoice = { text: string; response: string[]; affection: number }
-type MonthVisitRoute = { label: string; subtitle: string; location: string; title: string; kicker: string; blocks: StoryBlock[]; choices: MonthVisitChoice[]; ending: StoryBlock[] }
+type MonthVisitRound = { scene?: string; prompt: string; choices: MonthVisitChoice[] }
+type MonthVisitRoute = { label: string; subtitle: string; location: string; title: string; kicker: string; blocks: StoryBlock[]; rounds: MonthVisitRound[]; ending: StoryBlock[] }
 
 const SAVE_SLOT_IDS = [1, 2, 3] as const
 const SAVE_SLOT_PREFIX = 'mayday-save-slot-'
@@ -611,112 +612,52 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
     title: '球場邊的那瓶水',
     kicker: '上午・台大校園',
     blocks: [
-      {
-        "kind": "narration",
-        "text": "你在福利社買了兩瓶冰水，循著籃球場傳來的聲音走過去。籃球一下下撞上地面，球鞋急停時磨出短促的聲響，還混著場邊同學的笑鬧聲。"
-      },
-      {
-        "kind": "narration",
-        "text": "上午的陽光落在球場上，白線被照得發亮。場邊散著幾個書包和外套，有人剛下場就彎腰喘氣，另一個人已經抱著球跑回中線。你站在入口看了一會兒，很快就在人群裡找到溫尚翊。"
-      },
-      {
-        "kind": "narration",
-        "text": "他接到隊友傳球，先不慌不忙地運了兩下，肩膀往左一晃，防守的人才剛跟過去，他已經從另一側切入。鞋底擦過地面，他踩進禁區起跳上籃，身體在半空中舒展開來，手腕一挑，球輕輕擦過籃板落進框裡。落地後他順勢退回防守位置，隊友朝他喊了聲好球，他只笑著抬手碰了一下對方的掌心，轉眼又盯回場上的球。"
-      },
-      {
-        "kind": "narration",
-        "text": "下一次攻防轉換時，他接過隊友傳來的球，這才看見場邊的你。他朝場上喊了聲「等一下」，把球交給旁邊的人，抬手擦去額角的汗，快步朝你走來。跑動後呼吸還沒完全平復，額前幾綹頭髮濕了，貼在眉邊。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "溫尚翊",
-        "text": "妳怎麼跑來這裡？"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "你",
-        "text": "我來送水啊。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "溫尚翊",
-        "text": "我又不是不知道去哪裡買水。"
-      },
-      {
-        "kind": "narration",
-        "text": "他嘴上這麼說，視線卻已經落在你手裡那瓶冰水上。瓶身外面凝了一層水珠，你把其中一瓶遞給他，他接過去時，指尖碰到冰涼的瓶身，像是這才想起自己已經打了好一會兒。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "溫尚翊",
-        "text": "妳今天沒課喔？怎麼突然有空過來？"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "你",
-        "text": "今天剛好空著啊，想說出來走走。遠遠就聽到這邊很熱鬧。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "溫尚翊",
-        "text": "所以妳是被球聲吸引過來的喔？"
-      },
-      {
-        "kind": "narration",
-        "text": "你笑了一下，沒有急著回答。他低頭轉開瓶蓋，仰頭喝了一口，喉結隨著吞嚥輕輕滾動。汗水沿著鬢角滑下來，他用手背抹掉。球場另一頭有人喊他的名字，隊友抱著球站在外線等他回去；他應了一聲，卻還是先把水瓶握好，才轉過身。"
-      }
+      { kind: 'narration', text: '你在福利社買了兩瓶冰水，循著籃球場傳來的聲音走過去。球一下下撞上地面，鞋底擦過球場，幾個人的笑鬧聲混在一起，遠遠就聽得見。' },
+      { kind: 'narration', text: '你很快在人群裡找到溫尚翊。他接到傳球，沒有急著出手，只把球往身側一帶，肩膀微微晃了一下。防守的人才剛跟著偏過去，他已經從另一側切入，兩步跨進禁區，起跳時手腕輕輕一挑，球擦過籃板落進框裡。' },
+      { kind: 'narration', text: '落地後他順勢轉身回防，和隊友碰了下掌，嘴角還帶著笑。下一球又很快回到他手上。這次他抬眼看了看場上的位置，才把球傳出去；球剛離手，他一轉頭，正好看見站在入口的你。' },
+      { kind: 'narration', text: '他朝隊友說了聲等一下，把球交給旁邊的人，抬手擦過額角，快步走到你面前。跑動後的呼吸還有些急，額前的頭髮被汗沾濕，幾綹貼在眉邊。' },
+      { kind: 'dialogue', speaker: '溫尚翊', text: '妳怎麼跑來這裡？' },
+      { kind: 'dialogue', speaker: '你', text: '我來送水啊。' },
+      { kind: 'dialogue', speaker: '溫尚翊', text: '我又不是不知道去哪裡買水。' },
+      { kind: 'narration', text: '他嘴上這麼說，眼睛卻已經落在你手裡那瓶冰水上。你把水遞給他，他接過去時指尖碰到瓶身的水珠，這才像是想起自己已經打了好一會兒，低頭轉開瓶蓋喝了一大口。' }
     ],
-    choices: [
-      { text: '怕你打到一半渴死，特地來送水。', response: ['妳講話可不可以好聽一點？……不過，謝啦。'], affection: 2 },
-      { text: '路過啦，剛好多買了一瓶。', response: ['最好是路過。妳特地走到籃球場欸。'], affection: 3 },
-      { text: '來看看你有沒有偷懶，順便查勤。', response: ['蛤？我這是在運動欸。妳到底是來送水，還是來監督我的？'], affection: 1 },
+    rounds: [
+      {
+        prompt: '妳今天沒課喔？怎麼突然有空過來？',
+        choices: [
+          { text: '怕你打到一半渴死，特地來送水。', response: ['妳講話可不可以好聽一點？', '……不過，謝啦，剛好有點渴。'], affection:  2 },
+          { text: '路過啦，剛好多買了一瓶。', response: ['最好是路過。', '妳要去的地方跟籃球場根本不同方向吧？'], affection: 3 },
+          { text: '來看看你有沒有偷懶，順便查勤。', response: ['蛤？我這是在運動欸。', '妳到底是來送水，還是來監督我的？'], affection: 1 }
+        ]
+      },
+      {
+        scene: '他把瓶蓋轉回去，手裡的水瓶還冒著細細的水珠。聽見你回答，他低頭笑了一下，像是想起什麼，又抬眼看你。',
+        prompt: '所以妳是被球聲吸引過來的喔？',
+        choices: [
+          { text: '對啊，剛好看到某個人打得滿帥的。', response: ['……妳突然講這個幹嘛啦。', '球都還沒打完，妳就先誇了喔。'], affection: 3 },
+          { text: '沒有啦，是看到你才停下來的。', response: ['喔？那我是不是應該感到榮幸？', '妳今天講話怎麼怪怪的。'], affection: 2 },
+          { text: '我只是想知道你們到底要打多久。', response: ['哈哈，原來是來催人的。', '快了啦，再打一局就好。'], affection: 1 }
+        ]
+      },
+      {
+        scene: '場上的隊友朝他招手，球已經重新回到中線。他看了一眼比分，又回頭看你，語氣比剛才放慢了一點。',
+        prompt: '妳先坐一下啦，我打完這場就過去找妳。',
+        choices: [
+          { text: '好啊，你快回去，別讓大家等。', response: ['知道啦。', '妳坐樹蔭那邊，別站在太陽底下。'], affection: 2 },
+          { text: '那我坐這裡看你打完。', response: ['真的要看喔？', '那我等一下可不能打得太隨便了。'], affection: 3 },
+          { text: '你要是輸了，就請我吃東西。', response: ['欸，妳很會趁機敲竹槓欸。', '好啦，反正打完也要去買東西。'], affection: 1 }
+        ]
+      }
     ],
     ending: [
-      {
-        "kind": "narration",
-        "text": "他把瓶蓋旋緊，朝場上揚了揚手裡的水瓶，算是回應隊友的催促。那邊又有人喊他快一點，他笑著回了句「等一下啦」，才轉過來看你。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "溫尚翊",
-        "text": "妳先坐一下啦，我打完這場就過去找妳。"
-      },
-      {
-        "kind": "narration",
-        "text": "你在場邊找了個靠近樹蔭的位置坐下，把另一瓶水放在身旁。溫尚翊重新回到場上，隊友把球傳到他手裡，他沒有急著往籃下衝，先抬眼看了一圈，隨即把球送到右側空檔。隊友接球出手沒進，他已經往籃下切去，搶在對手前面跳起來，把籃板穩穩收進懷裡。"
-      },
-      {
-        "kind": "narration",
-        "text": "下一回合換他防守。他壓低重心，跟著持球的人左右移動，對方剛想從右側突破，他便側身擋住路線，趁球彈起時伸手一拍，把球斷了下來。隊友立刻往前跑，他沒有自己帶球往前，而是把球往前一送，讓隊友順勢上籃得分。整套動作乾淨俐落，幾乎沒有多餘的停頓。"
-      },
-      {
-        "kind": "narration",
-        "text": "場邊爆出一陣歡呼，他和隊友擊掌，笑得有些得意；下一秒又回到防守位置，像是完全沒覺得剛才有什麼了不起。你本來只是坐著等他，視線卻不知不覺一直追著他跑。"
-      },
-      {
-        "kind": "narration",
-        "text": "你手裡那瓶水漸漸不再冰，場上的比分也咬得很緊。等到這一局終於結束，溫尚翊才擦著汗走回來，順手把球放到旁邊。明明剛才在場上跑得那麼起勁，一走到你面前，第一句話卻是問你有沒有等得無聊。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "溫尚翊",
-        "text": "等很久喔？剛剛那場有點拖，隊友一直不肯認輸。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "你",
-        "text": "還好啦，我又沒有趕時間。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "溫尚翊",
-        "text": "那要不要去福利社？我請妳吃點東西，當作今天的送水費。"
-      },
-      {
-        "kind": "narration",
-        "text": "你們沿著球場旁邊的走道往外走。他把喝完的空瓶拿在手上，另一隻手拎著外套，還不忘回頭跟場上的同學說一聲晚點再回來。原本只是想送一瓶水，最後卻變成兩個人一起慢慢走回校園裡。"
-      }
-    ],
+      { kind: 'narration', text: '你在樹蔭旁找了個位置坐下，把另一瓶水放在身邊。溫尚翊回到場上，鞋底在地面一蹬，整個人很快又進入比賽的節奏。' },
+      { kind: 'narration', text: '他先在外線接球，假動作晃開防守後才往前切。隊友投籃沒進，他已經搶到籃下，把彈回來的球穩穩收住；下一回合又在對方突破時伸手把球拍掉，轉身傳給跑在前面的隊友。球進了，他和隊友擊掌，笑了一下，又立刻回到位置上。' },
+      { kind: 'narration', text: '你原本只是打算坐著等，後來卻不知不覺跟著場上的節奏看了起來。直到最後一球落進籃框，場邊的人才慢慢散開。溫尚翊拿起毛巾擦了擦臉，走回你面前時，呼吸已經平穩了不少。' },
+      { kind: 'dialogue', speaker: '溫尚翊', text: '等很久喔？剛剛那場有點拖，隊友一直不肯認輸。' },
+      { kind: 'dialogue', speaker: '你', text: '還好啦，我又沒有趕時間。' },
+      { kind: 'dialogue', speaker: '溫尚翊', text: '走啦，我請妳吃點東西，當作今天的送水費。' },
+      { kind: 'narration', text: '他把毛巾搭在肩上，順手拿起你帶來的空瓶，陪你沿著球場旁的小路往福利社走。剛才在場上跑得那麼快的人，這會兒卻特地放慢腳步，和你並肩走在樹影底下。' }
+    ]
   },
   ashin: {
     label: '陳信宏',
@@ -725,94 +666,49 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
     title: '第一次逛他的校園',
     kicker: '上午・實踐大學',
     blocks: [
-      {
-        "kind": "narration",
-        "text": "你搭車來到實踐大學，校園裡不時有抱著講義的學生從身邊經過。你才剛走到校門附近，就看見阿信站在一旁朝你揮手。"
-      },
-      {
-        "kind": "narration",
-        "text": "他今天背著平常上課用的包，手裡還拿著幾張摺過的講義。看見你走近，他先低頭看了一眼手錶，又像是怕你以為自己遲到似的，趕緊迎上前來。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "陳信宏",
-        "text": "妳真的來啦？我還怕妳找不到路馁。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "你",
-        "text": "我有先查過啦，沒有迷路。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "陳信宏",
-        "text": "那就好。既然來了，我帶妳逛一下，好不好？"
-      },
-      {
-        "kind": "narration",
-        "text": "你們從校門口慢慢往裡走。路旁有幾棵樹，陽光從葉子間漏下來，在地面留下晃動的影子。阿信走在你旁邊，偶爾放慢腳步等你跟上，遇到岔路時還會先停下來，想一下要從哪邊繞過去比較順。"
-      },
-      {
-        "kind": "narration",
-        "text": "他從平常上課會經過的地方開始介紹，帶你看教室、圖書館和校園裡幾條安靜的走廊。一路上遇到認識的同學，他也會自然地停下來打聲招呼，再接著陪你往前走。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "陳信宏",
-        "text": "這邊平常下課會比較多人，大家常常趕著去買東西。再往前走一點就安靜多了。"
-      },
-      {
-        "kind": "narration",
-        "text": "經過教室外的公告欄時，你停下來看了幾眼，上面貼著課程異動和社團活動的紙張，有些邊角已經被風吹得翹起來。阿信沒有催你，只站在旁邊等你看完，還順手替你指了指圖書館的方向。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "陳信宏",
-        "text": "這一帶妳有沒有什麼想知道的？我平常都從這裡走，應該還算熟。"
-      }
+      { kind: 'narration', text: '你搭車來到實踐大學，校門附近不時有抱著講義的學生經過。阿信站在樹下等你，手裡拿著幾張摺過的講義，看見你時立刻朝你揮手。' },
+      { kind: 'narration', text: '你走近時，他先看了看手錶，又像是怕你以為自己遲到似的，趕緊解釋剛才去辦公室拿資料，才多等了一下。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '妳真的來啦？我還怕妳找不到路馁。' },
+      { kind: 'dialogue', speaker: '你', text: '我有先查過啦，沒有迷路。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '那就好。今天不用趕，我帶妳慢慢走，好不好？' },
+      { kind: 'narration', text: '他走在你身旁，沒有急著把校園一次介紹完。遇到岔路會先停下來問你想往哪邊走，經過人多的地方，也會自然地放慢腳步，等你跟上。' },
+      { kind: 'narration', text: '你們經過教室、公告欄和一排被陽光照亮的樹。公告欄上貼著課程異動和社團活動，紙張邊角被風吹得微微翹起。你停下來多看了兩眼，阿信就在旁邊等著，沒有催你。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '這邊平常下課會比較多人，大家常常趕著去買東西。再往前走一點就安靜多了。' }
     ],
-    choices: [
-      { text: '你每天都走這條路上課喔？', response: ['對啊，有時候趕時間就走得很快。今天陪妳逛，剛好可以慢慢走走啦'], affection: 2 },
-      { text: '你當導遊也太專業了吧。', response: ['哈哈，沒有啦。我只是怕妳第一次來會迷路，想說帶妳認一下路。'], affection: 3 },
-      { text: '那你平常最喜歡待在哪裡？', response: ['圖書館旁邊那段走廊吧，有時候想安靜一下，就會去那邊坐坐。'], affection: 2 },
+    rounds: [
+      {
+        prompt: '這一帶妳有沒有什麼想知道的？我平常都從這裡走，應該還算熟。',
+        choices: [
+          { text: '你每天都走這條路上課喔？', response: ['對啊，有時候趕時間就走得很快。', '今天陪妳逛，剛好可以慢慢走走。'], affection: 2 },
+          { text: '你當導遊也太專業了吧。', response: ['哈哈，沒有啦。', '我只是怕妳第一次來會迷路，想說帶妳認一下路。'], affection: 3 },
+          { text: '那你平常最喜歡待在哪裡？', response: ['圖書館旁邊那段走廊吧。', '有時候想安靜一下，就會去那邊坐坐。'], affection: 2 }
+        ]
+      },
+      {
+        scene: '他帶你走到圖書館旁邊。走廊比外面涼爽，窗邊擺著幾張長椅，偶爾有人抱著書從你們身邊經過。阿信把手裡的講義往旁邊挪了挪，留出位置讓你坐。',
+        prompt: '妳平常讀書的時候，喜歡熱鬧一點，還是安靜一點？',
+        choices: [
+          { text: '我喜歡靠窗的位置，可以看外面發呆。', response: ['我也是欸。', '有時候看一下外面，腦袋反而比較容易整理好。'], affection: 3 },
+          { text: '看當天心情，有時候需要一點聲音。', response: ['這樣也很好啊。', '每個人習慣不一樣，找到自己舒服的方式就好。'], affection: 2 },
+          { text: '我通常找離插座最近的位置。', response: ['哈哈，這個很實際。', '那我下次要記得幫妳留那個位置。'], affection: 1 }
+        ]
+      },
+      {
+        scene: '走到校門附近時，路邊的小店正好有人在搬貨。阿信看了一眼街角，又低頭把講義收進包裡，像是想起了另一個可以帶你去的地方。',
+        prompt: '等一下要不要去附近那間唱片行看看？我可以幫妳挑幾張好入門的。',
+        choices: [
+          { text: '好啊，我想聽你推薦最近喜歡的歌。', response: ['那我得認真想一下了。', '有幾張我最近很常聽，覺得妳可能會喜歡。'], affection: 3 },
+          { text: '可以啊，但你不准一次介紹十張。', response: ['哈哈，好啦。', '我先挑兩張就好，不會讓妳記不住的。'], affection: 2 },
+          { text: '今天先逛校園就好，下次再去。', response: ['好啊，沒關係。', '下次妳想來再跟我說，我們不用一次把行程排滿。'], affection: 2 }
+        ]
+      }
     ],
     ending: [
-      {
-        "kind": "narration",
-        "text": "接著阿信帶你沿著剛才沒走過的另一條路往前，順路介紹附近可以吃飯的小店。你們一路聊著音樂、課堂和最近聽到的歌，原本不算短的校園路線，走起來卻很快就到了尾聲。"
-      },
-      {
-        "kind": "narration",
-        "text": "走到一處比較安靜的地方時，他停下來替你指了指遠處的建築，說那邊有時候會辦活動。你們在樹蔭下稍微停了一會兒，遠處有人抱著講義穿過走廊，風把公告欄上的紙吹得輕輕掀起。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "你",
-        "text": "你們是不是常常一聊到音樂，就會忘記原本要做的事？"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "陳信宏",
-        "text": "有時候真的會啊。講著講著就想到別的歌，然後又開始聊別的事情。"
-      },
-      {
-        "kind": "narration",
-        "text": "你們走到校門附近時，路邊的小店正好有人在搬貨，老闆把紙箱一個個疊到門邊。阿信放慢腳步，讓你先看清楚招牌，還把店名和地址寫在一張小紙片上。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "陳信宏",
-        "text": "下次妳如果還想來，可以先跟我說喔。我再帶妳去看看其他地方。"
-      },
-      {
-        "kind": "narration",
-        "text": "你點點頭。離開校園時，手裡還多了一張他順手替你記下來的唱片店地址。"
-      },
-      {
-        "kind": "narration",
-        "text": "紙片上的字寫得很整齊，旁邊還特地補了一句從哪個路口轉進去比較好找。走到公車站前，你回頭看了一眼校門。阿信還站在原地，等你確認搭車的方向沒有弄錯，才朝你揮揮手。這趟校園散步沒有什麼特別的行程，卻讓你多知道了一些他的日常。"
-      }
-    ],
+      { kind: 'narration', text: '阿信帶你走到唱片行門口，先讓你自己看了一會兒架上的卡帶，才抽出一張最近常聽的唱片，翻到背面替你介紹曲目。他說得很仔細，卻會記得停下來問你喜不喜歡，不會一個人把話說完。' },
+      { kind: 'narration', text: '離開前，他把附近唱片行的地址寫在一張小紙片上，還補了一句從哪個路口轉進去比較好找。你們走到公車站，他先陪你確認站牌方向，才把紙片交給你。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '下次妳如果還想來，可以先跟我說喔。我再帶妳去看看其他地方。' },
+      { kind: 'narration', text: '你點點頭。等公車來了，你回頭朝他揮手，他也站在原地回應你，直到車子轉過街角才收回視線。那張寫得整整齊齊的小紙片，被你小心地收進了包包。' }
+    ]
   },
   masa: {
     label: '蔡昇晏',
@@ -821,138 +717,52 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
     title: '把小時候的玩伴帶回家',
     kicker: '上午・回家路上',
     blocks: [
-      {
-        "kind": "narration",
-        "text": "你找到瑪莎時，他原本還以為你只是約他出來走走。直到你說今天要帶他回家，他才一臉懷疑地看著你。"
-      },
-      {
-        "kind": "narration",
-        "text": "你們約在熟悉的路口碰面。他一開始還在跟你聊最近練團的事，聽見目的地是你家，腳步明顯慢了半拍，還低頭確認了一下自己今天穿得有沒有哪裡不妥。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "蔡昇晏",
-        "text": "等一下，妳真的要帶我回妳家喔？"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "你",
-        "text": "不然咧？都多久沒見了，帶你回去給我爸媽看看啊。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "蔡昇晏",
-        "text": "妳怎麼都沒先講？我現在什麼都沒準備欸。"
-      },
-      {
-        "kind": "narration",
-        "text": "從巷口走回家的這段路，你們幾乎一路都在拌嘴。他嫌你走太快，你嫌他問題太多；明明只是隔了幾年沒見，吵起來卻還是和小時候一模一樣。"
-      },
-      {
-        "kind": "narration",
-        "text": "路過轉角那間小雜貨店時，你忍不住多看了一眼。招牌好像換過，門口擺的東西也和記憶裡不太一樣，但旁邊那條窄窄的巷子還在。瑪莎順著你的視線看過去，像是也想起了以前放學後常常經過這裡的日子。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "蔡昇晏",
-        "text": "這附近好像沒什麼變欸，至少這條路還在。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "你",
-        "text": "有些地方變了啦，只是你太久沒回來。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "蔡昇晏",
-        "text": "妳不要講得好像我離開幾十年一樣。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "蔡昇晏",
-        "text": "妳等一下不要亂講我以前的事喔。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "你",
-        "text": "那要看你表現。"
-      },
-      {
-        "kind": "narration",
-        "text": "他立刻露出一副拿你沒辦法的表情。走到家門前時，你才發現他比剛才安靜了一點，手指不自覺地整理了一下衣角。你看了他一眼，這才想起來，他好像真的有點緊張。"
-      }
+      { kind: 'narration', text: '你找到瑪莎時，他原本還以為你只是約他出來走走。直到你說今天要帶他回家，他才停下腳步，一臉懷疑地看著你。' },
+      { kind: 'dialogue', speaker: '蔡昇晏', text: '等一下，妳真的要帶我回妳家喔？' },
+      { kind: 'dialogue', speaker: '你', text: '不然咧？都多久沒見了，帶你回去給我爸媽看看啊。' },
+      { kind: 'dialogue', speaker: '蔡昇晏', text: '妳怎麼都沒先講？我現在什麼都沒準備欸。' },
+      { kind: 'narration', text: '從巷口走回家的路上，你們幾乎一路都在拌嘴。他嫌你走太快，你嫌他問題太多；路過轉角的小雜貨店時，你們又不約而同慢了下來。招牌換過了，門口那條窄巷卻還是老樣子。' },
+      { kind: 'dialogue', speaker: '蔡昇晏', text: '這附近好像沒什麼變欸，至少這條路還在。' },
+      { kind: 'dialogue', speaker: '你', text: '有些地方變了啦，只是你太久沒回來。' },
+      { kind: 'dialogue', speaker: '蔡昇晏', text: '妳不要講得好像我離開幾十年一樣。' },
+      { kind: 'narration', text: '走到家門前，他忽然安靜了一點，低頭整理衣角，又伸手摸了摸頭髮。你看著他忍笑，他立刻瞪了你一眼。' }
     ],
-    choices: [
-      { text: '這是蔡昇晏，我小時候最常一起玩的朋友。', response: ['阿姨好，我是昇晏。好久不見了。'], affection: 3 },
-      { text: '媽！妳還記得他嗎？就是以前常來我們家的那個！', response: ['欸欸欸，妳不要一進門就把我以前的事全部抖出來啦。叔叔、阿姨好。'], affection: 2 },
-      { text: '你自己跟我爸媽打招呼，我不幫你。', response: ['妳真的很靠不住欸……叔叔、阿姨好，我是昇晏。'], affection: 1 },
+    rounds: [
+      {
+        prompt: '妳等一下要怎麼跟叔叔阿姨介紹我？先講好，不准亂講以前的事喔。',
+        choices: [
+          { text: '就說你是我小時候最常一起玩的朋友。', response: ['這樣聽起來還不錯。', '至少比妳剛才一路叫我「麻煩鬼」好聽。'], affection: 3 },
+          { text: '說你是以前最愛跟我吵架的人。', response: ['妳有必要講得這麼具體嗎？', '我現在就站在妳旁邊欸，妳客氣一點。'], affection: 2 },
+          { text: '你自己說啊，我不幫你。', response: ['我就知道不能靠妳。', '等一下如果我講錯，妳也不准在旁邊補刀。'], affection: 1 }
+        ]
+      },
+      {
+        scene: '門一開，媽媽先愣了幾秒，接著笑著叫出他的名字。爸爸也從客廳走出來，問他這些年過得怎麼樣。原本有點拘謹的瑪莎，很快就被熟悉的招呼聲帶回了從前。媽媽翻出舊相簿，指著其中一張照片笑了起來。',
+        prompt: '欸，這張我有印象。妳那時候還說是我弄壞的，明明就不是我。',
+        choices: [
+          { text: '就是你啦！我到現在都記得。', response: ['妳記得也太久了吧。', '那時候明明是妳先把東西弄倒，還推給我。'], affection: 2 },
+          { text: '你有證據嗎？沒有就不要亂講。', response: ['哇，現在還要跟我講證據喔？', '阿姨妳看，她從小就這麼會狡辯。'], affection: 3 },
+          { text: '你居然還記得這件事喔？', response: ['當然啊，妳以前做過的糗事我都記得。', '要不要我再幫妳回憶幾件？'], affection: 1 }
+        ]
+      },
+      {
+        scene: '午飯端上桌後，爸爸媽媽聊起你們小時候常玩的遊戲。瑪莎一開始還算客氣，吃到一半卻又恢復了平常那副愛吐槽的樣子，筷子停在半空，轉頭看向你。',
+        prompt: '阿姨，妳不知道，她以前還……',
+        choices: [
+          { text: '蔡昇晏！！！你給我閉嘴！', response: ['哈哈哈哈，妳看吧，心虛了。', '我都還沒講完欸。'], affection: 2 },
+          { text: '你敢講，我就把你的糗事也全部說出來。', response: ['好啦好啦，算妳狠。', '今天先放妳一馬。'], affection: 3 },
+          { text: '媽，妳不要聽他亂講啦。', response: ['我哪有亂講？', '阿姨，我等一下再慢慢跟妳說。'], affection: 1 }
+        ]
+      }
     ],
     ending: [
-      {
-        "kind": "narration",
-        "text": "媽媽看清楚他的臉後，先是愣了幾秒，接著笑著叫出他的名字。爸爸也從客廳走出來，問他這些年過得怎麼樣。原本還有些拘謹的瑪莎，很快就被爸媽熟悉的招呼聲帶回了從前。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "你",
-        "text": "看吧，我就說不用緊張。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "蔡昇晏",
-        "text": "我哪有緊張？是妳一路上自己緊張吧。"
-      },
-      {
-        "kind": "narration",
-        "text": "媽媽一邊招呼他坐下，一邊問起他現在念書和練團的情況。爸爸則翻出以前的相簿，指著其中一張照片說起你們小時候在家裡玩得亂七八糟的事。瑪莎湊過去看，才看了一眼就忍不住笑出聲。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "你",
-        "text": "那張不要看啦！真的很醜！"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "蔡昇晏",
-        "text": "欸，這張我有印象。妳那時候還說是我弄壞的，明明就不是我。"
-      },
-      {
-        "kind": "narration",
-        "text": "你本來想反駁，媽媽卻已經在旁邊笑著補充另一段往事。話題一個接一個，從小時候玩過的遊戲，聊到搬家前常去的地方，連你自己都快忘記的細節也被重新翻了出來。"
-      },
-      {
-        "kind": "narration",
-        "text": "爸媽留他一起吃午飯。餐桌上，媽媽問起他現在的生活，爸爸則想起你們小時候一起玩的事。瑪莎一邊回答，一邊毫不客氣地補充你以前的糗事，害你差點當場把筷子放下。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "蔡昇晏",
-        "text": "阿姨，妳不知道，她以前還……"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "你",
-        "text": "蔡昇晏！！！你給我閉嘴！"
-      },
-      {
-        "kind": "narration",
-        "text": "飯桌上笑成一團。這頓午飯吃得比預想中久，卻讓人有種好像從來沒有和他失聯過的錯覺。吃完飯後，他還主動幫忙把碗筷拿到廚房，媽媽一邊說不用客氣，一邊又塞了水果讓你們帶著吃。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "蔡昇晏",
-        "text": "妳家還是跟以前一樣欸，連阿姨講話的方式都沒什麼變。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "你",
-        "text": "所以我才說你應該早點回來啊。"
-      },
-      {
-        "kind": "narration",
-        "text": "離開前，他站在門口又和爸媽道了一次謝。你陪他走回巷口，兩個人一邊走一邊繼續吐槽剛才的相簿，彷彿那些空白的年月，已經在一頓午飯和幾句熟悉的玩笑裡慢慢接上了。"
-      }
-    ],
+      { kind: 'narration', text: '飯桌上笑成一團。瑪莎一邊回答爸媽的問題，一邊還是忍不住拿你以前的糗事開玩笑；你不甘示弱地回嘴，媽媽在旁邊笑著替你們添菜。那頓午飯吃得比預想中久，卻沒有一點生疏。' },
+      { kind: 'narration', text: '吃完飯後，他主動把碗筷拿到廚房，還幫忙把桌面擦乾淨。媽媽一邊說不用客氣，一邊又把水果裝進袋子，叫你們帶著路上吃。' },
+      { kind: 'dialogue', speaker: '蔡昇晏', text: '妳家還是跟以前一樣欸，連阿姨講話的方式都沒什麼變。' },
+      { kind: 'dialogue', speaker: '你', text: '所以我才說你應該早點回來啊。' },
+      { kind: 'dialogue', speaker: '蔡昇晏', text: '好啦，下次有空再來。妳不要每次都拿我小時候的事威脅我就好。' },
+      { kind: 'narration', text: '你陪他走回巷口，兩個人一路還在吐槽剛才的相簿。那些空白的年月，好像就在一頓午飯和幾句熟悉的玩笑裡，慢慢接了回來。' }
+    ]
   },
   stone: {
     label: '石錦航',
@@ -961,122 +771,47 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
     title: '午休時間的便當',
     kicker: '中午・師大附中附近',
     blocks: [
-      {
-        "kind": "narration",
-        "text": "午餐時間快到了，你提著便當來到師大附中附近，照著石頭之前提過的地址，找到他正在上課的補習班。"
-      },
-      {
-        "kind": "narration",
-        "text": "附近正好是學生下課和午休的時間，騎樓下有人拿著早餐店的塑膠袋匆匆走過，也有人靠在牆邊翻著講義。你把便當換到另一隻手，站在門口找了一個不會擋到出入的位置。"
-      },
-      {
-        "kind": "narration",
-        "text": "你在門口等了一會兒，剛好遇上中場休息。石頭拿著課本走出來，看見你時明顯愣了一下。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "石錦航",
-        "text": "妳怎麼會來？"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "你",
-        "text": "今天剛好有空，想說過來看看你。"
-      },
-      {
-        "kind": "narration",
-        "text": "他這才注意到你手裡的便當，視線停在袋子上，像是忽然明白你今天特地過來的原因。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "石錦航",
-        "text": "這是特地帶來給我的嗎？妳怎麼還跑一趟。"
-      }
+      { kind: 'narration', text: '午餐時間快到了，你提著便當來到師大附中附近，照著石頭之前提過的地址，找到他正在上課的補習班。騎樓下有學生拿著塑膠袋匆匆走過，也有人靠在牆邊翻講義。' },
+      { kind: 'narration', text: '你站在門邊等了一會兒，剛好遇上中場休息。石頭拿著課本走出來，看見你時明顯愣了一下，隨即快步走近。' },
+      { kind: 'dialogue', speaker: '石錦航', text: '妳怎麼會來？' },
+      { kind: 'dialogue', speaker: '你', text: '今天剛好有空，想說過來看看你。' },
+      { kind: 'narration', text: '他這才注意到你手裡的便當，視線停在袋子上，像是忽然明白你今天特地跑這一趟的原因。' },
+      { kind: 'dialogue', speaker: '石錦航', text: '這是特地帶來給我的嗎？妳怎麼還跑一趟。' }
     ],
-    choices: [
-      { text: '怕你上課上到忘記吃飯，先把午餐補上。', response: ['謝謝妳，還特地跑過來。我剛好也有點餓了。'], affection: 3 },
-      { text: '午餐時間到了，先吃飯再讀書。', response: ['好，聽妳的。剛好休息一下，等一下再繼續看。'], affection: 2 },
-      { text: '我剛好經過啦，便當多帶了一份。', response: ['師大附中這麼剛好會經過喔？不過，謝謝妳，我收下了。'], affection: 1 },
+    rounds: [
+      {
+        prompt: '妳等很久了嗎？外面有點熱，怎麼不先找個地方坐？',
+        choices: [
+          { text: '沒有啦，剛好等到你休息。', response: ['那就好，我剛才還怕妳一直站在外面。', '先進來坐一下，這邊比較不曬。'], affection: 2 },
+          { text: '有一點點，不過看到你就不算久了。', response: ['妳這樣講，我反而不知道要怎麼回了。', '謝謝妳特地過來。'], affection: 3 },
+          { text: '我怕你找不到我，所以站在門口等。', response: ['我一出來就看到妳了。', '下次可以先找個地方坐，我會出來找妳。'], affection: 2 }
+        ]
+      },
+      {
+        scene: '他把課本放到桌邊，替你拉開一張椅子，等你坐好才把便當放平。休息時間不長，他卻沒有急著拆開筷子，而是先看了看你的神情。',
+        prompt: '最近課業還好嗎？這陣子是不是也有不少報告？',
+        choices: [
+          { text: '還可以啦，就是偶爾會忙到忘記時間。', response: ['忙的時候更要記得吃飯。', '事情可以慢慢做，不用每一件都趕在同一天。'], affection: 3 },
+          { text: '有一點忙，不過都還應付得來。', response: ['那就好。', '如果哪天真的忙不過來，也不要勉強自己。'], affection: 2 },
+          { text: '你先回答我，你是不是也常常忙到沒吃飯？', response: ['被妳發現了。', '不過今天有便當，我就不會忘記了。'], affection: 2 }
+        ]
+      },
+      {
+        scene: '他打開便當，先把盒子裡的配菜分開，看到你一直坐在旁邊，便把其中一樣往你面前推近了一點。',
+        prompt: '妳也吃一點吧，不然我一個人吃好像有點不好意思。',
+        choices: [
+          { text: '好啊，那我就不客氣了。', response: ['嗯，這個味道不錯，妳試試看。', '我幫妳把筷子拿過來。'], affection: 3 },
+          { text: '你先吃啦，我看你吃就好。', response: ['這樣我會更不好意思欸。', '一起吃比較快，休息時間也不用那麼趕。'], affection: 2 },
+          { text: '那你要分我最好吃的那一口。', response: ['好，這個留給妳。', '不過妳也要答應我，下次不要只顧著送飯，自己也要吃。'], affection: 2 }
+        ]
+      }
     ],
     ending: [
-      {
-        "kind": "narration",
-        "text": "他接過便當時，動作很小心，像是怕一不留神就把盒子弄歪了。看見你站在門邊，他先把手上的課本放到桌上，又往旁邊讓了讓，替你留出可以坐下的位置。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "石錦航",
-        "text": "妳等很久了嗎？外面有點熱，怎麼不先找個地方坐？"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "你",
-        "text": "沒有啦，剛好等到你休息。"
-      },
-      {
-        "kind": "narration",
-        "text": "他看了看手裡的便當，又看了一眼牆上的時鐘。休息時間不算長，他卻沒有急著打開盒子，而是先問你今天過得怎麼樣，像是想趁這段空檔好好和你說幾句話。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "石錦航",
-        "text": "最近課業還好嗎？這陣子是不是也有不少報告？"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "你",
-        "text": "還可以啦，就是偶爾會有點忙。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "石錦航",
-        "text": "那也要記得吃飯和休息，不要都把時間排滿了。"
-      },
-      {
-        "kind": "narration",
-        "text": "等你們在補習班外比較安靜的地方坐下，他才打開便當，還先把其中一樣配菜往你這邊推了推，問你有沒有吃午餐。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "石錦航",
-        "text": "妳也吃一點吧，不然我一個人吃好像有點不好意思。"
-      },
-      {
-        "kind": "narration",
-        "text": "你們坐在騎樓邊的長椅上，旁邊偶爾有學生抱著課本走過。石頭把便當盒放穩，吃得不快，還會在你說話時停下筷子認真聽。明明休息時間只有一小段，氣氛卻沒有一點匆忙。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "你",
-        "text": "你每天都這麼趕嗎？上課、準備東西，感覺時間都排得好滿。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "石錦航",
-        "text": "有時候會，不過習慣了。忙完一段就能休息一下，還好。"
-      },
-      {
-        "kind": "narration",
-        "text": "他說話時把便當裡的配菜分了一點到你這邊，像是怕你只顧著聊天。你們又聊了一會兒最近的課和學校裡發生的小事，話題不大，卻很自然地從一件事接到另一件事。"
-      },
-      {
-        "kind": "narration",
-        "text": "牆上的時鐘慢慢走近上課時間，裡頭已經有人開始翻找講義。石頭把便當盒蓋好，仔細收進袋子裡，又確認桌面沒有留下湯汁或筷子。"
-      },
-      {
-        "kind": "narration",
-        "text": "你們趁著短短的休息時間一起吃了午飯。時間快到時，他把便當盒收好，又陪你走到門口，才回去繼續上課。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "石錦航",
-        "text": "今天真的謝謝妳。回去路上小心，到家再跟我說一聲。"
-      },
-      {
-        "kind": "narration",
-        "text": "你走出騎樓時回頭看了一眼，他已經拿起課本準備回教室，卻還是特地停下來朝你點了點頭。手裡的便當袋空了，心情倒像是被這頓短短的午餐填得很滿。"
-      }
-    ],
+      { kind: 'narration', text: '你們坐在騎樓邊的長椅上一起吃午飯。石頭吃得不快，聽你說話時會停下筷子；你說到一半，他還會記得把便當裡比較好吃的那塊配菜往你這邊推。' },
+      { kind: 'narration', text: '牆上的時鐘慢慢走近上課時間，裡頭已經有人開始翻找講義。石頭把便當盒蓋好，仔細收進袋子裡，又確認桌面沒有留下湯汁或筷子。' },
+      { kind: 'dialogue', speaker: '石錦航', text: '今天真的謝謝妳。回去路上小心，到家再跟我說一聲。' },
+      { kind: 'narration', text: '他陪你走到門口，還替你把便當袋的提把整理好，提醒你外面車多要看路。你走出騎樓時回頭看了一眼，他已經拿起課本準備回去上課，卻還是特地停下來朝你點了點頭。' }
+    ]
   },
   yanming: {
     label: '劉諺明',
@@ -1085,109 +820,47 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
     title: '一起把練團室收拾好',
     kicker: '上午・練團室',
     blocks: [
-      {
-        "kind": "narration",
-        "text": "你到練團室時，諺明正蹲在一旁整理線材。旁邊還放著剛收回來的譜架、麥克風架和幾個器材箱，看起來有不少事情要做。"
-      },
-      {
-        "kind": "narration",
-        "text": "門一推開，裡頭還留著剛練完團的聲音。音箱已經關掉了，空氣裡有一點木頭、灰塵和器材散熱後的味道；牆邊貼著手寫的器材清單，幾條導線則整齊地掛在架子上。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "劉諺明",
-        "text": "妳今天沒有課喔？怎麼有空過來？"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "你",
-        "text": "今天剛好空著，想說過來看看有沒有什麼能幫忙的。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "劉諺明",
-        "text": "那妳來得正好。不過線材要小心一點，我先教妳怎麼整理。"
-      },
+      { kind: 'narration', text: '你到練團室時，諺明正蹲在一旁整理線材。旁邊放著譜架、麥克風架和幾個器材箱，牆邊還貼著手寫的器材清單。' },
+      { kind: 'narration', text: '音箱已經關掉了，空氣裡還留著一點木頭、灰塵和器材散熱後的味道。他把最後一條導線放回架上，抬頭看見你，先把手擦乾淨才站起來。' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '妳今天沒有課喔？怎麼有空過來？' },
+      { kind: 'dialogue', speaker: '你', text: '今天剛好空著，想說過來看看有沒有什麼能幫忙的。' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '那妳來得正好。不過線材要小心一點，我先教妳怎麼整理。' }
     ],
-    choices: [
-      { text: '你先去忙，我來整理這些線。', response: ['好，那我先教妳怎麼捲，不能折到線。整理完再照種類放回箱子就好。'], affection: 2 },
-      { text: '這麼多東西每天都要點一遍嗎？', response: ['差不多，少一樣器材就很麻煩，所以每次收完都要確認。'], affection: 2 },
-      { text: '我今天來當免費工讀生，有沒有供餐？', response: ['哈哈，這樣我是不是要先準備便當？放心啦，不會讓妳白忙的。'], affection: 3 },
-    ],
-    ending: [
+    rounds: [
       {
-        "kind": "narration",
-        "text": "他把一條導線拿起來，示範怎麼順著弧度繞成圈，不能硬折，也不能隨便塞進箱子。你學著他的動作，慢慢把整理好的線材按種類放回去。"
+        prompt: '線材先不要急著捲，妳要不要先試試看？',
+        choices: [
+          { text: '好啊，你教我一次，我照著做。', response: ['好，先把線順開。', '不要硬拉，從接頭旁邊開始整理會比較順。'], affection: 3 },
+          { text: '這麼多條都要分開收嗎？', response: ['對，長度和用途不太一樣。', '先分好類，之後要用才不會找半天。'], affection: 2 },
+          { text: '我今天來當免費工讀生，有沒有供餐？', response: ['哈哈，這樣我是不是要先準備便當？', '放心啦，不會讓妳白忙的。'], affection: 2 }
+        ]
       },
       {
-        "kind": "narration",
-        "text": "一開始你總覺得繞出來的圈大小不太一樣，拆開重來了幾次。諺明也不急，只在旁邊提醒你手不要拉得太緊，線材用久了更要小心照顧。"
+        scene: '你照著他的方式試著把線材繞成圈，第一條還是有點歪，拆開重來時，諺明就在旁邊扶住另一端，沒有催你。',
+        prompt: '妳看，這樣順著弧度繞，線就不會被折到。要不要再試一次？',
+        choices: [
+          { text: '再給我一次機會，這次一定可以。', response: ['慢慢來，不用急。', '妳已經比剛才順很多了。'], affection: 3 },
+          { text: '原來這麼小的地方也有差喔。', response: ['有差，線材用久了更要注意。', '平常多花一點時間整理，之後就少很多麻煩。'], affection: 2 },
+          { text: '我覺得你整理得比我快十倍。', response: ['做習慣了就會比較快。', '妳第一次整理，這樣已經很好了。'], affection: 2 }
+        ]
       },
       {
-        "kind": "dialogue",
-        "speaker": "你",
-        "text": "原來整理這些也有這麼多規矩喔？我本來以為捲起來放好就可以了。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "劉諺明",
-        "text": "看起來簡單，真的做起來還是有差。線如果折到，之後使用時可能就會出問題。"
-      },
-      {
-        "kind": "narration",
-        "text": "你把手上的線材放進箱子，再照著他寫在紙上的分類把其他幾條分開。諺明一邊核對清單，一邊把譜架靠回牆邊，偶爾抬頭看看你有沒有需要幫忙。"
-      },
-      {
-        "kind": "narration",
-        "text": "照著剛才的分類，你們接著把剩下的線材、譜架和麥克風架一樣樣整理好，再把器材箱依序放回原位。原本看起來有些凌亂的空間，慢慢恢復了整齊。"
-      },
-      {
-        "kind": "narration",
-        "text": "諺明拿著清單逐項核對，確認每一條線都收回正確的位置。你跟在旁邊幫忙念標籤，他則把缺少的東西記在紙上，字寫得端端正正，連日期都標得很清楚。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "你",
-        "text": "原來每次練完團都要整理這麼久喔？"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "劉諺明",
-        "text": "差不多。東西多，大家用完如果沒有放回原位，下次要找就會很麻煩。"
-      },
-      {
-        "kind": "narration",
-        "text": "他把最後一個器材箱推到牆邊，這才終於直起身來活動了一下肩膀。你看著已經空出來的地板，才發現剛才兩個人忙了好一陣子，連時間都沒怎麼注意。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "劉諺明",
-        "text": "今天真的幫了我不少忙，謝謝妳。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "你",
-        "text": "不客氣啦，反正我今天也沒事。"
-      },
-      {
-        "kind": "narration",
-        "text": "諺明把清單收進抽屜，又替你倒了一杯水。你們坐在練團室旁邊休息，他順口問起你最近的課業，還提醒你學校和練團室兩邊跑，別把時間排得太緊。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "劉諺明",
-        "text": "下次如果有空，也可以再過來坐坐。不一定要幫忙，來聽他們練團也可以。"
-      },
-      {
-        "kind": "narration",
-        "text": "你看著收拾乾淨的練團室，忽然覺得自己好像也慢慢成了這個地方的一份子。"
-      },
-      {
-        "kind": "narration",
-        "text": "門外又傳來腳步聲，像是有人準備進來練習。諺明起身去開門前，還回頭問你要不要再坐一會兒。你看著牆邊整整齊齊的器材，覺得這個原本只是過來幫個小忙的上午，也意外地留下了不少值得記住的細節。"
+        scene: '等線材和譜架都歸回原位，諺明拿著清單逐項核對。確認沒有漏掉東西後，他才把筆放下，抬頭看了看時間。',
+        prompt: '妳等一下還有安排嗎？如果沒有，可以先坐下喝杯水。',
+        choices: [
+          { text: '沒有啊，今天可以慢慢來。', response: ['那就休息一下。', '等一下如果他們開始練團，妳也可以留下來聽。'], affection: 3 },
+          { text: '我還要回學校，不過不急。', response: ['好，那妳休息一下再走。', '回去路上注意安全，別為了趕時間跑太快。'], affection: 2 },
+          { text: '你是不是終於要請我吃飯了？', response: ['哈哈，原來妳還記得供餐這件事。', '等一下我看看附近有什麼，不能讓工讀生餓肚子。'], affection: 2 }
+        ]
       }
     ],
-  },
+    ending: [
+      { kind: 'narration', text: '你們把剩下的線材、譜架和麥克風架一樣樣收好。諺明拿著清單逐項核對，確認每樣東西都回到正確的位置，才把清單收進抽屜。' },
+      { kind: 'narration', text: '他替你倒了一杯水，自己也坐下來休息。聊到課業時，他沒有多問，只提醒你學校和練團室兩邊跑，時間要安排得剛好，不要把自己弄得太累。' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '今天真的幫了我不少忙，謝謝妳。下次如果有空，也可以再過來坐坐，不一定要幫忙，來聽他們練團也可以。' },
+      { kind: 'narration', text: '門外又傳來腳步聲，像是有人準備進來練習。諺明起身去開門前，還回頭確認你有沒有把水喝完。你看著牆邊整整齊齊的器材，覺得這個原本只是過來幫個小忙的上午，也意外地留下了不少值得記住的細節。' }
+    ]
+  }
 }
 
 const unlockedContacts = [
@@ -1478,9 +1151,13 @@ function App() {
     const saved = localStorage.getItem('mayday-month-visit-target')
     return saved && monthVisitOrder.includes(saved as RouteCharacterId) ? saved as RouteCharacterId : null
   })
-  const [monthVisitChoice, setMonthVisitChoice] = useState<number | null>(() => {
-    const saved = localStorage.getItem('mayday-month-visit-choice')
-    return saved === '0' || saved === '1' || saved === '2' ? Number(saved) : null
+  const [monthVisitReplies, setMonthVisitReplies] = useState<number[]>(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('mayday-month-visit-replies') ?? 'null')
+      if (Array.isArray(saved)) return saved.filter((value): value is number => Number.isInteger(value) && value >= 0 && value <= 2).slice(0, 3)
+    } catch { /* Restore the previous one-choice save format below. */ }
+    const legacy = localStorage.getItem('mayday-month-visit-choice')
+    return legacy === '0' || legacy === '1' || legacy === '2' ? [Number(legacy)] : []
   })
   const [routeAffection, setRouteAffection] = useState<Record<RouteCharacterId, number>>(() => {
     let saved: Partial<Record<RouteCharacterId, number>> = {}
@@ -1543,6 +1220,11 @@ function App() {
   const isSecondDay = ['classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete'].includes(storyStage)
   const isMonthLater = ['month-free-time', 'month-visit', 'month-visit-complete'].includes(storyStage)
   const saveGameDate = isMonthLater ? '1996.11.16' : isSecondDay ? '1996.10.16' : '1996.10.15'
+  const [calendarYear, calendarMonth, calendarDay] = saveGameDate.split('.')
+  const calendarDate = new Date(Number(calendarYear), Number(calendarMonth) - 1, Number(calendarDay))
+  const calendarWeekday = ['日', '一', '二', '三', '四', '五', '六'][calendarDate.getDay()]
+  const calendarMonthShort = Number(calendarMonth) === 11 ? 'NOV' : Number(calendarMonth) === 10 ? 'OCT' : calendarMonth
+  const calendarAgenda = isMonthLater ? '一個月後的自由活動' : isSecondDay ? '課堂與午後的約定' : '練團室初訪'
 
   const saveCurrentProgress = (slot: number) => {
     if (saveSlots[slot] && !window.confirm('要覆蓋第 ' + slot + ' 格存檔嗎？原本的存檔會被新的進度取代。')) return
@@ -1584,7 +1266,8 @@ function App() {
     put('mayday-free-chat-round', String(freeChatRound))
     put('mayday-free-chat-replied', String(freeChatReplied))
     put('mayday-month-visit-target', monthVisitTarget)
-    put('mayday-month-visit-choice', monthVisitChoice === null ? null : String(monthVisitChoice))
+    put('mayday-month-visit-replies', JSON.stringify(monthVisitReplies))
+    put('mayday-month-visit-choice', null)
     put('mayday-month-visit-complete', localStorage.getItem('mayday-month-visit-complete'))
     put('mayday-route-affection', JSON.stringify(routeAffection))
     put('mayday-call-history', JSON.stringify(callHistory))
@@ -2036,9 +1719,10 @@ function App() {
 
   const startMonthFreeTime = () => {
     setMonthVisitTarget(null)
-    setMonthVisitChoice(null)
+    setMonthVisitReplies([])
     localStorage.removeItem('mayday-month-visit-target')
     localStorage.removeItem('mayday-month-visit-choice')
+    localStorage.removeItem('mayday-month-visit-replies')
     localStorage.removeItem('mayday-month-visit-complete')
     setSelectedSmsThread(null)
     setActiveApp(null)
@@ -2048,23 +1732,27 @@ function App() {
   const startMonthVisit = (character: RouteCharacterId) => {
     if (monthVisitTarget || localStorage.getItem('mayday-month-visit-target')) return
     setMonthVisitTarget(character)
-    setMonthVisitChoice(null)
+    setMonthVisitReplies([])
     localStorage.setItem('mayday-month-visit-target', character)
+    localStorage.setItem('mayday-month-visit-replies', '[]')
     localStorage.removeItem('mayday-month-visit-choice')
     changeStage('month-visit')
   }
 
   const chooseMonthVisitReply = (choiceIndex: number) => {
-    if (!monthVisitTarget || monthVisitChoice !== null) return
-    const choice = monthVisitRoutes[monthVisitTarget].choices[choiceIndex]
+    if (!monthVisitTarget || monthVisitReplies.length >= 3) return
+    const round = monthVisitRoutes[monthVisitTarget].rounds[monthVisitReplies.length]
+    const choice = round?.choices[choiceIndex]
     if (!choice) return
-    setMonthVisitChoice(choiceIndex)
-    localStorage.setItem('mayday-month-visit-choice', String(choiceIndex))
+    const nextReplies = [...monthVisitReplies, choiceIndex]
+    setMonthVisitReplies(nextReplies)
+    localStorage.setItem('mayday-month-visit-replies', JSON.stringify(nextReplies))
+    localStorage.removeItem('mayday-month-visit-choice')
     addRouteAffection(monthVisitTarget, choice.affection)
   }
 
   const finishMonthVisit = () => {
-    if (!monthVisitTarget || monthVisitChoice === null) return
+    if (!monthVisitTarget || monthVisitReplies.length !== monthVisitRoutes[monthVisitTarget].rounds.length) return
     localStorage.setItem('mayday-month-visit-complete', 'true')
     changeStage('month-visit-complete')
   }
@@ -2161,7 +1849,7 @@ function App() {
   }
 
   const resetLocalData = () => {
-    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-month-visit-target', 'mayday-month-visit-choice', 'mayday-month-visit-complete', 'mayday-route-affection', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming', 'mayday-active-call-character', 'mayday-call-round-index', 'mayday-call-replied', 'mayday-call-transcript'].forEach((key) => localStorage.removeItem(key))
+    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-month-visit-target', 'mayday-month-visit-choice', 'mayday-month-visit-replies', 'mayday-month-visit-complete', 'mayday-route-affection', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming', 'mayday-active-call-character', 'mayday-call-round-index', 'mayday-call-replied', 'mayday-call-transcript'].forEach((key) => localStorage.removeItem(key))
     SAVE_SLOT_IDS.forEach((slot) => localStorage.removeItem(SAVE_SLOT_PREFIX + slot))
     setPlayerName('')
     setNameDraft('')
@@ -2246,7 +1934,7 @@ function App() {
   const selectedContactProfile = unlockedContacts.find((contact) => contact.id === selectedProfile) ?? null
   const currentGreetingId = greetingOrder[Math.min(greetingIndex, greetingOrder.length - 1)]
   const currentMonthVisit = monthVisitTarget ? monthVisitRoutes[monthVisitTarget] : null
-  const selectedMonthVisitChoice = currentMonthVisit && monthVisitChoice !== null ? currentMonthVisit.choices[monthVisitChoice] : null
+  const currentMonthVisitRound = currentMonthVisit?.rounds[monthVisitReplies.length] ?? null
   const currentGreetingRound = greetingChats[currentGreetingId][Math.min(greetingRound, greetingChats[currentGreetingId].length - 1)]
   const currentThreadMessages: SmsMessage[] = selectedSmsThread === 'wen'
     ? [...smsMessages, ...(chatMessages.wen ?? [])]
@@ -2746,28 +2434,42 @@ function App() {
                     <div className="story-kicker">{currentMonthVisit.kicker}</div>
                     <h2 className="story-scene-title">{currentMonthVisit.title}</h2>
                     <StoryBlocks blocks={currentMonthVisit.blocks} />
-                    {selectedMonthVisitChoice ? (
+                    {currentMonthVisit.rounds.slice(0, monthVisitReplies.length).map((round, index) => {
+                      const selected = round.choices[monthVisitReplies[index]]
+                      if (!selected) return null
+                      return (
+                        <div className="month-visit-round-history" key={index}>
+                          {round.scene && <StoryBlocks blocks={[{ kind: 'narration', text: round.scene }]} />}
+                          <StoryBlocks blocks={[
+                            { kind: 'dialogue', speaker: currentMonthVisit.label, text: round.prompt },
+                            { kind: 'dialogue', speaker: '你', text: selected.text },
+                            ...selected.response.map((text) => ({ kind: 'dialogue' as const, speaker: currentMonthVisit.label, text })),
+                          ]} />
+                        </div>
+                      )
+                    })}
+                    {currentMonthVisitRound ? (
                       <>
-                        <StoryBlocks blocks={[
-                          { kind: 'dialogue', speaker: '你', text: selectedMonthVisitChoice.text },
-                          ...selectedMonthVisitChoice.response.map((text) => ({ kind: 'dialogue' as const, speaker: currentMonthVisit.label, text })),
-                          ...currentMonthVisit.ending,
-                        ]} />
-                        <div className="reunion-pause-note">這次見面已經好好記下來了。</div>
+                        {currentMonthVisitRound.scene && <StoryBlocks blocks={[{ kind: 'narration', text: currentMonthVisitRound.scene }]} />}
+                        <StoryBlocks blocks={[{ kind: 'dialogue', speaker: currentMonthVisit.label, text: currentMonthVisitRound.prompt }]} />
+                        <div className="choice-area">
+                          <div className="choice-heading">第 {monthVisitReplies.length + 1} 輪・你想怎麼回應？</div>
+                          {currentMonthVisitRound.choices.map((choice, index) => (
+                            <button className="reply-choice" key={index} onClick={() => chooseMonthVisitReply(index)}>
+                              <span>{choice.text}</span><ChevronRight size={15} />
+                            </button>
+                          ))}
+                          <small>選擇你的回應，繼續今天的聊天。</small>
+                        </div>
                       </>
                     ) : (
-                      <div className="choice-area">
-                        <div className="choice-heading">你想怎麼回應？</div>
-                        {currentMonthVisit.choices.map((choice, index) => (
-                          <button className="reply-choice" key={index} onClick={() => chooseMonthVisitReply(index)}>
-                            <span>{choice.text}</span><ChevronRight size={15} />
-                          </button>
-                        ))}
-                        <small>選擇你的回應，看看他會怎麼接話。</small>
-                      </div>
+                      <>
+                        <StoryBlocks blocks={currentMonthVisit.ending} />
+                        <div className="reunion-pause-note">今天的三輪對話已經好好記下來了。</div>
+                      </>
                     )}
                   </div>
-                  {selectedMonthVisitChoice && (
+                  {monthVisitReplies.length === currentMonthVisit.rounds.length && (
                     <div className="story-action-bar">
                       <button className="story-primary-button" onClick={finishMonthVisit}>收好今天的回憶 <ChevronRight size={15} /></button>
                     </div>
@@ -2820,7 +2522,14 @@ function App() {
                   const Icon = app.icon
                   return (
                     <button className="app-tile" key={app.id} onClick={() => app.id === 'messages' ? openMessagesApp(null) : setActiveApp(app.id)} aria-label={app.name}>
-                      <span className={'app-icon icon-tone-' + (index % 4)}><Icon size={21} strokeWidth={1.8} /></span>
+                      <span className={'app-icon icon-tone-' + (index % 4)}>
+                      {app.id === 'calendar' ? (
+                        <span className="calendar-icon-date" aria-hidden="true">
+                          <span>{calendarMonthShort}</span>
+                          <strong>{Number(calendarDay)}</strong>
+                        </span>
+                      ) : <Icon size={21} strokeWidth={1.8} />}
+                    </span>
                       <span className="app-name">{app.name}</span>
                     </button>
                   )
@@ -3004,7 +2713,7 @@ function App() {
                       </div>
                       <button className="close-button" onClick={() => { setActiveApp(null); setSelectedSmsThread(null); setSelectedDiaryDate(null) }} aria-label="關閉"><X size={17} /></button>
                     </div>
-                    <div className={activeApp === 'messages' ? 'app-window-content sms-mode' : activeApp === 'diary' ? 'app-window-content diary-mode' : activeApp === 'notes' ? 'app-window-content save-mode' : 'app-window-content'}>
+                    <div className={activeApp === 'messages' ? 'app-window-content sms-mode' : activeApp === 'diary' ? 'app-window-content diary-mode' : activeApp === 'notes' ? 'app-window-content save-mode' : activeApp === 'calendar' ? 'app-window-content calendar-mode' : 'app-window-content'}>
                       {activeApp === 'messages' ? (
                         storyStage === 'free-time' && selectedSmsThread === null && !freeChatTarget ? (
                           <div className="free-time-picker">
@@ -3317,6 +3026,24 @@ function App() {
                             <div className="coming-soon"><Radio size={15} /> 故事開始後逐步開放</div>
                           </>
                         )
+                      ) : activeApp === 'calendar' ? (
+                        <div className="calendar-app-page">
+                          <div className="calendar-month-heading">
+                            <span>行事曆</span>
+                            <strong>{calendarYear} 年 {Number(calendarMonth)} 月</strong>
+                          </div>
+                          <div className="calendar-current-card">
+                            <span>今天</span>
+                            <strong>{Number(calendarDay)}</strong>
+                            <small>星期{calendarWeekday}</small>
+                          </div>
+                          <div className="calendar-agenda-card">
+                            <span>今日記事</span>
+                            <strong>{calendarAgenda}</strong>
+                            <small>{calendarMonth}/{Number(calendarDay)} · {currentTime}</small>
+                          </div>
+                          <p className="calendar-app-footnote">日期會隨著故事進度自動更新。</p>
+                        </div>
                       ) : activeApp === 'notes' ? (
                         <div className="save-center-page">
                           <div className="save-center-intro">
