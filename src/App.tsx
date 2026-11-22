@@ -767,12 +767,12 @@ function App() {
                     <h2 className="story-scene-title">四目相對的那一刻</h2>
                     <StoryBlocks blocks={[
                       { kind: 'narration', text: '溫尚翊朝角落抬了抬下巴。你順著他的方向看過去，那個抱著貝斯的人正低著頭，指尖在弦上輕輕撥了幾下。' },
-                      { kind: 'narration', text: '像是聽見你們說話，他手上的動作停了下來，抬起頭。' },
+                      { kind: 'narration', text: '聽見你們說話，他手上的動作停了下來，抬起頭。' },
                       { kind: 'narration', text: '四目相對的那一刻，你整個人都愣住了。' },
                       { kind: 'dialogue', speaker: '你', text: '……蔡昇晏？' },
                       { kind: 'narration', text: '那張臉比記憶裡成熟了許多，眉眼卻沒有變。你幾乎沒經過思考，就認出了他。' },
                       { kind: 'dialogue', speaker: '蔡昇晏', text: '……蛤？' },
-                      { kind: 'dialogue', speaker: '蔡昇晏', text: '……真的是妳喔？' },
+
                       { kind: 'dialogue', speaker: '蔡昇晏', text: '妳怎麼會在這裡？' },
                       { kind: 'dialogue', speaker: '你', text: '我才想問你咧！' },
                       { kind: 'dialogue', speaker: '你', text: '你怎麼會在這裡啊？' },
