@@ -1156,8 +1156,7 @@ function App() {
       const saved = JSON.parse(localStorage.getItem('mayday-month-visit-replies') ?? 'null')
       if (Array.isArray(saved)) return saved.filter((value): value is number => Number.isInteger(value) && value >= 0 && value <= 2).slice(0, 3)
     } catch { /* Restore the previous one-choice save format below. */ }
-    const legacy = localStorage.getItem('mayday-month-visit-choice')
-    return legacy === '0' || legacy === '1' || legacy === '2' ? [Number(legacy)] : []
+    return []
   })
   const [routeAffection, setRouteAffection] = useState<Record<RouteCharacterId, number>>(() => {
     let saved: Partial<Record<RouteCharacterId, number>> = {}
