@@ -29,6 +29,7 @@ type ReunionReplyKey = 'a' | 'b' | 'c'
 type NicknameQuestionKey = 'a' | 'b' | 'c'
 type StoryBlock = { kind: 'narration' | 'dialogue' | 'aside'; text: string; speaker?: string }
 type StoryScene = { kicker: string; title: string; blocks: StoryBlock[]; button: string }
+type SmsMessage = { id: string; date: string; time?: string; from: 'wen' | 'me'; text: string }
 
 type PhoneApp = {
   id: AppKey
@@ -179,6 +180,34 @@ const replies: Record<ReplyKey, { text: string; response: string[]; affection: n
   },
 }
 
+function createInitialSmsMessages(): SmsMessage[] {
+  const initial: SmsMessage[] = historicalDays.flatMap((day, dayIndex) =>
+    day.messages.map((message, messageIndex) => ({
+      id: `history-${dayIndex}-${messageIndex}`,
+      date: day.date,
+      from: message.from,
+      text: message.text,
+    })),
+  )
+  initial.push(
+    { id: 'invite-1', date: '今天', time: '15:42', from: 'wen', text: '妳下課了嗎？' },
+    { id: 'invite-2', date: '今天', time: '15:42', from: 'wen', text: '今天要不要跟我去練團室？' },
+  )
+  const savedReply = localStorage.getItem('mayday-reply')
+  if (savedReply === 'a' || savedReply === 'b' || savedReply === 'c') {
+    const selected = replies[savedReply]
+    initial.push({ id: 'story-reply-player', date: '今天', time: '15:43', from: 'me', text: selected.text })
+    selected.response.forEach((text, index) => initial.push({
+      id: `story-reply-wen-${index}`,
+      date: '今天',
+      time: index === 0 ? '15:43' : '15:44',
+      from: 'wen',
+      text,
+    }))
+  }
+  return initial
+}
+
 const reunionReplies: Record<ReunionReplyKey, { text: string; blocks: StoryBlock[] }> = {
   a: {
     text: '嗯，我們小時候就認識了。',
@@ -321,8 +350,7 @@ const studioScenes: StoryScene[] = [
       { kind: 'narration', text: '他把鑰匙放到桌上，檢查了一下牆邊的器材，又翻看桌上的預約簿。溫尚翊告訴你，諺明哥是這間練團室的老闆，平常負責照看場地和器材，並沒有跟他們一起玩音樂。' },
       { kind: 'narration', text: '你已經認識了幾位來練團的人，也知道這間場地是諺明哥在照看。大家各自忙著手上的事，你原本以為今天的介紹大概就到這裡了。' },
       { kind: 'narration', text: '溫尚翊忽然朝房間角落抬了抬下巴。' },
-      { kind: 'dialogue', speaker: '溫尚翊', text: '那邊那個是蔡昇晏，彈 Bass 的。' },
-      { kind: 'narration', text: '你順著他指的方向看過去。' },
+      { kind: 'dialogue', speaker: '溫尚翊', text: '那邊那個是瑪莎，彈 Bass 的。' },
     ],
   },
 ]
@@ -359,6 +387,19 @@ function App() {
   const [activeApp, setActiveApp] = useState<AppKey | null>(null)
   const [showNameSetup, setShowNameSetup] = useState(() => !localStorage.getItem('mayday-player-name'))
   const [showResetConfirm, setShowResetConfirm] = useState(false)
+  const [selectedSmsThread, setSelectedSmsThread] = useState<'wen' | null>(null)
+  const [smsMessages, setSmsMessages] = useState<SmsMessage[]>(() => {
+    const saved = localStorage.getItem('mayday-sms-messages')
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved) as SmsMessage[]
+        if (Array.isArray(parsed) && parsed.every((message) => message && typeof message.id === 'string' && typeof message.text === 'string' && (message.from === 'wen' || message.from === 'me'))) return parsed
+      } catch {
+        // Rebuild the inbox from the authored conversation if old local data is malformed.
+      }
+    }
+    return createInitialSmsMessages()
+  })
   const [storyStage, setStoryStage] = useState<StoryStage>(() => {
     const saved = localStorage.getItem('mayday-story-stage')
     const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'paused']
@@ -387,10 +428,14 @@ function App() {
   const currentTime = storyStage === 'notification' || storyStage === 'messages' ? '15:42' : '16:30'
 
   useEffect(() => {
-    if (storyStage === 'messages' && messageScrollRef.current) {
+    localStorage.setItem('mayday-sms-messages', JSON.stringify(smsMessages))
+  }, [smsMessages])
+
+  useEffect(() => {
+    if (activeApp === 'messages' && selectedSmsThread === 'wen' && messageScrollRef.current) {
       messageScrollRef.current.scrollTop = messageScrollRef.current.scrollHeight
     }
-  }, [storyStage])
+  }, [activeApp, selectedSmsThread, smsMessages])
 
   const changeStage = (next: StoryStage) => {
     setStoryStage(next)
@@ -406,6 +451,17 @@ function App() {
   }
 
   const resumeStory = () => changeStage(resumeStage)
+
+  const openMessagesApp = (thread: 'wen' | null = null) => {
+    setSelectedSmsThread(thread)
+    setActiveApp('messages')
+    if (thread === 'wen' && storyStage === 'notification') changeStage('messages')
+  }
+
+  const openSmsThread = (thread: 'wen') => {
+    setSelectedSmsThread(thread)
+    if (storyStage === 'notification') changeStage('messages')
+  }
 
   const chooseReunionReply = (key: ReunionReplyKey) => {
     setReunionReplyKey(key)
@@ -431,10 +487,12 @@ function App() {
   }
 
   const resetLocalData = () => {
-    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-resume-stage'].forEach((key) => localStorage.removeItem(key))
+    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-resume-stage', 'mayday-sms-messages'].forEach((key) => localStorage.removeItem(key))
     setPlayerName('')
     setNameDraft('')
     setActiveApp(null)
+    setSelectedSmsThread(null)
+    setSmsMessages(createInitialSmsMessages())
     setStudioStep(0)
     setReplyKey(null)
     setWenAffection(0)
@@ -447,12 +505,18 @@ function App() {
   }
 
   const chooseReply = (key: ReplyKey) => {
-    const points = replies[key].affection
-    const nextAffection = wenAffection + points
+    if (replyKey) return
+    const selected = replies[key]
+    const nextAffection = wenAffection + selected.affection
     setReplyKey(key)
     setWenAffection(nextAffection)
     localStorage.setItem('mayday-reply', key)
     localStorage.setItem('mayday-affection-wen', String(nextAffection))
+    setSmsMessages((current) => current.some((message) => message.id === 'story-reply-player') ? current : [
+      ...current,
+      { id: 'story-reply-player', date: '今天', time: '15:43', from: 'me', text: selected.text },
+      ...selected.response.map((text, index) => ({ id: `story-reply-wen-${index}`, date: '今天', time: index === 0 ? '15:43' : '15:44', from: 'wen' as const, text })),
+    ])
     changeStage('reply')
   }
 
@@ -470,6 +534,7 @@ function App() {
   const ActiveIcon = activeApp ? (phoneApps.find((app) => app.id === activeApp)?.icon ?? Settings) : null
   const selectedReply = replyKey ? replies[replyKey] : null
   const currentScene = studioScenes[studioStep] ?? studioScenes[0]
+  const latestSmsMessage = smsMessages[smsMessages.length - 1]
 
   return (
     <main className="page-shell">
@@ -615,7 +680,7 @@ function App() {
                 {phoneApps.map((app, index) => {
                   const Icon = app.icon
                   return (
-                    <button className="app-tile" key={app.id} onClick={() => setActiveApp(app.id)} aria-label={app.name}>
+                    <button className="app-tile" key={app.id} onClick={() => app.id === 'messages' ? openMessagesApp(null) : setActiveApp(app.id)} aria-label={app.name}>
                       <span className={'app-icon icon-tone-' + (index % 4)}><Icon size={21} strokeWidth={1.8} /></span>
                       <span className="app-name">{app.name}</span>
                     </button>
@@ -629,8 +694,8 @@ function App() {
                 <button onClick={() => setActiveApp('contacts')}>通訊錄</button>
               </div>
 
-              {storyStage === 'notification' && playerName && (
-                <button className="sms-notification" onClick={() => changeStage('messages')}>
+              {storyStage === 'notification' && playerName && activeApp === null && (
+                <button className="sms-notification" onClick={() => openMessagesApp('wen')}>
                   <span className="notification-icon"><MessageSquare size={19} /></span>
                   <span className="notification-copy">
                     <strong>溫尚翊</strong>
@@ -641,61 +706,7 @@ function App() {
                 </button>
               )}
 
-              {(storyStage === 'messages' || storyStage === 'reply') && (
-                <div className="story-screen-overlay">
-                  <div className="story-screen-head">
-                    <button className="story-back" onClick={() => changeStage('notification')} aria-label="返回"><ArrowLeft size={17} /></button>
-                    <div className="story-contact-mark">溫</div>
-                    <div className="story-contact-title">
-                      <strong>溫尚翊</strong>
-                      <small>簡訊對話</small>
-                    </div>
-                    <button className="story-close" onClick={() => changeStage('paused')} aria-label="暫停故事"><X size={17} /></button>
-                  </div>
-
-                  {storyStage === 'messages' && (
-                    <div className="story-message-scroll" ref={messageScrollRef}>
-                      <div className="story-date-label">歷史簡訊</div>
-                      {historicalDays.map((day) => (
-                        <div className="history-day" key={day.date}>
-                          <div className="story-date-label">{day.date}</div>
-                          {day.messages.map((message, index) => (
-                            <MessageBubble key={day.date + '-' + index} mine={message.from === 'me'} text={message.text} />
-                          ))}
-                        </div>
-                      ))}
-                      <div className="story-date-label">今天・15:42</div>
-                      <MessageBubble mine={false} text="妳下課了嗎？" />
-                      <MessageBubble mine={false} text="今天要不要跟我去練團室？" />
-                      <div className="choice-area">
-                        <div className="choice-heading">選擇你的回覆</div>
-                        <button className="reply-choice" onClick={() => chooseReply('a')}>
-                          <span>好啊，反正我今天也沒事。幾點出發？</span><ChevronRight size={15} />
-                        </button>
-                        <button className="reply-choice" onClick={() => chooseReply('b')}>
-                          <span>好啊！我還沒看過你們練團欸，突然有點期待。</span><ChevronRight size={15} />
-                        </button>
-                        <button className="reply-choice" onClick={() => chooseReply('c')}>
-                          <span>你怎麼突然想到約我？該不會又想找人幫你拿東西吧？</span><ChevronRight size={15} />
-                        </button>
-                        <small>選擇會影響你和溫尚翊之間的好感度，訊息不會自動送出。</small>
-                      </div>
-                    </div>
-                  )}
-
-                  {storyStage === 'reply' && selectedReply && (
-                    <div className="story-message-scroll reply-result">
-                      <div className="story-date-label">今天・15:43</div>
-                      <MessageBubble mine text={selectedReply.text} />
-                      {selectedReply.response.map((text, index) => <MessageBubble key={index} mine={false} text={text} />)}
-                      <div className="reply-note">訊息已送出。溫尚翊說四點半會在妳教室樓下等。</div>
-                      <button className="story-primary-button" onClick={() => changeStage('walk')}>收起手機，去樓下找他 <ChevronRight size={15} /></button>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {storyStage === 'walk' && (
+                            {storyStage === 'walk' && (
                 <div className="story-screen-overlay">
                   <div className="story-screen-head">
                     <div className="chapter-mark">第一章</div>
@@ -751,15 +762,16 @@ function App() {
                     <div className="story-kicker">隔了好多年，再一次認出他</div>
                     <h2 className="story-scene-title">「……蔡昇晏？」</h2>
                     <StoryBlocks blocks={[
-                      { kind: 'narration', text: '你順著溫尚翊指的方向看過去。角落裡的人低著頭，懷裡抱著一把貝斯，指尖在弦上輕輕撥了幾下，確認音準。' },
-                      { kind: 'narration', text: '聽見有人喊自己的名字，他停下手上的動作，抬起頭。' },
+                      { kind: 'narration', text: '你順著溫尚翊指的方向看過去。角落裡的人一直低著頭，懷裡抱著一把貝斯，指尖在弦上輕輕撥了幾下。' },
+                      { kind: 'narration', text: '溫尚翊剛才喊的是「瑪莎」。你對這個名字沒有印象，只是看向那個被他介紹的人。' },
+                      { kind: 'narration', text: '像是聽見有人叫自己，他手上的動作停了下來，抬起頭。' },
                       { kind: 'narration', text: '四目相對的那一刻，你整個人都愣住了。' },
                       { kind: 'dialogue', speaker: '你', text: '……蔡昇晏？' },
-                      { kind: 'narration', text: '他的手指還停在琴弦上，視線牢牢落在你臉上。過了兩秒，他才像是終於認出你。' },
+                      { kind: 'narration', text: '他的手指還停在琴弦上，沒有立刻移開。那張臉比記憶裡成熟了許多，可你還是一眼就認出了他。' },
                       { kind: 'dialogue', speaker: '蔡昇晏', text: '……蛤？' },
                       { kind: 'aside', text: '救命。' },
                       { kind: 'narration', text: '你真的沒想過會在這裡見到他。那個搬家前還跟你約好要保持聯絡，後來卻因為一場大雨和一張模糊的地址紙失去消息的人，現在就坐在離你不到幾步的地方。' },
-                      { kind: 'narration', text: '你看著他，忽然想起小時候那些零碎的畫面。明明隔了這麼多年，你卻還是一眼就認出了他。' },
+                      { kind: 'narration', text: '你腦子裡一下子閃過好多年前的畫面，卻又不知道該先問哪一件事。' },
                       { kind: 'narration', text: '溫尚翊站在你旁邊，看看你，又看看角落裡的人，完全摸不著頭緒。' },
                       { kind: 'dialogue', speaker: '溫尚翊', text: '等一下。' },
                       { kind: 'dialogue', speaker: '溫尚翊', text: '妳們認識喔？' },
@@ -784,15 +796,79 @@ function App() {
                 <div className="app-overlay">
                   <div className="app-window">
                     <div className="app-window-head">
-                      <button className="back-button" onClick={() => setActiveApp(null)} aria-label="返回主選單"><ArrowLeft size={17} /></button>
+                      <button
+                        className="back-button"
+                        onClick={() => activeApp === 'messages' && selectedSmsThread ? setSelectedSmsThread(null) : setActiveApp(null)}
+                        aria-label={activeApp === 'messages' && selectedSmsThread ? '返回訊息列表' : '返回主選單'}
+                      ><ArrowLeft size={17} /></button>
                       <div className="app-window-title">
                         {ActiveIcon && <ActiveIcon size={17} />}
-                        <span>{activeCopy.heading}</span>
+                        <span>{activeApp === 'messages' && selectedSmsThread === 'wen' ? '溫尚翊' : activeCopy.heading}</span>
                       </div>
-                      <button className="close-button" onClick={() => setActiveApp(null)} aria-label="關閉"><X size={17} /></button>
+                      <button className="close-button" onClick={() => { setActiveApp(null); setSelectedSmsThread(null) }} aria-label="關閉"><X size={17} /></button>
                     </div>
-                    <div className="app-window-content">
-                      {activeApp === 'settings' ? (
+                    <div className={activeApp === 'messages' ? 'app-window-content sms-mode' : 'app-window-content'}>
+                      {activeApp === 'messages' ? (
+                        selectedSmsThread === null ? (
+                          <div className="sms-inbox">
+                            <div className="sms-inbox-heading">
+                              <strong>訊息列表</strong>
+                              <span>收件匣 · 1996</span>
+                            </div>
+                            <button className="sms-thread-row" onClick={() => openSmsThread('wen')}>
+                              <span className="sms-avatar">溫</span>
+                              <span className="sms-thread-summary">
+                                <strong>溫尚翊</strong>
+                                <span>{latestSmsMessage?.text ?? '尚無訊息'}</span>
+                              </span>
+                              <span className="sms-thread-meta">
+                                <small>{latestSmsMessage?.time ?? '15:42'}</small>
+                                <ChevronRight size={14} />
+                              </span>
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="sms-thread">
+                            <div className="sms-thread-caption">
+                              <span>與溫尚翊的簡訊</span>
+                              <small>訊息會一直保留在這裡</small>
+                            </div>
+                            <div className="sms-thread-scroll" ref={messageScrollRef}>
+                              {smsMessages.map((message, index) => (
+                                <div key={message.id}>
+                                  {(index === 0 || smsMessages[index - 1].date !== message.date) && (
+                                    <div className="story-date-label">{message.date}</div>
+                                  )}
+                                  <MessageBubble mine={message.from === 'me'} text={message.text} />
+                                </div>
+                              ))}
+                              {storyStage === 'messages' && replyKey === null && (
+                                <div className="choice-area">
+                                  <div className="choice-heading">選擇你的回覆</div>
+                                  <button className="reply-choice" onClick={() => chooseReply('a')}>
+                                    <span>好啊，反正我今天也沒事。幾點出發？</span><ChevronRight size={15} />
+                                  </button>
+                                  <button className="reply-choice" onClick={() => chooseReply('b')}>
+                                    <span>好啊！我還沒看過你們練團欸，突然有點期待。</span><ChevronRight size={15} />
+                                  </button>
+                                  <button className="reply-choice" onClick={() => chooseReply('c')}>
+                                    <span>你怎麼突然想到約我？該不會又想找人幫你拿東西吧？</span><ChevronRight size={15} />
+                                  </button>
+                                  <small>只有選擇並送出後，劇情才會繼續。</small>
+                                </div>
+                              )}
+                            </div>
+                            {storyStage === 'reply' && selectedReply && (
+                              <div className="sms-thread-actions">
+                                <div className="reply-note">訊息已送出。溫尚翊會在四點半到妳教室樓下等妳。</div>
+                                <button className="story-primary-button" onClick={() => { setActiveApp(null); setSelectedSmsThread(null); changeStage('walk') }}>
+                                  收起手機，去樓下找他 <ChevronRight size={15} />
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        )
+                      ) : activeApp === 'settings' ? (
                         <>
                           <div className="settings-symbol"><Settings size={28} /></div>
                           <h2>{activeCopy.body}</h2>
