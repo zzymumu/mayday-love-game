@@ -1050,6 +1050,7 @@ function App() {
     setSelectedSmsThread(null)
     setActiveApp(null)
     if (accept) {
+      addRouteAffection('wen', 1)
       changeStage('stroll')
     } else {
       setDay2DiaryUnlocked(true)
@@ -1661,11 +1662,23 @@ function App() {
                     <span className="story-head-spacer" />
                   </div>
                   <div className="story-narrative-scroll">
-                    <div className="story-kicker">回到家後・夜晚</div>
+                    <div className="story-kicker">十月十六日・傍晚回到家</div>
+                    {!day2StrollAccepted ? (
+                      <StoryBlocks blocks={[
+                        { kind: 'narration', text: '你看了看時間，覺得今天差不多該回去了，便跟溫尚翊說想先回家。' },
+                        { kind: 'dialogue', speaker: '溫尚翊', text: '好啊，那我陪妳走到公車站。' },
+                        { kind: 'narration', text: '他沒有追問，也沒有露出失望的樣子，只是很自然地陪你沿著騎樓往前走。到了站牌旁，他還幫你看了一眼公車的方向。' },
+                        { kind: 'dialogue', speaker: '溫尚翊', text: '到家記得說一聲喔。' },
+                        { kind: 'dialogue', speaker: '你', text: '知道啦，你也早點回去。' },
+                        { kind: 'narration', text: '回到家後，你把包放在椅子上，才發現今天不知不覺過得很充實。' },
+                      ]} />
+                    ) : (
+                      <StoryBlocks blocks={[{ kind: 'narration', text: '回到家後，你把今天買的明信片放在書桌上。巷口書店的紙張氣味好像還留在指尖，你坐下來，忍不住想把今天記下來。' }]} />
+                    )}
                     <div className="diary-paper story-diary-paper">
                       <span className="diary-date">1996 年 10 月 16 日・星期三</span>
                       <h2>今天原本只是想去吃一碗冰。</h2>
-                      <p>下課後跟著溫尚翊去吃冰，沒想到在路上遇見阿信。後來三個人一起逛了唱片行，他講起音樂的時候真的很認真，連一首歌要從哪裡開始聽都會仔細介紹。</p>
+                      <p>下課後跟著溫尚翊去吃冰，沒想到在路上又遇見阿信。後來三個人一起逛了唱片行，他講起音樂的時候真的很認真，連一首歌要從哪裡開始聽都會仔細介紹。</p>
                       {day2StrollAccepted ? (
                         <>
                           <p>阿信走後，溫尚翊問我要不要再逛一下。我本來沒有特別想去哪裡，最後還是跟著他去了附近的小書店。</p>
@@ -1677,7 +1690,7 @@ function App() {
                           <p>他沒有勉強我，只陪我走到公車站。臨走前還提醒我到家記得休息，明明只是很平常的一句話，卻讓人覺得今天好像被好好照顧了一下。</p>
                         </>
                       )}
-                      <p>今天遇見了新朋友，也和原本就認識的人多相處了一會兒。明明沒有發生什麼大事，卻覺得這一天比平常長了很多。</p>
+                      <p>今天又和阿信多聊了一會兒，也和原本就認識的人多相處了一段時間。明明沒有發生什麼大事，卻覺得這一天比平常長了很多。</p>
                       <p>不知道明天又會收到誰的訊息。</p>
                     </div>
                   </div>
