@@ -888,6 +888,7 @@ function App() {
     return saved && valid.includes(saved as StoryStage) ? saved as StoryStage : 'reunion'
   })
   const messageScrollRef = useRef<HTMLDivElement>(null)
+  const callTranscriptRef = useRef<HTMLDivElement>(null)
   const currentTime =
     storyStage === 'notification' || storyStage === 'messages' ? '15:42'
       : storyStage === 'walk' ? '16:30'
@@ -920,7 +921,7 @@ function App() {
   useEffect(() => {
     if (storyStage !== 'day2-complete' || activeApp !== null || incomingCallCharacter || activeCallCharacter) return
     if (!pendingCallCharacter) {
-      const eligible = freeTimeOrder.find((id) => routeAffection[id] >= AFFECTION_CALL_THRESHOLD && localStorage.getItem('mayday-call-triggered-' + id) !== 'true')
+      const eligible = freeTimeOrder.find((id) => routeAffection[id] >= AFFECTION_CALL_THRESHOLD && localStorage.getItem('mayday-call-v2-triggered-' + id) !== 'true')
       if (eligible) {
         setPendingCallCharacter(eligible)
         localStorage.setItem('mayday-pending-call', eligible)
@@ -929,7 +930,7 @@ function App() {
     }
     setIncomingCallCharacter(pendingCallCharacter)
     localStorage.setItem('mayday-incoming-call', pendingCallCharacter)
-    localStorage.setItem('mayday-call-triggered-' + pendingCallCharacter, 'true')
+    localStorage.setItem('mayday-call-v2-triggered-' + pendingCallCharacter, 'true')
     localStorage.removeItem('mayday-pending-call')
     setPendingCallCharacter(null)
   }, [storyStage, activeApp, pendingCallCharacter, incomingCallCharacter, activeCallCharacter, routeAffection])
@@ -939,6 +940,12 @@ function App() {
       messageScrollRef.current.scrollTop = messageScrollRef.current.scrollHeight
     }
   }, [activeApp, selectedSmsThread, smsMessages, chatMessages, greetingRound, freeChatRound])
+
+  useEffect(() => {
+    if (activeCallCharacter && callTranscriptRef.current) {
+      callTranscriptRef.current.scrollTop = callTranscriptRef.current.scrollHeight
+    }
+  }, [activeCallCharacter, callTranscript])
 
   const changeStage = (next: StoryStage) => {
     setStoryStage(next)
@@ -988,7 +995,7 @@ function App() {
     const previous = routeAffection[character]
     const next = previous + amount
     setRouteAffection((current) => ({ ...current, [character]: current[character] + amount }))
-    const alreadyTriggered = localStorage.getItem('mayday-call-triggered-' + character) === 'true'
+    const alreadyTriggered = localStorage.getItem('mayday-call-v2-triggered-' + character) === 'true'
     const alreadyPending = localStorage.getItem('mayday-pending-call') !== null || localStorage.getItem('mayday-incoming-call') !== null
     if (previous < AFFECTION_CALL_THRESHOLD && next >= AFFECTION_CALL_THRESHOLD && !alreadyTriggered && !alreadyPending) {
       setPendingCallCharacter(character)
@@ -1370,7 +1377,7 @@ function App() {
   }
 
   const resetLocalData = () => {
-    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-route-affection', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming'].forEach((key) => localStorage.removeItem(key))
+    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-route-affection', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming'].forEach((key) => localStorage.removeItem(key))
     setPlayerName('')
     setNameDraft('')
     setActiveApp(null)
@@ -2469,7 +2476,7 @@ function App() {
                       </div>
                       <span className="call-active-indicator">●</span>
                     </div>
-                    <div className="call-transcript" aria-live="polite">
+                    <div className="call-transcript" ref={callTranscriptRef} aria-live="polite">
                       {callTranscript.map((line, index) => (
                         <div className={'call-transcript-row' + (line.speaker === 'me' ? ' mine' : '')} key={index}>
                           <span className="call-transcript-speaker">{line.speaker === 'me' ? '你' : characterNames[line.speaker]}</span>
