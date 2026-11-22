@@ -25,7 +25,7 @@ import {
 type AppKey = 'messages' | 'contacts' | 'calls' | 'diary' | 'calendar' | 'photos' | 'music' | 'notes' | 'settings'
 type CharacterId = 'wen' | 'masa' | 'ashin' | 'stone' | 'yanming' | 'youda'
 type RouteCharacterId = Exclude<CharacterId, 'youda'>
-type StoryStage = 'notification' | 'messages' | 'reply' | 'walk' | 'studio' | 'reunion' | 'reunion-chat' | 'nickname' | 'rehearsal' | 'dinner' | 'after-dinner' | 'ending' | 'completed' | 'greetings' | 'classroom' | 'masa-checkin' | 'stone-checkin' | 'ice-date' | 'free-time' | 'free-chat' | 'day2-complete' | 'paused'
+type StoryStage = 'notification' | 'messages' | 'reply' | 'walk' | 'studio' | 'reunion' | 'reunion-chat' | 'nickname' | 'rehearsal' | 'dinner' | 'after-dinner' | 'ending' | 'completed' | 'greetings' | 'classroom' | 'masa-checkin' | 'stone-checkin' | 'ice-date' | 'stroll' | 'day2-diary' | 'free-time' | 'free-chat' | 'day2-complete' | 'paused'
 type ReplyKey = 'a' | 'b' | 'c'
 type ReunionReplyKey = 'a' | 'b' | 'c'
 type NicknameQuestionKey = 'a' | 'b' | 'c'
@@ -729,8 +729,10 @@ function App() {
     const saved = localStorage.getItem('mayday-story-stage')
     if (saved === 'completed' && localStorage.getItem('mayday-chapter1-complete') === 'true' && localStorage.getItem('mayday-greetings-complete') !== 'true') return 'greetings'
     const savedTarget = localStorage.getItem('mayday-free-chat-target')
+    const day2PlanChosen = localStorage.getItem('mayday-day2-after-ice-choice') === 'accept' || localStorage.getItem('mayday-day2-after-ice-choice') === 'decline'
+    if (['free-time', 'free-chat', 'day2-complete'].includes(saved ?? '') && !day2PlanChosen) return 'ice-date'
     if (saved === 'free-time' && savedTarget && freeTimeOrder.includes(savedTarget as RouteCharacterId) && localStorage.getItem('mayday-free-chat-complete') !== 'true') return 'free-chat'
-    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'free-time', 'free-chat', 'day2-complete', 'paused']
+    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete', 'paused']
     return saved && valid.includes(saved as StoryStage) ? saved as StoryStage : 'notification'
   })
   const [studioStep, setStudioStep] = useState(() => Number(localStorage.getItem('mayday-studio-step') ?? '0'))
@@ -753,6 +755,8 @@ function App() {
   })
   const [marthaAffection, setMarthaAffection] = useState(() => Number(localStorage.getItem('mayday-affection-martha') ?? '0'))
   const [firstChapterComplete, setFirstChapterComplete] = useState(() => localStorage.getItem('mayday-chapter1-complete') === 'true')
+  const [day2StrollAccepted, setDay2StrollAccepted] = useState(() => localStorage.getItem('mayday-day2-after-ice-choice') === 'accept')
+  const [day2DiaryUnlocked, setDay2DiaryUnlocked] = useState(() => localStorage.getItem('mayday-day2-diary-unlocked') === 'true')
   const [chatMessages, setChatMessages] = useState<Record<CharacterId, SmsMessage[]>>(() => {
     const saved = localStorage.getItem('mayday-chat-messages')
     if (saved) {
@@ -806,7 +810,7 @@ function App() {
   const [selectedProfile, setSelectedProfile] = useState<string | null>(null)
   const [resumeStage, setResumeStage] = useState<StoryStage>(() => {
     const saved = localStorage.getItem('mayday-resume-stage')
-    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'free-time', 'free-chat', 'day2-complete']
+    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete']
     return saved && valid.includes(saved as StoryStage) ? saved as StoryStage : 'reunion'
   })
   const messageScrollRef = useRef<HTMLDivElement>(null)
@@ -817,8 +821,11 @@ function App() {
           : storyStage === 'after-dinner' ? '20:35'
             : storyStage === 'ending' || storyStage === 'completed' || storyStage === 'greetings' ? '21:18'
               : storyStage === 'classroom' || storyStage === 'masa-checkin' || storyStage === 'stone-checkin' ? '10:12'
-                : storyStage === 'ice-date' || storyStage === 'free-time' || storyStage === 'free-chat' || storyStage === 'day2-complete' ? '16:20'
-                  : '17:20'
+                : storyStage === 'ice-date' ? '16:20'
+                  : storyStage === 'stroll' ? '17:05'
+                    : storyStage === 'day2-diary' ? '18:00'
+                      : storyStage === 'free-time' || storyStage === 'free-chat' || storyStage === 'day2-complete' ? '18:20'
+                        : '17:20'
 
   useEffect(() => {
     localStorage.setItem('mayday-sms-messages', JSON.stringify(smsMessages))
@@ -1037,6 +1044,41 @@ function App() {
     changeStage('ice-date')
   }
 
+  const chooseAfterIcePlan = (accept: boolean) => {
+    setDay2StrollAccepted(accept)
+    localStorage.setItem('mayday-day2-after-ice-choice', accept ? 'accept' : 'decline')
+    setSelectedSmsThread(null)
+    setActiveApp(null)
+    if (accept) {
+      changeStage('stroll')
+    } else {
+      setDay2DiaryUnlocked(true)
+      localStorage.setItem('mayday-day2-diary-unlocked', 'true')
+      changeStage('day2-diary')
+    }
+  }
+
+  const finishStroll = () => {
+    setDay2DiaryUnlocked(true)
+    localStorage.setItem('mayday-day2-diary-unlocked', 'true')
+    setSelectedSmsThread(null)
+    setActiveApp(null)
+    changeStage('day2-diary')
+  }
+
+  const startDay2FreeTime = () => {
+    setFreeChatTarget(null)
+    localStorage.removeItem('mayday-free-chat-target')
+    setFreeChatRound(0)
+    localStorage.setItem('mayday-free-chat-round', '0')
+    setFreeChatReplied(false)
+    localStorage.setItem('mayday-free-chat-replied', 'false')
+    localStorage.removeItem('mayday-free-chat-complete')
+    setSelectedSmsThread(null)
+    setActiveApp(null)
+    changeStage('free-time')
+  }
+
   const startFreeChat = (character: RouteCharacterId) => {
     if (freeChatTarget || localStorage.getItem('mayday-free-chat-target')) return
     setFreeChatTarget(character)
@@ -1045,7 +1087,7 @@ function App() {
     localStorage.setItem('mayday-free-chat-round', '0')
     setFreeChatReplied(false)
     localStorage.setItem('mayday-free-chat-replied', 'false')
-    appendChatMessages(character, [{ from: character, text: freeTimeChats[character][0].incoming, time: '17:06' }], '10月16日・下午')
+    appendChatMessages(character, [{ from: character, text: freeTimeChats[character][0].incoming, time: '18:06' }], '10月16日・傍晚')
     setSelectedSmsThread(character)
     setActiveApp('messages')
     changeStage('free-chat')
@@ -1057,15 +1099,15 @@ function App() {
     const choice = round?.choices[choiceIndex]
     if (!choice) return
     appendChatMessages(freeChatTarget, [
-      { from: 'me', text: choice.text, time: '17:' + String(7 + freeChatRound).padStart(2, '0') },
-      ...choice.response.map((text) => ({ from: freeChatTarget, text, time: '17:' + String(7 + freeChatRound).padStart(2, '0') })),
-    ], '10月16日・下午')
+      { from: 'me', text: choice.text, time: '18:' + String(7 + freeChatRound).padStart(2, '0') },
+      ...choice.response.map((text) => ({ from: freeChatTarget, text, time: '18:' + String(7 + freeChatRound).padStart(2, '0') })),
+    ], '10月16日・傍晚')
     addRouteAffection(freeChatTarget, choice.affection)
     if (freeChatRound < 4) {
       const nextRound = freeChatRound + 1
       setFreeChatRound(nextRound)
       localStorage.setItem('mayday-free-chat-round', String(nextRound))
-      appendChatMessages(freeChatTarget, [{ from: freeChatTarget, text: freeTimeChats[freeChatTarget][nextRound].incoming, time: '17:' + String(8 + nextRound).padStart(2, '0') }], '10月16日・下午')
+      appendChatMessages(freeChatTarget, [{ from: freeChatTarget, text: freeTimeChats[freeChatTarget][nextRound].incoming, time: '18:' + String(8 + nextRound).padStart(2, '0') }], '10月16日・傍晚')
       setFreeChatReplied(false)
       localStorage.setItem('mayday-free-chat-replied', 'false')
     } else {
@@ -1555,11 +1597,92 @@ function App() {
                       { kind: 'dialogue', speaker: '陳信宏', text: '知道啦。昨天在練團室都在忙，沒什麼機會好好聊音樂，今天倒是剛好補上了一點。妳剛剛看的那幾張可以先聽聽看，喜歡的話下次再跟我說喔。' },
                       { kind: 'dialogue', speaker: '你', text: '好啊，那你路上小心，唱片的事下次再聊。' },
                       { kind: 'dialogue', speaker: '陳信宏', text: '那我先走囉，妳路上小心喔。' },
-                      { kind: 'narration', text: '阿信把吉他弦收進紙袋，朝你們揮了揮手，便往回家的方向走去。溫尚翊陪你又在唱片行門口站了一會兒，才慢慢往回學校的方向走。' },
+                      { kind: 'narration', text: '阿信把吉他弦收進紙袋，朝你們揮了揮手，便往回家的方向走去。看著他的身影轉過街角，唱片行門口一下子安靜了下來。溫尚翊沒有立刻往回走，只站在你身旁，像是在等你決定接下來要去哪裡。' },
+                      { kind: 'dialogue', speaker: '溫尚翊', text: '還早啦。要不要再逛逛？' },
                     ]} />
                   </div>
                   <div className="story-action-bar">
-                    <button className="story-primary-button" onClick={() => { setActiveApp(null); changeStage('free-time') }}>收起手機，看看有誰傳訊息 <ChevronRight size={15} /></button>
+                    <button className="story-primary-button" onClick={() => chooseAfterIcePlan(true)}>好啊，再逛一下 <ChevronRight size={15} /></button>
+                    <button className="story-primary-button secondary-chat-action" onClick={() => chooseAfterIcePlan(false)}>今天差不多了，我想先回家 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'stroll' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">第二天</div>
+                    <div className="story-contact-title">
+                      <strong>再走一小段路</strong>
+                      <small>台北・校園附近・傍晚</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">唱片行外・十月十六日</div>
+                    <h2 className="story-scene-title">沒有特別目的地的散步</h2>
+                    <StoryBlocks blocks={[
+                      { kind: 'narration', text: '你答應之後，溫尚翊像是終於有了下一個主意，朝前面那條巷子抬了抬下巴。' },
+                      { kind: 'dialogue', speaker: '溫尚翊', text: '前面有間小書店，要不要去看看？' },
+                      { kind: 'dialogue', speaker: '你', text: '你怎麼連這種地方都知道？' },
+                      { kind: 'dialogue', speaker: '溫尚翊', text: '常常經過啊。又不是只有練團室跟學校可以去。' },
+                      { kind: 'narration', text: '巷子比剛才那條街安靜一些。書店的門面不大，玻璃上貼著幾張褪色的海報，門一推開，紙張和木頭混在一起的味道就慢慢散出來。靠牆的架子放著新書，另一邊則堆著雜誌和過期刊物。' },
+                      { kind: 'narration', text: '你在架子前停了下來，隨手翻了幾本書。溫尚翊沒有催你，只是站在旁邊看封面，偶爾抽出一本翻兩頁，又放回去。' },
+                      { kind: 'dialogue', speaker: '你', text: '你平常也會來這種地方喔？' },
+                      { kind: 'dialogue', speaker: '溫尚翊', text: '會啊。妳以為我每天除了彈吉他就沒別的事喔？' },
+                      { kind: 'dialogue', speaker: '你', text: '我哪有這樣說。' },
+                      { kind: 'dialogue', speaker: '溫尚翊', text: '妳剛剛那個表情就差不多是這個意思。' },
+                      { kind: 'narration', text: '你拿起一本薄薄的攝影雜誌，翻到中間幾頁。照片裡的街道和行人都很普通，卻被拍得有點不一樣。溫尚翊湊過來看了一眼，沒有急著評論，只問你是不是喜歡這一類的東西。' },
+                      { kind: 'dialogue', speaker: '你', text: '不知道欸，就是覺得這幾張拍得很好看。' },
+                      { kind: 'dialogue', speaker: '溫尚翊', text: '那就慢慢看啊，反正今天又沒有人催我們。' },
+                      { kind: 'narration', text: '你們在書店裡待了好一會兒。最後你沒有買書，只在門口的小架子上挑了一張明信片。溫尚翊看見上面的圖案，說這張很像你會選的東西，害你忍不住問他到底哪裡像。' },
+                      { kind: 'dialogue', speaker: '溫尚翊', text: '就很像啊。妳不要每句話都要我解釋。' },
+                      { kind: 'narration', text: '離開書店時，天色已經暗了一點。溫尚翊陪你往公車站走，路上聊的都是些沒什麼要緊的小事：哪堂課最難熬、學校附近哪家店最近換了招牌，還有他下次想帶你去吃的東西。' },
+                      { kind: 'dialogue', speaker: '溫尚翊', text: '到了啦，妳回去記得小心一點。' },
+                      { kind: 'dialogue', speaker: '你', text: '知道啦。今天謝謝你帶我到處晃。' },
+                      { kind: 'dialogue', speaker: '溫尚翊', text: '又不是什麼大事。下次有空再帶妳去別的地方。' },
+                      { kind: 'narration', text: '公車進站時，你朝他揮了揮手。車門關上後，溫尚翊還站在原地，直到車子轉過路口，你才把視線收回來。' },
+                    ]} />
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={finishStroll}>回家，寫下今天的日記 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'day2-diary' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">第二天</div>
+                    <div className="story-contact-title">
+                      <strong>私人日記</strong>
+                      <small>1996 年 10 月 16 日・星期三</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">回到家後・夜晚</div>
+                    <div className="diary-paper story-diary-paper">
+                      <span className="diary-date">1996 年 10 月 16 日・星期三</span>
+                      <h2>今天原本只是想去吃一碗冰。</h2>
+                      <p>下課後跟著溫尚翊去吃冰，沒想到在路上遇見阿信。後來三個人一起逛了唱片行，他講起音樂的時候真的很認真，連一首歌要從哪裡開始聽都會仔細介紹。</p>
+                      {day2StrollAccepted ? (
+                        <>
+                          <p>阿信走後，溫尚翊問我要不要再逛一下。我本來沒有特別想去哪裡，最後還是跟著他去了附近的小書店。</p>
+                          <p>我們在裡面待了好一會兒，聊了些很普通的事情。他有時候真的很會惹人嫌，可是跟他一起走路，好像連沒有目的地也不會覺得無聊。</p>
+                        </>
+                      ) : (
+                        <>
+                          <p>阿信走後，溫尚翊問我要不要再逛一下。我想了想，還是跟他說今天差不多了，想先回家。</p>
+                          <p>他沒有勉強我，只陪我走到公車站。臨走前還提醒我到家記得休息，明明只是很平常的一句話，卻讓人覺得今天好像被好好照顧了一下。</p>
+                        </>
+                      )}
+                      <p>今天遇見了新朋友，也和原本就認識的人多相處了一會兒。明明沒有發生什麼大事，卻覺得這一天比平常長了很多。</p>
+                      <p>不知道明天又會收到誰的訊息。</p>
+                    </div>
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={startDay2FreeTime}>收好日記，看看有誰傳訊息 <ChevronRight size={15} /></button>
                   </div>
                 </div>
               )}
@@ -2024,6 +2147,26 @@ function App() {
                       ) : activeApp === 'diary' ? (
                         firstChapterComplete ? (
                           <div className="diary-page">
+                            {day2DiaryUnlocked && (
+                              <div className="diary-paper">
+                                <span className="diary-date">1996 年 10 月 16 日・星期三</span>
+                                <h2>今天原本只是想去吃一碗冰。</h2>
+                                <p>下課後跟著溫尚翊去吃冰，沒想到在路上遇見阿信。後來三個人一起逛了唱片行，他講起音樂的時候真的很認真，連一首歌要從哪裡開始聽都會仔細介紹。</p>
+                                {day2StrollAccepted ? (
+                                  <>
+                                    <p>阿信走後，溫尚翊問我要不要再逛一下。我本來沒有特別想去哪裡，最後還是跟著他去了附近的小書店。</p>
+                                    <p>我們在裡面待了好一會兒，聊了些很普通的事情。他有時候真的很會惹人嫌，可是跟他一起走路，好像連沒有目的地也不會覺得無聊。</p>
+                                  </>
+                                ) : (
+                                  <>
+                                    <p>阿信走後，溫尚翊問我要不要再逛一下。我想了想，還是跟他說今天差不多了，想先回家。</p>
+                                    <p>他沒有勉強我，只陪我走到公車站。臨走前還提醒我到家記得休息，明明只是很平常的一句話，卻讓人覺得今天好像被好好照顧了一下。</p>
+                                  </>
+                                )}
+                                <p>今天遇見了新朋友，也和原本就認識的人多相處了一會兒。明明沒有發生什麼大事，卻覺得這一天比平常長了很多。</p>
+                                <p>不知道明天又會收到誰的訊息。</p>
+                              </div>
+                            )}
                             <div className="diary-paper">
                               <span className="diary-date">1996 年 10 月 15 日・星期二</span>
                               <h2>今天真的發生了一件很不可思議的事。</h2>
@@ -2096,7 +2239,7 @@ function App() {
 
       <footer className="page-footer">
         <span><Clock3 size={13} /> 故事，從一九九六年開始。</span>
-        <span>BUILD 0.4.0 · SECOND DAY</span>
+        <span>BUILD 0.4.1 · EVENING BRANCH</span>
       </footer>
 
       {showNameSetup && (
