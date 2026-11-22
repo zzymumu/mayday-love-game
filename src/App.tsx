@@ -1128,7 +1128,7 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
       {
         "kind": "narration",
         "text": "你把手上的線材放進箱子，再照著他寫在紙上的分類把其他幾條分開。諺明一邊核對清單，一邊把譜架靠回牆邊，偶爾抬頭看看你有沒有需要幫忙。"
-      }
+      },
       {
         "kind": "narration",
         "text": "照著剛才的分類，你們接著把剩下的線材、譜架和麥克風架一樣樣整理好，再把器材箱依序放回原位。原本看起來有些凌亂的空間，慢慢恢復了整齊。"
