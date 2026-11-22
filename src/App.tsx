@@ -23,14 +23,18 @@ import {
 } from 'lucide-react'
 
 type AppKey = 'messages' | 'contacts' | 'calls' | 'diary' | 'calendar' | 'photos' | 'music' | 'notes' | 'settings'
-type StoryStage = 'notification' | 'messages' | 'reply' | 'walk' | 'studio' | 'reunion' | 'reunion-chat' | 'nickname' | 'rehearsal' | 'dinner' | 'after-dinner' | 'ending' | 'completed' | 'paused'
+type CharacterId = 'wen' | 'masa' | 'ashin' | 'stone' | 'yanming' | 'youda'
+type RouteCharacterId = Exclude<CharacterId, 'youda'>
+type StoryStage = 'notification' | 'messages' | 'reply' | 'walk' | 'studio' | 'reunion' | 'reunion-chat' | 'nickname' | 'rehearsal' | 'dinner' | 'after-dinner' | 'ending' | 'completed' | 'greetings' | 'classroom' | 'masa-checkin' | 'stone-checkin' | 'ice-date' | 'free-time' | 'free-chat' | 'day2-complete' | 'paused'
 type ReplyKey = 'a' | 'b' | 'c'
 type ReunionReplyKey = 'a' | 'b' | 'c'
 type NicknameQuestionKey = 'a' | 'b' | 'c'
 type DinnerReplyKey = 'a' | 'b' | 'c'
 type StoryBlock = { kind: 'narration' | 'dialogue' | 'aside'; text: string; speaker?: string }
 type StoryScene = { kicker: string; title: string; blocks: StoryBlock[]; button: string }
-type SmsMessage = { id: string; date: string; time?: string; from: 'wen' | 'me'; text: string }
+type SmsMessage = { id: string; date: string; time?: string; from: CharacterId | 'me'; text: string }
+type ChatChoice = { text: string; response: string[]; affection: number }
+type ChatRound = { incoming: string; choices: ChatChoice[] }
 
 type PhoneApp = {
   id: AppKey
@@ -404,6 +408,105 @@ const endingBlocks: StoryBlock[] = [
   { kind: 'narration', text: '手機螢幕亮起。通訊錄裡多了幾個名字，日記也空出了一頁，像是替這個有點不真實的下午留了位置。' },
   { kind: 'narration', text: '你把今天發生的事情一件件寫進日記裡。寫到最後，才終於有了今天真的發生過的實感。' },
 ]
+
+
+const characterInfo: { id: CharacterId; name: string; role: string; avatar: string }[] = [
+  { id: 'wen', name: '溫尚翊', role: '大學同學・吉他手', avatar: '溫' },
+  { id: 'masa', name: '蔡昇晏', role: '童年玩伴・Bass', avatar: '蔡' },
+  { id: 'ashin', name: '陳信宏', role: '主唱', avatar: '陳' },
+  { id: 'stone', name: '石錦航', role: '吉他手', avatar: '石' },
+  { id: 'yanming', name: '劉諺明', role: '練團室老闆', avatar: '劉' },
+  { id: 'youda', name: '錢佑達', role: '鼓手', avatar: '錢' },
+]
+const greetingOrder: CharacterId[] = ['wen', 'masa', 'ashin', 'stone', 'yanming', 'youda']
+const freeTimeOrder: RouteCharacterId[] = ['wen', 'masa', 'ashin', 'stone', 'yanming']
+const characterNames: Record<CharacterId, string> = {
+  wen: '溫尚翊', masa: '蔡昇晏', ashin: '陳信宏', stone: '石錦航', yanming: '劉諺明', youda: '錢佑達',
+}
+const makeChatRound = (
+  incoming: string,
+  firstText: string,
+  firstResponse: string,
+  secondText: string,
+  secondResponse: string,
+): ChatRound => ({
+  incoming,
+  choices: [
+    { text: firstText, response: [firstResponse], affection: 1 },
+    { text: secondText, response: [secondResponse], affection: 2 },
+  ],
+})
+
+const greetingChats: Record<CharacterId, ChatRound[]> = {
+  wen: [
+    makeChatRound('妳到家了嗎？今天謝謝妳跟我們去。', '到了啦，今天還滿好玩的。', '那就好，我還怕妳會覺得無聊。', '剛到家。你今天也辛苦了。', '還好啦，今天有人陪著，時間過得比較快。'),
+    makeChatRound('剛剛大家一直問妳跟瑪莎以前的事，妳還好吧？', '還好啊，大家只是好奇而已。', '那就好。瑪莎那個人就是嘴巴停不下來。', '你是不是也很好奇？', '有一點啊，妳剛剛整個人都愣住了。'),
+    makeChatRound('下次有空再帶妳去，這次應該不會那麼突然了。', '好啊，不過下次要先跟我說。', '知道啦，不會再突然把妳抓過去了。', '看你表現囉。', '妳很難約欸，還要看我表現。'),
+  ],
+  masa: [
+    makeChatRound('到家沒？今天突然遇到妳，我現在還覺得有點扯。', '我也是啊，到現在還覺得不真實。', '妳剛剛那個表情真的很好笑。', '你還敢說，我差點以為自己看錯人。', '妳最好是看錯，明明一眼就認出來。'),
+    makeChatRound('我剛剛本來想問妳這些年過得怎樣，結果大家一直插話。', '那你現在可以問啊。', '好啊，那改天找時間慢慢問。', '你想知道的話就自己約我啊。', '妳現在講話很有底氣喔。'),
+    makeChatRound('還有，今天不要再一直叫我蔡昇晏，聽起來很像要被老師點名。', '那我下次叫你瑪莎？', '這樣比較正常，至少大家都聽得懂。', '看我心情，誰叫你以前都不聯絡。', '又來了，這件事妳是打算講幾年？'),
+  ],
+  ashin: [
+    makeChatRound('妳到家了嗎？今天第一次來練團室，還習慣嗎？', '到了，今天很有趣，謝謝你招呼我。', '那就好，今天大家有點吵，怕妳不習慣。', '到了喔，鼓聲比我想像中還大。', '哈哈，佑達今天打得很投入，辛苦妳的耳朵了。'),
+    makeChatRound('剛剛本來想問妳平常喜歡聽什麼歌，後來一直沒找到機會。', '我最近聽的歌滿雜的，你呢？', '我也很雜欸，有時候聽到喜歡的就會一直重播。', '你可以推薦幾首給我啊。', '好啊，下次整理一張歌單給妳。'),
+    makeChatRound('今天認識妳很開心，希望下次還有機會聊天。', '我也是，下次見面再聊。', '好啊，那下次見面不要只顧著忙器材。', '你先把歌練好，我就會再去。', '哈哈，好，我會努力把歌練好。'),
+  ],
+  stone: [
+    makeChatRound('今天坐的位置還舒服嗎？有沒有被地上的線材絆到？', '很舒服，謝謝你特地幫我挪椅子。', '那就好，剛剛看妳坐得還算自在。', '沒有啦，我有很小心，放心。', '那就好，練團室東西多，第一次來容易沒注意到。'),
+    makeChatRound('今天練到一半大家有點吵，希望沒有讓妳覺得太亂。', '不會啊，感覺你們平常就很熱鬧。', '哈哈，習慣就好，大家熟了都這樣。', '其實滿有趣的，尤其瑪莎一直吐槽。', '他真的很會講，不過有時候也滿有道理的。'),
+    makeChatRound('下次妳如果再來，我可以幫妳留剛才那個位置。', '好啊，那就麻煩你了。', '沒問題，靠牆那邊比較不會被線擋到。', '不用特別留啦，我到時候自己找就好。', '好，妳來了再看，位置不夠我再想辦法。'),
+  ],
+  yanming: [
+    makeChatRound('今天第一次來練團室，還習慣嗎？回去路上小心。', '謝謝諺明哥，今天很新鮮。', '那就好，年輕人練團有時候比較吵，妳多包涵。', '習慣啦，大家都很照顧我。', '那就好，有需要幫忙就跟我說，不用客氣。'),
+    makeChatRound('今天器材都收好了，沒有東西落在練團室吧？', '應該沒有，我回去再檢查一下包包。', '好，第一次來容易忘東西。', '沒有啦，我今天只有帶飲料跟包包。', '哈哈，那就好，飲料記得不要放音箱旁邊。'),
+    makeChatRound('妳在台大讀書應該很忙吧？有空也可以來聽他們練團。', '最近課還好，偶爾過去應該可以。', '好啊，時間先跟尚翊確認就好。', '有空再說，今天已經很謝謝你們了。', '不客氣，大家多個朋友也熱鬧。'),
+  ],
+  youda: [
+    makeChatRound('今天鼓聲沒有把妳嚇到吧？我看妳後來都跟著拍子點頭。', '沒有啦，還滿好聽的。', '那就好，我還怕自己打太大聲。', '有幾下真的滿大聲的，不過很過癮。', '哈哈，那我下次控制一下力道。'),
+    makeChatRound('今天練到後面我真的快餓扁了，還好大家有去吃飯。', '你看起來真的很餓，菜一上來就開始夾。', '被妳發現了，我那時候已經沒力氣講話。', '下次記得先吃飽再練。', '這個建議很實用，我會記住。'),
+    makeChatRound('下次有機會再來聽啊，鼓組旁邊的位置視野最好。', '好啊，不過你不要打到我耳朵痛。', '我會注意啦，保證讓妳坐得安心。', '那我要先看看你下次練得怎麼樣。', '喔？還要考核我是不是？壓力來了。'),
+  ],
+}
+
+const freeTimeChats: Record<RouteCharacterId, ChatRound[]> = {
+  wen: [
+    makeChatRound('剛剛那碗冰妳有吃完嗎？我看妳最後一直在挖碗底。', '有啊，最後一口最好吃。', '我就知道，妳每次都要吃到最後一點。', '差一點啦，是你一直催我。', '我哪有催，明明是妳自己捨不得放下湯匙。'),
+    makeChatRound('今天上課有沒有認真？我傳訊息的時候妳是不是正在抄筆記？', '有啊，我可是很認真的。', '那就好，沒有害妳被教授點名就好。', '你還敢問，我差點笑出來被同學看到。', '哈哈，那下次我傳之前先看一下時間。'),
+    makeChatRound('妳下次還想吃哪一家？附近其實還有幾間不錯的。', '你推薦的我可以再試試看。', '那我再想想，找一家妳會喜歡的。', '下次換我決定，不准你擅自幫我點。', '好啦，給妳決定，不過不要想半天。'),
+    makeChatRound('今天大家好像都滿喜歡妳的，尤其阿信，一直找妳聊天。', '他人很好啊，講話也很溫柔。', '嗯，他本來就很會照顧人。', '你是在吃醋喔？', '蛤？我只是隨口講講，妳不要亂想。'),
+    makeChatRound('下次練團要不要再來？我可以先把時間告訴妳。', '好啊，這次不准臨時通知。', '知道啦，我會提早跟妳說。', '看你有沒有空陪我去吃東西。', '妳到底是想聽練團還是想吃東西？'),
+  ],
+  masa: [
+    makeChatRound('妳今天回去有沒有又跟別人講，我在練團室一臉呆掉？', '有啊，我還想多講幾次。', '妳真的很無聊欸。', '沒有啦，這種事我才不會亂講。', '最好是，妳小時候就很會告狀。'),
+    makeChatRound('剛剛吃飯時妳說我以前很愛惹妳，我覺得這個說法不公平。', '哪裡不公平？你明明最會惹事。', '我那叫活潑，不叫惹事。', '那你說說看，是誰先開始的？', '這種事情哪有辦法追究到第一個人。'),
+    makeChatRound('妳還記不記得以前我們常去的那間雜貨店？', '記得啊，門口有一台很舊的冰櫃。', '對，就是那間，後來不知道還在不在。', '你突然提這個，是想去看喔？', '只是想到而已，妳不要什麼都幫我安排。'),
+    makeChatRound('我剛剛翻到以前一本筆記，裡面還有亂畫的東西。', '有沒有看到我畫的？', '有一張很醜的，應該是妳畫的。', '你先拍給我看，不准自己嫌棄。', '我才不會嫌棄，我只是陳述事實。'),
+    makeChatRound('下次來練團室先跟我說一聲，我不想又被妳突然叫本名。', '我偏要叫，蔡昇晏。', '妳真的很煩欸。', '好啦，下次叫瑪莎，這樣可以了吧？', '勉強可以，記得不要叫太大聲。'),
+  ],
+  ashin: [
+    makeChatRound('剛剛那家冰店好像還不錯，下次可以再去。', '你也常去那附近嗎？', '有時候會，買完東西就順路吃點東西。', '下次可以一起去啊。', '好啊，有機會再約。'),
+    makeChatRound('對了，妳平常比較常聽什麼類型的歌？', '流行歌比較多，偶爾也會聽搖滾。', '那妳應該會聽到不少不一樣的東西。', '最近有沒有推薦的歌？', '我想一下，整理幾首再傳給妳。'),
+    makeChatRound('今天買的吉他弦剛好是最後一包，差點白跑一趟。', '還好有買到，不然明天怎麼辦？', '就只能先跟別人借了，幸好不用。', '你是不是常常忘記補貨？', '偶爾啦，忙起來真的會忘記。'),
+    makeChatRound('我剛剛想到一首歌，覺得妳可能會喜歡。', '是什麼歌？快告訴我。', '先賣個關子，下次見面放給妳聽。', '你這樣很吊人胃口欸。', '哈哈，那我下次不賣關子了。'),
+    makeChatRound('今天跟妳聊天很開心，希望沒有打擾妳休息。', '不會啊，我也很開心。', '那就好，晚點早點休息喔。', '你也早點休息，明天還要忙吧？', '嗯，明天還有事情要處理，妳也是。'),
+  ],
+  stone: [
+    makeChatRound('今天沒能一起練團，讓妳白跑一趟了。', '沒關係啦，下次再聽就好了。', '謝謝妳，今天真的有點倒楣。', '你還好嗎？有沒有被念很久？', '還好，老師講幾句就放人了。'),
+    makeChatRound('妳今天坐在牆邊，應該看得滿清楚的吧？', '看得很清楚，大家都很投入。', '那就好，位置是我隨手挪的，怕妳看不到。', '其實我更想看你彈吉他。', '哈哈，下次有機會再讓妳坐近一點。'),
+    makeChatRound('妳平常會自己彈樂器嗎？還是比較喜歡聽歌？', '我比較喜歡聽，不太會彈。', '聽歌也很好啊，喜歡最重要。', '有學過一點，不過很久沒碰了。', '那有空可以再拿起來玩玩，不用有壓力。'),
+    makeChatRound('剛剛大家聊天有點吵，妳會不會不太習慣？', '不會，反而覺得很熱鬧。', '那就好，大家熟了都會這樣。', '我覺得很有趣，尤其瑪莎講話很直接。', '他就是這樣，不過其實人不壞。'),
+    makeChatRound('下次妳來，我再幫妳留個好位置。', '好啊，謝謝你。', '不客氣，這點小事而已。', '那我下次要坐離鼓遠一點的位置。', '沒問題，我記得幫妳挑。'),
+  ],
+  yanming: [
+    makeChatRound('今天回去後有沒有順利？第一次來，路線還記得嗎？', '記得啦，今天謝謝諺明哥照顧。', '不客氣，知道怎麼走就好。', '我可能還是會迷路，下次再問你。', '可以啊，附近幾條巷子確實容易走錯。'),
+    makeChatRound('今天器材有沒有讓妳覺得很新鮮？那一排音箱是最近才整理好的。', '有啊，第一次看到這麼多器材。', '那些都要定期檢查，不然年輕人一練起來就忘了。', '我其實看不太懂，不過很厲害。', '慢慢看就好，熟了自然會知道。'),
+    makeChatRound('聽尚翊說妳是台大的學生，最近課業忙不忙？', '還可以，就是報告比較多。', '大學事情不少，記得安排時間。', '最近有點忙，不過還應付得來。', '那就好，別把自己弄得太累。'),
+    makeChatRound('這間練團室平常晚上比較熱鬧，白天反而安靜。', '難怪今天進去的時候感覺很忙。', '他們一到時間就會陸續來，常常拖到很晚。', '你每天都要幫他們看著嗎？', '差不多，場地和器材總要有人顧。'),
+    makeChatRound('下次如果還要過來，先跟尚翊說一聲就好。', '好，謝謝諺明哥。', '不客氣，路上小心。', '那我下次再來跟大家打招呼。', '好啊，大家都很歡迎。'),
+  ],
+}
 
 const unlockedContacts = [
   { id: 'wen', name: '溫尚翊', role: '大學同學・吉他手', description: '妳在大學認識的同學。熟門熟路地出入練團室，嘴上常常不饒人，卻總會留意妳有沒有跟上。' },
