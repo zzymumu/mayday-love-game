@@ -300,7 +300,7 @@ const studioScenes: StoryScene[] = [
       { kind: 'narration', text: '你這才跟著他走進去。房間比從外面聽起來還要熱鬧，牆邊靠著幾把吉他，音箱上放著沒收好的導線，地上有幾張寫滿字的紙。空氣裡混著木頭、金屬弦和一點悶熱的味道。' },
       { kind: 'narration', text: '他把吉他袋靠到牆邊，回頭朝裡面拍了拍手。' },
       { kind: 'dialogue', speaker: '溫尚翊', text: '欸，先介紹一下，這是我大學同學。今天帶她來看看。' },
-      { kind: 'narration', text: '你朝大家點了點頭。' },
+      { kind: 'narration', text: '你笑著抬起手，朝大家揮了揮。' },
     ],
   },
   {
