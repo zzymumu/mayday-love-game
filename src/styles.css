@@ -1540,3 +1540,19 @@ button { cursor: pointer; }
   line-height: 1.7;
   text-align: center;
 }
+
+
+/* 0.4.7 — month-later visits */
+.month-visit-picker {
+  margin: 18px 0 16px;
+  padding: 10px 11px 8px;
+  border: 1px solid #eadccf;
+  border-radius: 11px;
+  background: #fffaf4;
+}
+.month-visit-picker .free-time-intro {
+  margin: 0 0 8px;
+}
+.month-visit-picker .free-time-person {
+  min-height: 55px;
+}
