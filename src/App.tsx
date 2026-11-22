@@ -904,12 +904,14 @@ function App() {
                     ) : (
                       <>
                         <StoryBlocks blocks={dinnerReplies[dinnerReplyKey].blocks} />
-                        <div className="story-action-bar">
-                          <button className="story-primary-button" onClick={() => changeStage('after-dinner')}>飯後，和瑪莎說幾句話 <ChevronRight size={15} /></button>
-                        </div>
                       </>
                     )}
                   </div>
+                  {dinnerReplyKey !== null && (
+                    <div className="story-action-bar">
+                      <button className="story-primary-button" onClick={() => changeStage('after-dinner')}>飯後，和瑪莎說幾句話 <ChevronRight size={15} /></button>
+                    </div>
+                  )}
                 </div>
               )}
 
