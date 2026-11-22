@@ -1101,7 +1101,7 @@ function App() {
                       </div>
                       <button className="close-button" onClick={() => { setActiveApp(null); setSelectedSmsThread(null) }} aria-label="關閉"><X size={17} /></button>
                     </div>
-                    <div className={activeApp === 'messages' ? 'app-window-content sms-mode' : 'app-window-content'}>
+                    <div className={activeApp === 'messages' ? 'app-window-content sms-mode' : activeApp === 'diary' ? 'app-window-content diary-mode' : 'app-window-content'}>
                       {activeApp === 'messages' ? (
                         selectedSmsThread === null ? (
                           <div className="sms-inbox">
