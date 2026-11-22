@@ -352,7 +352,6 @@ const studioScenes: StoryScene[] = [
       { kind: 'narration', text: '交代完，他把預約簿夾在手臂下，拿起桌上的鑰匙，朝大家揮了揮手，便走出練團室，順手把門帶上。' },
       { kind: 'narration', text: '溫尚翊看你在椅子上坐穩了，才稍微放下心來。他朝房間角落抬了抬下巴，順手替你介紹。' },
       { kind: 'dialogue', speaker: '溫尚翊', text: '那邊那個是瑪莎，彈 Bass 的。' },
-      { kind: 'narration', text: '你順著他示意的方向看過去。那個人正低著頭調整手上的貝斯，還沒注意到你在看他。' },
     ],
   },
 ]
@@ -764,12 +763,19 @@ function App() {
                     <div className="story-kicker">隔了好多年，再一次認出他</div>
                     <h2 className="story-scene-title">四目相對的那一刻</h2>
                     <StoryBlocks blocks={[
-                      { kind: 'narration', text: '你順著溫尚翊指的方向看過去。角落裡的人一直低著頭，懷裡抱著一把貝斯，指尖在弦上輕輕撥了幾下。' },
-                      { kind: 'narration', text: '他聽見有人喊自己，手上的動作停了下來，抬起頭。' },
+                      { kind: 'narration', text: '你往裡面走了幾步，目光從靠牆的吉他和音箱間掠過，這才發現練團室裡比剛進門時看見的還要熱鬧。' },
+                      { kind: 'dialogue', speaker: '你', text: '你們平常就在這裡練習喔？' },
+                      { kind: 'dialogue', speaker: '溫尚翊', text: '對啊。' },
+                      { kind: 'narration', text: '溫尚翊朝角落抬了抬下巴。你順著他的方向看過去，那個抱著貝斯的人正低著頭，指尖在弦上輕輕撥了幾下。' },
+                      { kind: 'narration', text: '像是聽見你們說話，他手上的動作停了下來，抬起頭。' },
                       { kind: 'narration', text: '四目相對的那一刻，你整個人都愣住了。' },
                       { kind: 'dialogue', speaker: '你', text: '……蔡昇晏？' },
                       { kind: 'narration', text: '那張臉比記憶裡成熟了許多，眉眼卻沒有變。你幾乎沒經過思考，就認出了他。' },
                       { kind: 'dialogue', speaker: '蔡昇晏', text: '……蛤？' },
+                      { kind: 'dialogue', speaker: '蔡昇晏', text: '……真的是妳喔？' },
+                      { kind: 'dialogue', speaker: '蔡昇晏', text: '妳怎麼會在這裡？' },
+                      { kind: 'dialogue', speaker: '你', text: '我才想問你咧！' },
+                      { kind: 'dialogue', speaker: '你', text: '你怎麼會在這裡啊？' },
                       { kind: 'aside', text: '救命。' },
                       { kind: 'narration', text: '你真的沒想過會在這裡見到他。那個搬家前還跟你約好要保持聯絡，後來卻因為一場大雨和一張模糊的地址紙失去消息的人，現在就坐在離你不到幾步的地方。' },
                       { kind: 'narration', text: '你腦子裡一下子閃過好多年前的畫面，卻又不知道該先問哪一件事。' },
