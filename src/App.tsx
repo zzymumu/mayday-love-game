@@ -1475,7 +1475,7 @@ function App() {
       <header className="page-heading">
         <div className="project-mark"><Heart size={14} fill="currentColor" /> A LITTLE STORY · 1996—1999</div>
         <h1>那年夏天，還有未讀訊息</h1>
-        <p>五月天同人戀愛互動遊戲 · 第一章試玩</p>
+        <p>從一九九六年開始，把心事慢慢寫給你。</p>
       </header>
 
       <section className="device-wrap" aria-label="手機模擬器">
