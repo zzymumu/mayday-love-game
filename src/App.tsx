@@ -1003,6 +1003,7 @@ function App() {
     if (dinnerReplyKey) return
     const selected = dinnerReplies[key]
     const nextAffection = marthaAffection + selected.affection
+    addRouteAffection('masa', selected.affection)
     setDinnerReplyKey(key)
     setMarthaAffection(nextAffection)
     localStorage.setItem('mayday-dinner-reply', key)
@@ -1012,9 +1013,34 @@ function App() {
   const finishFirstChapter = () => {
     setFirstChapterComplete(true)
     localStorage.setItem('mayday-chapter1-complete', 'true')
+    localStorage.removeItem('mayday-greetings-complete')
+    const initialChats: Record<CharacterId, SmsMessage[]> = { wen: [], masa: [], ashin: [], stone: [], yanming: [], youda: [] }
+    initialChats.wen = [{ id: 'greeting-wen-0', date: '10月15日・晚上', time: '21:18', from: 'wen', text: greetingChats.wen[0].incoming }]
+    setChatMessages(initialChats)
+    localStorage.setItem('mayday-chat-messages', JSON.stringify(initialChats))
+    setGreetingIndex(0)
+    localStorage.setItem('mayday-greeting-index', '0')
+    setGreetingRound(0)
+    localStorage.setItem('mayday-greeting-round', '0')
+    setGreetingReplied(false)
+    localStorage.setItem('mayday-greeting-replied', 'false')
+    setClassroomReplySent(false)
+    localStorage.removeItem('mayday-classroom-reply-sent')
+    setMasaCheckInSent(false)
+    localStorage.removeItem('mayday-masa-checkin-sent')
+    setStoneCheckInSent(false)
+    localStorage.removeItem('mayday-stone-checkin-sent')
+    setFreeChatTarget(null)
+    localStorage.removeItem('mayday-free-chat-target')
+    setFreeChatRound(0)
+    localStorage.removeItem('mayday-free-chat-round')
+    setFreeChatReplied(false)
+    localStorage.removeItem('mayday-free-chat-replied')
+    localStorage.removeItem('mayday-free-chat-complete')
     setSelectedProfile(null)
+    setSelectedSmsThread(null)
     setActiveApp('contacts')
-    changeStage('completed')
+    changeStage('greetings')
   }
 
   const saveName = (startStory = false) => {
@@ -1031,7 +1057,7 @@ function App() {
   }
 
   const resetLocalData = () => {
-    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages'].forEach((key) => localStorage.removeItem(key))
+    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-masa-checkin-sent', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-route-affection'].forEach((key) => localStorage.removeItem(key))
     setPlayerName('')
     setNameDraft('')
     setActiveApp(null)
@@ -1045,6 +1071,17 @@ function App() {
     setDinnerReplyKey(null)
     setMarthaAffection(0)
     setFirstChapterComplete(false)
+    setChatMessages({ wen: [], masa: [], ashin: [], stone: [], yanming: [], youda: [] })
+    setGreetingIndex(0)
+    setGreetingRound(0)
+    setGreetingReplied(false)
+    setClassroomReplySent(false)
+    setMasaCheckInSent(false)
+    setStoneCheckInSent(false)
+    setFreeChatTarget(null)
+    setFreeChatRound(0)
+    setFreeChatReplied(false)
+    setRouteAffection({ wen: 0, masa: 0, ashin: 0, stone: 0, yanming: 0 })
     setSelectedProfile(null)
     setResumeStage('reunion')
     setShowResetConfirm(false)
@@ -1056,6 +1093,7 @@ function App() {
     if (replyKey) return
     const selected = replies[key]
     const nextAffection = wenAffection + selected.affection
+    addRouteAffection('wen', selected.affection)
     setReplyKey(key)
     setWenAffection(nextAffection)
     localStorage.setItem('mayday-reply', key)
@@ -1084,6 +1122,20 @@ function App() {
   const currentScene = studioScenes[studioStep] ?? studioScenes[0]
   const latestSmsMessage = smsMessages[smsMessages.length - 1]
   const selectedContactProfile = unlockedContacts.find((contact) => contact.id === selectedProfile) ?? null
+  const currentGreetingId = greetingOrder[Math.min(greetingIndex, greetingOrder.length - 1)]
+  const currentGreetingRound = greetingChats[currentGreetingId][Math.min(greetingRound, greetingChats[currentGreetingId].length - 1)]
+  const currentThreadMessages: SmsMessage[] = selectedSmsThread === 'wen'
+    ? [...smsMessages, ...(chatMessages.wen ?? [])]
+    : selectedSmsThread ? (chatMessages[selectedSmsThread] ?? []) : []
+  const inboxThreads = characterInfo.filter((person) => person.id === 'wen' || (chatMessages[person.id]?.length ?? 0) > 0).map((person) => ({
+    ...person,
+    latest: person.id === 'wen'
+      ? (chatMessages.wen?.[chatMessages.wen.length - 1]?.text ?? latestSmsMessage?.text ?? '尚無訊息')
+      : (chatMessages[person.id]?.[chatMessages[person.id].length - 1]?.text ?? '尚無訊息'),
+    time: person.id === 'wen'
+      ? (chatMessages.wen?.[chatMessages.wen.length - 1]?.time ?? latestSmsMessage?.time ?? '15:42')
+      : (chatMessages[person.id]?.[chatMessages[person.id].length - 1]?.time ?? '21:20'),
+  }))
 
   return (
     <main className="page-shell">
