@@ -619,14 +619,26 @@ const studioScenes: StoryScene[] = [
 
 
 const classroomChoices: ChatChoice[] = [
-  { text: '大忙人，你今天不練團？', response: ['今天先不用啦。', '石頭跟瑪莎翹課都被抓了，兩個人現在都被留在學校，今天練團湊不齊人。'], affection: 2 },
-  { text: '你怎麼突然想到約我吃冰？', response: ['難得有空嘛。', '石頭跟瑪莎今天翹課被抓，現在都還走不了，練團只好改天。'], affection: 1 },
-  { text: '你今天這麼閒喔？是不是又偷懶？', response: ['妳不要每次都把我想得那麼糟。', '石頭跟瑪莎翹課被抓，今天人都湊不齊，我才有空找妳。'], affection: 2 },
+  { text: '蛤？大學翹課也會被抓喔？', response: ['不是啦，妳在想什麼。', '他們兩個還在讀高三啦。', '今天想偷跑出去，剛好被老師逮到，現在都被留在學校了。'], affection: 2 },
+  { text: '等一下，你說的是大學的課嗎？', response: ['不是啦。', '石頭跟瑪莎都還在念高三，今天翹課被老師抓個正著。', '所以今天練團才湊不齊人。'], affection: 1 },
+  { text: '你們今天怎麼突然少了兩個人？', response: ['石頭跟瑪莎翹課被抓啦。', '妳不要以為大家都像妳一樣在上大學，他們兩個還在讀高三。'], affection: 2 },
 ]
-const masaCheckinChoices: ChatChoice[] = [
-  { text: '聽說你今天翹課被抓了？怎麼回事啊？', response: ['誰跟妳說的？怪獸喔？', '我只是出去一下，剛好被逮個正著，倒楣死了。'], affection: 2 },
-  { text: '你還好吧？怪獸說你跟石頭都被抓了。', response: ['還活著啦，沒什麼大事。', '只是被念了幾句，妳不用擔心。'], affection: 3 },
-  { text: '你今天又闖什麼禍了？', response: ['妳一開口就覺得我一定闖禍喔？', '我只是出去透個氣，誰知道剛好被看到。'], affection: 1 },
+const masaCheckinRounds: ChatChoice[][] = [
+  [
+    { text: '蛤？你們真的還在讀高三喔？我以為你們都上大學了欸。', response: ['妳反應也太大了吧。', '我跟石頭本來就還在念書啊，今天只是想偷跑出去一下，誰知道就被抓了。'], affection: 2 },
+    { text: '等一下，你現在還是高三？', response: ['不然咧？妳以為我已經畢業了喔？', '老師今天剛好在附近，才這麼倒楣。'], affection: 1 },
+    { text: '你不是只比我小一歲嗎？我還以為你也上大學了。', response: ['一歲就不能差一個學制喔？', '反正我現在就是還在念高三，妳先不要笑。'], affection: 3 },
+  ],
+  [
+    { text: '可是你怎麼會到現在才高三啊？', response: ['妳這問題問得很直接欸。', '以前有些事情耽擱了一下，就比別人晚了一點。'], affection: 3 },
+    { text: '你之前是不是有休學過？', response: ['差不多啦，反正不是什麼值得拿出來講的事。', '講起來有點麻煩，改天有空再跟妳說。'], affection: 2 },
+    { text: '所以你現在還要準備考大學喔？', response: ['對啊，不然咧。', '先把眼前的事情弄好再說，考試還早。'], affection: 1 },
+  ],
+  [
+    { text: '那石頭也是跟你一樣，晚了一點嗎？', response: ['石頭的事妳自己問他啦。', '我不能替他講那麼多，妳不是也可以傳訊息給他？'], affection: 2 },
+    { text: '你不想說就算了，我只是有點意外。', response: ['沒有不想說啦。', '只是這種事講起來有點長，今天先不聊這個。'], affection: 3 },
+    { text: '好啦，那今天被抓有被罵很慘嗎？', response: ['還好啦，老師念一念就放人了。', '妳不要擔心，我沒事。'], affection: 2 },
+  ],
 ]
 const stoneCheckinChoices: ChatChoice[] = [
   { text: '聽說你今天跟瑪莎一起被抓了，還好嗎？', response: ['謝謝妳關心，沒事啦。', '就是被老師留下來講了幾句，讓大家等不到我們了。'], affection: 3 },
@@ -730,8 +742,10 @@ function App() {
   const [greetingIndex, setGreetingIndex] = useState(() => Number(localStorage.getItem('mayday-greeting-index') ?? '0'))
   const [greetingRound, setGreetingRound] = useState(() => Number(localStorage.getItem('mayday-greeting-round') ?? '0'))
   const [greetingReplied, setGreetingReplied] = useState(() => localStorage.getItem('mayday-greeting-replied') === 'true')
-  const [classroomReplySent, setClassroomReplySent] = useState(() => localStorage.getItem('mayday-classroom-reply-sent') === 'true')
-  const [masaCheckInSent, setMasaCheckInSent] = useState(() => localStorage.getItem('mayday-masa-checkin-sent') === 'true')
+  const [classroomReplySent, setClassroomReplySent] = useState(() => localStorage.getItem('mayday-classroom-reply-sent-v2') === 'true')
+  const [masaCheckInSent, setMasaCheckInSent] = useState(() => localStorage.getItem('mayday-masa-checkin-complete-v2') === 'true')
+  const [masaCheckInRound, setMasaCheckInRound] = useState(() => Number(localStorage.getItem('mayday-masa-checkin-round-v2') ?? '0'))
+  const [masaCheckInReplied, setMasaCheckInReplied] = useState(() => localStorage.getItem('mayday-masa-checkin-replied-v2') === 'true')
   const [stoneCheckInSent, setStoneCheckInSent] = useState(() => localStorage.getItem('mayday-stone-checkin-sent') === 'true')
   const [freeChatTarget, setFreeChatTarget] = useState<RouteCharacterId | null>(() => {
     const saved = localStorage.getItem('mayday-free-chat-target')
@@ -898,26 +912,48 @@ function App() {
     ], '10月16日・上午')
     addRouteAffection('wen', choice.affection)
     setClassroomReplySent(true)
-    localStorage.setItem('mayday-classroom-reply-sent', 'true')
+    localStorage.setItem('mayday-classroom-reply-sent-v2', 'true')
   }
 
   const startMasaCheckIn = () => {
+    setMasaCheckInSent(false)
+    setMasaCheckInRound(0)
+    setMasaCheckInReplied(false)
+    localStorage.setItem('mayday-masa-checkin-complete-v2', 'false')
+    localStorage.setItem('mayday-masa-checkin-round-v2', '0')
+    localStorage.setItem('mayday-masa-checkin-replied-v2', 'false')
     setSelectedSmsThread('masa')
     setActiveApp('messages')
     changeStage('masa-checkin')
   }
 
   const chooseMasaCheckIn = (choiceIndex: number) => {
-    if (masaCheckInSent) return
-    const choice = masaCheckinChoices[choiceIndex]
+    if (masaCheckInSent || masaCheckInReplied) return
+    const choices = masaCheckinRounds[masaCheckInRound]
+    const choice = choices?.[choiceIndex]
     if (!choice) return
+    const minute = 15 + masaCheckInRound
+    const time = '10:' + String(minute).padStart(2, '0')
     appendChatMessages('masa', [
-      { from: 'me', text: choice.text, time: '10:15' },
-      ...choice.response.map((text) => ({ from: 'masa' as const, text, time: '10:15' })),
+      { from: 'me', text: choice.text, time },
+      ...choice.response.map((text) => ({ from: 'masa' as const, text, time })),
     ], '10月16日・上午')
     addRouteAffection('masa', choice.affection)
-    setMasaCheckInSent(true)
-    localStorage.setItem('mayday-masa-checkin-sent', 'true')
+    setMasaCheckInReplied(true)
+    localStorage.setItem('mayday-masa-checkin-replied-v2', 'true')
+    if (masaCheckInRound === masaCheckinRounds.length - 1) {
+      setMasaCheckInSent(true)
+      localStorage.setItem('mayday-masa-checkin-complete-v2', 'true')
+    }
+  }
+
+  const continueMasaCheckIn = () => {
+    if (!masaCheckInReplied || masaCheckInSent || masaCheckInRound >= masaCheckinRounds.length - 1) return
+    const nextRound = masaCheckInRound + 1
+    setMasaCheckInRound(nextRound)
+    setMasaCheckInReplied(false)
+    localStorage.setItem('mayday-masa-checkin-round-v2', String(nextRound))
+    localStorage.setItem('mayday-masa-checkin-replied-v2', 'false')
   }
 
   const startStoneCheckIn = () => {
@@ -1027,8 +1063,14 @@ function App() {
     localStorage.setItem('mayday-greeting-replied', 'false')
     setClassroomReplySent(false)
     localStorage.removeItem('mayday-classroom-reply-sent')
+    localStorage.removeItem('mayday-classroom-reply-sent-v2')
     setMasaCheckInSent(false)
+    setMasaCheckInRound(0)
+    setMasaCheckInReplied(false)
     localStorage.removeItem('mayday-masa-checkin-sent')
+    localStorage.removeItem('mayday-masa-checkin-complete-v2')
+    localStorage.removeItem('mayday-masa-checkin-round-v2')
+    localStorage.removeItem('mayday-masa-checkin-replied-v2')
     setStoneCheckInSent(false)
     localStorage.removeItem('mayday-stone-checkin-sent')
     setFreeChatTarget(null)
@@ -1058,7 +1100,7 @@ function App() {
   }
 
   const resetLocalData = () => {
-    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-masa-checkin-sent', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-route-affection'].forEach((key) => localStorage.removeItem(key))
+    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-route-affection'].forEach((key) => localStorage.removeItem(key))
     setPlayerName('')
     setNameDraft('')
     setActiveApp(null)
@@ -1078,6 +1120,8 @@ function App() {
     setGreetingReplied(false)
     setClassroomReplySent(false)
     setMasaCheckInSent(false)
+    setMasaCheckInRound(0)
+    setMasaCheckInReplied(false)
     setStoneCheckInSent(false)
     setFreeChatTarget(null)
     setFreeChatRound(0)
@@ -1752,14 +1796,21 @@ function App() {
                                   ))}
                                 </div>
                               )}
-                              {storyStage === 'masa-checkin' && selectedSmsThread === 'masa' && !masaCheckInSent && (
+                              {storyStage === 'masa-checkin' && selectedSmsThread === 'masa' && !masaCheckInSent && !masaCheckInReplied && (
                                 <div className="choice-area">
-                                  <div className="choice-heading">你想怎麼問瑪莎？</div>
-                                  {masaCheckinChoices.map((choice, index) => (
+                                  <div className="choice-heading">{masaCheckInRound === 0 ? '你想怎麼問瑪莎？' : masaCheckInRound === 1 ? '你還想追問什麼？' : '最後再問他一件事'}</div>
+                                  {masaCheckinRounds[masaCheckInRound].map((choice, index) => (
                                     <button className="reply-choice" key={index} onClick={() => chooseMasaCheckIn(index)}>
                                       <span>{choice.text}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
+                                  <small>訊息會一來一回地留下來，想問清楚一點也沒關係。</small>
+                                </div>
+                              )}
+                              {storyStage === 'masa-checkin' && selectedSmsThread === 'masa' && masaCheckInReplied && !masaCheckInSent && (
+                                <div className="sms-thread-actions">
+                                  <div className="reply-note">瑪莎回得很快，但聽起來還有些事情沒有說清楚。</div>
+                                  <button className="story-primary-button" onClick={continueMasaCheckIn}>再問他一點 <ChevronRight size={15} /></button>
                                 </div>
                               )}
                               {storyStage === 'stone-checkin' && selectedSmsThread === 'stone' && !stoneCheckInSent && (
@@ -1810,7 +1861,7 @@ function App() {
                             )}
                             {storyStage === 'masa-checkin' && selectedSmsThread === 'masa' && masaCheckInSent && (
                               <div className="sms-thread-actions">
-                                <div className="reply-note">瑪莎回覆得倒是很快，聽起來應該沒什麼大事。</div>
+                                <div className="reply-note">你終於稍微弄清楚了：瑪莎和石頭都還在讀高三。至於為什麼比你想像中晚了一點，他似乎還不太想細說。</div>
                                 <button className="story-primary-button secondary-chat-action" onClick={startStoneCheckIn}>也傳訊息關心石頭 <ChevronRight size={15} /></button>
                                 <button className="story-primary-button" onClick={goToIceDate}>先不打擾他們，去找溫尚翊 <ChevronRight size={15} /></button>
                               </div>
