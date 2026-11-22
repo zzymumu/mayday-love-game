@@ -614,8 +614,8 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
     blocks: [
       { kind: 'narration', text: '你在福利社買了兩瓶冰水，循著籃球場傳來的聲音走過去。球一下下撞上地面，鞋底擦過球場，幾個人的笑鬧聲混在一起，遠遠就聽得見。' },
       { kind: 'narration', text: '你很快在人群裡找到溫尚翊。他接到傳球，沒有急著出手，只把球往身側一帶，肩膀微微晃了一下。防守的人才剛跟著偏過去，他已經從另一側切入，兩步跨進禁區，起跳時手腕輕輕一挑，球擦過籃板落進框裡。' },
-      { kind: 'narration', text: '落地後他順勢轉身回防，和隊友碰了下掌，嘴角還帶著笑。下一球又很快回到他手上。這次他抬眼看了看場上的位置，才把球傳出去；球剛離手，他一轉頭，正好看見站在入口的你。' },
-      { kind: 'narration', text: '他朝隊友說了聲等一下，把球交給旁邊的人，抬手擦過額角，快步走到你面前。跑動後的呼吸還有些急，額前的頭髮被汗沾濕，幾綹貼在眉邊。' },
+      { kind: 'narration', text: '落地後他順勢轉身回防，和隊友碰了下掌。下一球回到他手上，他抬眼掃過場上的位置，視線掠過入口時卻忽然停住。看清站在那裡的人是你，他原本專注的神情一下子亮起來，眼睛亮晶晶的，像小狗狗終於看見等了半天的人，連嘴角都藏不住笑意。' },
+      { kind: 'narration', text: '他朝隊友喊了聲等一下，把球交給旁邊的人，幾乎是小跑著朝你過來。跑動後的呼吸還有些急，額前的頭髮被汗沾濕，幾綹貼在眉邊；可他一走到你面前，視線還是先落在你臉上，像是想確認你真的來了。' },
       { kind: 'dialogue', speaker: '溫尚翊', text: '妳怎麼跑來這裡？' },
       { kind: 'dialogue', speaker: '你', text: '我來送水啊。' },
       { kind: 'dialogue', speaker: '溫尚翊', text: '我又不是不知道去哪裡買水。' },
@@ -672,7 +672,8 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
       { kind: 'dialogue', speaker: '你', text: '我有先查過啦，沒有迷路。' },
       { kind: 'dialogue', speaker: '陳信宏', text: '那就好。今天不用趕，我帶妳慢慢走，好不好？' },
       { kind: 'narration', text: '他走在你身旁，沒有急著把校園一次介紹完。遇到岔路會先停下來問你想往哪邊走，經過人多的地方，也會自然地放慢腳步，等你跟上。' },
-      { kind: 'narration', text: '你們經過教室、公告欄和一排被陽光照亮的樹。公告欄上貼著課程異動和社團活動，紙張邊角被風吹得微微翹起。你停下來多看了兩眼，阿信就在旁邊等著，沒有催你。' },
+      { kind: 'narration', text: '你們沿著教室外的走廊慢慢走。公告欄上貼著課程異動和社團活動，紙張邊角被風掀得輕輕作響；遠處有人在球場喊了一聲，聲音穿過樹影，沒一會兒又散開。' },
+      { kind: 'narration', text: '轉過圖書館旁的拐角時，一陣風從走廊另一端吹來，把阿信額前的頭髮吹亂。他抬手撥開，左邊眉毛上方露出一顆小小的眉上痣。那顆痣很淡，平常藏在髮絲和眉眼間，不仔細看還真容易錯過。你不由得多看了一眼，他倒沒有追問，只把手裡的講義換到另一隻手，接著替你介紹前面那段比較安靜的路。' },
       { kind: 'dialogue', speaker: '陳信宏', text: '這邊平常下課會比較多人，大家常常趕著去買東西。再往前走一點就安靜多了。' }
     ],
     rounds: [
@@ -721,11 +722,11 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
       { kind: 'dialogue', speaker: '蔡昇晏', text: '等一下，妳真的要帶我回妳家喔？' },
       { kind: 'dialogue', speaker: '你', text: '不然咧？都多久沒見了，帶你回去給我爸媽看看啊。' },
       { kind: 'dialogue', speaker: '蔡昇晏', text: '妳怎麼都沒先講？我現在什麼都沒準備欸。' },
-      { kind: 'narration', text: '從巷口走回家的路上，你們幾乎一路都在拌嘴。他嫌你走太快，你嫌他問題太多；路過轉角的小雜貨店時，你們又不約而同慢了下來。招牌換過了，門口那條窄巷卻還是老樣子。' },
+      { kind: 'narration', text: '從巷口走回家的路上，你們幾乎一路都在拌嘴。他嫌你走太快，你嫌他問題太多；他嘴上抱怨，卻還是很自然地走在靠馬路的那一側。路過轉角的小雜貨店時，你們又不約而同慢了下來。招牌換過了，門口那條窄巷卻還是老樣子，連騎樓下那張掉漆的木椅都還在原處。' },
       { kind: 'dialogue', speaker: '蔡昇晏', text: '這附近好像沒什麼變欸，至少這條路還在。' },
       { kind: 'dialogue', speaker: '你', text: '有些地方變了啦，只是你太久沒回來。' },
       { kind: 'dialogue', speaker: '蔡昇晏', text: '妳不要講得好像我離開幾十年一樣。' },
-      { kind: 'narration', text: '走到家門前，他忽然安靜了一點，低頭整理衣角，又伸手摸了摸頭髮。你看著他忍笑，他立刻瞪了你一眼。' }
+      { kind: 'narration', text: '走到家門前，他忽然安靜了一點，低頭整理衣角，又伸手摸了摸頭髮，還把原本背得歪歪的包帶拉正。你看著他忍笑，他立刻瞪了你一眼，壓低聲音叫你不准在叔叔阿姨面前提他剛才一路緊張。門鈴響起後，他又立刻站直，像是要把那點不自在藏起來。' }
     ],
     rounds: [
       {
@@ -737,7 +738,7 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
         ]
       },
       {
-        scene: '門一開，媽媽先愣了幾秒，接著笑著叫出他的名字。爸爸也從客廳走出來，問他這些年過得怎麼樣。原本有點拘謹的瑪莎，很快就被熟悉的招呼聲帶回了從前。媽媽翻出舊相簿，指著其中一張照片笑了起來。',
+        scene: '門一開，媽媽先愣了幾秒，接著笑著叫出他的名字，還伸手拍了拍他的肩，問他怎麼瘦了沒有。爸爸也從客廳走出來，順手把椅子拉開，問他這些年過得怎麼樣。瑪莎一開始還坐得端端正正，回答得很客氣，直到媽媽翻出舊相簿，塑膠內頁發出輕輕的摩擦聲，他看見照片裡兩個小孩狼狽地蹲在院子裡，才忍不住笑出來。媽媽指著其中一張照片，笑著問你們當年到底在忙什麼。',
         prompt: '欸，這張我有印象。妳那時候還說是我弄壞的，明明就不是我。',
         choices: [
           { text: '就是你啦！我到現在都記得。', response: ['妳記得也太久了吧。', '那時候明明是妳先把東西弄倒，還推給我。'], affection: 2 },
@@ -746,7 +747,7 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
         ]
       },
       {
-        scene: '午飯端上桌後，爸爸媽媽聊起你們小時候常玩的遊戲。瑪莎一開始還算客氣，吃到一半卻又恢復了平常那副愛吐槽的樣子，筷子停在半空，轉頭看向你。',
+        scene: '午飯端上桌，湯碗裡的熱氣慢慢往上冒，媽媽一邊替你們添飯，一邊問起以前常玩的遊戲。瑪莎起初還記得客氣，夾菜時會先問叔叔阿姨要不要，等大家都動了筷子，才漸漸露出平常那副愛吐槽的樣子。他把筷子停在半空，像是突然想到一件不能放過你的事，轉頭看向你。',
         prompt: '阿姨，妳不知道，她以前還……',
         choices: [
           { text: '蔡昇晏！！！你給我閉嘴！', response: ['哈哈哈哈，妳看吧，心虛了。', '我都還沒講完欸。'], affection: 2 },
@@ -771,11 +772,11 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
     title: '午休時間的便當',
     kicker: '中午・師大附中附近',
     blocks: [
-      { kind: 'narration', text: '午餐時間快到了，你提著便當來到師大附中附近，照著石頭之前提過的地址，找到他正在上課的補習班。騎樓下有學生拿著塑膠袋匆匆走過，也有人靠在牆邊翻講義。' },
-      { kind: 'narration', text: '你站在門邊等了一會兒，剛好遇上中場休息。石頭拿著課本走出來，看見你時明顯愣了一下，隨即快步走近。' },
+      { kind: 'narration', text: '午餐時間快到了，你提著便當來到師大附中附近，照著石頭之前提過的地址，找到他正在上課的補習班。巷口的機車一台接一台經過，騎樓下有學生拿著塑膠袋匆匆走過，也有人靠著牆翻講義，空氣裡混著便當店飄來的飯菜香。' },
+      { kind: 'narration', text: '你站在門邊等了一會兒，聽見裡頭下課鐘聲響起，學生陸續抱著課本走出來。石頭拿著課本和紅筆跟在人群後面，看見你時明顯愣了一下，隨即把手上的東西換到一邊，快步走近。' },
       { kind: 'dialogue', speaker: '石錦航', text: '妳怎麼會來？' },
       { kind: 'dialogue', speaker: '你', text: '今天剛好有空，想說過來看看你。' },
-      { kind: 'narration', text: '他這才注意到你手裡的便當，視線停在袋子上，像是忽然明白你今天特地跑這一趟的原因。' },
+      { kind: 'narration', text: '他這才注意到你手裡的便當，視線停在袋子上，像是忽然明白你今天特地跑這一趟的原因。他伸手接過去時先確認袋口有沒有歪，接著看了看你被太陽曬得微微發紅的臉，側身替你讓出騎樓裡比較涼的位置。' },
       { kind: 'dialogue', speaker: '石錦航', text: '這是特地帶來給我的嗎？妳怎麼還跑一趟。' }
     ],
     rounds: [
@@ -788,7 +789,7 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
         ]
       },
       {
-        scene: '他把課本放到桌邊，替你拉開一張椅子，等你坐好才把便當放平。休息時間不長，他卻沒有急著拆開筷子，而是先看了看你的神情。',
+        scene: '他把課本和紅筆整齊放到桌邊，先替你拉開靠牆、比較不會被人來人往撞到的椅子，等你坐好才把便當放平。休息時間不長，他卻沒有急著拆開筷子，而是先看了看你的神情，確認你一路過來沒有被太陽曬得不舒服。',
         prompt: '最近課業還好嗎？這陣子是不是也有不少報告？',
         choices: [
           { text: '還可以啦，就是偶爾會忙到忘記時間。', response: ['忙的時候更要記得吃飯。', '事情可以慢慢做，不用每一件都趕在同一天。'], affection: 3 },
@@ -797,7 +798,7 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
         ]
       },
       {
-        scene: '他打開便當，先把盒子裡的配菜分開，看到你一直坐在旁邊，便把其中一樣往你面前推近了一點。',
+        scene: '他打開便當，白飯和配菜的香氣一下子散開。他先把筷子拆好，將免洗筷套和紙巾放到你手邊，再把盒子裡看起來最合你口味的那樣配菜往你面前推近了一點。你還沒開口，他就像早猜到你會客氣似的，抬眼看了看你。',
         prompt: '妳也吃一點吧，不然我一個人吃好像有點不好意思。',
         choices: [
           { text: '好啊，那我就不客氣了。', response: ['嗯，這個味道不錯，妳試試看。', '我幫妳把筷子拿過來。'], affection: 3 },
@@ -807,7 +808,7 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
       }
     ],
     ending: [
-      { kind: 'narration', text: '你們坐在騎樓邊的長椅上一起吃午飯。石頭吃得不快，聽你說話時會停下筷子；你說到一半，他還會記得把便當裡比較好吃的那塊配菜往你這邊推。' },
+      { kind: 'narration', text: '你們坐在騎樓邊的長椅上一起吃午飯。石頭吃得不快，聽你說話時會停下筷子；騎樓外偶爾有機車經過，他就稍微側過身替你擋一下濺起的水花。你說到一半，他還會記得把便當裡比較好吃的那塊配菜往你這邊推，見你吃了才低頭繼續吃自己的。' },
       { kind: 'narration', text: '牆上的時鐘慢慢走近上課時間，裡頭已經有人開始翻找講義。石頭把便當盒蓋好，仔細收進袋子裡，又確認桌面沒有留下湯汁或筷子。' },
       { kind: 'dialogue', speaker: '石錦航', text: '今天真的謝謝妳。回去路上小心，到家再跟我說一聲。' },
       { kind: 'narration', text: '他陪你走到門口，還替你把便當袋的提把整理好，提醒你外面車多要看路。你走出騎樓時回頭看了一眼，他已經拿起課本準備回去上課，卻還是特地停下來朝你點了點頭。' }
@@ -820,8 +821,8 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
     title: '一起把練團室收拾好',
     kicker: '上午・練團室',
     blocks: [
-      { kind: 'narration', text: '你到練團室時，諺明正蹲在一旁整理線材。旁邊放著譜架、麥克風架和幾個器材箱，牆邊還貼著手寫的器材清單。' },
-      { kind: 'narration', text: '音箱已經關掉了，空氣裡還留著一點木頭、灰塵和器材散熱後的味道。他把最後一條導線放回架上，抬頭看見你，先把手擦乾淨才站起來。' },
+      { kind: 'narration', text: '你到練團室時，諺明正蹲在一旁整理線材。地上幾條導線沿著牆角散開，譜架、麥克風架和器材箱分門別類地靠在一側，牆邊還貼著手寫的器材清單，幾個項目已經被他用筆打了勾。' },
+      { kind: 'narration', text: '音箱剛關掉不久，空氣裡還留著一點木頭、灰塵和器材散熱後的味道。諺明把最後一條導線繞成整齊的圈，確認接頭沒有壓在下面，才放回架上。抬頭看見你，他先把手上的灰拍掉，又到旁邊拿紙巾擦乾淨，才站起來跟你說話。' },
       { kind: 'dialogue', speaker: '劉諺明', text: '妳今天沒有課喔？怎麼有空過來？' },
       { kind: 'dialogue', speaker: '你', text: '今天剛好空著，想說過來看看有沒有什麼能幫忙的。' },
       { kind: 'dialogue', speaker: '劉諺明', text: '那妳來得正好。不過線材要小心一點，我先教妳怎麼整理。' }
@@ -836,7 +837,7 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
         ]
       },
       {
-        scene: '你照著他的方式試著把線材繞成圈，第一條還是有點歪，拆開重來時，諺明就在旁邊扶住另一端，沒有催你。',
+        scene: '你照著他的方式試著把線材繞成圈，第一條還是有點歪，拆開重來時，諺明就在旁邊扶住另一端，先替你把打結的地方慢慢理開。他沒有直接接手，只用手指指出線身該順著哪個方向走，讓你自己再試一次。',
         prompt: '妳看，這樣順著弧度繞，線就不會被折到。要不要再試一次？',
         choices: [
           { text: '再給我一次機會，這次一定可以。', response: ['慢慢來，不用急。', '妳已經比剛才順很多了。'], affection: 3 },
@@ -845,7 +846,7 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
         ]
       },
       {
-        scene: '等線材和譜架都歸回原位，諺明拿著清單逐項核對。確認沒有漏掉東西後，他才把筆放下，抬頭看了看時間。',
+        scene: '等線材和譜架都歸回原位，諺明拿著清單逐項核對。他先看器材箱上的標籤，再確認麥克風架的數量，最後把用過的紙膠帶和筆收進抽屜。每一件事都不急不徐，確認沒有漏掉東西後，他才把筆放下，抬頭看了看時間。',
         prompt: '妳等一下還有安排嗎？如果沒有，可以先坐下喝杯水。',
         choices: [
           { text: '沒有啊，今天可以慢慢來。', response: ['那就休息一下。', '等一下如果他們開始練團，妳也可以留下來聽。'], affection: 3 },
@@ -858,7 +859,7 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
       { kind: 'narration', text: '你們把剩下的線材、譜架和麥克風架一樣樣收好。諺明拿著清單逐項核對，確認每樣東西都回到正確的位置，才把清單收進抽屜。' },
       { kind: 'narration', text: '他替你倒了一杯水，自己也坐下來休息。聊到課業時，他沒有多問，只提醒你學校和練團室兩邊跑，時間要安排得剛好，不要把自己弄得太累。' },
       { kind: 'dialogue', speaker: '劉諺明', text: '今天真的幫了我不少忙，謝謝妳。下次如果有空，也可以再過來坐坐，不一定要幫忙，來聽他們練團也可以。' },
-      { kind: 'narration', text: '門外又傳來腳步聲，像是有人準備進來練習。諺明起身去開門前，還回頭確認你有沒有把水喝完。你看著牆邊整整齊齊的器材，覺得這個原本只是過來幫個小忙的上午，也意外地留下了不少值得記住的細節。' }
+      { kind: 'narration', text: '門外傳來腳步聲，有人隔著門問器材是不是都準備好了。諺明回了一聲快好了，先把桌上的清單收進抽屜，才起身去開門；走到門邊前，他還回頭確認你有沒有把水喝完。你看著牆邊整整齊齊的器材，忽然明白他為什麼總能讓人放心——不是因為他什麼都搶著做，而是每件事都會被他穩穩地照顧到。這個原本只是過來幫個小忙的上午，也意外地留下了不少值得記住的細節。' }
     ]
   }
 }
@@ -1220,12 +1221,9 @@ function App() {
   const isSecondDay = ['classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete'].includes(effectiveDateStage)
   const isMonthLater = ['month-free-time', 'month-visit', 'month-visit-complete'].includes(effectiveDateStage) || localStorage.getItem('mayday-month-visit-complete') === 'true'
   const saveGameDate = isMonthLater ? '1996.11.16' : isSecondDay ? '1996.10.16' : '1996.10.15'
-  const calendarTime = isMonthLater ? '10:30' : currentTime
   const [calendarYear, calendarMonth, calendarDay] = saveGameDate.split('.')
   const calendarDate = new Date(Number(calendarYear), Number(calendarMonth) - 1, Number(calendarDay))
-  const calendarWeekday = ['日', '一', '二', '三', '四', '五', '六'][calendarDate.getDay()]
-  const calendarMonthShort = Number(calendarMonth) === 11 ? 'NOV' : Number(calendarMonth) === 10 ? 'OCT' : calendarMonth
-  const calendarAgenda = isMonthLater ? '一個月後的自由活動' : isSecondDay ? '課堂與午後的約定' : '練團室初訪'
+  const calendarWeekday = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'][calendarDate.getDay()]
 
   const saveCurrentProgress = (slot: number) => {
     if (saveSlots[slot] && !window.confirm('要覆蓋第 ' + slot + ' 格存檔嗎？原本的存檔會被新的進度取代。')) return
@@ -1979,9 +1977,9 @@ function App() {
 
               <div className="screen-wallpaper">
                 <div className="screen-date">
-                  <span>TUESDAY</span>
-                  <strong>10<span>.</span>15</strong>
-                  <small>1996 · 台北</small>
+                  <span>{calendarWeekday}</span>
+                  <strong>{String(Number(calendarMonth)).padStart(2, '0')}<span>.</span>{String(Number(calendarDay)).padStart(2, '0')}</strong>
+                  <small>{calendarYear} · 台北</small>
                 </div>
                 <div className="screen-greeting">
                   <span>嗨，{playerName || '新朋友'}</span>
@@ -2523,14 +2521,7 @@ function App() {
                   const Icon = app.icon
                   return (
                     <button className="app-tile" key={app.id} onClick={() => app.id === 'messages' ? openMessagesApp(null) : setActiveApp(app.id)} aria-label={app.name}>
-                      <span className={'app-icon icon-tone-' + (index % 4)}>
-                      {app.id === 'calendar' ? (
-                        <span className="calendar-icon-date" aria-hidden="true">
-                          <span>{calendarMonthShort}</span>
-                          <strong>{Number(calendarDay)}</strong>
-                        </span>
-                      ) : <Icon size={21} strokeWidth={1.8} />}
-                    </span>
+                      <span className={'app-icon icon-tone-' + (index % 4)}><Icon size={21} strokeWidth={1.8} /></span>
                       <span className="app-name">{app.name}</span>
                     </button>
                   )
@@ -2714,7 +2705,7 @@ function App() {
                       </div>
                       <button className="close-button" onClick={() => { setActiveApp(null); setSelectedSmsThread(null); setSelectedDiaryDate(null) }} aria-label="關閉"><X size={17} /></button>
                     </div>
-                    <div className={activeApp === 'messages' ? 'app-window-content sms-mode' : activeApp === 'diary' ? 'app-window-content diary-mode' : activeApp === 'notes' ? 'app-window-content save-mode' : activeApp === 'calendar' ? 'app-window-content calendar-mode' : 'app-window-content'}>
+                    <div className={activeApp === 'messages' ? 'app-window-content sms-mode' : activeApp === 'diary' ? 'app-window-content diary-mode' : activeApp === 'notes' ? 'app-window-content save-mode' : 'app-window-content'}>
                       {activeApp === 'messages' ? (
                         storyStage === 'free-time' && selectedSmsThread === null && !freeChatTarget ? (
                           <div className="free-time-picker">
@@ -3027,24 +3018,6 @@ function App() {
                             <div className="coming-soon"><Radio size={15} /> 故事開始後逐步開放</div>
                           </>
                         )
-                      ) : activeApp === 'calendar' ? (
-                        <div className="calendar-app-page">
-                          <div className="calendar-month-heading">
-                            <span>行事曆</span>
-                            <strong>{calendarYear} 年 {Number(calendarMonth)} 月</strong>
-                          </div>
-                          <div className="calendar-current-card">
-                            <span>今天</span>
-                            <strong>{Number(calendarDay)}</strong>
-                            <small>星期{calendarWeekday}</small>
-                          </div>
-                          <div className="calendar-agenda-card">
-                            <span>今日記事</span>
-                            <strong>{calendarAgenda}</strong>
-                            <small>{calendarMonth}/{Number(calendarDay)} · {calendarTime}</small>
-                          </div>
-                          <p className="calendar-app-footnote">日期會隨著故事進度自動更新。</p>
-                        </div>
                       ) : activeApp === 'notes' ? (
                         <div className="save-center-page">
                           <div className="save-center-intro">
