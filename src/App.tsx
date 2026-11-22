@@ -2303,6 +2303,13 @@ function App() {
                               </>
                             )}
                           </div>
+                        ) : (
+                          <>
+                            <div className="empty-symbol"><BookHeart size={29} /></div>
+                            <h2>今天還沒有寫下任何事情。</h2>
+                            <p>重要的一天結束後，或許會有一些話想留給明天的自己。</p>
+                            <div className="coming-soon"><Radio size={15} /> 故事開始後逐步開放</div>
+                          </>
                         )
                       ) : activeApp === 'settings' ? (
                         <>
