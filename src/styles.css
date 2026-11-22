@@ -271,3 +271,159 @@ button { cursor: pointer; }
   .keypad { gap: 7px 11px; }
   .key { height: 36px; border-radius: 13px; }
 }
+
+
+/* 1.2 — 奶油白機身配套的暖色系螢幕內裝：移除原先的綠色介面 */
+:root {
+  --screen: #f5efe5;
+}
+
+.screen {
+  background: #f7f2e9;
+  color: #5b5045;
+}
+
+.status-bar {
+  background: linear-gradient(180deg, #fffdf8, #f1e9dc);
+  border-bottom: 1px solid #e2d7c8;
+  color: #77695a;
+}
+.status-left, .status-right { color: #8c7d6c; }
+.status-time { color: #62564a; }
+
+.screen-wallpaper {
+  color: #5d4b43;
+  background:
+    radial-gradient(ellipse at 82% 18%, rgba(255,255,255,.9) 0%, transparent 34%),
+    radial-gradient(ellipse at 16% 92%, rgba(230,184,167,.55) 0%, transparent 43%),
+    linear-gradient(135deg, #f4dfd0 0%, #ead8c9 48%, #e7d9c9 100%);
+  border-bottom: 1px solid rgba(169,137,111,.22);
+}
+.screen-wallpaper::after {
+  opacity: .12;
+  background-image: repeating-linear-gradient(0deg, transparent 0 4px, rgba(255,255,255,.5) 5px);
+}
+.screen-date span { color: #9a7969; }
+.screen-date strong { color: #604d43; }
+.screen-date strong span { color: #c48f79; }
+.screen-date small { color: #8d7769; }
+.screen-greeting span { color: #5b4d43; }
+.screen-greeting small { color: #927e70; }
+
+.menu-title {
+  color: #927b68;
+  background: #f8f3eb;
+  border-bottom: 1px solid #e8ded1;
+}
+.app-grid { background: #f8f3eb; }
+.app-tile { color: #66574a; }
+.app-tile:hover, .app-tile:focus-visible { background: rgba(225,203,185,.25); }
+
+.app-icon {
+  color: #8a6c61;
+  background: linear-gradient(145deg, #fffdfa, #f0e2d6);
+  border: 1px solid #e4d5c7;
+  box-shadow: 0 3px 7px rgba(115,87,65,.09), inset 0 1px 0 rgba(255,255,255,.98);
+}
+.icon-tone-1 {
+  color: #9a7180;
+  background: linear-gradient(145deg, #fff8f7, #f1dce0);
+  border-color: #e9cfd5;
+}
+.icon-tone-2 {
+  color: #77718e;
+  background: linear-gradient(145deg, #fcfaff, #e6e0ef);
+  border-color: #dcd4e9;
+}
+.icon-tone-3 {
+  color: #9a7357;
+  background: linear-gradient(145deg, #fffaf1, #f2e0c9);
+  border-color: #e9d7bd;
+}
+.app-name { color: #66574a; }
+
+.screen-bottom {
+  background: linear-gradient(180deg, #f2eadd, #eae0d2);
+  border-top: 1px solid #e0d4c5;
+}
+.screen-bottom button { color: #806d5b; }
+.tiny-signal { color: #b18e7a; }
+
+.app-overlay { background: rgba(83,65,52,.22); }
+.app-window {
+  background: #fbf7ef;
+  color: #5c5045;
+  box-shadow: 0 8px 25px rgba(91,69,52,.16);
+}
+.app-window-head {
+  background: linear-gradient(180deg, #fffdf9, #f1e7db);
+  border-bottom: 1px solid #e7d9c9;
+}
+.back-button, .close-button { color: #8a7160; }
+.app-window-title { color: #665448; }
+.app-window-content { background: #fbf7ef; }
+.empty-symbol, .settings-symbol {
+  background: linear-gradient(145deg, #fff8f4, #f0dfd8);
+  color: #a47b70;
+  border: 1px solid #ead6cc;
+}
+.app-window-content h2 { color: #5d4d43; }
+.app-window-content p { color: #8a796a; }
+.coming-soon {
+  color: #947969;
+  background: #f3e8df;
+}
+.app-window-foot {
+  background: #f1e7db;
+  border-top: 1px solid #e7d9c9;
+  color: #9a8572;
+}
+.field-label { color: #8b7462; }
+.rename-row input, .name-modal input {
+  border-color: #dfcfc0;
+  background: #fffdf8;
+  color: #5c5045;
+}
+.rename-row input:focus, .name-modal input:focus {
+  border-color: #c69a83;
+  box-shadow: 0 0 0 3px rgba(198,154,131,.13);
+}
+.small-action {
+  background: #b98778;
+  color: #fffaf6;
+}
+.danger-action { color: #ae746b; }
+
+.name-modal, .confirm-modal {
+  background: #fbf6ed;
+  color: #5c5045;
+  border: 1px solid #e7d9c9;
+  box-shadow: 0 22px 65px rgba(88,67,50,.22);
+}
+.modal-icon {
+  background: linear-gradient(145deg, #fff9f4, #f1dfd7);
+  color: #a77e70;
+}
+.modal-icon.warning {
+  color: #a66f61;
+  background: #f2dfd7;
+}
+.eyebrow { color: #a18470; }
+.name-modal h2, .confirm-modal h2 { color: #5c4c42; }
+.name-modal p, .confirm-modal p { color: #89796b; }
+.name-modal label { color: #8b7462; }
+.primary-action {
+  background: linear-gradient(180deg, #c49682, #ad796b);
+  color: #fffaf5;
+  box-shadow: 0 3px 8px rgba(153,104,86,.17);
+}
+.name-modal > small { color: #a49383; }
+.confirm-actions button {
+  border-color: #e0d3c5;
+  color: #806d5d;
+}
+.confirm-actions .danger-solid {
+  background: #b4776c;
+  border-color: #b4776c;
+  color: #fffaf6;
+}
