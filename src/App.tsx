@@ -1262,6 +1262,7 @@ function App() {
                           <button className="reply-choice" onClick={() => chooseReunionReply('a')}><span>嗯，我們小時候就認識了。</span><ChevronRight size={15} /></button>
                           <button className="reply-choice" onClick={() => chooseReunionReply('b')}><span>以前住得很近，後來搬家就沒再聯絡了。</span><ChevronRight size={15} /></button>
                           <button className="reply-choice" onClick={() => chooseReunionReply('c')}><span>很久以前的朋友了，我也沒想到會在這裡遇到他。</span><ChevronRight size={15} /></button>
+                          <small>不同說法會影響溫尚翊對你的感覺，有些回答也可能讓氣氛變尷尬。</small>
                         </div>
                       </>
                     ) : (
@@ -1305,6 +1306,7 @@ function App() {
                           <button className="reply-choice" onClick={() => chooseNicknameQuestion('a')}><span>你們怎麼都叫他 Masa 啊？</span><ChevronRight size={15} /></button>
                           <button className="reply-choice" onClick={() => chooseNicknameQuestion('b')}><span>等一下，Masa 是你的綽號喔？</span><ChevronRight size={15} /></button>
                           <button className="reply-choice" onClick={() => chooseNicknameQuestion('c')}><span>你什麼時候開始被叫 Masa 的？</span><ChevronRight size={15} /></button>
+                          <small>問法不同，他的反應也會不同；太直接有時候會踩到雷。</small>
                         </div>
                       </>
                     ) : (
@@ -1366,6 +1368,7 @@ function App() {
                         <button className="reply-choice" onClick={() => chooseDinnerReply('a')}><span>我們小時候住得很近，常常一起玩。</span><ChevronRight size={15} /></button>
                         <button className="reply-choice" onClick={() => chooseDinnerReply('b')}><span>他小時候就很愛惹我，現在完全沒變，甚至變本加厲。</span><ChevronRight size={15} /></button>
                         <button className="reply-choice" onClick={() => chooseDinnerReply('c')}><span>我們本來說好搬家後要繼續聯絡，後來卻失聯了。</span><ChevronRight size={15} /></button>
+                        <small>你怎麼介紹這段過去，也會影響瑪莎對你的好感。</small>
                       </div>
                     ) : (
                       <>
@@ -1790,7 +1793,7 @@ function App() {
                                   <button className="reply-choice" onClick={() => chooseReply('c')}>
                                     <span>你怎麼突然想到約我？該不會又想找人幫你拿東西吧？</span><ChevronRight size={15} />
                                   </button>
-                                  <small>只有選擇並送出後，劇情才會繼續。</small>
+                                  <small>每個選項都會影響對方的感受；有些選擇可能加分，也可能扣分。</small>
                                 </div>
                               )}
                               {storyStage === 'greetings' && selectedSmsThread === currentGreetingId && !greetingReplied && (
@@ -1801,7 +1804,7 @@ function App() {
                                       <span>{choice.text}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
-                                  <small>先回覆這一輪，再決定要不要繼續聊。</small>
+                                  <small>不同回覆會帶來不同反應，也會影響好感；有些話可能會惹對方不高興。</small>
                                 </div>
                               )}
                               {storyStage === 'classroom' && selectedSmsThread === 'wen' && !classroomReplySent && (
@@ -1812,6 +1815,7 @@ function App() {
                                       <span>{choice.text}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
+                                  <small>有些玩笑會讓他心情變好，也有些會讓他覺得你在找碴。</small>
                                 </div>
                               )}
                               {storyStage === 'masa-checkin' && selectedSmsThread === 'masa' && !masaCheckInSent && !masaCheckInReplied && (
@@ -1822,7 +1826,7 @@ function App() {
                                       <span>{choice.text}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
-                                  <small>訊息會一來一回地留下來，想問清楚一點也沒關係。</small>
+                                  <small>不同問法會讓瑪莎有不同反應，也可能影響好感度。</small>
                                 </div>
                               )}
                               {storyStage === 'masa-checkin' && selectedSmsThread === 'masa' && masaCheckInReplied && !masaCheckInSent && (
@@ -1839,6 +1843,7 @@ function App() {
                                       <span>{choice.text}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
+                                  <small>太冷淡、太好奇或真心關心，得到的反應都不一樣。</small>
                                 </div>
                               )}
                               {storyStage === 'free-chat' && freeChatTarget && selectedSmsThread === freeChatTarget && !freeChatReplied && (
@@ -1849,7 +1854,7 @@ function App() {
                                       <span>{choice.text}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
-                                  <small>每一輪都要親自選擇回覆，對話才會繼續。</small>
+                                  <small>每輪都有三種回法，會影響對方反應與好感；也可能一不小心扣分。</small>
                                 </div>
                               )}
                             </div>
