@@ -96,6 +96,9 @@ button { cursor: pointer; }
 .app-tile { min-width: 0; border: 0; padding: 4px 1px; background: transparent; color: #34443a; display: flex; flex-direction: column; align-items: center; gap: 5px; border-radius: 8px; transition: background .16s, transform .16s; }
 .app-tile:hover, .app-tile:focus-visible { background: rgba(255,255,255,.34); outline: none; transform: translateY(-2px); }
 .app-icon { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 13px; color: #31473c; background: linear-gradient(145deg, rgba(255,255,255,.58), rgba(158,177,146,.62)); border: 1px solid rgba(53,75,57,.2); box-shadow: 0 3px 6px rgba(36,56,41,.1), inset 0 1px rgba(255,255,255,.65); }
+.calendar-icon-date { width: 100%; height: 100%; display: flex; flex-direction: column; overflow: hidden; border-radius: 11px; background: #fffdf8; }
+.calendar-icon-date > span { width: 100%; padding: 2px 0 1px; color: #fffaf4; background: #b98273; text-align: center; font-size: 7px; line-height: 12px; font-weight: 700; letter-spacing: .08em; }
+.calendar-icon-date > strong { flex: 1; display: grid; place-items: center; color: #62574b; font-family: Georgia, 'Noto Serif TC', serif; font-size: 20px; line-height: 1; font-weight: 600; }
 .icon-tone-1 { color: #735c47; background: linear-gradient(145deg, #eee4cb, #c9b995); }
 .icon-tone-2 { color: #526b67; background: linear-gradient(145deg, #e1e8dc, #aebfb0); }
 .icon-tone-3 { color: #8a6554; background: linear-gradient(145deg, #f0dfd0, #cda994); }
@@ -123,6 +126,22 @@ button { cursor: pointer; }
 .back-button, .close-button { border: 0; background: transparent; color: #4a5b4c; padding: 5px; display: grid; place-items: center; }
 .app-window-title { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 700; }
 .app-window-content { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 22px 20px; }
+
+.calendar-mode { align-items: stretch; justify-content: flex-start; text-align: left; padding: 16px 15px; overflow-y: auto; }
+.calendar-app-page { width: 100%; display: flex; flex-direction: column; gap: 14px; }
+.calendar-month-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 4px 2px 12px; border-bottom: 1px solid rgba(76, 91, 73, .16); }
+.calendar-month-heading span { color: #7d8975; font-size: 10px; letter-spacing: .08em; }
+.calendar-month-heading strong { color: #465744; font-family: 'Noto Serif TC', serif; font-size: 14px; }
+.calendar-current-card { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 3px 12px; padding: 15px; border: 1px solid #e6ddd0; border-radius: 12px; background: #fffaf2; }
+.calendar-current-card > span { color: #9b8170; font-size: 10px; }
+.calendar-current-card > strong { grid-column: 2; grid-row: 1 / span 2; color: #5e6d59; font-family: Georgia, 'Noto Serif TC', serif; font-size: 44px; line-height: 1; font-weight: 600; }
+.calendar-current-card > small { color: #8c8175; font-size: 9px; }
+.calendar-agenda-card { display: flex; flex-direction: column; gap: 7px; padding: 13px; border-radius: 12px; background: #dfe7d9; color: #52644f; }
+.calendar-agenda-card > span { color: #7b8a74; font-size: 9px; }
+.calendar-agenda-card > strong { color: #465744; font-family: 'Noto Serif TC', serif; font-size: 13px; }
+.calendar-agenda-card > small { color: #71816b; font-size: 9px; }
+.calendar-app-footnote { max-width: none !important; margin: 0 !important; color: #8c9484 !important; text-align: center; font-size: 9px !important; }
+
 .empty-symbol, .settings-symbol { width: 62px; height: 62px; display: grid; place-items: center; border-radius: 20px; background: #d1dbc5; color: #63785e; margin-bottom: 16px; }
 .app-window-content h2 { font-family: 'Noto Serif TC', serif; font-size: 17px; font-weight: 600; margin: 0 0 9px; }
 .app-window-content p { color: #718071; font-size: 10px; line-height: 1.9; max-width: 230px; margin: 0; }
