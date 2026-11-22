@@ -761,18 +761,28 @@ function App() {
       : storyStage === 'walk' ? '16:30'
         : storyStage === 'dinner' ? '19:10'
           : storyStage === 'after-dinner' ? '20:35'
-            : storyStage === 'ending' || storyStage === 'completed' ? '21:12'
-              : '17:20'
+            : storyStage === 'ending' || storyStage === 'completed' || storyStage === 'greetings' ? '21:18'
+              : storyStage === 'classroom' || storyStage === 'masa-checkin' || storyStage === 'stone-checkin' ? '10:12'
+                : storyStage === 'ice-date' || storyStage === 'free-time' || storyStage === 'free-chat' || storyStage === 'day2-complete' ? '16:20'
+                  : '17:20'
 
   useEffect(() => {
     localStorage.setItem('mayday-sms-messages', JSON.stringify(smsMessages))
   }, [smsMessages])
 
   useEffect(() => {
-    if (activeApp === 'messages' && selectedSmsThread === 'wen' && messageScrollRef.current) {
+    localStorage.setItem('mayday-chat-messages', JSON.stringify(chatMessages))
+  }, [chatMessages])
+
+  useEffect(() => {
+    localStorage.setItem('mayday-route-affection', JSON.stringify(routeAffection))
+  }, [routeAffection])
+
+  useEffect(() => {
+    if (activeApp === 'messages' && selectedSmsThread && messageScrollRef.current) {
       messageScrollRef.current.scrollTop = messageScrollRef.current.scrollHeight
     }
-  }, [activeApp, selectedSmsThread, smsMessages])
+  }, [activeApp, selectedSmsThread, smsMessages, chatMessages, greetingRound, freeChatRound])
 
   const changeStage = (next: StoryStage) => {
     setStoryStage(next)
@@ -780,7 +790,7 @@ function App() {
   }
 
   const pauseStory = () => {
-    if (storyStage !== 'paused' && storyStage !== 'completed') {
+    if (storyStage !== 'paused' && storyStage !== 'completed' && storyStage !== 'day2-complete') {
       setResumeStage(storyStage)
       localStorage.setItem('mayday-resume-stage', storyStage)
       changeStage('paused')
@@ -789,15 +799,194 @@ function App() {
 
   const resumeStory = () => changeStage(resumeStage)
 
-  const openMessagesApp = (thread: 'wen' | null = null) => {
+  const openMessagesApp = (thread: CharacterId | null = null) => {
     setSelectedSmsThread(thread)
     setActiveApp('messages')
     if (thread === 'wen' && storyStage === 'notification') changeStage('messages')
   }
 
-  const openSmsThread = (thread: 'wen') => {
+  const openSmsThread = (thread: CharacterId) => {
     setSelectedSmsThread(thread)
-    if (storyStage === 'notification') changeStage('messages')
+    if (storyStage === 'notification' && thread === 'wen') changeStage('messages')
+  }
+
+  const appendChatMessages = (character: CharacterId, entries: NewChatEntry[], date = '10月15日・晚上') => {
+    const stamp = Date.now()
+    setChatMessages((current) => ({
+      ...current,
+      [character]: [
+        ...(current[character] ?? []),
+        ...entries.map((entry, index) => ({
+          id: character + '-' + stamp + '-' + index,
+          date,
+          time: entry.time ?? '21:20',
+          from: entry.from,
+          text: entry.text,
+        })),
+      ],
+    }))
+  }
+
+  const addRouteAffection = (character: CharacterId, amount: number) => {
+    if (character === 'youda') return
+    setRouteAffection((current) => ({ ...current, [character]: current[character] + amount }))
+  }
+
+  const finishGreetingPerson = () => {
+    const nextIndex = greetingIndex + 1
+    if (nextIndex < greetingOrder.length) {
+      const nextCharacter = greetingOrder[nextIndex]
+      setGreetingIndex(nextIndex)
+      localStorage.setItem('mayday-greeting-index', String(nextIndex))
+      setGreetingRound(0)
+      localStorage.setItem('mayday-greeting-round', '0')
+      setGreetingReplied(false)
+      localStorage.setItem('mayday-greeting-replied', 'false')
+      appendChatMessages(nextCharacter, [{ from: nextCharacter, text: greetingChats[nextCharacter][0].incoming }])
+      setSelectedSmsThread(null)
+      setActiveApp(null)
+      return
+    }
+    localStorage.setItem('mayday-greetings-complete', 'true')
+    setSelectedSmsThread(null)
+    setActiveApp(null)
+    appendChatMessages('wen', [
+      { from: 'wen', text: '妳現在還在上課嗎？', time: '10:12' },
+      { from: 'wen', text: '下課要不要去吃冰？', time: '10:12' },
+    ], '10月16日・上午')
+    changeStage('classroom')
+  }
+
+  const chooseGreetingReply = (choiceIndex: number) => {
+    if (greetingReplied) return
+    const character = greetingOrder[greetingIndex]
+    const round = greetingChats[character][greetingRound]
+    const choice = round?.choices[choiceIndex]
+    if (!choice) return
+    appendChatMessages(character, [
+      { from: 'me', text: choice.text },
+      ...choice.response.map((text) => ({ from: character, text })),
+    ])
+    addRouteAffection(character, choice.affection)
+    setGreetingReplied(true)
+    localStorage.setItem('mayday-greeting-replied', 'true')
+  }
+
+  const continueGreeting = () => {
+    if (!greetingReplied) return
+    const character = greetingOrder[greetingIndex]
+    if (greetingRound >= greetingChats[character].length - 1) {
+      finishGreetingPerson()
+      return
+    }
+    const nextRound = greetingRound + 1
+    setGreetingRound(nextRound)
+    localStorage.setItem('mayday-greeting-round', String(nextRound))
+    setGreetingReplied(false)
+    localStorage.setItem('mayday-greeting-replied', 'false')
+    appendChatMessages(character, [{ from: character, text: greetingChats[character][nextRound].incoming }])
+  }
+
+  const chooseClassroomReply = (choiceIndex: number) => {
+    if (classroomReplySent) return
+    const choice = classroomChoices[choiceIndex]
+    if (!choice) return
+    appendChatMessages('wen', [
+      { from: 'me', text: choice.text, time: '10:13' },
+      ...choice.response.map((text) => ({ from: 'wen' as const, text, time: '10:13' })),
+    ], '10月16日・上午')
+    addRouteAffection('wen', choice.affection)
+    setClassroomReplySent(true)
+    localStorage.setItem('mayday-classroom-reply-sent', 'true')
+  }
+
+  const startMasaCheckIn = () => {
+    setSelectedSmsThread('masa')
+    setActiveApp('messages')
+    changeStage('masa-checkin')
+  }
+
+  const chooseMasaCheckIn = (choiceIndex: number) => {
+    if (masaCheckInSent) return
+    const choice = masaCheckinChoices[choiceIndex]
+    if (!choice) return
+    appendChatMessages('masa', [
+      { from: 'me', text: choice.text, time: '10:15' },
+      ...choice.response.map((text) => ({ from: 'masa' as const, text, time: '10:15' })),
+    ], '10月16日・上午')
+    addRouteAffection('masa', choice.affection)
+    setMasaCheckInSent(true)
+    localStorage.setItem('mayday-masa-checkin-sent', 'true')
+  }
+
+  const startStoneCheckIn = () => {
+    setSelectedSmsThread('stone')
+    setActiveApp('messages')
+    changeStage('stone-checkin')
+  }
+
+  const chooseStoneCheckIn = (choiceIndex: number) => {
+    if (stoneCheckInSent) return
+    const choice = stoneCheckinChoices[choiceIndex]
+    if (!choice) return
+    appendChatMessages('stone', [
+      { from: 'me', text: choice.text, time: '10:18' },
+      ...choice.response.map((text) => ({ from: 'stone' as const, text, time: '10:18' })),
+    ], '10月16日・上午')
+    addRouteAffection('stone', choice.affection)
+    setStoneCheckInSent(true)
+    localStorage.setItem('mayday-stone-checkin-sent', 'true')
+  }
+
+  const goToIceDate = () => {
+    setSelectedSmsThread(null)
+    setActiveApp(null)
+    changeStage('ice-date')
+  }
+
+  const startFreeChat = (character: RouteCharacterId) => {
+    if (freeChatTarget || localStorage.getItem('mayday-free-chat-target')) return
+    setFreeChatTarget(character)
+    localStorage.setItem('mayday-free-chat-target', character)
+    setFreeChatRound(0)
+    localStorage.setItem('mayday-free-chat-round', '0')
+    setFreeChatReplied(false)
+    localStorage.setItem('mayday-free-chat-replied', 'false')
+    appendChatMessages(character, [{ from: character, text: freeTimeChats[character][0].incoming, time: '17:06' }], '10月16日・下午')
+    setSelectedSmsThread(character)
+    setActiveApp('messages')
+    changeStage('free-chat')
+  }
+
+  const chooseFreeChatReply = (choiceIndex: number) => {
+    if (!freeChatTarget || freeChatReplied) return
+    const round = freeTimeChats[freeChatTarget][freeChatRound]
+    const choice = round?.choices[choiceIndex]
+    if (!choice) return
+    appendChatMessages(freeChatTarget, [
+      { from: 'me', text: choice.text, time: '17:' + String(7 + freeChatRound).padStart(2, '0') },
+      ...choice.response.map((text) => ({ from: freeChatTarget, text, time: '17:' + String(7 + freeChatRound).padStart(2, '0') })),
+    ], '10月16日・下午')
+    addRouteAffection(freeChatTarget, choice.affection)
+    if (freeChatRound < 4) {
+      const nextRound = freeChatRound + 1
+      setFreeChatRound(nextRound)
+      localStorage.setItem('mayday-free-chat-round', String(nextRound))
+      appendChatMessages(freeChatTarget, [{ from: freeChatTarget, text: freeTimeChats[freeChatTarget][nextRound].incoming, time: '17:' + String(8 + nextRound).padStart(2, '0') }], '10月16日・下午')
+      setFreeChatReplied(false)
+      localStorage.setItem('mayday-free-chat-replied', 'false')
+    } else {
+      setFreeChatReplied(true)
+      localStorage.setItem('mayday-free-chat-replied', 'true')
+    }
+  }
+
+  const finishFreeChat = () => {
+    if (!freeChatTarget || !freeChatReplied || freeChatRound !== 4) return
+    localStorage.setItem('mayday-free-chat-complete', 'true')
+    setSelectedSmsThread(null)
+    setActiveApp(null)
+    changeStage('day2-complete')
   }
 
   const chooseReunionReply = (key: ReunionReplyKey) => {
