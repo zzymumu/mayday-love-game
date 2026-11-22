@@ -23,10 +23,11 @@ import {
 } from 'lucide-react'
 
 type AppKey = 'messages' | 'contacts' | 'calls' | 'diary' | 'calendar' | 'photos' | 'music' | 'notes' | 'settings'
-type StoryStage = 'notification' | 'messages' | 'reply' | 'walk' | 'studio' | 'reunion' | 'reunion-chat' | 'nickname' | 'paused'
+type StoryStage = 'notification' | 'messages' | 'reply' | 'walk' | 'studio' | 'reunion' | 'reunion-chat' | 'nickname' | 'rehearsal' | 'dinner' | 'after-dinner' | 'ending' | 'completed' | 'paused'
 type ReplyKey = 'a' | 'b' | 'c'
 type ReunionReplyKey = 'a' | 'b' | 'c'
 type NicknameQuestionKey = 'a' | 'b' | 'c'
+type DinnerReplyKey = 'a' | 'b' | 'c'
 type StoryBlock = { kind: 'narration' | 'dialogue' | 'aside'; text: string; speaker?: string }
 type StoryScene = { kicker: string; title: string; blocks: StoryBlock[]; button: string }
 type SmsMessage = { id: string; date: string; time?: string; from: 'wen' | 'me'; text: string }
@@ -261,6 +262,163 @@ const nicknameStoryBlocks = (question: string): StoryBlock[] => [
   { kind: 'narration', text: '你終於忍不住笑了。原來大家口中的 Masa，是高中時候一個隨口開的玩笑留下來的。至少今天，在你心裡，他還是那個叫蔡昇晏的人。' },
 ]
 
+const rehearsalBlocks: StoryBlock[] = [
+  { kind: 'narration', text: '綽號的話題告一段落，房間裡又慢慢回到練團前的忙碌。錢佑達坐回鼓組後面，拿鼓棒輕輕敲了敲鼓框。' },
+  { kind: 'dialogue', speaker: '錢佑達', text: '好啦，準備喔。從前面一次。' },
+  { kind: 'narration', text: '溫尚翊把吉他放到一旁，先替你把靠牆的椅子往外挪了一點，又彎腰把椅腳旁邊的導線撥開。' },
+  { kind: 'dialogue', speaker: '溫尚翊', text: '妳坐這邊啦，離音箱遠一點。' },
+  { kind: 'dialogue', speaker: '你', text: '坐哪裡有差喔？' },
+  { kind: 'dialogue', speaker: '溫尚翊', text: '有啊，等一下鼓一打下去妳就知道了。' },
+  { kind: 'narration', text: '他瞥見你還拿著飲料，又伸手指了指旁邊的小桌。' },
+  { kind: 'dialogue', speaker: '溫尚翊', text: '飲料放桌上啦，不要擺在音箱旁邊，等一下線勾到會整個翻掉。' },
+  { kind: 'dialogue', speaker: '你', text: '知道啦，你很囉嗦欸。' },
+  { kind: 'dialogue', speaker: '溫尚翊', text: '我是在幫妳顧飲料好不好。' },
+  { kind: 'narration', text: '他說完才拿起吉他。走回大家身邊前，還是回頭確認了一次你坐的位置。' },
+  { kind: 'dialogue', speaker: '溫尚翊', text: '等一下如果覺得太吵就跟我說，不用硬撐。' },
+  { kind: 'dialogue', speaker: '你', text: '好啦，你快去練你的。' },
+  { kind: 'dialogue', speaker: '蔡昇晏', text: '欸，溫尚翊，你今天是帶同學來，還是帶小朋友來校外教學？' },
+  { kind: 'dialogue', speaker: '溫尚翊', text: '你管好你的 Bass 就好。' },
+  { kind: 'dialogue', speaker: '蔡昇晏', text: '我的 Bass 好得很，是你剛剛那個和弦又按得亂七八糟。' },
+  { kind: 'dialogue', speaker: '溫尚翊', text: '我剛剛是在調音。' },
+  { kind: 'dialogue', speaker: '蔡昇晏', text: '每次彈錯都說在調音。' },
+  { kind: 'dialogue', speaker: '陳信宏', text: '你們兩個可不可以先把歌練完再吵？' },
+  { kind: 'dialogue', speaker: '錢佑達', text: '等一下，我剛剛到底要跟誰的拍子？' },
+  { kind: 'dialogue', speaker: '石錦航', text: '再來一次吧，從副歌前面進。' },
+  { kind: 'narration', text: '這次沒有人再接話。錢佑達先數了拍子，鼓聲落下來，溫尚翊的吉他跟著進去，低沉的 Bass 從另一側接住旋律。剛才還吵成一團的幾個人，一拿起樂器就像突然找到共同的語言。' },
+  { kind: 'narration', text: '你坐在牆邊，手指無意識地跟著節奏敲在膝蓋上。偶爾有人停下來重來，瑪莎總能第一個指出哪裡不對，語氣還特別不客氣。' },
+  { kind: 'dialogue', speaker: '蔡昇晏', text: '剛剛副歌那邊又快了啦。有人是不是太想表現？' },
+  { kind: 'dialogue', speaker: '溫尚翊', text: '你是在說誰？' },
+  { kind: 'dialogue', speaker: '蔡昇晏', text: '誰自己心裡有數。' },
+  { kind: 'dialogue', speaker: '陳信宏', text: 'Masa，你先不要講風涼話，你剛剛也有一個音沒跟到。' },
+  { kind: 'dialogue', speaker: '蔡昇晏', text: '我那個叫留空間，懂不懂？' },
+  { kind: 'dialogue', speaker: '你', text: '你這個解釋也太方便了吧。' },
+  { kind: 'dialogue', speaker: '蔡昇晏', text: '欸？妳坐那邊聽得懂喔？' },
+  { kind: 'dialogue', speaker: '你', text: '聽不懂也聽得出來你很吵。' },
+  { kind: 'dialogue', speaker: '蔡昇晏', text: '很好，至少耳朵還沒退化。' },
+  { kind: 'narration', text: '你忍不住笑了。這個人真的一點都沒變，甚至比小時候更會接話、更懂得怎麼把人噎得說不出話。只是當他低下頭重新撥動琴弦，神情又很快認真起來。' },
+  { kind: 'narration', text: '中間休息時，溫尚翊走過來拿水，順手把你放在桌邊的飲料往裡挪了挪。' },
+  { kind: 'dialogue', speaker: '溫尚翊', text: '還好嗎？會不會太大聲？' },
+  { kind: 'dialogue', speaker: '你', text: '還好啊，滿好聽的。' },
+  { kind: 'dialogue', speaker: '溫尚翊', text: '那就好。等一下再坐一下，快結束了。' },
+  { kind: 'narration', text: '他沒有多說什麼，喝了兩口水就又回到自己的位置。你看著他把吉他背好，忽然覺得自己好像比想像中更習慣他這樣自然地照顧你。' },
+  { kind: 'narration', text: '最後一段音樂停下來時，錢佑達把鼓棒往膝上一放，長長吐了口氣。練團室裡終於安靜了幾秒，接著又被大家七嘴八舌的聲音填滿。' },
+]
+
+const dinnerIntroBlocks: StoryBlock[] = [
+  { kind: 'narration', text: '收好器材時，外面的天已經暗了。錢佑達一邊把鼓棒收進袋子，一邊宣布自己現在最需要的不是休息，是吃飯。' },
+  { kind: 'dialogue', speaker: '錢佑達', text: '我真的快餓死了，先去吃東西啦。' },
+  { kind: 'dialogue', speaker: '蔡昇晏', text: '你剛剛不是還說要再練一次？' },
+  { kind: 'dialogue', speaker: '錢佑達', text: '我現在改變主意不行喔？' },
+  { kind: 'dialogue', speaker: '溫尚翊', text: '附近有間熱炒還不錯，走啦。' },
+  { kind: 'narration', text: '你跟著大家走進附近一間熱鬧的小店。玻璃門上沾著一點油煙，牆上的菜單用紅筆寫在白板上，廚房裡的鍋鏟聲和店員報菜名的聲音混在一起。' },
+  { kind: 'narration', text: '桌上很快擺滿了幾道熱菜。阿信把筷子分給大家，石錦航替你把靠牆的位置拉開，溫尚翊則把一杯茶推到你手邊。' },
+  { kind: 'dialogue', speaker: '陳信宏', text: '妳今天第一次來，還習慣嗎？剛剛鼓聲真的滿大的。' },
+  { kind: 'dialogue', speaker: '你', text: '還好啊，滿有趣的。' },
+  { kind: 'dialogue', speaker: '石錦航', text: '那就好。下次可以坐更裡面一點。' },
+  { kind: 'narration', text: '原本大家還在聊剛才練到一半的段落，沒過多久，阿信終於把話題繞回了你和瑪莎身上。' },
+  { kind: 'dialogue', speaker: '陳信宏', text: '欸，對了。妳跟 Masa 剛剛到底是怎麼回事？' },
+  { kind: 'dialogue', speaker: '石錦航', text: '你們一見面就直接叫出本名，看起來真的認識很久了。' },
+  { kind: 'dialogue', speaker: '錢佑達', text: '我剛剛還以為你們認錯人，結果是真的認識喔？' },
+  { kind: 'dialogue', speaker: '蔡昇晏', text: '你們是來吃飯還是來審問的？菜先吃啦。' },
+  { kind: 'dialogue', speaker: '溫尚翊', text: '我也想知道啊，我之前都不知道你們認識。' },
+  { kind: 'dialogue', speaker: '蔡昇晏', text: '你又沒問。' },
+  { kind: 'dialogue', speaker: '你', text: '你也沒跟我說你認識溫尚翊啊。' },
+  { kind: 'dialogue', speaker: '蔡昇晏', text: '我哪知道妳會跟他混在一起。' },
+  { kind: 'dialogue', speaker: '溫尚翊', text: '蛤？什麼叫混在一起？' },
+  { kind: 'narration', text: '桌邊立刻響起一陣笑聲。瑪莎夾了一口菜，還是一臉理直氣壯，彷彿剛才那句話完全沒有問題。' },
+  { kind: 'dialogue', speaker: '陳信宏', text: '好啦，所以你們以前就認識？怎麼認識的？' },
+]
+
+const dinnerReplies: Record<DinnerReplyKey, { text: string; affection: number; blocks: StoryBlock[] }> = {
+  a: {
+    text: '我們小時候住得很近，常常一起玩。後來他搬家，就沒再聯絡了。',
+    affection: 3,
+    blocks: [
+      { kind: 'dialogue', speaker: '你', text: '我們小時候住得很近，常常一起玩。後來他搬家，就沒再聯絡了。' },
+      { kind: 'dialogue', speaker: '石錦航', text: '原來是這樣，難怪妳一眼就認出他。' },
+      { kind: 'dialogue', speaker: '蔡昇晏', text: '講得好像我們以前真的很常一起玩一樣。' },
+      { kind: 'dialogue', speaker: '你', text: '不然你以前都在做什麼？' },
+      { kind: 'dialogue', speaker: '蔡昇晏', text: '找妳吵架啊。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '聽起來很合理欸。' },
+      { kind: 'dialogue', speaker: '溫尚翊', text: '難怪妳剛剛整個人都愣住了。' },
+      { kind: 'narration', text: '你低頭笑了一下。隔了這麼多年，瑪莎還是能把一段很普通的回憶講得像在跟你抬槓。' },
+    ],
+  },
+  b: {
+    text: '他小時候就很愛惹我，現在完全沒變，甚至變本加厲。',
+    affection: 4,
+    blocks: [
+      { kind: 'dialogue', speaker: '你', text: '他小時候就很愛惹我，現在完全沒變，甚至變本加厲。' },
+      { kind: 'dialogue', speaker: '蔡昇晏', text: '妳才剛坐下就開始告狀喔？' },
+      { kind: 'dialogue', speaker: '你', text: '我只是講事實。' },
+      { kind: 'dialogue', speaker: '蔡昇晏', text: '那妳怎麼不說妳以前也很難搞？' },
+      { kind: 'dialogue', speaker: '你', text: '我哪有！' },
+      { kind: 'dialogue', speaker: '蔡昇晏', text: '妳看，現在不就來了。' },
+      { kind: 'dialogue', speaker: '溫尚翊', text: '你們以前也是這樣講話喔？' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '感覺完全不用重新熟悉欸。' },
+      { kind: 'dialogue', speaker: '蔡昇晏', text: '她以前就這樣，長大也沒有比較成熟。' },
+      { kind: 'dialogue', speaker: '你', text: '你才沒有進步！' },
+      { kind: 'narration', text: '大家笑成一團。你本來還有點擔心多年不見會不知道怎麼相處，現在看來，這個問題根本不存在。' },
+    ],
+  },
+  c: {
+    text: '我們本來說好搬家後要繼續聯絡，後來卻失聯了。',
+    affection: 2,
+    blocks: [
+      { kind: 'dialogue', speaker: '你', text: '我們本來說好搬家後要繼續聯絡，後來卻失聯了。' },
+      { kind: 'dialogue', speaker: '石錦航', text: '那真的隔很久了。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '難怪剛剛你們兩個都嚇了一跳。' },
+      { kind: 'narration', text: '瑪莎手裡的筷子停了一下，很快又若無其事地夾起菜。' },
+      { kind: 'dialogue', speaker: '蔡昇晏', text: '那時候都還小嘛，誰知道會隔這麼久。' },
+      { kind: 'dialogue', speaker: '你', text: '對啊，我也沒想到今天會在這裡遇到你。' },
+      { kind: 'dialogue', speaker: '溫尚翊', text: '現在重新遇到了就好啦。' },
+      { kind: 'narration', text: '桌上的話題又慢慢回到練團和晚餐。只是你注意到，瑪莎偶爾會抬眼看你，像是還有些話想問。' },
+    ],
+  },
+}
+
+const afterDinnerBlocks: StoryBlock[] = [
+  { kind: 'narration', text: '吃完飯後，大家陸續走出熱炒店。街邊的招牌亮了起來，機車從路口一輛輛經過，晚風把店裡沾上的油煙味吹散了一些。' },
+  { kind: 'narration', text: '阿信和石錦航走在前面，錢佑達說要去旁邊買飲料。溫尚翊停下來等你，瑪莎卻在這時伸手輕輕碰了碰你的手臂。' },
+  { kind: 'dialogue', speaker: '蔡昇晏', text: '欸，妳等一下。' },
+  { kind: 'dialogue', speaker: '你', text: '怎樣？' },
+  { kind: 'dialogue', speaker: '蔡昇晏', text: '剛剛大家都在，我有些話不太好問。那時候妳後來怎麼都沒消息？' },
+  { kind: 'dialogue', speaker: '你', text: '我真的有想找你，只是地址被雨淋壞了。' },
+  { kind: 'narration', text: '你把那天回家路上突然下起的大雨、地址紙上的字一點一點暈開的樣子，還有後來搬家時不小心把那張紙弄丟的事，慢慢說給他聽。' },
+  { kind: 'dialogue', speaker: '蔡昇晏', text: '所以妳那時候不是故意不找我喔？' },
+  { kind: 'dialogue', speaker: '你', text: '當然不是啊。我那時候真的很想找到你。' },
+  { kind: 'narration', text: '他低頭看著鞋尖，安靜了一會兒。剛才在店裡還能接連吐槽所有人的人，這時候反而不知道該怎麼接話。' },
+  { kind: 'dialogue', speaker: '蔡昇晏', text: '我那時候也有等妳的消息啊。' },
+  { kind: 'dialogue', speaker: '蔡昇晏', text: '後來等不到，就想說妳可能已經忘記我了。' },
+  { kind: 'dialogue', speaker: '你', text: '我怎麼可能忘記你。' },
+  { kind: 'dialogue', speaker: '蔡昇晏', text: '好啦，現在知道了。不要一直擺那個表情。' },
+  { kind: 'dialogue', speaker: '蔡昇晏', text: '而且妳現在不是找到我了？以後要找我就直接來練團室，記得路就好。' },
+  { kind: 'narration', text: '他說完又恢復了那副理所當然的樣子，像是怕氣氛太認真，故意把話說得輕鬆。' },
+  { kind: 'dialogue', speaker: '你', text: '你真的很會破壞氣氛欸。' },
+  { kind: 'dialogue', speaker: '蔡昇晏', text: '不然咧？要抱著哭喔？' },
+  { kind: 'narration', text: '你瞪了他一眼，他終於笑了。這個人真的一點都沒變。' },
+  { kind: 'dialogue', speaker: '溫尚翊', text: '妳們聊好了嗎？我送妳去搭車。' },
+  { kind: 'dialogue', speaker: '你', text: '好。' },
+  { kind: 'narration', text: '溫尚翊沒有催你，只是等你走到身邊，才和你一起往前走。路口車多，他很自然地走在靠近車道的那一側。' },
+]
+
+const endingBlocks: StoryBlock[] = [
+  { kind: 'narration', text: '回到家時，已經快九點了。你把包放到椅子上，換下鞋子，才發現自己從下午到現在幾乎沒有真正安靜下來過。' },
+  { kind: 'narration', text: '今天本來只是跟著溫尚翊去練團室看看。你聽見了他們認真練習的聲音，認識了幾個新朋友，還在一個完全沒預料到的地方，重新遇見了蔡昇晏。' },
+  { kind: 'narration', text: '手機螢幕亮起。通訊錄裡多了幾個名字，日記也空出了一頁，像是替這個有點不真實的下午留了位置。' },
+  { kind: 'narration', text: '你想了想，最後只在日記最上面寫下了一句話。' },
+  { kind: 'aside', text: '今天居然遇到了瑪莎。' },
+]
+
+const unlockedContacts = [
+  { id: 'wen', name: '溫尚翊', role: '大學同學・吉他手', description: '妳在大學認識的同學。熟門熟路地出入練團室，嘴上常常不饒人，卻總會留意妳有沒有跟上。' },
+  { id: 'masa', name: '蔡昇晏', role: '兒時玩伴・Bass', description: '搬家後失去聯絡的童年朋友。大家現在都叫他 Masa，嘴巴比記憶裡更毒，卻還是那個熟悉的人。' },
+  { id: 'ashin', name: '陳信宏', role: '主唱', description: '說話溫和，觀察細膩，總會留意別人的感受。' },
+  { id: 'stone', name: '石錦航', role: '吉他手', description: '安靜細心，會默默替身邊的人留意小地方。' },
+  { id: 'yanming', name: '劉諺明', role: '練團室老闆', description: '戴著眼鏡，負責照看練團室的場地與器材。' },
+  { id: 'youda', name: '錢佑達', role: '鼓手', description: '目前和大家一起練團的鼓手，爽朗又有精神。' },
+]
+
 const walkBlocks: StoryBlock[] = [
   { kind: 'narration', text: '下午四點半，最後一堂課總算結束。教室裡的人一下子散了大半，你把桌上的課本一本本收進包裡，還不忘確認那本借來的筆記有沒有放好。' },
   { kind: 'narration', text: '走出教學樓時，午後的陽光還沒完全退去。校園裡有腳踏車鈴聲，有人抱著講義匆匆往下一堂課趕，也有人已經在想晚餐要吃什麼。你在福利社買了飲料，冰涼的杯身很快凝出一層薄薄的水珠。' },
@@ -406,7 +564,7 @@ function App() {
   })
   const [storyStage, setStoryStage] = useState<StoryStage>(() => {
     const saved = localStorage.getItem('mayday-story-stage')
-    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'paused']
+    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'paused']
     return saved && valid.includes(saved as StoryStage) ? saved as StoryStage : 'notification'
   })
   const [studioStep, setStudioStep] = useState(() => Number(localStorage.getItem('mayday-studio-step') ?? '0'))
@@ -423,13 +581,26 @@ function App() {
     const saved = localStorage.getItem('mayday-nickname-question')
     return saved === 'a' || saved === 'b' || saved === 'c' ? saved : null
   })
+  const [dinnerReplyKey, setDinnerReplyKey] = useState<DinnerReplyKey | null>(() => {
+    const saved = localStorage.getItem('mayday-dinner-reply')
+    return saved === 'a' || saved === 'b' || saved === 'c' ? saved : null
+  })
+  const [marthaAffection, setMarthaAffection] = useState(() => Number(localStorage.getItem('mayday-affection-martha') ?? '0'))
+  const [firstChapterComplete, setFirstChapterComplete] = useState(() => localStorage.getItem('mayday-chapter1-complete') === 'true')
+  const [selectedProfile, setSelectedProfile] = useState<string | null>(null)
   const [resumeStage, setResumeStage] = useState<StoryStage>(() => {
     const saved = localStorage.getItem('mayday-resume-stage')
-    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname']
+    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed']
     return saved && valid.includes(saved as StoryStage) ? saved as StoryStage : 'reunion'
   })
   const messageScrollRef = useRef<HTMLDivElement>(null)
-  const currentTime = storyStage === 'notification' || storyStage === 'messages' ? '15:42' : '16:30'
+  const currentTime =
+    storyStage === 'notification' || storyStage === 'messages' ? '15:42'
+      : storyStage === 'walk' ? '16:30'
+        : storyStage === 'dinner' ? '19:10'
+          : storyStage === 'after-dinner' ? '20:35'
+            : storyStage === 'ending' || storyStage === 'completed' ? '21:12'
+              : '17:20'
 
   useEffect(() => {
     localStorage.setItem('mayday-sms-messages', JSON.stringify(smsMessages))
@@ -447,7 +618,7 @@ function App() {
   }
 
   const pauseStory = () => {
-    if (storyStage !== 'paused') {
+    if (storyStage !== 'paused' && storyStage !== 'completed') {
       setResumeStage(storyStage)
       localStorage.setItem('mayday-resume-stage', storyStage)
       changeStage('paused')
@@ -477,6 +648,24 @@ function App() {
     localStorage.setItem('mayday-nickname-question', key)
   }
 
+  const chooseDinnerReply = (key: DinnerReplyKey) => {
+    if (dinnerReplyKey) return
+    const selected = dinnerReplies[key]
+    const nextAffection = marthaAffection + selected.affection
+    setDinnerReplyKey(key)
+    setMarthaAffection(nextAffection)
+    localStorage.setItem('mayday-dinner-reply', key)
+    localStorage.setItem('mayday-affection-martha', String(nextAffection))
+  }
+
+  const finishFirstChapter = () => {
+    setFirstChapterComplete(true)
+    localStorage.setItem('mayday-chapter1-complete', 'true')
+    setSelectedProfile(null)
+    setActiveApp('contacts')
+    changeStage('completed')
+  }
+
   const saveName = (startStory = false) => {
     const trimmed = (nameDraft || playerName).trim()
     if (!trimmed) return
@@ -491,7 +680,7 @@ function App() {
   }
 
   const resetLocalData = () => {
-    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-resume-stage', 'mayday-sms-messages'].forEach((key) => localStorage.removeItem(key))
+    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages'].forEach((key) => localStorage.removeItem(key))
     setPlayerName('')
     setNameDraft('')
     setActiveApp(null)
@@ -502,6 +691,10 @@ function App() {
     setWenAffection(0)
     setReunionReplyKey(null)
     setNicknameQuestionKey(null)
+    setDinnerReplyKey(null)
+    setMarthaAffection(0)
+    setFirstChapterComplete(false)
+    setSelectedProfile(null)
     setResumeStage('reunion')
     setShowResetConfirm(false)
     setStoryStage('notification')
@@ -539,6 +732,7 @@ function App() {
   const selectedReply = replyKey ? replies[replyKey] : null
   const currentScene = studioScenes[studioStep] ?? studioScenes[0]
   const latestSmsMessage = smsMessages[smsMessages.length - 1]
+  const selectedContactProfile = unlockedContacts.find((contact) => contact.id === selectedProfile) ?? null
 
   return (
     <main className="page-shell">
@@ -652,7 +846,7 @@ function App() {
                         <StoryBlocks blocks={nicknameStoryBlocks(nicknameQuestions[nicknameQuestionKey])} />
                         <div className="reunion-pause-note">那時候大家喊的是 Masa；後來，這個名字才以「瑪莎」的字樣被更多人認識。</div>
                         <div className="story-action-bar">
-                          <button className="story-primary-button" onClick={pauseStory}>把這段重逢記下來 <ChevronRight size={15} /></button>
+                          <button className="story-primary-button" onClick={() => changeStage('rehearsal')}>回到練團室，聽他們演奏 <ChevronRight size={15} /></button>
                         </div>
                       </>
                     )}
@@ -665,11 +859,107 @@ function App() {
                 </div>
               )}
 
+              {storyStage === 'rehearsal' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">第一章</div>
+                    <div className="story-contact-title">
+                      <strong>第一次聽他們練團</strong>
+                      <small>練團室・傍晚</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">鼓聲落下以後</div>
+                    <h2 className="story-scene-title">還沒開始，就先吵起來了</h2>
+                    <StoryBlocks blocks={rehearsalBlocks} />
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={() => changeStage('dinner')}>練團結束，跟大家去吃飯 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'dinner' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">第一章</div>
+                    <div className="story-contact-title">
+                      <strong>練團後的晚餐</strong>
+                      <small>台北・熱炒店・晚上</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">晚上七點多・一桌人的好奇心</div>
+                    <h2 className="story-scene-title">「妳跟 Masa 怎麼認識的？」</h2>
+                    <StoryBlocks blocks={dinnerIntroBlocks} />
+                    {dinnerReplyKey === null ? (
+                      <div className="choice-area">
+                        <div className="choice-heading">你想怎麼回答？</div>
+                        <button className="reply-choice" onClick={() => chooseDinnerReply('a')}><span>我們小時候住得很近，常常一起玩。</span><ChevronRight size={15} /></button>
+                        <button className="reply-choice" onClick={() => chooseDinnerReply('b')}><span>他小時候就很愛惹我，現在完全沒變，甚至變本加厲。</span><ChevronRight size={15} /></button>
+                        <button className="reply-choice" onClick={() => chooseDinnerReply('c')}><span>我們本來說好搬家後要繼續聯絡，後來卻失聯了。</span><ChevronRight size={15} /></button>
+                      </div>
+                    ) : (
+                      <>
+                        <StoryBlocks blocks={dinnerReplies[dinnerReplyKey].blocks} />
+                        <div className="story-action-bar">
+                          <button className="story-primary-button" onClick={() => changeStage('after-dinner')}>飯後，和瑪莎說幾句話 <ChevronRight size={15} /></button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'after-dinner' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">第一章</div>
+                    <div className="story-contact-title">
+                      <strong>有些話，還是想問清楚</strong>
+                      <small>熱炒店外・夜晚</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">久別重逢之後</div>
+                    <h2 className="story-scene-title">那張被雨淋濕的地址紙</h2>
+                    <StoryBlocks blocks={afterDinnerBlocks} />
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={() => changeStage('ending')}>和溫尚翊一起回家 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'ending' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">第一章</div>
+                    <div className="story-contact-title">
+                      <strong>今天的最後一頁</strong>
+                      <small>回到家・21:12</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">1996 年・台北</div>
+                    <h2 className="story-scene-title">今天居然遇到了瑪莎</h2>
+                    <StoryBlocks blocks={endingBlocks} />
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={finishFirstChapter}>看看手機裡的新紀錄 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
               {storyStage === 'paused' && (
                 <div className="paused-story-banner">
                   <div>
-                    <strong>故事暫停在：意外重逢</strong>
-                    <small>練團室裡，重新認識蔡昇晏。</small>
+                    <strong>故事已暫停</strong>
+                    <small>目前進度會保存在這支手機裡。</small>
                   </div>
                   <button onClick={resumeStory}>繼續 <ChevronRight size={13} /></button>
                 </div>
@@ -875,6 +1165,65 @@ function App() {
                             )}
                           </div>
                         )
+                      ) : activeApp === 'contacts' ? (
+                        firstChapterComplete ? (
+                          <div className="contact-list">
+                            <div className="unlock-banner">
+                              <strong>第一章・新增聯絡人</strong>
+                              <span>6 位新朋友</span>
+                            </div>
+                            {selectedContactProfile ? (
+                              <div className="contact-profile">
+                                <button className="profile-back" onClick={() => setSelectedProfile(null)}><ArrowLeft size={13} /> 返回通訊錄</button>
+                                <div className="profile-avatar-large">{selectedContactProfile.name.slice(0, 1)}</div>
+                                <span className="profile-eyebrow">PERSONAL FILE · 1996</span>
+                                <h2>{selectedContactProfile.name}</h2>
+                                <div className="profile-role">{selectedContactProfile.role}</div>
+                                <p>{selectedContactProfile.description}</p>
+                                <div className="profile-footnote">人物資料已解鎖 · 故事仍在繼續</div>
+                              </div>
+                            ) : (
+                              <>
+                                {unlockedContacts.map((contact) => (
+                                  <button className="contact-list-row" key={contact.id} onClick={() => setSelectedProfile(contact.id)}>
+                                    <span className="contact-avatar">{contact.name.slice(0, 1)}</span>
+                                    <span className="contact-summary"><strong>{contact.name}</strong><small>{contact.role}</small></span>
+                                    <ChevronRight size={15} />
+                                  </button>
+                                ))}
+                                <p className="profile-footnote">點選名字查看人物資料。暫時不會顯示任何攻略結局。</p>
+                              </>
+                            )}
+                          </div>
+                        ) : (
+                          <>
+                            <div className="empty-symbol"><Contact size={29} /></div>
+                            <h2>目前還沒有已解鎖的聯絡人。</h2>
+                            <p>認識一個人之後，他的名字才會真正留在你的通訊錄裡。</p>
+                            <div className="coming-soon"><Radio size={15} /> 故事開始後逐步開放</div>
+                          </>
+                        )
+                      ) : activeApp === 'diary' ? (
+                        firstChapterComplete ? (
+                          <div className="diary-page">
+                            <div className="diary-paper">
+                              <span className="diary-date">1996 年 10 月 15 日・星期二</span>
+                              <h2>今天居然遇到了瑪莎。</h2>
+                              <p>今天本來只是跟著溫尚翊去練團室看看。</p>
+                              <p>結果一推開門，竟然看見那個以為這輩子都不會再見到的人。</p>
+                              <p>他還是那副樣子，講話一樣欠揍，甚至好像比小時候更會惹人生氣。</p>
+                              <p>可是他真的就在那裡。</p>
+                              <p>而且溫尚翊好像完全不知道，今天對我來說到底有多不可思議。</p>
+                            </div>
+                          </div>
+                        ) : (
+                          <>
+                            <div className="empty-symbol"><BookHeart size={29} /></div>
+                            <h2>今天還沒有寫下任何事情。</h2>
+                            <p>重要的一天結束後，或許會有一些話想留給明天的自己。</p>
+                            <div className="coming-soon"><Radio size={15} /> 故事開始後逐步開放</div>
+                          </>
+                        )
                       ) : activeApp === 'settings' ? (
                         <>
                           <div className="settings-symbol"><Settings size={28} /></div>
@@ -924,7 +1273,7 @@ function App() {
 
       <footer className="page-footer">
         <span><Clock3 size={13} /> 故事，從一九九六年開始。</span>
-        <span>BUILD 0.2.0 · FIRST CHAPTER</span>
+        <span>BUILD 0.3.2 · FIRST CHAPTER</span>
       </footer>
 
       {showNameSetup && (
