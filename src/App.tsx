@@ -1641,7 +1641,7 @@ function App() {
                       ><ArrowLeft size={17} /></button>
                       <div className="app-window-title">
                         {ActiveIcon && <ActiveIcon size={17} />}
-                        <span>{activeApp === 'messages' && selectedSmsThread === 'wen' ? '溫尚翊' : activeCopy.heading}</span>
+                        <span>{activeApp === 'messages' && selectedSmsThread ? characterNames[selectedSmsThread] : activeCopy.heading}</span>
                       </div>
                       <button className="close-button" onClick={() => { setActiveApp(null); setSelectedSmsThread(null) }} aria-label="關閉"><X size={17} /></button>
                     </div>
