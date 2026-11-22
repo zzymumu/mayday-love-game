@@ -670,7 +670,7 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
     ending: [
       {
         "kind": "narration",
-        "text": "他接過水，仰頭喝了幾口，才像是終於解了渴。球場上的同學又喊了他一聲，他回頭應了一下，卻沒有立刻走回去。"
+        "text": "他把瓶蓋旋緊，朝場上的同學比了個手勢，示意自己等一下就回去。那邊的人又喊了他一聲，他回頭應了一下，卻沒有立刻走回去。"
       },
       {
         "kind": "dialogue",
@@ -754,33 +754,13 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
         "text": "這邊平常下課會比較多人，大家常常趕著去買東西。再往前走一點就安靜多了。"
       },
       {
-        "kind": "dialogue",
-        "speaker": "你",
-        "text": "你平常上課也會從這裡經過嗎？"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "陳信宏",
-        "text": "平常上課都走這幾條路，走久了就會覺得很熟悉。"
-      },
-      {
         "kind": "narration",
         "text": "經過教室外的公告欄時，你停下來看了幾眼，上面貼著課程異動和社團活動的紙張，有些邊角已經被風吹得翹起來。阿信沒有催你，只站在旁邊等你看完，還順手替你指了指圖書館的方向。"
       },
       {
         "kind": "dialogue",
         "speaker": "陳信宏",
-        "text": "圖書館那邊下午比較安靜。如果妳想找地方看書，通常那裡還滿舒服的。"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "你",
-        "text": "聽起來你很常去喔？"
-      },
-      {
-        "kind": "dialogue",
-        "speaker": "陳信宏",
-        "text": "有時候會啦。想找資料，或是想安靜一下，就會過去坐坐。"
+        "text": "這一帶妳有沒有什麼想知道的？我平常都從這裡走，應該還算熟。"
       }
     ],
     choices: [
@@ -791,11 +771,11 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
     ending: [
       {
         "kind": "narration",
-        "text": "後來阿信又帶你繞去看了幾個他平常會經過的地方，還順便介紹了附近可以吃飯的小店。你們一路聊著音樂、課堂和最近聽到的歌，原本不算短的校園路線，走起來卻很快就到了尾聲。"
+        "text": "接著阿信帶你沿著剛才沒走過的另一條路往前，順路介紹附近可以吃飯的小店。你們一路聊著音樂、課堂和最近聽到的歌，原本不算短的校園路線，走起來卻很快就到了尾聲。"
       },
       {
         "kind": "narration",
-        "text": "走到一處比較安靜的地方時，他停下來替你指了指遠處的建築，說那邊有時候會辦活動。你問他平常是不是也會和同學在校園裡待到很晚，他想了一下，說有時候聊起音樂就會忘記時間。"
+        "text": "走到一處比較安靜的地方時，他停下來替你指了指遠處的建築，說那邊有時候會辦活動。你們在樹蔭下稍微停了一會兒，遠處有人抱著講義穿過走廊，風把公告欄上的紙吹得輕輕掀起。"
       },
       {
         "kind": "dialogue",
@@ -907,12 +887,12 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
       {
         "kind": "dialogue",
         "speaker": "你",
-        "text": "你看吧，我就說他們會記得你。"
+        "text": "看吧，我就說不用緊張。"
       },
       {
         "kind": "dialogue",
         "speaker": "蔡昇晏",
-        "text": "我哪有說他們不記得我？是妳一路上自己緊張吧。"
+        "text": "我哪有緊張？是妳一路上自己緊張吧。"
       },
       {
         "kind": "narration",
@@ -993,13 +973,24 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
       {
         "kind": "dialogue",
         "speaker": "你",
-        "text": "來給你送便當啊。"
+        "text": "今天剛好有空，想說過來看看你。"
+      },
+      {
+        "kind": "narration",
+        "text": "他這才注意到你手裡的便當，視線停在袋子上，像是忽然明白你今天特地過來的原因。"
       },
       {
         "kind": "dialogue",
         "speaker": "石錦航",
         "text": "這是特地帶來給我的嗎？妳怎麼還跑一趟。"
-      },
+      }
+    ],
+    choices: [
+      { text: '怕你上課上到忘記吃飯，先把午餐補上。', response: ['謝謝妳，還特地跑過來。我剛好也有點餓了。'], affection: 3 },
+      { text: '午餐時間到了，先吃飯再讀書。', response: ['好，聽妳的。剛好休息一下，等一下再繼續看。'], affection: 2 },
+      { text: '我剛好經過啦，便當多帶了一份。', response: ['師大附中這麼剛好會經過喔？不過，謝謝妳，我收下了。'], affection: 1 },
+    ],
+    ending: [
       {
         "kind": "narration",
         "text": "他接過便當時，動作很小心，像是怕一不留神就把盒子弄歪了。看見你站在門邊，他先把手上的課本放到桌上，又往旁邊讓了讓，替你留出可以坐下的位置。"
@@ -1032,17 +1023,10 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
         "kind": "dialogue",
         "speaker": "石錦航",
         "text": "那也要記得吃飯和休息，不要都把時間排滿了。"
-      }
-    ],
-    choices: [
-      { text: '怕你上課上到忘記吃飯，先把午餐補上。', response: ['謝謝妳，還特地跑過來。我剛好也有點餓了。'], affection: 3 },
-      { text: '午餐時間到了，先吃飯再讀書。', response: ['好，聽妳的。剛好休息一下，等一下再繼續看。'], affection: 2 },
-      { text: '我剛好經過啦，便當多帶了一份。', response: ['師大附中這麼剛好會經過喔？不過，謝謝妳，我收下了。'], affection: 1 },
-    ],
-    ending: [
+      },
       {
         "kind": "narration",
-        "text": "他帶你到補習班外比較安靜的地方坐下，打開便當後，還先把其中一樣配菜往你這邊推了推，問你有沒有吃午餐。"
+        "text": "等你們在補習班外比較安靜的地方坐下，他才打開便當，還先把其中一樣配菜往你這邊推了推，問你有沒有吃午餐。"
       },
       {
         "kind": "dialogue",
@@ -1116,6 +1100,13 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
         "speaker": "劉諺明",
         "text": "那妳來得正好。不過線材要小心一點，我先教妳怎麼整理。"
       },
+    ],
+    choices: [
+      { text: '你先去忙，我來整理這些線。', response: ['好，那我先教妳怎麼捲，不能折到線。整理完再照種類放回箱子就好。'], affection: 2 },
+      { text: '這麼多東西每天都要點一遍嗎？', response: ['差不多，少一樣器材就很麻煩，所以每次收完都要確認。'], affection: 2 },
+      { text: '我今天來當免費工讀生，有沒有供餐？', response: ['哈哈，這樣我是不是要先準備便當？放心啦，不會讓妳白忙的。'], affection: 3 },
+    ],
+    ending: [
       {
         "kind": "narration",
         "text": "他把一條導線拿起來，示範怎麼順著弧度繞成圈，不能硬折，也不能隨便塞進箱子。你學著他的動作，慢慢把整理好的線材按種類放回去。"
@@ -1138,16 +1129,9 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
         "kind": "narration",
         "text": "你把手上的線材放進箱子，再照著他寫在紙上的分類把其他幾條分開。諺明一邊核對清單，一邊把譜架靠回牆邊，偶爾抬頭看看你有沒有需要幫忙。"
       }
-    ],
-    choices: [
-      { text: '你先去忙，我來整理這些線。', response: ['好，那我先教妳怎麼捲，不能折到線。整理完再照種類放回箱子就好。'], affection: 2 },
-      { text: '這麼多東西每天都要點一遍嗎？', response: ['差不多，少一樣器材就很麻煩，所以每次收完都要確認。'], affection: 2 },
-      { text: '我今天來當免費工讀生，有沒有供餐？', response: ['哈哈，這樣我是不是要先準備便當？放心啦，不會讓妳白忙的。'], affection: 3 },
-    ],
-    ending: [
       {
         "kind": "narration",
-        "text": "你們把線材、譜架和麥克風架一樣樣整理好，再把器材箱依序放回原位。原本看起來有些凌亂的空間，慢慢恢復了整齊。"
+        "text": "照著剛才的分類，你們接著把剩下的線材、譜架和麥克風架一樣樣整理好，再把器材箱依序放回原位。原本看起來有些凌亂的空間，慢慢恢復了整齊。"
       },
       {
         "kind": "narration",
