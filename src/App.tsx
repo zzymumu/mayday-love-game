@@ -760,14 +760,13 @@ function App() {
                   </div>
                   <div className="story-narrative-scroll">
                     <div className="story-kicker">隔了好多年，再一次認出他</div>
-                    <h2 className="story-scene-title">「……蔡昇晏？」</h2>
+                    <h2 className="story-scene-title">四目相對的那一刻</h2>
                     <StoryBlocks blocks={[
                       { kind: 'narration', text: '你順著溫尚翊指的方向看過去。角落裡的人一直低著頭，懷裡抱著一把貝斯，指尖在弦上輕輕撥了幾下。' },
-                      { kind: 'narration', text: '溫尚翊剛才喊的是「瑪莎」。你對這個名字沒有印象，只是看向那個被他介紹的人。' },
-                      { kind: 'narration', text: '像是聽見有人叫自己，他手上的動作停了下來，抬起頭。' },
+                      { kind: 'narration', text: '他聽見有人喊自己，手上的動作停了下來，抬起頭。' },
                       { kind: 'narration', text: '四目相對的那一刻，你整個人都愣住了。' },
                       { kind: 'dialogue', speaker: '你', text: '……蔡昇晏？' },
-                      { kind: 'narration', text: '他的手指還停在琴弦上，沒有立刻移開。那張臉比記憶裡成熟了許多，可你還是一眼就認出了他。' },
+                      { kind: 'narration', text: '那張臉比記憶裡成熟了許多，眉眼卻沒有變。你幾乎沒經過思考，就認出了他。' },
                       { kind: 'dialogue', speaker: '蔡昇晏', text: '……蛤？' },
                       { kind: 'aside', text: '救命。' },
                       { kind: 'narration', text: '你真的沒想過會在這裡見到他。那個搬家前還跟你約好要保持聯絡，後來卻因為一場大雨和一張模糊的地址紙失去消息的人，現在就坐在離你不到幾步的地方。' },
