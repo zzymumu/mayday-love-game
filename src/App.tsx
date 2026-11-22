@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {
   ArrowLeft,
   BatteryFull,
@@ -96,17 +96,8 @@ function App() {
   const [activeApp, setActiveApp] = useState<AppKey | null>(null)
   const [showNameSetup, setShowNameSetup] = useState(() => !localStorage.getItem('mayday-player-name'))
   const [showResetConfirm, setShowResetConfirm] = useState(false)
-  const [currentTime, setCurrentTime] = useState('16:28')
-
-  useEffect(() => {
-    const updateClock = () => {
-      const now = new Date()
-      setCurrentTime(now.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit', hour12: false }))
-    }
-    updateClock()
-    const timer = window.setInterval(updateClock, 30_000)
-    return () => window.clearInterval(timer)
-  }, [])
+  // 遊戲時間屬於劇情時間，不跟隨玩家裝置的現實時區。
+  const currentTime = '16:28'
 
   const saveName = () => {
     const trimmed = nameDraft.trim()
