@@ -1647,47 +1647,68 @@ function App() {
                     </div>
                     <div className={activeApp === 'messages' ? 'app-window-content sms-mode' : activeApp === 'diary' ? 'app-window-content diary-mode' : 'app-window-content'}>
                       {activeApp === 'messages' ? (
-                        selectedSmsThread === null ? (
+                        storyStage === 'free-time' && selectedSmsThread === null && !freeChatTarget ? (
+                          <div className="free-time-picker">
+                            <div className="free-time-intro">
+                              <span className="profile-eyebrow">FREE TIME · 1996</span>
+                              <strong>今天想找誰聊一聊？</strong>
+                              <p>只能選擇一位朋友。選定後會進入至少五輪的專屬訊息，這次不能中途換人。</p>
+                              <small>錢佑達今天沒有開放個人聊天。</small>
+                            </div>
+                            {freeTimeOrder.map((id) => {
+                              const person = characterInfo.find((item) => item.id === id)!
+                              return (
+                                <button className="free-time-person" key={id} onClick={() => startFreeChat(id)}>
+                                  <span className="sms-avatar">{person.avatar}</span>
+                                  <span><strong>{person.name}</strong><small>{person.role}</small></span>
+                                  <ChevronRight size={15} />
+                                </button>
+                              )
+                            })}
+                          </div>
+                        ) : selectedSmsThread === null ? (
                           <div className="sms-inbox">
                             <div className="sms-inbox-heading">
                               <strong>訊息列表</strong>
                               <span>收件匣 · 1996</span>
                             </div>
-                            <button className="sms-thread-row" onClick={() => openSmsThread('wen')}>
-                              <span className="sms-avatar">溫</span>
-                              <span className="sms-thread-summary">
-                                <strong>溫尚翊</strong>
-                                <span>{latestSmsMessage?.text ?? '尚無訊息'}</span>
-                              </span>
-                              <span className="sms-thread-meta">
-                                <small>{latestSmsMessage?.time ?? '15:42'}</small>
-                                <ChevronRight size={14} />
-                              </span>
-                            </button>
+                            {inboxThreads.map((thread) => (
+                              <button className="sms-thread-row" key={thread.id} onClick={() => openSmsThread(thread.id)}>
+                                <span className="sms-avatar">{thread.avatar}</span>
+                                <span className="sms-thread-summary">
+                                  <strong>{thread.name}</strong>
+                                  <span>{thread.latest}</span>
+                                </span>
+                                <span className="sms-thread-meta">
+                                  <small>{thread.time}</small>
+                                  <ChevronRight size={14} />
+                                </span>
+                              </button>
+                            ))}
                           </div>
                         ) : (
                           <div className="sms-thread">
                             <div className="sms-thread-caption">
-                              <span>與溫尚翊的簡訊</span>
+                              <span>與{characterNames[selectedSmsThread]}的簡訊</span>
                               <small>訊息會一直保留在這裡</small>
                             </div>
                             <div className="sms-thread-scroll" ref={messageScrollRef}>
-                              {smsMessages.map((message, index) => (
+                              {currentThreadMessages.map((message, index) => (
                                 <div key={message.id}>
-                                  {(index === 0 || smsMessages[index - 1].date !== message.date) && (
+                                  {(index === 0 || currentThreadMessages[index - 1].date !== message.date) && (
                                     <div className="story-date-label">{message.date}</div>
                                   )}
                                   <MessageBubble mine={message.from === 'me'} text={message.text} />
                                 </div>
                               ))}
-                              {storyStage === 'messages' && replyKey === null && (
+                              {storyStage === 'messages' && selectedSmsThread === 'wen' && replyKey === null && (
                                 <div className="choice-area">
                                   <div className="choice-heading">選擇你的回覆</div>
                                   <button className="reply-choice" onClick={() => chooseReply('a')}>
                                     <span>好啊，反正我今天也沒事。幾點出發？</span><ChevronRight size={15} />
                                   </button>
                                   <button className="reply-choice" onClick={() => chooseReply('b')}>
-                                    <span>好啊！我還沒看過你們練團欸，突然有點期待。</span><ChevronRight size={15} />
+                                    <span>好啊！我還沒看過你們練團，突然有點期待。</span><ChevronRight size={15} />
                                   </button>
                                   <button className="reply-choice" onClick={() => chooseReply('c')}>
                                     <span>你怎麼突然想到約我？該不會又想找人幫你拿東西吧？</span><ChevronRight size={15} />
@@ -1695,13 +1716,100 @@ function App() {
                                   <small>只有選擇並送出後，劇情才會繼續。</small>
                                 </div>
                               )}
+                              {storyStage === 'greetings' && selectedSmsThread === currentGreetingId && !greetingReplied && (
+                                <div className="choice-area">
+                                  <div className="choice-heading">{characterNames[currentGreetingId]}的回覆</div>
+                                  {currentGreetingRound.choices.map((choice, index) => (
+                                    <button className="reply-choice" key={index} onClick={() => chooseGreetingReply(index)}>
+                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                    </button>
+                                  ))}
+                                  <small>先回覆這一輪，再決定要不要繼續聊。</small>
+                                </div>
+                              )}
+                              {storyStage === 'classroom' && selectedSmsThread === 'wen' && !classroomReplySent && (
+                                <div className="choice-area">
+                                  <div className="choice-heading">上課時間偷偷回覆</div>
+                                  {classroomChoices.map((choice, index) => (
+                                    <button className="reply-choice" key={index} onClick={() => chooseClassroomReply(index)}>
+                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                    </button>
+                                  ))}
+                                </div>
+                              )}
+                              {storyStage === 'masa-checkin' && selectedSmsThread === 'masa' && !masaCheckInSent && (
+                                <div className="choice-area">
+                                  <div className="choice-heading">你想怎麼問瑪莎？</div>
+                                  {masaCheckinChoices.map((choice, index) => (
+                                    <button className="reply-choice" key={index} onClick={() => chooseMasaCheckIn(index)}>
+                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                    </button>
+                                  ))}
+                                </div>
+                              )}
+                              {storyStage === 'stone-checkin' && selectedSmsThread === 'stone' && !stoneCheckInSent && (
+                                <div className="choice-area">
+                                  <div className="choice-heading">你想怎麼關心石頭？</div>
+                                  {stoneCheckinChoices.map((choice, index) => (
+                                    <button className="reply-choice" key={index} onClick={() => chooseStoneCheckIn(index)}>
+                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                    </button>
+                                  ))}
+                                </div>
+                              )}
+                              {storyStage === 'free-chat' && freeChatTarget && selectedSmsThread === freeChatTarget && !freeChatReplied && (
+                                <div className="choice-area">
+                                  <div className="choice-heading">自由活動・第 {freeChatRound + 1}/5 輪</div>
+                                  {freeTimeChats[freeChatTarget][freeChatRound].choices.map((choice, index) => (
+                                    <button className="reply-choice" key={index} onClick={() => chooseFreeChatReply(index)}>
+                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                    </button>
+                                  ))}
+                                  <small>每一輪都要親自選擇回覆，對話才會繼續。</small>
+                                </div>
+                              )}
                             </div>
-                            {storyStage === 'reply' && selectedReply && (
+                            {storyStage === 'reply' && selectedSmsThread === 'wen' && selectedReply && (
                               <div className="sms-thread-actions">
                                 <div className="reply-note">訊息已送出。溫尚翊會在四點半到妳教室樓下等妳。</div>
                                 <button className="story-primary-button" onClick={() => { setActiveApp(null); setSelectedSmsThread(null); changeStage('walk') }}>
                                   收起手機，去樓下找他 <ChevronRight size={15} />
                                 </button>
+                              </div>
+                            )}
+                            {storyStage === 'greetings' && selectedSmsThread === currentGreetingId && greetingReplied && (
+                              <div className="sms-thread-actions">
+                                {greetingRound < greetingChats[currentGreetingId].length - 1 && (
+                                  <button className="story-primary-button secondary-chat-action" onClick={continueGreeting}>再聊一輪 <ChevronRight size={15} /></button>
+                                )}
+                                <button className="story-primary-button" onClick={finishGreetingPerson}>
+                                  {greetingRound < greetingChats[currentGreetingId].length - 1 ? '先聊到這裡' : '完成打招呼'} <ChevronRight size={15} />
+                                </button>
+                              </div>
+                            )}
+                            {storyStage === 'classroom' && selectedSmsThread === 'wen' && classroomReplySent && (
+                              <div className="sms-thread-actions">
+                                <div className="reply-note">溫尚翊說今天練團湊不齊人。你想起瑪莎剛才的樣子，忍不住想問問他。</div>
+                                <button className="story-primary-button" onClick={startMasaCheckIn}>傳訊息問問瑪莎 <ChevronRight size={15} /></button>
+                              </div>
+                            )}
+                            {storyStage === 'masa-checkin' && selectedSmsThread === 'masa' && masaCheckInSent && (
+                              <div className="sms-thread-actions">
+                                <div className="reply-note">瑪莎回覆得倒是很快，聽起來應該沒什麼大事。</div>
+                                <button className="story-primary-button secondary-chat-action" onClick={startStoneCheckIn}>也傳訊息關心石頭 <ChevronRight size={15} /></button>
+                                <button className="story-primary-button" onClick={goToIceDate}>先不打擾他們，去找溫尚翊 <ChevronRight size={15} /></button>
+                              </div>
+                            )}
+                            {storyStage === 'stone-checkin' && selectedSmsThread === 'stone' && stoneCheckInSent && (
+                              <div className="sms-thread-actions">
+                                <div className="reply-note">石頭說已經沒事了。你把手機收起來，準備去赴溫尚翊的約。</div>
+                                <button className="story-primary-button" onClick={goToIceDate}>收起手機，去找溫尚翊 <ChevronRight size={15} /></button>
+                              </div>
+                            )}
+                            {storyStage === 'free-chat' && freeChatTarget && selectedSmsThread === freeChatTarget && freeChatReplied && freeChatRound === 4 && (
+                              <div className="sms-thread-actions">
+                                <div className="reply-note">五輪對話已完成。這段訊息會保留在收件匣裡，你之後可以隨時回看。</div>
+                                <button className="story-primary-button" onClick={finishFreeChat}>結束自由活動 <ChevronRight size={15} /></button>
                               </div>
                             )}
                           </div>
