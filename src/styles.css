@@ -739,3 +739,147 @@ button { cursor: pointer; }
   .message-bubble { font-size: 8.5px; }
   .reply-choice { font-size: 8.5px; }
 }
+
+
+/* 0.2.1 — 可回看的訊息收件匣 */
+.app-overlay { z-index: 9; }
+
+.app-window-content.sms-mode {
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
+  text-align: left;
+  background: #fbf7ef;
+}
+
+.sms-inbox {
+  width: 100%;
+  min-height: 0;
+  padding: 12px 0;
+  overflow-y: auto;
+  background: #fbf7ef;
+}
+.sms-inbox-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 3px 14px 11px;
+  color: #806b5b;
+}
+.sms-inbox-heading strong {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 12px;
+  font-weight: 700;
+}
+.sms-inbox-heading span {
+  color: #a18f7d;
+  font-size: 8px;
+}
+.sms-thread-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 65px;
+  padding: 10px 13px;
+  border: 0;
+  border-top: 1px solid #eee5da;
+  color: #5f5146;
+  background: transparent;
+  text-align: left;
+}
+.sms-thread-row:hover { background: #f7efe6; }
+.sms-avatar {
+  display: grid;
+  place-items: center;
+  width: 39px;
+  height: 39px;
+  flex: 0 0 39px;
+  border: 1px solid #e5d2c4;
+  border-radius: 50%;
+  color: #987466;
+  background: linear-gradient(145deg, #f8eae0, #ead5c8);
+  font-family: 'Noto Serif TC', serif;
+  font-size: 14px;
+}
+.sms-thread-summary {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  gap: 5px;
+}
+.sms-thread-summary strong {
+  color: #5d4d42;
+  font-size: 10px;
+}
+.sms-thread-summary span {
+  overflow: hidden;
+  color: #9a8979;
+  font-size: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sms-thread-meta {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 3px;
+  color: #b29b87;
+}
+.sms-thread-meta small { font-size: 8px; }
+
+.sms-thread {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  background: #fbf7ef;
+}
+.sms-thread-caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid #eee5da;
+  color: #8d7665;
+  background: #f8f1e8;
+  font-size: 8px;
+}
+.sms-thread-caption small {
+  color: #aa9683;
+  font-size: 7px;
+}
+.sms-thread-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  padding: 7px 11px 13px;
+}
+.sms-thread-scroll::-webkit-scrollbar { display: none; }
+.sms-thread-actions {
+  flex: 0 0 auto;
+  padding: 0 10px 10px;
+  border-top: 1px solid #eee3d8;
+  background: #f8f1e8;
+}
+.sms-thread-actions .reply-note {
+  margin: 8px 0;
+  padding: 7px 9px;
+  font-size: 8px;
+}
+.sms-thread-actions .story-primary-button { min-height: 34px; }
+
+@media (max-width: 420px) {
+  .sms-inbox-heading { padding-left: 12px; padding-right: 12px; }
+  .sms-thread-row { padding-left: 11px; padding-right: 11px; }
+  .sms-thread-scroll { padding-left: 9px; padding-right: 9px; }
+}
