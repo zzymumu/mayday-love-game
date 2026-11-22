@@ -1216,9 +1216,11 @@ function App() {
                       : storyStage === 'free-time' || storyStage === 'free-chat' || storyStage === 'day2-complete' ? '18:20'
                         : ['month-free-time', 'month-visit', 'month-visit-complete'].includes(storyStage) ? '10:30'
                           : '17:20'
-  const isSecondDay = ['classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete'].includes(storyStage)
-  const isMonthLater = ['month-free-time', 'month-visit', 'month-visit-complete'].includes(storyStage)
+  const effectiveDateStage = storyStage === 'paused' ? resumeStage : storyStage
+  const isSecondDay = ['classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete'].includes(effectiveDateStage)
+  const isMonthLater = ['month-free-time', 'month-visit', 'month-visit-complete'].includes(effectiveDateStage) || localStorage.getItem('mayday-month-visit-complete') === 'true'
   const saveGameDate = isMonthLater ? '1996.11.16' : isSecondDay ? '1996.10.16' : '1996.10.15'
+  const calendarTime = isMonthLater ? '10:30' : currentTime
   const [calendarYear, calendarMonth, calendarDay] = saveGameDate.split('.')
   const calendarDate = new Date(Number(calendarYear), Number(calendarMonth) - 1, Number(calendarDay))
   const calendarWeekday = ['日', '一', '二', '三', '四', '五', '六'][calendarDate.getDay()]
@@ -3039,7 +3041,7 @@ function App() {
                           <div className="calendar-agenda-card">
                             <span>今日記事</span>
                             <strong>{calendarAgenda}</strong>
-                            <small>{calendarMonth}/{Number(calendarDay)} · {currentTime}</small>
+                            <small>{calendarMonth}/{Number(calendarDay)} · {calendarTime}</small>
                           </div>
                           <p className="calendar-app-footnote">日期會隨著故事進度自動更新。</p>
                         </div>
