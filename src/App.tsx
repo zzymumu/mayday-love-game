@@ -337,7 +337,7 @@ const studioScenes: StoryScene[] = [
       { kind: 'narration', text: '房間另一頭傳來一聲鼓棒敲在鼓框上的輕響。你轉過去，看見鼓組後面的人探出頭，手裡還拿著一支鼓棒。' },
       { kind: 'dialogue', speaker: '錢佑達', text: '嗨，我是錢佑達。今天鼓可能會有點大聲，妳先習慣一下喔。' },
       { kind: 'dialogue', speaker: '你', text: '沒關係，我坐遠一點就好了。' },
-      { kind: 'narration', text: '他笑了笑，把鼓棒在掌心轉了一圈，又回頭去調整鼓的位置。你這才知道，原來剛剛那些試音聲就是從這裡傳出來的。' },
+      { kind: 'narration', text: '他笑了笑，把鼓棒在掌心轉了一圈，又回頭去調整鼓的位置。' },
     ],
   },
   {
