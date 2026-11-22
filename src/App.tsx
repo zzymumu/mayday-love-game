@@ -265,15 +265,13 @@ const nicknameStoryBlocks = (question: string): StoryBlock[] => [
 const rehearsalBlocks: StoryBlock[] = [
   { kind: 'narration', text: '綽號的話題告一段落，房間裡又慢慢回到練團前的忙碌。錢佑達坐回鼓組後面，拿鼓棒輕輕敲了敲鼓框。' },
   { kind: 'dialogue', speaker: '錢佑達', text: '好啦，準備喔。從前面一次。' },
-  { kind: 'narration', text: '溫尚翊把吉他放到一旁，先替你把靠牆的椅子往外挪了一點，又彎腰把椅腳旁邊的導線撥開。' },
-  { kind: 'dialogue', speaker: '溫尚翊', text: '妳坐這邊啦，離音箱遠一點。' },
-  { kind: 'dialogue', speaker: '你', text: '坐哪裡有差喔？' },
-  { kind: 'dialogue', speaker: '溫尚翊', text: '有啊，等一下鼓一打下去妳就知道了。' },
-  { kind: 'narration', text: '他瞥見你還拿著飲料，又伸手指了指旁邊的小桌。' },
-  { kind: 'dialogue', speaker: '溫尚翊', text: '飲料放桌上啦，不要擺在音箱旁邊，等一下線勾到會整個翻掉。' },
-  { kind: 'dialogue', speaker: '你', text: '知道啦，你很囉嗦欸。' },
-  { kind: 'dialogue', speaker: '溫尚翊', text: '我是在幫妳顧飲料好不好。' },
-  { kind: 'narration', text: '他說完才拿起吉他。走回大家身邊前，還是回頭確認了一次你坐的位置。' },
+  { kind: 'narration', text: '溫尚翊把吉他袋靠到牆邊，回頭看了一眼你坐的位置。石錦航剛才替你挪好的椅子，剛好避開了地上交錯的線材。' },
+  { kind: 'dialogue', speaker: '溫尚翊', text: '石頭幫妳找好位置了喔？' },
+  { kind: 'dialogue', speaker: '你', text: '嗯，他剛剛還提醒我小心地上的線。' },
+  { kind: 'dialogue', speaker: '溫尚翊', text: '那就好。飲料先放桌上啦，別擺在音箱旁邊，等一下線勾到會整個翻掉。' },
+  { kind: 'dialogue', speaker: '你', text: '知道啦，你怎麼比我還緊張。' },
+  { kind: 'dialogue', speaker: '溫尚翊', text: '我只是提醒妳，等一下不要又顧著看我們練團。' },
+  { kind: 'narration', text: '他說完才拿起吉他。走回大家身邊前，還是回頭確認了一次你有沒有把飲料放好。' },
   { kind: 'dialogue', speaker: '溫尚翊', text: '等一下如果覺得太吵就跟我說，不用硬撐。' },
   { kind: 'dialogue', speaker: '你', text: '好啦，你快去練你的。' },
   { kind: 'dialogue', speaker: '蔡昇晏', text: '欸，溫尚翊，你今天是帶同學來，還是帶小朋友來校外教學？' },
@@ -296,7 +294,7 @@ const rehearsalBlocks: StoryBlock[] = [
   { kind: 'dialogue', speaker: '你', text: '聽不懂也聽得出來你很吵。' },
   { kind: 'dialogue', speaker: '蔡昇晏', text: '很好，至少耳朵還沒退化。' },
   { kind: 'narration', text: '你忍不住笑了。這個人真的一點都沒變，甚至比小時候更會接話、更懂得怎麼把人噎得說不出話。只是當他低下頭重新撥動琴弦，神情又很快認真起來。' },
-  { kind: 'narration', text: '中間休息時，溫尚翊走過來拿水，順手把你放在桌邊的飲料往裡挪了挪。' },
+  { kind: 'narration', text: '中間休息時，溫尚翊拿著水走到你旁邊，彎下腰，沒有打斷其他人的聊天，只低聲問了你一句。' },
   { kind: 'dialogue', speaker: '溫尚翊', text: '還好嗎？會不會太大聲？' },
   { kind: 'dialogue', speaker: '你', text: '還好啊，滿好聽的。' },
   { kind: 'dialogue', speaker: '溫尚翊', text: '那就好。等一下再坐一下，快結束了。' },
@@ -320,9 +318,9 @@ const dinnerIntroBlocks: StoryBlock[] = [
   { kind: 'dialogue', speaker: '石錦航', text: '你們一見面就直接叫出本名，看起來真的認識很久了。' },
   { kind: 'dialogue', speaker: '錢佑達', text: '我剛剛還以為你們認錯人，結果是真的認識喔？' },
   { kind: 'dialogue', speaker: '蔡昇晏', text: '你們是來吃飯還是來審問的？菜先吃啦。' },
-  { kind: 'dialogue', speaker: '溫尚翊', text: '我也想知道啊，我之前都不知道你們認識。' },
+  { kind: 'dialogue', speaker: '溫尚翊', text: '我也想知道啊，我之前都不知道妳跟 Masa 認識。' },
   { kind: 'dialogue', speaker: '蔡昇晏', text: '你又沒問。' },
-  { kind: 'dialogue', speaker: '你', text: '你也沒跟我說你認識溫尚翊啊。' },
+  { kind: 'dialogue', speaker: '你', text: '我也是今天才知道你跟溫尚翊認識啊。' },
   { kind: 'dialogue', speaker: '蔡昇晏', text: '我哪知道妳會跟他混在一起。' },
   { kind: 'dialogue', speaker: '溫尚翊', text: '蛤？什麼叫混在一起？' },
   { kind: 'narration', text: '桌邊立刻響起一陣笑聲。瑪莎夾了一口菜，還是一臉理直氣壯，彷彿剛才那句話完全沒有問題。' },
@@ -406,8 +404,7 @@ const endingBlocks: StoryBlock[] = [
   { kind: 'narration', text: '回到家時，已經快九點了。你把包放到椅子上，換下鞋子，才發現自己從下午到現在幾乎沒有真正安靜下來過。' },
   { kind: 'narration', text: '今天本來只是跟著溫尚翊去練團室看看。你聽見了他們認真練習的聲音，認識了幾個新朋友，還在一個完全沒預料到的地方，重新遇見了蔡昇晏。' },
   { kind: 'narration', text: '手機螢幕亮起。通訊錄裡多了幾個名字，日記也空出了一頁，像是替這個有點不真實的下午留了位置。' },
-  { kind: 'narration', text: '你想了想，最後只在日記最上面寫下了一句話。' },
-  { kind: 'aside', text: '今天居然遇到了瑪莎。' },
+  { kind: 'narration', text: '你把今天發生的事情一件件寫進日記裡。寫到最後，才終於有了今天真的發生過的實感。' },
 ]
 
 const unlockedContacts = [
@@ -1210,12 +1207,17 @@ function App() {
                           <div className="diary-page">
                             <div className="diary-paper">
                               <span className="diary-date">1996 年 10 月 15 日・星期二</span>
-                              <h2>今天居然遇到了瑪莎。</h2>
-                              <p>今天本來只是跟著溫尚翊去練團室看看。</p>
-                              <p>結果一推開門，竟然看見那個以為這輩子都不會再見到的人。</p>
-                              <p>他還是那副樣子，講話一樣欠揍，甚至好像比小時候更會惹人生氣。</p>
-                              <p>可是他真的就在那裡。</p>
-                              <p>而且溫尚翊好像完全不知道，今天對我來說到底有多不可思議。</p>
+                              <h2>今天真的發生了一件很不可思議的事。</h2>
+                              <p>本來只是跟著溫尚翊去練團室看看，結果居然在那裡遇到了瑪莎。</p>
+                              <p>我到現在還是覺得有點不真實。</p>
+                              <p>小時候搬家之前，他還特地把地址寫給我，說以後一定要聯絡。</p>
+                              <p>可是後來那場大雨，把紙上的字都弄模糊了。</p>
+                              <p>我一直很想知道他後來去了哪裡。</p>
+                              <p>沒想到兜兜轉轉這麼多年，居然會在這樣的地方重新見面。</p>
+                              <p>而且他竟然也認識溫尚翊。</p>
+                              <p>這個世界真的好小。</p>
+                              <p>今天還有好多事情沒來得及問他。</p>
+                              <p>下次見面再說吧。</p>
                             </div>
                           </div>
                         ) : (
@@ -1275,7 +1277,7 @@ function App() {
 
       <footer className="page-footer">
         <span><Clock3 size={13} /> 故事，從一九九六年開始。</span>
-        <span>BUILD 0.3.2 · FIRST CHAPTER</span>
+        <span>BUILD 0.3.3 · FIRST CHAPTER</span>
       </footer>
 
       {showNameSetup && (
