@@ -214,7 +214,7 @@ function createInitialSmsMessages(): SmsMessage[] {
   return initial
 }
 
-const reunionReplies: Record<ReunionReplyKey, { text: string; blocks: StoryBlock[] }> = {
+const reunionReplies: Record<ReunionReplyKey, { text: string; affection: number; blocks: StoryBlock[] }> = {
   a: {
     text: '嗯，我們小時候就認識了。',
     affection: 3,
