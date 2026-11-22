@@ -438,6 +438,7 @@ const makeChatRound = (
   ],
 })
 
+// Author-only continuity note: in 1996, Masa (蔡昇晏) and Shitou (石錦航) are both repeat students in their final year at 師大附中. Masa is one year younger than the heroine. The heroine does not know their school year or repeat-year history yet; never reveal it in her narration, unlocked profile, or these early messages.
 const greetingChats: Record<CharacterId, ChatRound[]> = {
   wen: [
     makeChatRound('妳到家了嗎？今天謝謝妳跟我們去。', '到了啦，今天還滿好玩的。', '那就好，我還怕妳會覺得無聊。', '剛到家。你今天也辛苦了。', '還好啦，今天有人陪著，時間過得比較快。'),
@@ -1360,6 +1361,31 @@ function App() {
                 </div>
               )}
 
+              {storyStage === 'classroom' && activeApp === null && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">第二天</div>
+                    <div className="story-contact-title">
+                      <strong>課堂間的訊息</strong>
+                      <small>1996 年 10 月 16 日・上午</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">台灣大學・上午的課</div>
+                    <h2 className="story-scene-title">桌肚裡的手機震了一下</h2>
+                    <StoryBlocks blocks={[
+                      { kind: 'narration', text: '第二天上午，你坐在教室靠窗的位置，課本攤在桌上，筆記才抄到一半。教授轉過身，在黑板上寫下一整排公式，粉筆聲在教室裡輕輕響著。' },
+                      { kind: 'narration', text: '桌肚裡的手機忽然震了一下。你低頭看了一眼，螢幕上跳出溫尚翊的名字。這個人明明也在上課，居然還有空偷偷傳訊息。' },
+                      { kind: 'narration', text: '你把手機往桌子底下挪了挪，確認教授還背對著大家，才點開那則訊息。' },
+                    ]} />
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={() => openMessagesApp('wen')}>偷偷看一下溫尚翊的訊息 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
               {storyStage === 'ice-date' && (
                 <div className="story-screen-overlay">
                   <div className="story-screen-head">
@@ -1483,17 +1509,6 @@ function App() {
                     <span>新朋友傳來訊息</span>
                   </span>
                   <span className="notification-time">現在</span>
-                </button>
-              )}
-              {storyStage === 'classroom' && activeApp === null && (
-                <button className="sms-notification" onClick={() => openMessagesApp('wen')}>
-                  <span className="notification-icon"><MessageSquare size={19} /></span>
-                  <span className="notification-copy">
-                    <strong>溫尚翊</strong>
-                    <span>下課要不要去吃冰？</span>
-                    <span>10月16日・上課時間</span>
-                  </span>
-                  <span className="notification-time">剛剛</span>
                 </button>
               )}
               {storyStage === 'masa-checkin' && activeApp === null && (
@@ -1927,7 +1942,7 @@ function App() {
 
       <footer className="page-footer">
         <span><Clock3 size={13} /> 故事，從一九九六年開始。</span>
-        <span>BUILD 0.3.4 · FIRST CHAPTER</span>
+        <span>BUILD 0.4.0 · SECOND DAY</span>
       </footer>
 
       {showNameSetup && (
