@@ -237,7 +237,7 @@ const walkBlocks: StoryBlock[] = [
   { kind: 'narration', text: '走出教學樓時，午後的陽光還沒完全退去。校園裡有腳踏車鈴聲，有人抱著講義匆匆往下一堂課趕，也有人已經在想晚餐要吃什麼。你在福利社買了飲料，冰涼的杯身很快凝出一層薄薄的水珠。' },
   { kind: 'narration', text: '剛走到樓下，你就看見溫尚翊站在靠近台階的地方。他背著那個深色吉他袋，肩帶有點滑，正低頭把它往上拉。聽見腳步聲，他抬起頭，朝你招了招手。' },
   { kind: 'dialogue', speaker: '溫尚翊', text: '欸，這邊。' },
-  { kind: 'narration', text: '你小跑着走過去，停在他面前。' },
+  { kind: 'narration', text: '你小跑著走過去，停在他面前。' },
   { kind: 'dialogue', speaker: '你', text: '等很久了嗎？' },
   { kind: 'dialogue', speaker: '溫尚翊', text: '還好啦，我也剛到。' },
   { kind: 'narration', text: '他順手把肩上的吉他袋往上提了提，視線落到你手裡的飲料上。' },
@@ -294,7 +294,7 @@ const studioScenes: StoryScene[] = [
       { kind: 'narration', text: '他看起來比剛才那位安靜一些，說完又朝你點了點頭。' },
       { kind: 'dialogue', speaker: '石錦航', text: '我是石錦航。' },
       { kind: 'dialogue', speaker: '你', text: '你好，謝謝你。' },
-      { kind: 'narration', text: '你把飲料放在椅子旁邊，低頭看了看地上那些交錯的線，忽然覺得剛才那句提醒還真不是客套。這裡的東西好像每一樣都不能隨便碰。' },
+      { kind: 'narration', text: '你把飲料放在椅子旁邊，低頭看了看地上交錯的線。剛才那句提醒不是客套，這裡每樣器材都得小心，連走路都要留意腳下。' },
     ],
   },
   {
@@ -722,7 +722,7 @@ function App() {
                     <div className="chapter-mark">第一章</div>
                     <div className="story-contact-title">
                       <strong>練團室</strong>
-                      <small>認識新朋友 · {studioStep + 1}/5</small>
+                      <small>練團室初訪 · {studioStep + 1}/5</small>
                     </div>
                     <span className="story-head-spacer" />
                   </div>
