@@ -37,3 +37,5 @@ https://zzymumu.github.io/mayday-love-game/
 目前提供復古手機外觀、主選單、玩家姓名設定與各功能入口的佔位畫面。正式聊天、劇情、日記、好感度及多結局系統會在後續階段加入。
 
 玩家姓名目前儲存在瀏覽器本機；清除瀏覽器資料或更換裝置不會自動同步。
+
+<!-- Trigger a fresh GitHub Pages deployment after enabling Pages in repository settings. -->
