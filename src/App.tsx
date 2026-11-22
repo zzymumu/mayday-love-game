@@ -623,7 +623,7 @@ function App() {
                           <label className="field-label" htmlFor="rename-player">你的名字</label>
                           <div className="rename-row">
                             <input id="rename-player" value={nameDraft || playerName} onChange={(event) => setNameDraft(event.target.value)} placeholder="輸入名字" maxLength={12} />
-                            <button className="small-action" onClick={saveName}><Check size={15} /> 儲存</button>
+                            <button className="small-action" onClick={() => saveName(false)}><Check size={15} /> 儲存</button>
                           </div>
                           <button className="danger-action" onClick={() => setShowResetConfirm(true)}>清除本機資料並重新開始</button>
                         </>
