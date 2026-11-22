@@ -673,13 +673,13 @@ function App() {
   const [activeApp, setActiveApp] = useState<AppKey | null>(null)
   const [showNameSetup, setShowNameSetup] = useState(() => !localStorage.getItem('mayday-player-name'))
   const [showResetConfirm, setShowResetConfirm] = useState(false)
-  const [selectedSmsThread, setSelectedSmsThread] = useState<'wen' | null>(null)
+  const [selectedSmsThread, setSelectedSmsThread] = useState<CharacterId | null>(null)
   const [smsMessages, setSmsMessages] = useState<SmsMessage[]>(() => {
     const saved = localStorage.getItem('mayday-sms-messages')
     if (saved) {
       try {
         const parsed = JSON.parse(saved) as SmsMessage[]
-        if (Array.isArray(parsed) && parsed.every((message) => message && typeof message.id === 'string' && typeof message.text === 'string' && (message.from === 'wen' || message.from === 'me'))) return parsed
+        if (Array.isArray(parsed) && parsed.every((message) => message && typeof message.id === 'string' && typeof message.text === 'string' && (message.from === 'me' || greetingOrder.includes(message.from as CharacterId)))) return parsed
       } catch {
         // Rebuild the inbox from the authored conversation if old local data is malformed.
       }
@@ -688,7 +688,10 @@ function App() {
   })
   const [storyStage, setStoryStage] = useState<StoryStage>(() => {
     const saved = localStorage.getItem('mayday-story-stage')
-    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'paused']
+    if (saved === 'completed' && localStorage.getItem('mayday-chapter1-complete') === 'true' && localStorage.getItem('mayday-greetings-complete') !== 'true') return 'greetings'
+    const savedTarget = localStorage.getItem('mayday-free-chat-target')
+    if (saved === 'free-time' && savedTarget && freeTimeOrder.includes(savedTarget as RouteCharacterId) && localStorage.getItem('mayday-free-chat-complete') !== 'true') return 'free-chat'
+    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'free-time', 'free-chat', 'day2-complete', 'paused']
     return saved && valid.includes(saved as StoryStage) ? saved as StoryStage : 'notification'
   })
   const [studioStep, setStudioStep] = useState(() => Number(localStorage.getItem('mayday-studio-step') ?? '0'))
@@ -711,10 +714,45 @@ function App() {
   })
   const [marthaAffection, setMarthaAffection] = useState(() => Number(localStorage.getItem('mayday-affection-martha') ?? '0'))
   const [firstChapterComplete, setFirstChapterComplete] = useState(() => localStorage.getItem('mayday-chapter1-complete') === 'true')
+  const [chatMessages, setChatMessages] = useState<Record<CharacterId, SmsMessage[]>>(() => {
+    const saved = localStorage.getItem('mayday-chat-messages')
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved) as Record<CharacterId, SmsMessage[]>
+        if (parsed && greetingOrder.every((id) => Array.isArray(parsed[id]))) return parsed
+      } catch {
+        // Rebuild the new contact threads if saved chat data is malformed.
+      }
+    }
+    return createInitialChatMessages()
+  })
+  const [greetingIndex, setGreetingIndex] = useState(() => Number(localStorage.getItem('mayday-greeting-index') ?? '0'))
+  const [greetingRound, setGreetingRound] = useState(() => Number(localStorage.getItem('mayday-greeting-round') ?? '0'))
+  const [greetingReplied, setGreetingReplied] = useState(() => localStorage.getItem('mayday-greeting-replied') === 'true')
+  const [classroomReplySent, setClassroomReplySent] = useState(() => localStorage.getItem('mayday-classroom-reply-sent') === 'true')
+  const [masaCheckInSent, setMasaCheckInSent] = useState(() => localStorage.getItem('mayday-masa-checkin-sent') === 'true')
+  const [stoneCheckInSent, setStoneCheckInSent] = useState(() => localStorage.getItem('mayday-stone-checkin-sent') === 'true')
+  const [freeChatTarget, setFreeChatTarget] = useState<RouteCharacterId | null>(() => {
+    const saved = localStorage.getItem('mayday-free-chat-target')
+    return saved && freeTimeOrder.includes(saved as RouteCharacterId) ? saved as RouteCharacterId : null
+  })
+  const [freeChatRound, setFreeChatRound] = useState(() => Number(localStorage.getItem('mayday-free-chat-round') ?? '0'))
+  const [freeChatReplied, setFreeChatReplied] = useState(() => localStorage.getItem('mayday-free-chat-replied') === 'true')
+  const [routeAffection, setRouteAffection] = useState<Record<RouteCharacterId, number>>(() => {
+    let saved: Partial<Record<RouteCharacterId, number>> = {}
+    try { saved = JSON.parse(localStorage.getItem('mayday-route-affection') ?? '{}') as Partial<Record<RouteCharacterId, number>> } catch { saved = {} }
+    return {
+      wen: Number(saved.wen ?? localStorage.getItem('mayday-affection-wen') ?? '0'),
+      masa: Number(saved.masa ?? localStorage.getItem('mayday-affection-martha') ?? '0'),
+      ashin: Number(saved.ashin ?? 0),
+      stone: Number(saved.stone ?? 0),
+      yanming: Number(saved.yanming ?? 0),
+    }
+  })
   const [selectedProfile, setSelectedProfile] = useState<string | null>(null)
   const [resumeStage, setResumeStage] = useState<StoryStage>(() => {
     const saved = localStorage.getItem('mayday-resume-stage')
-    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed']
+    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'free-time', 'free-chat', 'day2-complete']
     return saved && valid.includes(saved as StoryStage) ? saved as StoryStage : 'reunion'
   })
   const messageScrollRef = useRef<HTMLDivElement>(null)
