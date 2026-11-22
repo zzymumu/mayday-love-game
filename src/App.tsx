@@ -13,7 +13,7 @@ import {
   Headphones,
   Heart,
   MessageSquare,
-  NotebookPen,
+  Save,
   Phone,
   Radio,
   Settings,
@@ -38,6 +38,30 @@ type ChatChoice = { text: string; response: string[]; affection: number }
 type ChatRound = { incoming: string; choices: ChatChoice[] }
 type CallLogEntry = { id: string; character: RouteCharacterId; status: 'answered' | 'missed'; time: string }
 type CallTranscriptLine = { speaker: RouteCharacterId | 'me'; text: string }
+type SaveSlotData = { version: 1; savedAt: string; gameDate: string; gameTime: string; stage: StoryStage; stageLabel: string; data: Record<string, string> }
+
+const SAVE_SLOT_IDS = [1, 2, 3] as const
+const SAVE_SLOT_PREFIX = 'mayday-save-slot-'
+const storyStageLabels: Record<StoryStage, string> = {
+  notification: '收到練團室邀約', messages: '回覆邀約', reply: '準備出發', walk: '前往練團室',
+  studio: '練團室初訪', reunion: '意外重逢', 'reunion-chat': '久別重逢', nickname: 'Masa 的由來',
+  rehearsal: '第一次聽他們練團', dinner: '練團後的晚餐', 'after-dinner': '晚餐後的談話',
+  ending: '回家後', completed: '第一章完成', greetings: '晚間訊息', classroom: '課堂中的邀約',
+  'masa-checkin': '關心瑪莎', 'stone-checkin': '關心石頭', 'ice-date': '下課吃冰', stroll: '傍晚散步',
+  'day2-diary': '寫下第二篇日記', 'free-time': '自由活動', 'free-chat': '自由聊天',
+  'day2-complete': '第二天結束', paused: '故事暫停',
+}
+const readSaveSlot = (slot: number): SaveSlotData | null => {
+  try {
+    const raw = localStorage.getItem(SAVE_SLOT_PREFIX + slot)
+    if (!raw) return null
+    const parsed = JSON.parse(raw) as Partial<SaveSlotData>
+    if (parsed.version !== 1 || typeof parsed.savedAt !== 'string' || typeof parsed.gameDate !== 'string' || typeof parsed.gameTime !== 'string' || typeof parsed.stage !== 'string' || !Object.prototype.hasOwnProperty.call(storyStageLabels, parsed.stage) || !parsed.data || typeof parsed.data !== 'object' || Array.isArray(parsed.data)) return null
+    return parsed as SaveSlotData
+  } catch {
+    return null
+  }
+}
 
 type PhoneApp = {
   id: AppKey
@@ -54,7 +78,7 @@ const phoneApps: PhoneApp[] = [
   { id: 'calendar', name: '行事曆', subtitle: '課表與約定', icon: CalendarDays },
   { id: 'photos', name: '相簿', subtitle: '生活底片', icon: Camera },
   { id: 'music', name: '隨身聽', subtitle: '喜歡的音樂', icon: Headphones },
-  { id: 'notes', name: '記事本', subtitle: '隨手記下來', icon: NotebookPen },
+  { id: 'notes', name: '存檔中心', subtitle: '保存與讀取進度', icon: Save },
 ]
 
 const appCopy: Record<AppKey, { heading: string; body: string; detail: string }> = {
@@ -94,9 +118,9 @@ const appCopy: Record<AppKey, { heading: string; body: string; detail: string }>
     detail: '那個年代，喜歡一首歌有時候是從借來的一卷卡帶開始。',
   },
   notes: {
-    heading: '記事本',
-    body: '沒有待辦事項。',
-    detail: '記下課堂、地址、電話，還有那些怕自己忘記的小事。',
+    heading: '存檔中心',
+    body: '把故事好好收起來。',
+    detail: '保存或讀取不同時間點的劇情、訊息與好感度。',
   },
   settings: {
     heading: '設定',
@@ -763,6 +787,8 @@ function App() {
   const [activeApp, setActiveApp] = useState<AppKey | null>(null)
   const [showNameSetup, setShowNameSetup] = useState(() => !localStorage.getItem('mayday-player-name'))
   const [showResetConfirm, setShowResetConfirm] = useState(false)
+  const [saveSlots, setSaveSlots] = useState<Record<number, SaveSlotData | null>>(() => ({ 1: readSaveSlot(1), 2: readSaveSlot(2), 3: readSaveSlot(3) }))
+  const [saveFeedback, setSaveFeedback] = useState('')
   const [selectedSmsThread, setSelectedSmsThread] = useState<CharacterId | null>(null)
   const [smsMessages, setSmsMessages] = useState<SmsMessage[]>(() => {
     const saved = localStorage.getItem('mayday-sms-messages')
@@ -867,10 +893,18 @@ function App() {
     const saved = localStorage.getItem('mayday-incoming-call')
     return saved && freeTimeOrder.includes(saved as RouteCharacterId) ? saved as RouteCharacterId : null
   })
-  const [activeCallCharacter, setActiveCallCharacter] = useState<RouteCharacterId | null>(null)
-  const [callRoundIndex, setCallRoundIndex] = useState(0)
-  const [callReplied, setCallReplied] = useState(false)
-  const [callTranscript, setCallTranscript] = useState<CallTranscriptLine[]>([])
+  const [activeCallCharacter, setActiveCallCharacter] = useState<RouteCharacterId | null>(() => {
+    const saved = localStorage.getItem('mayday-active-call-character')
+    return saved && freeTimeOrder.includes(saved as RouteCharacterId) ? saved as RouteCharacterId : null
+  })
+  const [callRoundIndex, setCallRoundIndex] = useState(() => Number(localStorage.getItem('mayday-call-round-index') ?? '0'))
+  const [callReplied, setCallReplied] = useState(() => localStorage.getItem('mayday-call-replied') === 'true')
+  const [callTranscript, setCallTranscript] = useState<CallTranscriptLine[]>(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('mayday-call-transcript') ?? '[]') as CallTranscriptLine[]
+      return Array.isArray(saved) ? saved : []
+    } catch { return [] }
+  })
   const [callHistory, setCallHistory] = useState<CallLogEntry[]>(() => {
     try {
       const saved = JSON.parse(localStorage.getItem('mayday-call-history') ?? '[]') as CallLogEntry[]
@@ -897,6 +931,91 @@ function App() {
                     : storyStage === 'day2-diary' ? '18:00'
                       : storyStage === 'free-time' || storyStage === 'free-chat' || storyStage === 'day2-complete' ? '18:20'
                         : '17:20'
+  const isSecondDay = ['classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete'].includes(storyStage)
+  const saveGameDate = isSecondDay ? '1996.10.16' : '1996.10.15'
+
+  const saveCurrentProgress = (slot: number) => {
+    if (saveSlots[slot] && !window.confirm('要覆蓋第 ' + slot + ' 格存檔嗎？原本的存檔會被新的進度取代。')) return
+    const data: Record<string, string> = {}
+    for (let index = 0; index < localStorage.length; index += 1) {
+      const key = localStorage.key(index)
+      if (key && key.startsWith('mayday-') && !key.startsWith(SAVE_SLOT_PREFIX)) {
+        const value = localStorage.getItem(key)
+        if (value !== null) data[key] = value
+      }
+    }
+    const put = (key: string, value: string | null) => {
+      if (value === null) delete data[key]
+      else data[key] = value
+    }
+    put('mayday-player-name', playerName)
+    put('mayday-story-stage', storyStage)
+    put('mayday-studio-step', String(studioStep))
+    put('mayday-reply', replyKey)
+    put('mayday-affection-wen', String(wenAffection))
+    put('mayday-reunion-reply', reunionReplyKey)
+    put('mayday-nickname-question', nicknameQuestionKey)
+    put('mayday-dinner-reply', dinnerReplyKey)
+    put('mayday-affection-martha', String(marthaAffection))
+    put('mayday-chapter1-complete', String(firstChapterComplete))
+    put('mayday-day2-diary-unlocked', String(day2DiaryUnlocked))
+    put('mayday-sms-messages', JSON.stringify(smsMessages))
+    put('mayday-chat-messages', JSON.stringify(chatMessages))
+    put('mayday-greeting-index', String(greetingIndex))
+    put('mayday-greeting-round', String(greetingRound))
+    put('mayday-greeting-replied', String(greetingReplied))
+    put('mayday-classroom-reply-sent-v2', String(classroomReplySent))
+    put('mayday-classroom-intro-replied-v1', String(classroomIntroReplied))
+    put('mayday-masa-checkin-complete-v2', String(masaCheckInSent))
+    put('mayday-masa-checkin-round-v2', String(masaCheckInRound))
+    put('mayday-masa-checkin-replied-v2', String(masaCheckInReplied))
+    put('mayday-stone-checkin-sent', String(stoneCheckInSent))
+    put('mayday-free-chat-target', freeChatTarget)
+    put('mayday-free-chat-round', String(freeChatRound))
+    put('mayday-free-chat-replied', String(freeChatReplied))
+    put('mayday-route-affection', JSON.stringify(routeAffection))
+    put('mayday-call-history', JSON.stringify(callHistory))
+    put('mayday-pending-call', pendingCallCharacter)
+    put('mayday-incoming-call', incomingCallCharacter)
+    put('mayday-resume-stage', resumeStage)
+    put('mayday-active-call-character', activeCallCharacter)
+    put('mayday-call-round-index', activeCallCharacter ? String(callRoundIndex) : null)
+    put('mayday-call-replied', activeCallCharacter ? String(callReplied) : null)
+    put('mayday-call-transcript', activeCallCharacter ? JSON.stringify(callTranscript) : null)
+
+    const saved: SaveSlotData = {
+      version: 1,
+      savedAt: new Date().toISOString(),
+      gameDate: saveGameDate,
+      gameTime: currentTime,
+      stage: storyStage,
+      stageLabel: storyStageLabels[storyStage],
+      data,
+    }
+    try {
+      localStorage.setItem(SAVE_SLOT_PREFIX + slot, JSON.stringify(saved))
+      setSaveSlots((current) => ({ ...current, [slot]: saved }))
+      setSaveFeedback('已保存至存檔 ' + slot + '。')
+    } catch {
+      setSaveFeedback('保存失敗：瀏覽器儲存空間可能不足，請先清理不需要的存檔。')
+    }
+  }
+
+  const loadSaveSlot = (slot: number) => {
+    const saved = saveSlots[slot]
+    if (!saved) return
+    if (!window.confirm('確定讀取第 ' + slot + ' 格存檔嗎？目前未保存的進度會被這份存檔取代。')) return
+    const keysToRemove: string[] = []
+    for (let index = 0; index < localStorage.length; index += 1) {
+      const key = localStorage.key(index)
+      if (key && key.startsWith('mayday-') && !key.startsWith(SAVE_SLOT_PREFIX)) keysToRemove.push(key)
+    }
+    keysToRemove.forEach((key) => localStorage.removeItem(key))
+    Object.entries(saved.data).forEach(([key, value]) => {
+      if (key.startsWith('mayday-') && !key.startsWith(SAVE_SLOT_PREFIX)) localStorage.setItem(key, value)
+    })
+    window.location.reload()
+  }
 
   useEffect(() => {
     localStorage.setItem('mayday-sms-messages', JSON.stringify(smsMessages))
@@ -913,6 +1032,20 @@ function App() {
   useEffect(() => {
     localStorage.setItem('mayday-call-history', JSON.stringify(callHistory))
   }, [callHistory])
+
+  useEffect(() => {
+    if (activeCallCharacter) {
+      localStorage.setItem('mayday-active-call-character', activeCallCharacter)
+      localStorage.setItem('mayday-call-round-index', String(callRoundIndex))
+      localStorage.setItem('mayday-call-replied', String(callReplied))
+      localStorage.setItem('mayday-call-transcript', JSON.stringify(callTranscript))
+    } else {
+      localStorage.removeItem('mayday-active-call-character')
+      localStorage.removeItem('mayday-call-round-index')
+      localStorage.removeItem('mayday-call-replied')
+      localStorage.removeItem('mayday-call-transcript')
+    }
+  }, [activeCallCharacter, callRoundIndex, callReplied, callTranscript])
 
   useEffect(() => {
     if (storyStage !== 'day2-complete' || activeApp !== null || incomingCallCharacter || activeCallCharacter) return
@@ -1374,7 +1507,8 @@ function App() {
   }
 
   const resetLocalData = () => {
-    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-route-affection', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming'].forEach((key) => localStorage.removeItem(key))
+    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-route-affection', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming', 'mayday-active-call-character', 'mayday-call-round-index', 'mayday-call-replied', 'mayday-call-transcript'].forEach((key) => localStorage.removeItem(key))
+    SAVE_SLOT_IDS.forEach((slot) => localStorage.removeItem(SAVE_SLOT_PREFIX + slot))
     setPlayerName('')
     setNameDraft('')
     setActiveApp(null)
@@ -1412,6 +1546,8 @@ function App() {
     setCallReplied(false)
     setCallTranscript([])
     setCallHistory([])
+    setSaveSlots({ 1: null, 2: null, 3: null })
+    setSaveFeedback('')
     setSelectedProfile(null)
     setResumeStage('reunion')
     setShowResetConfirm(false)
@@ -1502,7 +1638,7 @@ function App() {
                 </div>
                 <div className="screen-greeting">
                   <span>嗨，{playerName || '新朋友'}</span>
-                  <small>今天也要好好生活。</small>
+                  <small>喜歡一個人的時候，連夏天都會變慢。</small>
                 </div>
               </div>
 
@@ -2106,7 +2242,7 @@ function App() {
                       </div>
                       <button className="close-button" onClick={() => { setActiveApp(null); setSelectedSmsThread(null); setSelectedDiaryDate(null) }} aria-label="關閉"><X size={17} /></button>
                     </div>
-                    <div className={activeApp === 'messages' ? 'app-window-content sms-mode' : activeApp === 'diary' ? 'app-window-content diary-mode' : 'app-window-content'}>
+                    <div className={activeApp === 'messages' ? 'app-window-content sms-mode' : activeApp === 'diary' ? 'app-window-content diary-mode' : activeApp === 'notes' ? 'app-window-content save-mode' : 'app-window-content'}>
                       {activeApp === 'messages' ? (
                         storyStage === 'free-time' && selectedSmsThread === null && !freeChatTarget ? (
                           <div className="free-time-picker">
@@ -2419,6 +2555,42 @@ function App() {
                             <div className="coming-soon"><Radio size={15} /> 故事開始後逐步開放</div>
                           </>
                         )
+                      ) : activeApp === 'notes' ? (
+                        <div className="save-center-page">
+                          <div className="save-center-intro">
+                            <span className="profile-eyebrow">SAVE DATA · 1996</span>
+                            <strong>把故事好好收起來。</strong>
+                            <small>每份存檔都會保留當時的劇情、訊息紀錄與人物好感度。</small>
+                          </div>
+                          <div className="save-slot-list">
+                            {SAVE_SLOT_IDS.map((slot) => {
+                              const saved = saveSlots[slot]
+                              return (
+                                <section className="save-slot-card" key={slot}>
+                                  <div className="save-slot-heading">
+                                    <strong>存檔 {String(slot).padStart(2, '0')}</strong>
+                                    <span className={saved ? 'save-slot-status saved' : 'save-slot-status'}>{saved ? '已保存' : '空白存檔'}</span>
+                                  </div>
+                                  {saved ? (
+                                    <div className="save-slot-details">
+                                      <strong>{saved.stageLabel}</strong>
+                                      <small>{saved.gameDate} · {saved.gameTime}</small>
+                                    </div>
+                                  ) : (
+                                    <div className="save-slot-empty">這個位置還沒有保存進度。</div>
+                                  )}
+                                  <div className="save-slot-actions">
+                                    <button className="save-slot-primary" onClick={() => saveCurrentProgress(slot)}>{saved ? '覆蓋保存' : '保存進度'}</button>
+                                    <button className="save-slot-secondary" disabled={!saved} onClick={() => loadSaveSlot(slot)}>讀取存檔</button>
+                                  </div>
+                                </section>
+                              )
+                            })}
+                          </div>
+                          <div className="save-center-feedback" aria-live="polite">
+                            {saveFeedback || '自動保存仍會持續運作；手動存檔可以留下不同時間點。'}
+                          </div>
+                        </div>
                       ) : activeApp === 'settings' ? (
                         <>
                           <div className="settings-symbol"><Settings size={28} /></div>
@@ -2520,7 +2692,7 @@ function App() {
 
       <footer className="page-footer">
         <span><Clock3 size={13} /> 故事，從一九九六年開始。</span>
-        <span>BUILD 0.4.5 · DISTINCT CALL SCRIPTS</span>
+        <span>BUILD 0.4.6 · SAVE SLOTS + SUMMER QUOTE</span>
       </footer>
 
       {showNameSetup && (
