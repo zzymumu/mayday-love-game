@@ -329,13 +329,17 @@ function App() {
     localStorage.setItem('mayday-story-stage', next)
   }
 
-  const saveName = () => {
+  const saveName = (startStory = false) => {
     const trimmed = (nameDraft || playerName).trim()
     if (!trimmed) return
     localStorage.setItem('mayday-player-name', trimmed)
     setPlayerName(trimmed)
-    setShowNameSetup(false)
-    changeStage('notification')
+    if (startStory) {
+      setShowNameSetup(false)
+      changeStage('notification')
+    } else {
+      setActiveApp(null)
+    }
   }
 
   const resetLocalData = () => {
@@ -671,8 +675,8 @@ function App() {
             <h2>先留下你的名字吧。</h2>
             <p>這支手機以後會記下你的訊息、日記，還有那些不想忘記的人。</p>
             <label htmlFor="player-name">你的名字</label>
-            <input id="player-name" autoFocus value={nameDraft} onChange={(event) => setNameDraft(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter') saveName() }} placeholder="輸入名字（最多12字）" maxLength={12} />
-            <button className="primary-action" onClick={saveName} disabled={!nameDraft.trim()}>好，開始吧 <ChevronRight size={16} /></button>
+            <input id="player-name" autoFocus value={nameDraft} onChange={(event) => setNameDraft(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter') saveName(true) }} placeholder="輸入名字（最多12字）" maxLength={12} />
+            <button className="primary-action" onClick={() => saveName(true)} disabled={!nameDraft.trim()}>好，開始吧 <ChevronRight size={16} /></button>
             <small>姓名之後仍可在手機設定中修改。</small>
           </div>
         </div>
