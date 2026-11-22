@@ -883,3 +883,168 @@ button { cursor: pointer; }
   .sms-thread-row { padding-left: 11px; padding-right: 11px; }
   .sms-thread-scroll { padding-left: 9px; padding-right: 9px; }
 }
+
+
+/* 0.3.2 — 第一章人物資料與日記解鎖 */
+.contact-list {
+  width: 100%;
+  min-height: 100%;
+  padding: 10px 0 14px;
+  overflow-y: auto;
+  background: #fbf7ef;
+}
+.unlock-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 12px 10px;
+  padding: 10px 11px;
+  border: 1px solid #ead9ca;
+  border-radius: 9px;
+  color: #856c5b;
+  background: #f6eee5;
+}
+.unlock-banner strong {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 10px;
+}
+.unlock-banner span {
+  color: #aa8e7b;
+  font-size: 8px;
+}
+.contact-list-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 57px;
+  padding: 8px 13px;
+  border: 0;
+  border-top: 1px solid #eee5da;
+  color: #655449;
+  background: transparent;
+  text-align: left;
+}
+.contact-list-row:hover { background: #f7efe6; }
+.contact-avatar {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border: 1px solid #e5d2c4;
+  border-radius: 50%;
+  color: #987466;
+  background: linear-gradient(145deg, #f8eae0, #ead5c8);
+  font-family: 'Noto Serif TC', serif;
+  font-size: 13px;
+}
+.contact-summary {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+}
+.contact-summary strong {
+  color: #5d4d42;
+  font-size: 10px;
+  font-weight: 650;
+}
+.contact-summary small {
+  color: #a18d7b;
+  font-size: 8px;
+}
+.contact-list-row > svg { color: #b59a86; }
+.contact-profile {
+  padding: 10px 17px 20px;
+  color: #655449;
+  text-align: center;
+}
+.profile-back {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 0 13px;
+  border: 0;
+  color: #9a7d6b;
+  background: transparent;
+  font-size: 9px;
+}
+.profile-avatar-large {
+  display: grid;
+  place-items: center;
+  width: 68px;
+  height: 68px;
+  margin: 12px auto 10px;
+  border: 1px solid #e2cdbd;
+  border-radius: 50%;
+  color: #987466;
+  background: linear-gradient(145deg, #f8eae0, #ead5c8);
+  font-family: 'Noto Serif TC', serif;
+  font-size: 24px;
+}
+.profile-eyebrow {
+  color: #b1937e;
+  font-size: 7px;
+  letter-spacing: .18em;
+}
+.contact-profile h2 {
+  margin: 8px 0 5px;
+  color: #5d4d42;
+  font-family: 'Noto Serif TC', serif;
+  font-size: 17px;
+}
+.profile-role {
+  color: #a28773;
+  font-size: 9px;
+}
+.contact-profile p {
+  margin: 18px 3px;
+  color: #78685a;
+  font-size: 10px;
+  line-height: 2;
+  text-align: left;
+}
+.profile-footnote {
+  margin: 13px 12px 4px;
+  color: #ad9885;
+  font-size: 8px;
+  line-height: 1.7;
+  text-align: center;
+}
+.diary-page {
+  width: 100%;
+  min-height: 100%;
+  padding: 14px;
+  overflow-y: auto;
+  background: #f7f0e6;
+}
+.diary-paper {
+  min-height: 100%;
+  padding: 19px 16px 25px;
+  border: 1px solid #e9dccb;
+  background: #fcf8f0;
+  box-shadow: 0 3px 12px rgba(92, 70, 50, .06);
+}
+.diary-date {
+  color: #b1937e;
+  font-size: 8px;
+  letter-spacing: .08em;
+}
+.diary-paper h2 {
+  margin: 13px 0 17px;
+  color: #665246;
+  font-family: 'Noto Serif TC', serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.diary-paper p {
+  margin: 0 0 13px;
+  color: #75665a;
+  font-family: 'Noto Serif TC', serif;
+  font-size: 10px;
+  line-height: 2.1;
+  text-indent: 2em;
+}
