@@ -1878,7 +1878,7 @@ function App() {
     setFreeChatRound(0)
     setFreeChatReplied(false)
     setMonthVisitTarget(null)
-    setMonthVisitChoice(null)
+    setMonthVisitReplies([])
     setRouteAffection({ wen: 0, masa: 0, ashin: 0, stone: 0, yanming: 0 })
     setDay2StrollAccepted(false)
     setDay2DiaryUnlocked(false)
