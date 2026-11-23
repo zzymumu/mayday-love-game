@@ -478,9 +478,9 @@ export const yearEndShoppingReplyChoices: Record<YearEndRouteCharacterId, YearEn
     { text: '今天不太方便，你自己加油哈哈。', response: ['蛤？妳就這樣丟下我喔！', '好啦好啦，我自己去，妳晚上再來。'], affection: 1, accepted: false },
   ],
   ashin: [
-    { text: '好啊！我也想看看有什麼好看的小裝飾。', response: ['太好了馁，那我們兩點半在巷口見。', '妳不用趕，慢慢來就好。'], affection: 3, accepted: true },
-    { text: '可以呀，順便幫你挑糖果。', response: ['好啊，那我就把選擇權交給妳一半。', '等等見馁。'], affection: 2, accepted: true },
-    { text: '今天想在家整理一下，可能沒辦法出門。', response: ['沒關係啦，妳先忙自己的事。', '晚上見面的時候再一起熱鬧就好馁。'], affection: 1, accepted: false },
+    { text: '好啊！我也想看看有什麼好看的小裝飾。', response: ['太好了，那我們兩點半在巷口見。', '妳不用趕，慢慢來就好。'], affection: 3, accepted: true },
+    { text: '可以呀，順便幫你挑糖果。', response: ['好啊，那我就把選擇權交給妳一半。', '等等見喔。'], affection: 2, accepted: true },
+    { text: '今天想在家整理一下，可能沒辦法出門。', response: ['沒關係啦，妳先忙自己的事。', '晚上見面的時候再一起熱鬧就好。'], affection: 1, accepted: false },
   ],
   stone: [
     { text: '好啊，我下午有空，可以一起去。', response: ['好，那我們兩點半在市場旁邊碰面。', '外面有點冷，妳記得多穿一件。'], affection: 3, accepted: true },
