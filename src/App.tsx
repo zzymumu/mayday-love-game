@@ -4746,7 +4746,7 @@ function App() {
                         <div className="month-visit-round-history" key={index}>
                           {round.scene && <StoryBlocks blocks={[{ kind: 'narration', text: round.scene }]} />}
                           <StoryBlocks blocks={[
-                            { kind: 'dialogue', speaker: currentNextMonthInvite.invitation[0]?.speaker ?? characterNames[nextMonthInviteTarget], text: round.prompt },
+                            { kind: 'dialogue', speaker: round.promptSpeaker ?? currentNextMonthInvite.invitation[0]?.speaker ?? characterNames[nextMonthInviteTarget], text: round.prompt },
                             { kind: 'dialogue', speaker: '你', text: selected.text },
                             ...selected.response.map((text) => ({ kind: 'dialogue' as const, speaker: currentNextMonthInvite.invitation[0]?.speaker ?? characterNames[nextMonthInviteTarget], text })),
                           ]} />
@@ -4756,7 +4756,7 @@ function App() {
                     {currentNextMonthInviteRound ? (
                       <>
                         {currentNextMonthInviteRound.scene && <StoryBlocks blocks={[{ kind: 'narration', text: currentNextMonthInviteRound.scene }]} />}
-                        <StoryBlocks blocks={[{ kind: 'dialogue', speaker: currentNextMonthInvite.invitation[0]?.speaker ?? characterNames[nextMonthInviteTarget], text: currentNextMonthInviteRound.prompt }]} />
+                        <StoryBlocks blocks={[{ kind: 'dialogue', speaker: currentNextMonthInviteRound.promptSpeaker ?? currentNextMonthInvite.invitation[0]?.speaker ?? characterNames[nextMonthInviteTarget], text: currentNextMonthInviteRound.prompt }]} />
                         <div className="choice-area">
                           <div className="choice-heading">第 {nextMonthInviteDateReplies.length + 1}/5 輪・你想怎麼回應？</div>
                           {currentNextMonthInviteRound.choices.map((choice, index) => (
