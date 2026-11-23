@@ -38,6 +38,7 @@ import {
 import {
   winterExamIntroBlocks,
   winterExamChatChoices,
+  winterExamChatClosingChoices,
   winterExamTutoringIntroBlocks,
   winterExamTutoringRounds,
   winterExamTutoringEnding,
@@ -1993,7 +1994,19 @@ function App() {
   const [winterExamChatReplyChoice, setWinterExamChatReplyChoice] = useState<number | null>(() => {
     if (localStorage.getItem('mayday-winter-exam-chat-choice-confirmed-v2') !== 'true') return null
     const saved = Number(localStorage.getItem('mayday-winter-exam-chat-reply-choice') ?? '-1')
-    return Number.isInteger(saved) && saved >= 0 && saved < 3 ? saved : null
+    if (!Number.isInteger(saved) || saved < 0 || saved >= winterExamChatChoices.length) return null
+    const selectedText = winterExamChatChoices[saved]?.text
+    return (chatMessages.wen ?? []).some((message) => message.date === '1月7日・晚上' && message.from === 'me' && message.text === selectedText) ? saved : null
+  })
+  const [winterExamChatClosingChoice, setWinterExamChatClosingChoice] = useState<number | null>(() => {
+    const saved = Number(localStorage.getItem('mayday-winter-exam-chat-closing-choice') ?? '-1')
+    if (Number.isInteger(saved) && saved >= 0 && saved < winterExamChatClosingChoices.length) {
+      const selectedText = winterExamChatClosingChoices[saved]?.text
+      if ((chatMessages.wen ?? []).some((message) => message.date === '1月7日・晚上' && message.from === 'me' && message.text === selectedText)) return saved
+    }
+    const legacyClosingText = '好！那我明天把講義跟題目都帶去。謝啦，溫老師～'
+    const hasConfirmedTimeReply = winterExamChatReplyChoice !== null
+    return hasConfirmedTimeReply && (chatMessages.wen ?? []).some((message) => message.date === '1月7日・晚上' && message.from === 'me' && message.text === legacyClosingText) ? 0 : null
   })
   const [winterExamTutoringUnlocked, setWinterExamTutoringUnlocked] = useState(() => {
     const saved = localStorage.getItem('mayday-winter-exam-tutoring-unlocked')
@@ -2211,6 +2224,7 @@ function App() {
     put('mayday-winter-exam-chat-started', localStorage.getItem('mayday-winter-exam-chat-started'))
     put('mayday-winter-exam-chat-reply-choice', winterExamChatReplyChoice === null ? null : String(winterExamChatReplyChoice))
     put('mayday-winter-exam-chat-choice-confirmed-v2', localStorage.getItem('mayday-winter-exam-chat-choice-confirmed-v2'))
+    put('mayday-winter-exam-chat-closing-choice', winterExamChatClosingChoice === null ? null : String(winterExamChatClosingChoice))
     put('mayday-winter-exam-tutoring-unlocked', String(winterExamTutoringUnlocked))
     put('mayday-winter-exam-replies', JSON.stringify(winterExamReplies))
     put('mayday-winter-practice-replies', JSON.stringify(winterPracticeReplies))
@@ -2303,6 +2317,8 @@ function App() {
   useEffect(() => {
     if (winterExamChatReplyChoice === null) localStorage.removeItem('mayday-winter-exam-chat-reply-choice')
     else localStorage.setItem('mayday-winter-exam-chat-reply-choice', String(winterExamChatReplyChoice))
+    if (winterExamChatClosingChoice === null) localStorage.removeItem('mayday-winter-exam-chat-closing-choice')
+    else localStorage.setItem('mayday-winter-exam-chat-closing-choice', String(winterExamChatClosingChoice))
     localStorage.setItem('mayday-winter-exam-tutoring-unlocked', String(winterExamTutoringUnlocked))
     localStorage.setItem('mayday-winter-exam-replies', JSON.stringify(winterExamReplies))
     localStorage.setItem('mayday-winter-practice-replies', JSON.stringify(winterPracticeReplies))
@@ -2313,26 +2329,49 @@ function App() {
     localStorage.setItem('mayday-winter-diary-unlocked', String(winterDiaryUnlocked))
     if (winterDiaryData) localStorage.setItem('mayday-winter-diary-data', JSON.stringify(winterDiaryData))
     else localStorage.removeItem('mayday-winter-diary-data')
-  }, [winterExamChatReplyChoice, winterExamTutoringUnlocked, winterExamReplies, winterPracticeReplies, winterYanmingPickupAvailable, winterBusStopCharacter, winterBusStopReplies, winterDiaryUnlocked, winterDiaryData])
+  }, [winterExamChatReplyChoice, winterExamChatClosingChoice, winterExamTutoringUnlocked, winterExamReplies, winterPracticeReplies, winterYanmingPickupAvailable, winterBusStopCharacter, winterBusStopReplies, winterDiaryUnlocked, winterDiaryData])
 
   useEffect(() => {
-    const migrationKey = 'mayday-winter-exam-chat-choice-confirmed-v2'
+    // Migration completion and player confirmation are separate flags.
+    // Only a matching outgoing choice message proves that the player actually selected a reply.
+    const migrationKey = 'mayday-winter-exam-chat-choice-migration-v3'
+    const confirmationKey = 'mayday-winter-exam-chat-choice-confirmed-v2'
+    const replyChoiceKey = 'mayday-winter-exam-chat-reply-choice'
     if (localStorage.getItem(migrationKey) === 'true') return
-    const legacyChoiceTexts = new Set<string>([
-      ...winterExamChatChoices.map((choice) => choice.text),
-      ...winterExamChatChoices.map((choice) => choice.response),
-      '好！那我明天把講義跟題目都帶去。謝啦，溫老師～',
-      '溫老師？不要亂叫。快去把題目圈好，別又熬夜到半夜。明天見。',
-    ])
-    if ((chatMessages.wen ?? []).some((message) => message.date === '1月7日・晚上' && legacyChoiceTexts.has(message.text))) {
-      setChatMessages((current) => {
-        const thread = current.wen ?? []
-        const cleaned = thread.filter((message) => !(message.date === '1月7日・晚上' && legacyChoiceTexts.has(message.text)))
-        return cleaned.length === thread.length ? current : { ...current, wen: cleaned }
-      })
+
+    const savedChoice = Number(localStorage.getItem(replyChoiceKey) ?? '-1')
+    const savedChoiceText = Number.isInteger(savedChoice) && savedChoice >= 0 && savedChoice < winterExamChatChoices.length
+      ? winterExamChatChoices[savedChoice]?.text
+      : null
+    const hasConfirmedChoice = localStorage.getItem(confirmationKey) === 'true'
+      && Boolean(savedChoiceText)
+      && (chatMessages.wen ?? []).some((message) => message.date === '1月7日・晚上' && message.from === 'me' && message.text === savedChoiceText)
+
+    if (!hasConfirmedChoice) {
+      const legacyChoiceTexts = new Set<string>([
+        ...winterExamChatChoices.map((choice) => choice.text),
+        ...winterExamChatChoices.map((choice) => choice.response),
+        '好！那我明天把講義跟題目都帶去。謝啦，溫老師～',
+        '溫老師？不要亂叫。快去把題目圈好，別又熬夜到半夜。明天見。',
+      ])
+      if ((chatMessages.wen ?? []).some((message) => message.date === '1月7日・晚上' && legacyChoiceTexts.has(message.text))) {
+        setChatMessages((current) => {
+          const thread = current.wen ?? []
+          const cleaned = thread.filter((message) => !(message.date === '1月7日・晚上' && legacyChoiceTexts.has(message.text)))
+          return cleaned.length === thread.length ? current : { ...current, wen: cleaned }
+        })
+      }
       setWinterExamChatReplyChoice(null)
-      localStorage.removeItem('mayday-winter-exam-chat-reply-choice')
+      setWinterExamChatClosingChoice(null)
+      localStorage.removeItem(replyChoiceKey)
+      localStorage.removeItem(confirmationKey)
+    } else {
+      const legacyClosingText = '好！那我明天把講義跟題目都帶去。謝啦，溫老師～'
+      if ((chatMessages.wen ?? []).some((message) => message.date === '1月7日・晚上' && message.from === 'me' && message.text === legacyClosingText)) {
+        setWinterExamChatClosingChoice(0)
+      }
     }
+
     localStorage.setItem(migrationKey, 'true')
   }, [])
 
@@ -3849,7 +3888,11 @@ function App() {
     localStorage.setItem('mayday-year-end-day-complete', 'true')
     setYearEndDiaryUnlocked(true)
     localStorage.removeItem('mayday-winter-exam-chat-started')
+    localStorage.removeItem('mayday-winter-exam-chat-reply-choice')
+    localStorage.removeItem('mayday-winter-exam-chat-choice-confirmed-v2')
+    localStorage.removeItem('mayday-winter-exam-chat-closing-choice')
     setWinterExamChatReplyChoice(null)
+    setWinterExamChatClosingChoice(null)
     const tutoringUnlocked = routeAffection.wen > 40
     setWinterExamTutoringUnlocked(tutoringUnlocked)
     localStorage.setItem('mayday-winter-exam-tutoring-unlocked', String(tutoringUnlocked))
@@ -3916,22 +3959,32 @@ function App() {
   }
 
   const chooseWinterExamChatReply = (choiceIndex: number) => {
-    if (winterExamChatReplyChoice !== null) return
+    if (winterExamChatReplyChoice !== null || localStorage.getItem('mayday-winter-exam-chat-choice-confirmed-v2') === 'true') return
     const choice = winterExamChatChoices[choiceIndex]
     if (!choice) return
     appendChatMessages('wen', [
       { from: 'me', text: choice.text, time: '19:39' },
       { from: 'wen', text: choice.response, time: '19:40' },
-      { from: 'me', text: '好！那我明天把講義跟題目都帶去。謝啦，溫老師～', time: '19:41' },
-      { from: 'wen', text: '溫老師？不要亂叫。快去把題目圈好，別又熬夜到半夜。明天見。', time: '19:42' },
     ], '1月7日・晚上')
     setWinterExamChatReplyChoice(choiceIndex)
     localStorage.setItem('mayday-winter-exam-chat-choice-confirmed-v2', 'true')
     localStorage.setItem('mayday-winter-exam-chat-reply-choice', String(choiceIndex))
   }
 
+  const chooseWinterExamChatClosingReply = (choiceIndex: number) => {
+    if (winterExamChatReplyChoice === null || winterExamChatClosingChoice !== null) return
+    const choice = winterExamChatClosingChoices[choiceIndex]
+    if (!choice) return
+    appendChatMessages('wen', [
+      { from: 'me', text: choice.text, time: '19:41' },
+      { from: 'wen', text: choice.response, time: '19:42' },
+    ], '1月7日・晚上')
+    setWinterExamChatClosingChoice(choiceIndex)
+    localStorage.setItem('mayday-winter-exam-chat-closing-choice', String(choiceIndex))
+  }
+
   const continueWinterExamTutoring = () => {
-    if (winterExamChatReplyChoice === null) return
+    if (winterExamChatReplyChoice === null || winterExamChatClosingChoice === null) return
     setActiveApp(null)
     setSelectedSmsThread(null)
     changeStage('winter-exam-tutoring')
@@ -6263,7 +6316,18 @@ function App() {
                                       <span>{choice.text}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
-                                  <small>這是你主動約他補習的訊息，約好後明天下午到圖書館見面。</small>
+                                  <small>選擇後只會送出這一則回覆；後續訊息仍要由你親自選擇。</small>
+                                </div>
+                              )}
+                              {storyStage === 'winter-exam-chat' && selectedSmsThread === 'wen' && winterExamChatReplyChoice !== null && winterExamChatClosingChoice === null && (
+                                <div className="choice-area">
+                                  <div className="choice-heading">時間約好了，你還想怎麼回他？</div>
+                                  {winterExamChatClosingChoices.map((choice, index) => (
+                                    <button className="reply-choice" key={index} onClick={() => chooseWinterExamChatClosingReply(index)}>
+                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                    </button>
+                                  ))}
+                                  <small>這一輪也要由你親自選擇，不會自動替你補發訊息。</small>
                                 </div>
                               )}
                               {storyStage === 'greetings' && selectedSmsThread === currentGreetingId && !greetingReplied && (
@@ -6361,7 +6425,7 @@ function App() {
                                 </div>
                               )}
                             </div>
-                            {storyStage === 'winter-exam-chat' && selectedSmsThread === 'wen' && winterExamChatReplyChoice !== null && (
+                            {storyStage === 'winter-exam-chat' && selectedSmsThread === 'wen' && winterExamChatClosingChoice !== null && (
                               <div className="sms-thread-actions">
                                 <div className="reply-note">你們已經約好明天下午兩點在圖書館見。溫尚翊還特別提醒你把課本和講義都帶上。</div>
                                 <button className="story-primary-button" onClick={continueWinterExamTutoring}>
