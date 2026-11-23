@@ -326,7 +326,7 @@ export const winterBusStopRoutes: Record<WinterCharacterId, WinterBusStopRoute> 
         choices: [
           { text: '我沒事啦，你剛剛也差點跌倒。', response: [{ kind: 'dialogue', speaker: '陳信宏', text: '我還好，妳沒事比較重要。' }, { kind: 'narration', text: '他低頭看了一眼自己的鞋，確認真的沒扭到，才又看回你，這次沒有急著往前走。' }], affection: { ashin: 3 } },
           { text: '你剛剛反應好快，我都還沒看清楚。', response: [{ kind: 'dialogue', speaker: '陳信宏', text: '我也是聽到聲音才回頭，真的差一點。' }, { kind: 'narration', text: '他說完笑了一下，像是想把剛才的緊張帶過去，卻還是忍不住又看了看你有沒有擦傷。' }], affection: { ashin: 3 } },
-          { text: '你剛剛是不是嚇到了？臉都白了。', response: [{ kind: 'dialogue', speaker: '陳信宏', text: '有啦，剛剛真的嚇一跳。妳不要笑我喔。' }, { kind: 'narration', text: '他也笑了，抬手按了按胸口，像是現在才發現自己的心跳還很快。' }], affection: { ashin: 4 } },
+          { text: '我剛剛真的嚇了一跳，差點以為要撞上了。', response: [{ kind: 'dialogue', speaker: '陳信宏', text: '先在這裡站一下，等車真的走遠再走。' }, { kind: 'narration', text: '他沒有急著安慰你，只陪你站在鐵門旁，等路口恢復安靜，才問你要不要繼續走。' }], affection: { ashin: 4 } },
         ],
       },
       {
@@ -336,7 +336,7 @@ export const winterBusStopRoutes: Record<WinterCharacterId, WinterBusStopRoute> 
         choices: [
           { text: '不會啊，我覺得你剛剛很可靠。', response: [{ kind: 'dialogue', speaker: '陳信宏', text: '真的嗎？那我就放心一點了。' }, { kind: 'narration', text: '他聽完笑了，肩膀終於放鬆下來，還小聲說幸好你沒有受傷。' }], affection: { ashin: 4 } },
           { text: '你剛剛只顧著拉我，連自己都差點跌倒。', response: [{ kind: 'dialogue', speaker: '陳信宏', text: '那時候哪有時間想那麼多，先把妳拉開再說啊。' }, { kind: 'narration', text: '他說得很自然，過了一會兒才像想到什麼似的笑起來，承認自己現在回想還有點腿軟。' }], affection: { ashin: 3 } },
-          { text: '那下次換我提醒你看路，不要只顧著別人。', response: [{ kind: 'dialogue', speaker: '陳信宏', text: '好啊，那我們互相提醒。這樣比較公平。' }, { kind: 'narration', text: '他伸出小指在你面前晃了一下，像是開玩笑要你答應，見你真的伸手，才笑著輕輕勾了一下。' }], affection: { ashin: 4 } },
+          { text: '那你也要看路，不要只顧著我。', response: [{ kind: 'dialogue', speaker: '陳信宏', text: '好，我會注意。妳也一樣，不要走路走到分心。' }, { kind: 'narration', text: '他說完往旁邊讓了讓，替你留出靠店家那側的位置，這才重新跟你並肩往站牌走。' }], affection: { ashin: 4 } },
         ],
       },
     ],
