@@ -1356,45 +1356,46 @@ const monthAwayFreeChatScripts: Record<RouteCharacterId, ChatRound[]> = {
 }
 
 const monthPastChatDiary: Record<RouteCharacterId, string> = {
-  wen: '晚上我自己跑去敲溫尚翊，跟他聊了些今天的小事。他說下午在練團室搬音箱，還被瑪莎嫌動作慢，後來連撥片都找不到，笑死。明明只是問他今天在忙什麼，最後居然聊到吉他和冰店。這個人真的很會嘴硬，叫他早點休息還要回我「妳也是」。',
-  ashin: '晚上找阿信聊了一下。他今天去唱片行，本來只想買一張，結果又多帶了一張回家，完全可以想像他站在架子前面挑半天的樣子。他還說想借我聽，感覺明天又有新歌可以聽了。跟他聊天真的很舒服，不用一直想著要講什麼才不會冷場。',
-  masa: '晚上跟瑪莎聊了好久。他今天被媽媽叫去買東西，還不小心多買一包餅乾，結果回家被唸。聊著聊著又講到以前巷口那家冰店，我明明都快忘記了，他居然還記得我以前最愛點什麼。嘴巴很壞，記性倒是好得很。',
-  stone: '晚上跟石頭聊今天的日常。他說上課前差點忘記帶筆記，還有一題想了很久才弄懂。我跟他講了今天上課差點睡著的事，他居然沒有笑我，只說下次記得早點睡。後來又聊了一點亂七八糟的小事，時間一下就過去了。',
-  yanming: '晚上找諺明哥聊天。他今天在練團室忙了一整天，預約排得很滿，還遇到有人把導線放錯地方。他說後來泡了杯茶才終於坐下來。我問他平常怎麼放鬆，他還真的認真回答，哈哈。感覺他連聊天都很有條理，但也滿好玩的。',
+  wen: '晚上我自己跑去敲溫尚翊，本來只是想問他今天在忙什麼，結果訊息一來一回就聊了好久。他說下午在練團室搬音箱，被瑪莎嫌動作慢，後來連撥片都不知道掉到哪裡去。我光想像他蹲在地上翻東西的樣子就想笑。明明只是隨口問候，最後居然聊到吉他和冰店。叫他早點休息，他還要回我一句「妳也是」。哼，明明自己也很晚睡。',
+  ashin: '晚上找阿信聊了一下。他今天去唱片行，本來只想買一張，結果站在架子前挑來挑去，又多帶了一張回家。我完全可以想像他拿著兩張唱片猶豫半天的樣子。他還說下次可以借我聽，這樣明天又有新歌可以期待了。跟他聊天很舒服，不用一直想著要找什麼話題，想到什麼就說什麼也不會冷場。',
+  masa: '晚上跟瑪莎聊了好一陣子。他今天被媽媽叫去買東西，結果不小心多買了一包餅乾，回家還被唸。最好笑的是，聊著聊著又講到以前巷口那家冰店，我本來以為他早就忘了，沒想到他連我以前每次都要站在冰櫃前面猶豫很久都記得。嘴巴還是很壞，記性倒是好得不得了。',
+  stone: '晚上跟石頭聊了些今天的日常。他說上課前差點忘記帶筆記，還有一題想了很久才弄懂。我跟他講自己上課差點睡著的事，他居然沒有笑我，只提醒我下次不要熬夜。後來又聊到一些有的沒的小事，明明沒有什麼重要內容，回過神來才發現時間已經過了好久。',
+  yanming: '晚上找諺明哥聊天。他說今天練團室的預約排得很滿，還有人把導線放錯箱子，害他找了半天。忙完以後他重新整理了一遍架子，才終於泡了杯茶坐下來。我問他平常都怎麼放鬆，他還真的很認真地回答我。感覺他連聊天都很有條理，不過偶爾被瑪莎鬧到無奈的樣子，想想也滿好笑的。',
 }
 
 const monthDiaryEntries: Record<RouteCharacterId, { title: string; visit: string; chat: string; ending: string }> = {
   wen: {
-    title: '送水只是藉口吧？',
-    visit: '今天跑去台大找溫尚翊，手上還拿了兩瓶冰水。本來想說送到就走，結果一到球場就看到他在打球。欸，真的滿帥的啦……我本來還想裝得很淡定，結果他一看到我就把球交給隊友跑過來，害我差點忘記自己原本要講什麼。後來坐在樹蔭下看他們打完，還被他拉去福利社吃東西。明明是我送水給他，最後還是他請客，算他有良心。',
-    chat: '回家後我還是忍不住傳訊息跟他說最後那球很帥。他先是裝沒事，後來又說下次有球賽會通知我。好喔，那我就等通知。希望他不要到時候又說自己忘記了。',
-    ending: '今天回來一直想到他跑過來拿水的樣子。完了，我是不是有點太明顯了？',
+    title: '我只是去送水，沒有別的意思！',
+    visit: '今天拎著兩瓶冰水跑去台大找溫尚翊。本來想說送到就走，結果一到球場就聽見球砰砰地撞在地上，旁邊的人一直喊他的名字。他正在打球，跳起來投籃的時候真的……算了，先不誇他。明明想裝得很自然，結果他一看到我就把球交給隊友跑過來，害我拿著水瓶突然不知道要講什麼。後來我坐在樹蔭下看他們打完，太陽曬得腿都熱了，他又把我拉去福利社吃東西。明明是我送水，最後還是他請客，哼，算他有良心。',
+    chat: '回家後我還是忍不住傳訊息跟他說最後那球很帥。他一開始裝得很平常，後來又說下次有球賽會通知我。欸，這句我可是記下來了喔。明明只是隨口一句，我卻把訊息看了好幾遍，還怕自己回得太快會顯得很期待。希望他不要到時候又說自己忘記了。',
+    ending: '今天兩瓶水都送出去了，球賽也看完了，只有他跑過來拿水的那個畫面還在我腦袋裡重播。完了，我是不是有點太明顯了？明天見到他要記得正常一點！',
   },
   ashin: {
     title: '實踐真的比我想像中大欸。',
-    visit: '今天去實踐找阿信，他帶我在校園裡走來走去。原本想說只是逛一下，結果我們一路從圖書館旁邊走到校門口，差點忘記時間。走到一半風把他的頭髮吹開，我才看到眉毛旁邊那顆小痣，忍不住多看了兩眼，還差點被他發現。阿信講起學校和音樂的時候都很認真，連哪條路比較好走都會跟我說。最後他陪我等車，等我上車才走。',
-    chat: '回家後我傳訊息跟他說今天走得很開心。他說自己本來還怕我覺得無聊，拜託，明明是我一直不想回家。後來又聊到他寫在講義背面的歌詞，還答應下次有空拿給我看。現在有點好奇他到底寫了什麼。',
-    ending: '今天走了好多路，腳有點酸，但如果下次還能再逛一次，好像也不錯。',
+    visit: '今天去實踐找阿信，他帶我在校園裡到處走。原本想說只是逛一下，結果從圖書館旁邊一路走到校門口，差點忘記時間。走到一半風把他的頭髮吹開，我才注意到眉毛旁邊那顆小痣，忍不住多看了兩眼，還差點被他發現。阿信講起學校和音樂時真的很認真，連哪條路比較好走都會慢慢跟我說。最後他陪我等車，還一直等到我上車才離開。今天的路好像特別長，但一點都不無聊。',
+    chat: '回家後我傳訊息跟他說今天走得很開心。他說自己本來還怕我覺得無聊，拜託，明明是我一直不想回家！後來又聊到他寫在講義背面的歌詞，他還答應下次有空拿給我看。現在反而有點好奇，那到底寫了什麼，最好不要讓我等太久。',
+    ending: '今天走了好多路，腳有點酸，回家才發現鞋底都沾了灰。可是如果下次還能再逛一次，好像也不錯。嗯……我是不是已經在想下次了？',
   },
   masa: {
     title: '我媽真的很愛翻相簿！',
-    visit: '今天把瑪莎帶回家吃飯，我媽一看到他就開始翻以前的照片。救命，連我小時候那種奇怪的髮型都有，真的很想把相簿搶過來。瑪莎一開始還裝得很客氣，後來笑得比我還大聲，根本是來看熱鬧的吧！吃飯的時候我媽一直叫他多吃一點，他也真的很捧場，最後還幫忙把碗拿去廚房。好像跟以前差不多，只是我們都長大了。',
-    chat: '晚上他還傳訊息來問相簿到底收好了沒，哈哈哈。他居然還記得以前巷口那家冰店，連我每次都挑很久都記得。聊到最後還約好改天去看看店還在不在。這次可不准放我鴿子。',
-    ending: '我媽說下次還要找以前的照片。拜託不要了，我的黑歷史真的夠多了！',
+    visit: '今天把瑪莎帶回家吃飯，我媽一看到他就像突然想起什麼大事，轉身就去把相簿翻出來。救命，連我小時候那種剪得亂七八糟的瀏海都有，真的很想把相簿整本搶走！瑪莎一開始還裝得很客氣，坐沒多久就笑得比我還大聲，根本是來看我出糗的吧。吃飯時我媽一直叫他多吃一點，他也真的很捧場，最後還幫忙把碗拿去廚房。明明隔了這麼多年，坐在餐桌旁邊又好像回到以前。',
+    chat: '晚上他還傳訊息來問相簿到底收好了沒，哈哈哈，這人到底有多在意自己的黑歷史？後來又聊到以前巷口那家冰店，他居然連我每次都要挑很久、最後還是點同一種口味都記得。聊到最後約好改天去看看店還在不在。這次可不准放我鴿子，不然我真的會去他家門口堵人。',
+    ending: '我媽說下次還要找以前的照片。拜託不要了，我的黑歷史已經夠多了！不過……今天能跟瑪莎一起坐在家裡吃飯，感覺真的有點奇妙。好像有些東西繞了一大圈，還是回來了。',
   },
   stone: {
     title: '便當有送到，人也有看到啦。',
-    visit: '中午帶便當去找石頭。天氣有點熱，我怕便當放太久會不好吃，一路上都走得很快。結果他一看到我，第一句不是問便當，是問我有沒有等很久。後來我們坐在騎樓邊一起吃，他又把自己那份裡比較好吃的菜推過來，真的很會。吃到一半他還一直看時間，怕趕不上課。最後便當吃完了，他把袋子收好，還提醒我回去路上小心。',
-    chat: '晚上他又傳訊息來問我有沒有把便當盒洗好，明明我又不是會把東西弄丟的人！後來聊到他上課差點遲到，還有筆記放錯袋子，原來他也會有這麼迷糊的時候。下次換他請我喝飲料，這句我有記下來。',
-    ending: '本來只是想送個便當，結果又被他照顧了一遍。石頭真的很細心欸。',
+    visit: '中午帶便當去找石頭。天氣熱得要命，我一路上都怕便當悶太久會不好吃，走得比平常快好多。結果他一看到我，第一句不是問便當，是問我有沒有等很久。後來我們坐在騎樓邊一起吃，他又把自己那份裡比較好吃的菜推到我這邊，真的很會欸。吃到一半他還一直看時間，怕趕不上課。便當吃完後，他把袋子收好，還提醒我回去路上小心。明明是我特地跑去找他，最後又像被照顧了一遍。',
+    chat: '晚上他又傳訊息來問我有沒有把便當盒洗好，拜託，我又不是會把便當盒弄丟的人！後來聊到他上課差點遲到，還有筆記放錯袋子，原來他也會有這麼迷糊的時候。下次換他請我喝飲料，這句我有記下來，不能讓他裝作沒說過。',
+    ending: '本來只是想送個便當，結果又被他照顧了一遍。石頭真的很細心欸，有時候連我自己都沒注意到的小事，他好像都會先想到。',
   },
   yanming: {
     title: '我差點把導線收成一團。',
-    visit: '今天去練團室找諺明哥，跟他一起整理器材。原本以為就是把東西放回去而已，結果光是收導線就有好多小細節。他教我順著線的弧度慢慢繞，不要硬折。我第一次試的時候差點弄成一團，還好他沒有笑我，只是站在旁邊慢慢教。整理完才發現整個角落看起來差好多，突然有點成就感。',
-    chat: '晚上我傳訊息跟他說手上還有灰，他居然還記得提醒我洗手。後來他說又檢查了一遍我收的線，全部都過關，哈哈！還聊到他今天差點記錯預約時間，原來他也不是每件事都不會出錯嘛。',
-    ending: '下次如果還有機會去，我想再學一點別的。這次至少不要再把線繞歪了。',
+    visit: '今天去練團室找諺明哥，跟他一起整理器材。原本以為就是把東西放回去而已，結果光是收導線就有好多眉角。他教我順著線的弧度慢慢繞，不能硬折。我第一次試的時候差點把自己弄成一團，還好他沒有笑我，只是站在旁邊慢慢示範。練團室裡有一點灰塵和器材的味道，忙起來時間過得超快。整理完再回頭看，整個角落真的整齊好多，突然很有成就感。',
+    chat: '晚上我傳訊息跟他說手上還有灰，他居然還記得提醒我洗手。後來他說又檢查了一遍我收的線，全部都過關，哈哈！還聊到他今天差點記錯預約時間，原來他也不是每件事都能安排得滴水不漏嘛。這個小秘密我先記著，以後說不定可以拿來笑他。',
+    ending: '下次如果還有機會去，我想再學一點別的。這次至少不要再把線繞歪了，拜託。',
   },
 }
+
 
 const unlockedContacts = [
   { id: 'wen', name: '溫尚翊', role: '大學同學・吉他手', description: '妳在大學認識的同學。熟門熟路地出入練團室，嘴上常常不饒人，卻總會留意妳有沒有跟上。' },
@@ -1774,7 +1775,29 @@ function App() {
   const [nextMonthDiaryData, setNextMonthDiaryData] = useState<NextMonthDiaryData | null>(() => {
     try {
       const saved = JSON.parse(localStorage.getItem('mayday-next-month-diary-data') ?? 'null') as NextMonthDiaryData | null
-      return saved && typeof saved.title === 'string' && typeof saved.eventSummary === 'string' && typeof saved.chatSummary === 'string' ? saved : null
+      if (!saved || typeof saved.title !== 'string' || typeof saved.eventSummary !== 'string' || typeof saved.chatSummary !== 'string') return null
+      const eventCharacter = monthVisitOrder.includes(saved.eventCharacter as RouteCharacterId) ? saved.eventCharacter as RouteCharacterId : null
+      const chatCharacter = monthVisitOrder.includes(saved.chatCharacter as RouteCharacterId) ? saved.chatCharacter as RouteCharacterId : null
+      if (!eventCharacter || !chatCharacter) return saved
+      const inviteTargetValue = localStorage.getItem('mayday-next-month-invite-target')
+      const inviteTarget = inviteTargetValue && monthVisitOrder.includes(inviteTargetValue as RouteCharacterId) ? inviteTargetValue as RouteCharacterId : null
+      const inviteReplyChoice = Number(localStorage.getItem('mayday-next-month-invite-reply-choice') ?? '-1')
+      const inviteChoice = inviteTarget && Number.isInteger(inviteReplyChoice) && inviteReplyChoice >= 0 && inviteReplyChoice < nextMonthInviteRoutes[inviteTarget].replyChoices.length
+        ? nextMonthInviteRoutes[inviteTarget].replyChoices[inviteReplyChoice]
+        : null
+      const acceptedInviteCopy = inviteTarget && inviteChoice?.accepted ? nextMonthDiaryCopy[inviteTarget] : null
+      const eventCopy = nextMonthDiaryCopy[eventCharacter]
+      const refreshed: NextMonthDiaryData = {
+        ...saved,
+        title: acceptedInviteCopy ? '今天也太充實了吧！' : eventCopy.openDayTitle,
+        eventSummary: [acceptedInviteCopy?.inviteSummary, eventCopy.openDaySummary].filter(Boolean).join('\\n\\n'),
+        chatSummary: nextMonthChatDiary[chatCharacter],
+        ending: eventCopy.ending,
+        eventCharacter,
+        chatCharacter,
+      }
+      localStorage.setItem('mayday-next-month-diary-data', JSON.stringify(refreshed))
+      return refreshed
     } catch { return null }
   })
   const [routeAffection, setRouteAffection] = useState<Record<RouteCharacterId, number>>(() => {
@@ -3086,7 +3109,7 @@ function App() {
       openDayCopy.openDaySummary,
     ].filter(Boolean).join('\n\n')
     const diaryData: NextMonthDiaryData = {
-      title: acceptedInviteCopy ? '今天真的發生好多事！' : openDayCopy.openDayTitle,
+      title: acceptedInviteCopy ? '今天也太充實了吧！' : openDayCopy.openDayTitle,
       eventSummary,
       chatSummary: nextMonthChatDiary[nextMonthFreeChatTarget],
       ending: openDayCopy.ending,
@@ -4931,13 +4954,13 @@ function App() {
                                 {day2DiaryUnlocked && (
                                   <button className="diary-entry-row" onClick={() => setSelectedDiaryDate('1996-10-16')}>
                                     <span className="diary-entry-date">16<br/><small>OCT</small></span>
-                                    <span className="diary-entry-copy"><strong>今天原本只是想去吃一碗冰。</strong><small>遇見阿信，還有和溫尚翊一起度過的傍晚。</small></span>
+                                    <span className="diary-entry-copy"><strong>本來只是想吃冰，結果行程一直加長。</strong><small>遇見阿信，還跟溫尚翊多逛了一段路。</small></span>
                                     <ChevronRight size={16} />
                                   </button>
                                 )}
                                 <button className="diary-entry-row" onClick={() => setSelectedDiaryDate('1996-10-15')}>
                                   <span className="diary-entry-date">15<br/><small>OCT</small></span>
-                                  <span className="diary-entry-copy"><strong>今天真的發生了一件很不可思議的事。</strong><small>在練團室，重新遇見了小時候的朋友。</small></span>
+                                  <span className="diary-entry-copy"><strong>我真的沒想到會在這裡遇到他！</strong><small>在練團室，重新遇見小時候的朋友。</small></span>
                                   <ChevronRight size={16} />
                                 </button>
                               </>
@@ -4963,36 +4986,30 @@ function App() {
                                 ) : selectedDiaryDate === '1996-10-16' && day2DiaryUnlocked ? (
                                   <div className="diary-paper">
                                     <span className="diary-date">1996 年 10 月 16 日・星期三</span>
-                                    <h2>今天原本只是想去吃一碗冰。</h2>
-                                    <p>下課後跟著溫尚翊去吃冰，沒想到在路上遇見阿信。後來三個人一起逛了唱片行，他講起音樂的時候真的很認真，連一首歌要從哪裡開始聽都仔細介紹。</p>
+                                    <h2>本來只是想吃冰，結果行程一直加長。</h2>
+                                    <p>下課後跟著溫尚翊去吃冰，沒想到路上又遇到阿信。後來三個人一起逛唱片行，阿信一講起音樂就停不下來，連哪張唱片適合從哪一首開始聽都介紹得清清楚楚。我本來只是想買碗冰，最後卻站在唱片架前聽了半天，差點忘記時間。</p>
                                     {day2StrollAccepted ? (
                                       <>
-                                        <p>阿信走後，溫尚翊問我要不要再逛一下。我答應了，最後跟著他去了附近的小書店。</p>
-                                        <p>我們在裡面待了好一會兒，聊了些很普通的事情。他有時候真的很會惹人嫌，可是跟他一起走路，好像連沒有目的地也不會覺得無聊。逛完之後，他還一路陪我走回家，站在門口等我進去才離開。</p>
+                                        <p>阿信走後，溫尚翊問我要不要再逛一下。我明明心裡想著今天已經走很多路了，嘴巴卻很快就答應。最後跟著他去了附近的小書店，在裡面磨蹭了好一會兒。</p>
+                                        <p>我們聊的都是些很普通的事，可是跟他一起走路，好像連沒有目的地都不會覺得無聊。他有時候真的很會惹人嫌，偏偏又會在回家時一路陪著我，站在門口等我進去才離開。這種人到底要怎麼辦啦。</p>
                                       </>
                                     ) : (
                                       <>
-                                        <p>阿信走後，溫尚翊問我要不要再逛一下。我想了想，還是跟他說今天差不多了，想先回家。</p>
-                                        <p>他沒有勉強我，還是陪我慢慢走回家，直到我站在家門口才轉身離開。臨走前還提醒我早點休息。</p>
+                                        <p>阿信走後，溫尚翊問我要不要再逛一下。我想了想，還是說今天差不多了，想先回家。他沒有勉強我，陪我慢慢走回去，到了門口還提醒我早點休息。</p>
+                                        <p>明明只是很平常的一段路，卻因為有人陪著走，好像也沒有那麼想趕快到家。</p>
                                       </>
                                     )}
-                                    <p>今天又和阿信多聊了一會兒，也和原本就認識的人多相處了一段時間。明明沒有發生什麼大事，卻覺得這一天比平常長了很多。</p>
-                                    <p>不知道明天又會收到誰的訊息。</p>
+                                    <p>今天走得比平常久，腳有點酸，心情倒是很好。阿信聊的那些歌還在腦袋裡轉，溫尚翊說話的樣子也一直跑出來。到底是去吃冰，還是順便收集回憶的啊？</p>
                                   </div>
                                 ) : (
                                   <div className="diary-paper">
                                     <span className="diary-date">1996 年 10 月 15 日・星期二</span>
-                                    <h2>今天真的發生了一件很不可思議的事。</h2>
-                                    <p>本來只是跟著溫尚翊去練團室看看，結果居然在那裡遇到了瑪莎。</p>
-                                    <p>我到現在還是覺得有點不真實。</p>
-                                    <p>小時候搬家之前，他還特地把地址寫給我，說以後一定要聯絡。</p>
-                                    <p>可是後來那場大雨，把紙上的字都弄模糊了。</p>
-                                    <p>我一直很想知道他後來去了哪裡。</p>
-                                    <p>沒想到兜兜轉轉這麼多年，居然會在這樣的地方重新遇見蔡昇晏。</p>
-                                    <p>而且他竟然也認識溫尚翊。</p>
-                                    <p>這個世界真的好小。</p>
-                                    <p>今天還有好多事情沒來得及問他。</p>
-                                    <p>下次見面再說吧。</p>
+                                    <h2>我真的沒想到會在這裡遇到他！</h2>
+                                    <p>今天跟著溫尚翊去練團室，本來只是想看看他們平常練團的地方，誰知道一進去就碰到瑪莎。我第一眼還有點不敢認，畢竟小時候搬家後就再也沒見過了，明明名字一直記得，卻不知道他現在變成什麼樣子。</p>
+                                    <p>搬家前他把地址寫給我，說以後一定要聯絡。結果那場雨把紙上的字沖得模模糊糊，我後來還是留了很久，偶爾拿出來看，想說到底還找不找得到。</p>
+                                    <p>結果今天居然就這樣遇到本人。也太扯了吧！本來有好多話想問，真的見到人反而不知道從哪一句開始，最後只顧著發愣。</p>
+                                    <p>更讓我意外的是，他居然跟溫尚翊認識。這兩個人到底是怎麼湊在一起的？我現在腦袋還有點亂，明天一定要找機會問清楚。</p>
+                                    <p>明明只是去看一下練團室，結果回家後一直在想今天的事。這種事情也太像電影了吧，拜託不要是我自己想太多。</p>
                                   </div>
                                 )}
                               </>
