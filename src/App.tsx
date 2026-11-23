@@ -2880,7 +2880,9 @@ function App() {
 
   const finishNextMonthFreeChat = () => {
     if (!nextMonthFreeChatTarget || !nextMonthFreeChatOpeningSent || !nextMonthFreeChatReplied || nextMonthFreeChatRound !== 4 || nextMonthFreeChatReplies.length !== 5) return
-    const eventCharacter = nextMonthOpenDayTarget ?? nextMonthInviteTarget ?? nextMonthFreeChatTarget
+    const eventCharacter = nextMonthEventKind === 'open-day'
+      ? nextMonthEventCharacter ?? nextMonthOpenDayTarget ?? nextMonthInviteTarget ?? nextMonthFreeChatTarget
+      : nextMonthEventCharacter ?? nextMonthInviteTarget ?? nextMonthOpenDayTarget ?? nextMonthFreeChatTarget
     const openDayCopy = nextMonthDiaryCopy[eventCharacter]
     const inviteChoice = nextMonthInviteTarget && nextMonthInviteReplyChoice !== null
       ? nextMonthInviteRoutes[nextMonthInviteTarget].replyChoices[nextMonthInviteReplyChoice]
