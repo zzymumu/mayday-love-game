@@ -36,6 +36,22 @@ import {
   type NextMonthFreeChatContext,
 } from './nextMonth'
 import {
+  winterExamIntroBlocks,
+  winterExamTutoringIntroBlocks,
+  winterExamTutoringRounds,
+  winterExamTutoringEnding,
+  winterBreakPracticeBlocks,
+  winterBreakPracticeRounds,
+  winterBreakPracticeEnding,
+  winterBreakGigIntroBlocks,
+  winterGigFocusBlocks,
+  winterBreakGigEndingBlocks,
+  winterYanmingPickupBlocks,
+  winterBusStopRoutes,
+  type WinterCharacterId,
+  type WinterDiaryData,
+} from './winterBreak'
+import {
   YEAR_END_INVITE_THRESHOLD,
   yearEndIntroBlocks,
   yearEndShoppingRoutes,
@@ -54,7 +70,7 @@ import {
 type AppKey = 'messages' | 'contacts' | 'calls' | 'diary' | 'calendar' | 'photos' | 'music' | 'notes' | 'settings'
 type CharacterId = 'wen' | 'masa' | 'ashin' | 'stone' | 'yanming' | 'youda'
 type RouteCharacterId = Exclude<CharacterId, 'youda'>
-type StoryStage = 'notification' | 'messages' | 'reply' | 'walk' | 'studio' | 'reunion' | 'reunion-chat' | 'nickname' | 'rehearsal' | 'dinner' | 'after-dinner' | 'ending' | 'completed' | 'greetings' | 'classroom' | 'masa-checkin' | 'stone-checkin' | 'ice-date' | 'stroll' | 'day2-diary' | 'free-time' | 'free-chat' | 'day2-complete' | 'month-free-time' | 'month-visit' | 'month-visit-complete' | 'month-free-chat' | 'month-diary' | 'next-month-intro' | 'next-month-invite-notification' | 'next-month-invite-picker' | 'next-month-invite' | 'next-month-invite-chat' | 'next-month-invite-date' | 'next-month-open-day' | 'next-month-open-day-picker' | 'next-month-open-day-visit' | 'next-month-open-day-visit-complete' | 'next-month-free-chat' | 'next-month-diary' | 'year-end-intro' | 'year-end-invite-notification' | 'year-end-invite-picker' | 'year-end-shopping-notification' | 'year-end-shopping-chat' | 'year-end-shopping' | 'year-end-fireworks' | 'year-end-new-year-notification' | 'year-end-new-year-chat' | 'year-end-free-chat' | 'year-end-free-chat-picker' | 'year-end-diary' | 'paused'
+type StoryStage = 'notification' | 'messages' | 'reply' | 'walk' | 'studio' | 'reunion' | 'reunion-chat' | 'nickname' | 'rehearsal' | 'dinner' | 'after-dinner' | 'ending' | 'completed' | 'greetings' | 'classroom' | 'masa-checkin' | 'stone-checkin' | 'ice-date' | 'stroll' | 'day2-diary' | 'free-time' | 'free-chat' | 'day2-complete' | 'month-free-time' | 'month-visit' | 'month-visit-complete' | 'month-free-chat' | 'month-diary' | 'next-month-intro' | 'next-month-invite-notification' | 'next-month-invite-picker' | 'next-month-invite' | 'next-month-invite-chat' | 'next-month-invite-date' | 'next-month-open-day' | 'next-month-open-day-picker' | 'next-month-open-day-visit' | 'next-month-open-day-visit-complete' | 'next-month-free-chat' | 'next-month-diary' | 'year-end-intro' | 'year-end-invite-notification' | 'year-end-invite-picker' | 'year-end-shopping-notification' | 'year-end-shopping-chat' | 'year-end-shopping' | 'year-end-fireworks' | 'year-end-new-year-notification' | 'year-end-new-year-chat' | 'year-end-free-chat' | 'year-end-free-chat-picker' | 'year-end-diary' | 'winter-exam-intro' | 'winter-exam-notification' | 'winter-exam-tutoring' | 'winter-break-practice' | 'winter-break-gig' | 'winter-break-pickup' | 'winter-break-bus-choice' | 'winter-break-bus' | 'winter-diary' | 'paused'
 type ReplyKey = 'a' | 'b' | 'c'
 type ReunionReplyKey = 'a' | 'b' | 'c'
 type NicknameQuestionKey = 'a' | 'b' | 'c'
@@ -189,7 +205,7 @@ const storyStageLabels: Record<StoryStage, string> = {
   'day2-diary': '寫下第二篇日記', 'free-time': '自由活動', 'free-chat': '自由聊天',
   'day2-complete': '第二天結束', 'month-free-time': '一個月後・自由活動', 'month-visit': '一個月後・外出見面', 'month-visit-complete': '一個月後・見面結束', 'month-free-chat': '一個月後・自由對話', 'month-diary': '一個月後・私人日記',
   'next-month-intro': '又一個月後・校園開放日', 'next-month-invite-notification': '有人想約你', 'next-month-invite-picker': '看看是誰想約你', 'next-month-invite': '回覆邀約', 'next-month-invite-chat': '邀約簡訊', 'next-month-invite-date': '赴約', 'next-month-open-day': '椰風搖滾社・校園開放日', 'next-month-open-day-picker': '一起逛校園', 'next-month-open-day-visit': '校園散步', 'next-month-open-day-visit-complete': '校園開放日・見面結束', 'next-month-free-chat': '十二月・自由對話', 'next-month-diary': '十二月・私人日記',
-  'year-end-intro': '十二月三十一日・跨年篇', 'year-end-invite-notification': '收到年貨邀約', 'year-end-invite-picker': '選擇邀約對象', 'year-end-shopping-notification': '年貨邀約簡訊', 'year-end-shopping-chat': '回覆年貨邀約', 'year-end-shopping': '一起買年貨', 'year-end-fireworks': '七人跨年煙火', 'year-end-new-year-notification': '收到新年祝福', 'year-end-new-year-chat': '回覆新年祝福', 'year-end-free-chat': '新年自由聊天', 'year-end-free-chat-picker': '新年自由活動', 'year-end-diary': '1996 年最後一篇日記', paused: '故事暫停',
+  'year-end-intro': '十二月三十一日・跨年篇', 'year-end-invite-notification': '收到年貨邀約', 'year-end-invite-picker': '選擇邀約對象', 'year-end-shopping-notification': '年貨邀約簡訊', 'year-end-shopping-chat': '回覆年貨邀約', 'year-end-shopping': '一起買年貨', 'year-end-fireworks': '七人跨年煙火', 'year-end-new-year-notification': '收到新年祝福', 'year-end-new-year-chat': '回覆新年祝福', 'year-end-free-chat': '新年自由聊天', 'year-end-free-chat-picker': '新年自由活動', 'year-end-diary': '1996 年最後一篇日記', 'winter-exam-intro': '一九九七年・期末考前一週', 'winter-exam-notification': '統計學補習提示', 'winter-exam-tutoring': '圖書館・統計學補習', 'winter-break-practice': '寒假・諺明哥的練團室', 'winter-break-gig': '寒假・酒吧駐唱', 'winter-break-pickup': '諺明哥來接你', 'winter-break-bus-choice': '散場後・選擇同行的人', 'winter-break-bus': '一起走到公車站', 'winter-diary': '一九九七年・寒假日記', paused: '故事暫停',
 }
 const readSaveSlot = (slot: number): SaveSlotData | null => {
   try {
@@ -1742,7 +1758,7 @@ function App() {
   const [day2StrollAccepted, setDay2StrollAccepted] = useState(() => localStorage.getItem('mayday-day2-after-ice-choice') === 'accept')
   const [day2DiaryUnlocked, setDay2DiaryUnlocked] = useState(() => localStorage.getItem('mayday-day2-diary-unlocked') === 'true')
   const [monthDiaryUnlocked, setMonthDiaryUnlocked] = useState(() => localStorage.getItem('mayday-month-diary-unlocked') === 'true' || localStorage.getItem('mayday-month-day-complete') === 'true')
-  const [selectedDiaryDate, setSelectedDiaryDate] = useState<'1996-10-15' | '1996-10-16' | '1996-11-16' | '1996-12-14' | '1996-12-31' | null>(null)
+  const [selectedDiaryDate, setSelectedDiaryDate] = useState<'1996-10-15' | '1996-10-16' | '1996-11-16' | '1996-12-14' | '1996-12-31' | '1997-01-22' | null>(null)
   const [chatMessages, setChatMessages] = useState<Record<CharacterId, SmsMessage[]>>(() => {
     const saved = localStorage.getItem('mayday-chat-messages')
     if (saved) {
