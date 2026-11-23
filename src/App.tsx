@@ -2049,7 +2049,8 @@ function App() {
   const isNextMonth = ['next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-chat', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete', 'next-month-free-chat', 'next-month-diary'].includes(effectiveDateStage) || localStorage.getItem('mayday-next-month-day-complete') === 'true'
   const isMonthLater = ['month-free-time', 'month-visit', 'month-visit-complete', 'month-free-chat', 'month-diary'].includes(effectiveDateStage) || localStorage.getItem('mayday-month-visit-complete') === 'true'
   const isYearEnd = ['year-end-intro', 'year-end-invite-notification', 'year-end-invite-picker', 'year-end-shopping-notification', 'year-end-shopping-chat', 'year-end-shopping', 'year-end-fireworks', 'year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary'].includes(effectiveDateStage) || localStorage.getItem('mayday-year-end-day-complete') === 'true'
-  const saveGameDate = isYearEnd ? '1996.12.31' : isNextMonth ? '1996.12.14' : isMonthLater ? '1996.11.16' : isSecondDay ? '1996.10.16' : '1996.10.15'
+  const isNewYear = ['year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary'].includes(effectiveDateStage) || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-year-end-day-complete') === 'true')
+  const saveGameDate = isNewYear ? '1997.01.01' : isYearEnd ? '1996.12.31' : isNextMonth ? '1996.12.14' : isMonthLater ? '1996.11.16' : isSecondDay ? '1996.10.16' : '1996.10.15'
   const [calendarYear, calendarMonth, calendarDay] = saveGameDate.split('.')
   const calendarDate = new Date(Number(calendarYear), Number(calendarMonth) - 1, Number(calendarDay))
   const calendarWeekday = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'][calendarDate.getDay()]
@@ -3908,6 +3909,9 @@ function App() {
   const currentNextMonthInviteRound = currentNextMonthInvite?.rounds[nextMonthInviteDateReplies.length] ?? null
   const currentNextMonthOpenDay = nextMonthOpenDayTarget ? nextMonthOpenDayRoutes[nextMonthOpenDayTarget] : null
   const currentNextMonthOpenDayRound = currentNextMonthOpenDay?.rounds[nextMonthOpenDayReplies.length] ?? null
+  const currentYearEndShoppingRoute = yearEndInviteTarget ? yearEndShoppingRoutes[yearEndInviteTarget] : null
+  const currentYearEndShoppingRound = currentYearEndShoppingRoute?.rounds[yearEndShoppingReplies.length] ?? null
+  const currentYearEndFireworksRound = yearEndFireworksRounds[yearEndFireworksReplies.length] ?? null
   const currentGreetingRound = greetingChats[currentGreetingId][Math.min(greetingRound, greetingChats[currentGreetingId].length - 1)]
   const currentThreadMessages: SmsMessage[] = selectedSmsThread === 'wen'
     ? [...smsMessages, ...(chatMessages.wen ?? [])]
@@ -4944,6 +4948,299 @@ function App() {
                 </div>
               )}
 
+
+              {storyStage === 'year-end-intro' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">年末特別篇</div>
+                    <div className="story-contact-title">
+                      <strong>一九九六年的最後一天</strong>
+                      <small>1996 年 12 月 31 日・星期二</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">聖誕節過後・時間走到年底</div>
+                    <h2 className="story-scene-title">今年最後一個晚上</h2>
+                    <StoryBlocks blocks={yearEndIntroBlocks} />
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={startYearEndFlow}>看看今天收到什麼訊息 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'year-end-invite-notification' && (
+                <div className="invite-notification-overlay">
+                  <div className="invite-notification-card">
+                    <div className="invite-notification-top">
+                      <span className="invite-notification-icon"><MessageSquare size={17} /></span>
+                      <span><strong>新訊息</strong><small>12 月 31 日・下午</small></span>
+                    </div>
+                    <h2>有人約你一起買年貨！</h2>
+                    <p>手機裡有幾個熟悉的名字亮了起來。好像有人想趁著跨年前，約你一起去採買。</p>
+                    <p>你想先看看是誰傳來訊息嗎？</p>
+                    <div className="invite-notification-actions">
+                      <button className="story-primary-button" onClick={() => changeStage('year-end-invite-picker')}>查看邀約 <ChevronRight size={15} /></button>
+                      <button className="story-primary-button secondary-chat-action" onClick={beginYearEndFireworks}>今天先不出門，晚上再見 <ChevronRight size={15} /></button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'year-end-invite-picker' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">跨年前的邀約</div>
+                    <div className="story-contact-title">
+                      <strong>想先回覆誰？</strong>
+                      <small>1996 年 12 月 31 日・下午</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">幾則還沒點開的訊息</div>
+                    <h2 className="story-scene-title">有人想找你一起採買</h2>
+                    <p className="narrative-paragraph">選一個人的邀請看看。接受就會和他一起去買年貨；婉拒也沒關係，晚上大家還是會一起跨年。</p>
+                    <div className="month-visit-picker">
+                      {yearEndInviteCandidates.map((id) => {
+                        const person = characterInfo.find((item) => item.id === id)!
+                        return (
+                          <button className="free-time-person" key={id} onClick={() => chooseYearEndInviteTarget(id)}>
+                            <span className="sms-avatar">{person.avatar}</span>
+                            <span><strong>{person.name}</strong><small>邀你一起買年貨</small></span>
+                            <ChevronRight size={15} />
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button secondary-chat-action" onClick={beginYearEndFireworks}>今天先不出門，直接準備跨年 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'year-end-shopping' && currentYearEndShoppingRoute && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">跨年前・下午</div>
+                    <div className="story-contact-title">
+                      <strong>{currentYearEndShoppingRoute.title}</strong>
+                      <small>{currentYearEndShoppingRoute.location}・1996 年 12 月 31 日</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">年末採買・一起出門走走</div>
+                    <h2 className="story-scene-title">{currentYearEndShoppingRoute.title}</h2>
+                    <StoryBlocks blocks={currentYearEndShoppingRoute.blocks} />
+                    {currentYearEndShoppingRoute.rounds.slice(0, yearEndShoppingReplies.length).map((round, index) => {
+                      const selected = round.choices[yearEndShoppingReplies[index]]
+                      if (!selected) return null
+                      return (
+                        <div className="month-visit-round-history" key={index}>
+                          {round.scene && <StoryBlocks blocks={[{ kind: 'narration', text: round.scene }]} />}
+                          <StoryBlocks blocks={[
+                            { kind: 'dialogue', speaker: round.promptSpeaker, text: round.prompt },
+                            { kind: 'dialogue', speaker: '你', text: selected.text },
+                            ...selected.response.map((line) => ({ kind: 'dialogue' as const, speaker: line.speaker, text: line.text })),
+                          ]} />
+                        </div>
+                      )
+                    })}
+                    {currentYearEndShoppingRound ? (
+                      <>
+                        {currentYearEndShoppingRound.scene && <StoryBlocks blocks={[{ kind: 'narration', text: currentYearEndShoppingRound.scene }]} />}
+                        <StoryBlocks blocks={[{ kind: 'dialogue', speaker: currentYearEndShoppingRound.promptSpeaker, text: currentYearEndShoppingRound.prompt }]} />
+                        <div className="choice-area">
+                          <div className="choice-heading">第 {yearEndShoppingReplies.length + 1}/5 輪・你想怎麼回應？</div>
+                          {currentYearEndShoppingRound.choices.map((choice, index) => (
+                            <button className="reply-choice" key={index} onClick={() => chooseYearEndShoppingReplyRound(index)}>
+                              <span>{choice.text}</span><ChevronRight size={15} />
+                            </button>
+                          ))}
+                          <small>每個選擇都會影響對方的感受。</small>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <StoryBlocks blocks={currentYearEndShoppingRoute.ending} />
+                        <div className="reunion-pause-note">今天的五輪採買互動已經完成。</div>
+                      </>
+                    )}
+                  </div>
+                  {yearEndShoppingReplies.length === 5 && (
+                    <div className="story-action-bar">
+                      <button className="story-primary-button" onClick={finishYearEndShopping}>收好東西，晚上集合 <ChevronRight size={15} /></button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {storyStage === 'year-end-fireworks' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">跨年主線</div>
+                    <div className="story-contact-title">
+                      <strong>和大家一起迎接新年</strong>
+                      <small>1996 年 12 月 31 日・深夜</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">河堤旁・晚上九點多</div>
+                    <h2 className="story-scene-title">六個人的跨年夜</h2>
+                    <StoryBlocks blocks={yearEndFireworksIntroBlocks} />
+                    {yearEndFireworksRounds.slice(0, yearEndFireworksReplies.length).map((round, index) => {
+                      const selected = round.choices[yearEndFireworksReplies[index]]
+                      if (!selected) return null
+                      return (
+                        <div className="month-visit-round-history" key={index}>
+                          {round.scene && <StoryBlocks blocks={[{ kind: 'narration', text: round.scene }]} />}
+                          <StoryBlocks blocks={[
+                            { kind: 'dialogue', speaker: round.promptSpeaker, text: round.prompt },
+                            { kind: 'dialogue', speaker: '你', text: selected.text },
+                            ...selected.response.map((line) => ({ kind: 'dialogue' as const, speaker: line.speaker, text: line.text })),
+                          ]} />
+                        </div>
+                      )
+                    })}
+                    {currentYearEndFireworksRound ? (
+                      <>
+                        {currentYearEndFireworksRound.scene && <StoryBlocks blocks={[{ kind: 'narration', text: currentYearEndFireworksRound.scene }]} />}
+                        <StoryBlocks blocks={[{ kind: 'dialogue', speaker: currentYearEndFireworksRound.promptSpeaker, text: currentYearEndFireworksRound.prompt }]} />
+                        <div className="choice-area">
+                          <div className="choice-heading">跨年夜・第 {yearEndFireworksReplies.length + 1}/5 輪</div>
+                          {currentYearEndFireworksRound.choices.map((choice, index) => (
+                            <button className="reply-choice" key={index} onClick={() => chooseYearEndFireworksReply(index)}>
+                              <span>{choice.text}</span><ChevronRight size={15} />
+                            </button>
+                          ))}
+                          <small>大家都在等你的反應，選一個最想做的事吧。</small>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <StoryBlocks blocks={yearEndFireworksEnding} />
+                        <div className="reunion-pause-note">一九九七年，已經開始了。</div>
+                      </>
+                    )}
+                  </div>
+                  {yearEndFireworksReplies.length === 5 && (
+                    <div className="story-action-bar">
+                      <button className="story-primary-button" onClick={finishYearEndFireworks}>收起煙火，看看凌晨的訊息 <ChevronRight size={15} /></button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {storyStage === 'year-end-new-year-chat' && yearEndGreetingTarget && activeApp === null && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">新年祝福</div>
+                    <div className="story-contact-title">
+                      <strong>{characterNames[yearEndGreetingTarget]}</strong>
+                      <small>1997 年 1 月 1 日・凌晨</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">手機裡的新年訊息</div>
+                    <h2 className="story-scene-title">{yearEndFirstReplySent ? '還想繼續聊幾句嗎？' : '打開訊息，回覆新年快樂'}</h2>
+                    <p className="narrative-paragraph">這段對話會留在你們的訊息紀錄裡。你可以回覆祝福，也可以在回覆後決定要不要繼續聊天。</p>
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={openYearEndNewYearMessages}>打開簡訊 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'year-end-free-chat' && yearEndGreetingTarget && activeApp === null && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">新年自由聊天</div>
+                    <div className="story-contact-title">
+                      <strong>{characterNames[yearEndGreetingTarget]}</strong>
+                      <small>1997 年 1 月 1 日・凌晨</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">新年的第一段閒聊</div>
+                    <h2 className="story-scene-title">第 {yearEndFreeChatRound + 1}/5 輪</h2>
+                    <p className="narrative-paragraph">你們剛才的祝福還停在訊息裡。打開對話，看看他接下來想說什麼。</p>
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={openYearEndFreeChatMessages}>繼續聊天 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'year-end-free-chat-picker' && activeApp === null && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">1997・自由活動</div>
+                    <div className="story-contact-title">
+                      <strong>還想向誰說新年快樂？</strong>
+                      <small>1997 年 1 月 1 日・凌晨</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">煙火散去，手機還亮著</div>
+                    <h2 className="story-scene-title">接下來由你決定</h2>
+                    <StoryBlocks blocks={[
+                      { kind: 'narration', text: '主動傳來新年祝福的人，你都已經回覆過了。其他朋友還沒有傳訊息，你可以自己打開對話，先向他們說一聲新年快樂。' },
+                      { kind: 'narration', text: '每個人都可以只收到一句祝福；如果聊起來了，也可以選擇再多聊五輪。想先停下來也沒關係。' },
+                    ]} />
+                    <div className="month-visit-picker">
+                      {greetingOrder.filter((id) => !yearEndGreetingQueue.includes(id as YearEndRouteCharacterId) && !yearEndProactiveSent.includes(id)).map((id) => {
+                        const person = characterInfo.find((item) => item.id === id)!
+                        return (
+                          <button className="free-time-person" key={id} onClick={() => chooseYearEndFreeChatTarget(id)}>
+                            <span className="sms-avatar">{person.avatar}</span>
+                            <span><strong>{person.name}</strong><small>主動傳送新年祝福</small></span>
+                            <ChevronRight size={15} />
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={startYearEndDiary}>今晚先聊到這裡，寫日記 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'year-end-diary' && yearEndDiaryData && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">跨年特別篇・私人日記</div>
+                    <div className="story-contact-title">
+                      <strong>把今年最後一天寫下來</strong>
+                      <small>1996 年 12 月 31 日・星期二</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">一九九七年・凌晨回到家</div>
+                    <h2 className="story-scene-title">{yearEndDiaryData.title}</h2>
+                    <div className="diary-paper story-diary-paper">
+                      <span className="diary-date">1996 年 12 月 31 日・星期二</span>
+                      <h2>{yearEndDiaryData.title}</h2>
+                      {yearEndDiaryData.sections.map((section) => (
+                        <DiarySection key={section.label} label={section.label} text={section.text} />
+                      ))}
+                    </div>
+                    <div className="reunion-pause-note">這篇日記會保留在日記列表裡，之後也可以重新打開來看。</div>
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={finishYearEndDiary}>合上日記，迎接一九九七年 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
               {storyStage === 'paused' && (
                 <div className="paused-story-banner">
                   <div>
@@ -5043,7 +5340,30 @@ function App() {
                   <span className="notification-time">剛剛</span>
                 </button>
               )}
-                            {storyStage === 'walk' && (
+              
+              {storyStage === 'year-end-shopping-notification' && yearEndInviteTarget && activeApp === null && (
+                <button className="sms-notification" onClick={openYearEndShoppingMessages}>
+                  <span className="notification-icon"><MessageSquare size={19} /></span>
+                  <span className="notification-copy">
+                    <strong>{characterNames[yearEndInviteTarget]}</strong>
+                    <span>{yearEndShoppingRoutes[yearEndInviteTarget].invitation[yearEndShoppingRoutes[yearEndInviteTarget].invitation.length - 1]}</span>
+                    <span>邀你一起買年貨</span>
+                  </span>
+                  <span className="notification-time">現在</span>
+                </button>
+              )}
+              {storyStage === 'year-end-new-year-notification' && yearEndGreetingTarget && activeApp === null && (
+                <button className="sms-notification" onClick={openYearEndNewYearMessages}>
+                  <span className="notification-icon"><MessageSquare size={19} /></span>
+                  <span className="notification-copy">
+                    <strong>{characterNames[yearEndGreetingTarget]}</strong>
+                    <span>{yearEndNewYearMessages[yearEndGreetingTarget as YearEndRouteCharacterId]}</span>
+                    <span>新年快樂</span>
+                  </span>
+                  <span className="notification-time">剛剛</span>
+                </button>
+              )}
+              {storyStage === 'walk' && (
                 <div className="story-screen-overlay">
                   <div className="story-screen-head">
                     <div className="chapter-mark">第一章</div>
@@ -5424,6 +5744,63 @@ function App() {
                                   <button className="story-primary-button" onClick={finishNextMonthFreeChat}>收起手機，寫下今天的日記 <ChevronRight size={15} /></button>
                                 </div>
                               )}
+
+                              {storyStage === 'year-end-shopping-chat' && yearEndInviteTarget && selectedSmsThread === yearEndInviteTarget && yearEndShoppingReplyChoice !== null && (
+                                <div className="sms-thread-actions">
+                                  <div className="reply-note">{yearEndShoppingReplyChoices[yearEndInviteTarget][yearEndShoppingReplyChoice].accepted ? '你答應了邀約。收起手機，準備出門買年貨吧。' : '你婉拒了邀約。他表示沒關係，晚上還是會一起跨年。'}</div>
+                                  <button className="story-primary-button" onClick={continueYearEndShoppingInvite}>{yearEndShoppingReplyChoices[yearEndInviteTarget][yearEndShoppingReplyChoice].accepted ? '收起手機，去買年貨' : '收起手機，準備晚上集合'} <ChevronRight size={15} /></button>
+                                </div>
+                              )}
+                              {storyStage === 'year-end-new-year-chat' && yearEndGreetingTarget && selectedSmsThread === yearEndGreetingTarget && yearEndFirstReplySent && (
+                                <div className="sms-thread-actions">
+                                  <div className="reply-note">新年祝福已經回覆。要不要趁著還沒睡，再多聊幾句？</div>
+                                  <button className="story-primary-button secondary-chat-action" onClick={continueYearEndGreetingChat}>再聊五輪 <ChevronRight size={15} /></button>
+                                  <button className="story-primary-button" onClick={finishYearEndGreetingWithoutChat}>{yearEndChatMode === 'incoming' ? '先到這裡，回覆下一則祝福' : '先到這裡，看看還有誰'} <ChevronRight size={15} /></button>
+                                </div>
+                              )}
+                              {storyStage === 'year-end-free-chat' && yearEndGreetingTarget && selectedSmsThread === yearEndGreetingTarget && yearEndFreeChatReplied && yearEndFreeChatRound === 4 && (
+                                <div className="sms-thread-actions">
+                                  <div className="reply-note">五輪對話已經聊完。這段新年聊天會保留在訊息紀錄裡。</div>
+                                  <button className="story-primary-button" onClick={finishYearEndFreeChat}>{yearEndChatMode === 'incoming' ? '收起手機，看看下一則祝福' : '收起手機，回到自由活動'} <ChevronRight size={15} /></button>
+                                </div>
+                              )}
+
+                              {storyStage === 'year-end-shopping-chat' && yearEndInviteTarget && selectedSmsThread === yearEndInviteTarget && yearEndShoppingReplyChoice === null && (
+                                <div className="choice-area">
+                                  <div className="choice-heading">你想怎麼回覆{characterNames[yearEndInviteTarget]}？</div>
+                                  {yearEndShoppingReplyChoices[yearEndInviteTarget].map((choice, index) => (
+                                    <button className="reply-choice" key={index} onClick={() => chooseYearEndShoppingReply(index)}>
+                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                    </button>
+                                  ))}
+                                  <small>接受就一起去買年貨；婉拒也不影響晚上的跨年主線。</small>
+                                </div>
+                              )}
+                              {storyStage === 'year-end-new-year-chat' && yearEndGreetingTarget && selectedSmsThread === yearEndGreetingTarget && !yearEndFirstReplySent && (
+                                <div className="choice-area">
+                                  <div className="choice-heading">{yearEndChatMode === 'incoming' ? '回覆' + characterNames[yearEndGreetingTarget] + '的新年祝福' : '先傳一句新年快樂給' + characterNames[yearEndGreetingTarget]}</div>
+                                  {(yearEndChatMode === 'incoming'
+                                    ? yearEndNewYearReplies[yearEndGreetingTarget as YearEndRouteCharacterId]
+                                    : yearEndProactiveOpeners[yearEndGreetingTarget]
+                                  ).map((choice, index) => (
+                                    <button className="reply-choice" key={index} onClick={() => yearEndChatMode === 'incoming' ? chooseYearEndIncomingGreetingReply(index) : chooseYearEndProactiveGreeting(index)}>
+                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                    </button>
+                                  ))}
+                                  <small>{yearEndChatMode === 'incoming' ? '這則新年祝福需要先回覆；回覆後再決定要不要繼續聊。' : '由你主動傳送新年祝福，對方會依照你選的說法回覆。'}</small>
+                                </div>
+                              )}
+                              {storyStage === 'year-end-free-chat' && yearEndGreetingTarget && selectedSmsThread === yearEndGreetingTarget && !yearEndFreeChatReplied && (
+                                <div className="choice-area">
+                                  <div className="choice-heading">新年自由對話・第 {yearEndFreeChatRound + 1}/5 輪</div>
+                                  {yearEndFreeChatScripts[yearEndGreetingTarget][yearEndFreeChatRound].choices.map((choice, index) => (
+                                    <button className="reply-choice" key={index} onClick={() => chooseYearEndFreeChatReply(index)}>
+                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                    </button>
+                                  ))}
+                                  <small>每輪三個回覆選項；繼續聊天會完成五輪，不想聊也可以在祝福後直接停下來。</small>
+                                </div>
+                              )}
                           </div>
                         )
                       ) : activeApp === 'contacts' ? (
@@ -5495,6 +5872,13 @@ function App() {
                                     <ChevronRight size={16} />
                                   </button>
                                 )}
+                                {yearEndDiaryUnlocked && yearEndDiaryData && (
+                                  <button className="diary-entry-row" onClick={() => setSelectedDiaryDate('1996-12-31')}>
+                                    <span className="diary-entry-date">31<br/><small>DEC</small></span>
+                                    <span className="diary-entry-copy"><strong>{yearEndDiaryData.title}</strong><small>{yearEndDiaryData.sections[2]?.text.slice(0, 44)}…</small></span>
+                                    <ChevronRight size={16} />
+                                  </button>
+                                )}
                                 {monthDiaryUnlocked && monthVisitTarget && (
                                   <button className="diary-entry-row" onClick={() => setSelectedDiaryDate('1996-11-16')}>
                                     <span className="diary-entry-date">16<br/><small>NOV</small></span>
@@ -5518,7 +5902,15 @@ function App() {
                             ) : (
                               <>
                                 <button className="diary-detail-back" onClick={() => setSelectedDiaryDate(null)}><ArrowLeft size={13}/> 返回日記列表</button>
-                                {selectedDiaryDate === '1996-12-14' && nextMonthDiaryUnlocked && nextMonthDiaryData ? (
+                                {selectedDiaryDate === '1996-12-31' && yearEndDiaryUnlocked && yearEndDiaryData ? (
+                                  <div className="diary-paper">
+                                    <span className="diary-date">1996 年 12 月 31 日・星期二</span>
+                                    <h2>{yearEndDiaryData.title}</h2>
+                                    {yearEndDiaryData.sections.map((section) => (
+                                      <DiarySection key={section.label} label={section.label} text={section.text} />
+                                    ))}
+                                  </div>
+                                ) : selectedDiaryDate === '1996-12-14' && nextMonthDiaryUnlocked && nextMonthDiaryData ? (
                                   <div className="diary-paper">
                                     <span className="diary-date">1996 年 12 月 14 日・星期六</span>
                                     <h2>{nextMonthDiaryData.title}</h2>
