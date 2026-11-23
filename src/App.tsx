@@ -1412,7 +1412,7 @@ function App() {
   const [monthFreeChatTarget, setMonthFreeChatTarget] = useState<RouteCharacterId | null>(() => {
     const saved = localStorage.getItem('mayday-month-free-chat-target')
     if (saved && monthVisitOrder.includes(saved as RouteCharacterId)) return saved as RouteCharacterId
-    if (localStorage.getItem('mayday-month-free-chat-started') === 'true') {
+    if (localStorage.getItem('mayday-month-free-chat-started') === 'true' && localStorage.getItem('mayday-month-free-chat-choice-pending') !== 'true') {
       const legacyTarget = localStorage.getItem('mayday-month-visit-target')
       if (legacyTarget && monthVisitOrder.includes(legacyTarget as RouteCharacterId)) return legacyTarget as RouteCharacterId
     }
@@ -1549,6 +1549,7 @@ function App() {
     put('mayday-free-chat-replied', String(freeChatReplied))
     put('mayday-month-visit-target', monthVisitTarget)
     put('mayday-month-free-chat-target', monthFreeChatTarget)
+    put('mayday-month-free-chat-choice-pending', localStorage.getItem('mayday-month-free-chat-choice-pending'))
     put('mayday-month-visit-replies', JSON.stringify(monthVisitReplies))
     put('mayday-month-visit-choice', null)
     put('mayday-month-visit-complete', localStorage.getItem('mayday-month-visit-complete'))
@@ -2159,6 +2160,7 @@ function App() {
     localStorage.removeItem('mayday-month-visit-replies')
     localStorage.removeItem('mayday-month-visit-complete')
     localStorage.removeItem('mayday-month-free-chat-target')
+    localStorage.removeItem('mayday-month-free-chat-choice-pending')
     localStorage.removeItem('mayday-month-free-chat-round')
     localStorage.removeItem('mayday-month-free-chat-replied')
     localStorage.removeItem('mayday-month-free-chat-started')
@@ -2257,6 +2259,7 @@ function App() {
     localStorage.setItem('mayday-month-free-chat-started', 'true')
     setMonthFreeChatTarget(null)
     localStorage.removeItem('mayday-month-free-chat-target')
+    localStorage.setItem('mayday-month-free-chat-choice-pending', 'true')
     setMonthFreeChatOpeningSent(false)
     localStorage.setItem('mayday-month-free-chat-opening-sent', 'false')
     setMonthFreeChatRound(0)
@@ -2274,6 +2277,7 @@ function App() {
     if (!monthFreeChatStarted || monthFreeChatTarget) return
     setMonthFreeChatTarget(character)
     localStorage.setItem('mayday-month-free-chat-target', character)
+    localStorage.setItem('mayday-month-free-chat-choice-pending', 'false')
     setMonthFreeChatRound(0)
     localStorage.setItem('mayday-month-free-chat-round', '0')
     setMonthFreeChatReplied(false)
@@ -2459,7 +2463,7 @@ function App() {
   }
 
   const resetLocalData = () => {
-    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-month-visit-target', 'mayday-month-visit-choice', 'mayday-month-visit-replies', 'mayday-month-visit-complete', 'mayday-month-free-chat-target', 'mayday-month-free-chat-round', 'mayday-month-free-chat-replied', 'mayday-month-free-chat-started', 'mayday-month-free-chat-opening-sent', 'mayday-month-free-chat-replies', 'mayday-month-free-chat-complete', 'mayday-month-day-complete', 'mayday-route-affection', 'mayday-shared-experience-log', 'mayday-call-experience-context', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming', 'mayday-active-call-character', 'mayday-call-round-index', 'mayday-call-replied', 'mayday-call-transcript'].forEach((key) => localStorage.removeItem(key))
+    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-month-visit-target', 'mayday-month-visit-choice', 'mayday-month-visit-replies', 'mayday-month-visit-complete', 'mayday-month-free-chat-target', 'mayday-month-free-chat-choice-pending', 'mayday-month-free-chat-round', 'mayday-month-free-chat-replied', 'mayday-month-free-chat-started', 'mayday-month-free-chat-opening-sent', 'mayday-month-free-chat-replies', 'mayday-month-free-chat-complete', 'mayday-month-day-complete', 'mayday-route-affection', 'mayday-shared-experience-log', 'mayday-call-experience-context', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming', 'mayday-active-call-character', 'mayday-call-round-index', 'mayday-call-replied', 'mayday-call-transcript'].forEach((key) => localStorage.removeItem(key))
     SAVE_SLOT_IDS.forEach((slot) => localStorage.removeItem(SAVE_SLOT_PREFIX + slot))
     setPlayerName('')
     setNameDraft('')
