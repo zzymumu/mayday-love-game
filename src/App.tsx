@@ -1989,7 +1989,17 @@ function App() {
       return saved && typeof saved.title === 'string' && Array.isArray(saved.sections) ? saved : null
     } catch { return null }
   })
-  const [winterExamTutoringUnlocked, setWinterExamTutoringUnlocked] = useState(() => localStorage.getItem('mayday-winter-exam-tutoring-unlocked') === 'true')
+  const [winterExamTutoringUnlocked, setWinterExamTutoringUnlocked] = useState(() => {
+    const saved = localStorage.getItem('mayday-winter-exam-tutoring-unlocked')
+    if (saved !== null) return saved === 'true'
+    try {
+      const affection = JSON.parse(localStorage.getItem('mayday-route-affection') ?? '{}') as Partial<Record<RouteCharacterId, number>>
+      const wenAffectionAtNewYear = Number(affection.wen ?? localStorage.getItem('mayday-affection-wen') ?? '0')
+      return localStorage.getItem('mayday-year-end-day-complete') === 'true'
+        && localStorage.getItem('mayday-winter-break-day-complete') !== 'true'
+        && wenAffectionAtNewYear > 40
+    } catch { return false }
+  })
   const [winterExamReplies, setWinterExamReplies] = useState<number[]>(() => {
     try {
       const saved = JSON.parse(localStorage.getItem('mayday-winter-exam-replies') ?? '[]')
@@ -2077,7 +2087,7 @@ function App() {
         : storyStage === 'dinner' ? '19:10'
           : storyStage === 'after-dinner' ? '20:35'
             : storyStage === 'ending' || storyStage === 'greetings' ? '21:18'
-              : storyStage === 'completed' ? (localStorage.getItem('mayday-year-end-day-complete') === 'true' ? '00:40' : '21:18')
+              : storyStage === 'completed' ? (localStorage.getItem('mayday-winter-break-day-complete') === 'true' ? '00:30' : localStorage.getItem('mayday-year-end-day-complete') === 'true' ? '00:40' : '21:18')
               : storyStage === 'classroom' || storyStage === 'masa-checkin' || storyStage === 'stone-checkin' ? '10:12'
                 : storyStage === 'ice-date' ? '16:20'
                   : storyStage === 'stroll' ? '17:05'
@@ -2092,7 +2102,7 @@ function App() {
                                     : storyStage === 'year-end-fireworks' ? '23:40'
                                       : ['year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker'].includes(storyStage) ? '00:15'
                                         : storyStage === 'year-end-diary' ? '00:40'
-                                          : ['winter-exam-intro', 'winter-exam-notification'] .includes(storyStage) ? '10:20'
+                                          : ['winter-exam-intro', 'winter-exam-notification'].includes(storyStage) ? '10:20'
                                             : storyStage === 'winter-exam-tutoring' ? '14:10'
                                               : storyStage === 'winter-break-practice' ? '16:30'
                                                 : storyStage === 'winter-break-gig' ? '21:15'
