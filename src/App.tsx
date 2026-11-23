@@ -1708,7 +1708,7 @@ function App() {
     const saved = localStorage.getItem('mayday-story-stage')
     if (saved === 'completed' && localStorage.getItem('mayday-chapter1-complete') === 'true' && localStorage.getItem('mayday-greetings-complete') !== 'true') return 'greetings'
     if (saved === 'completed' && localStorage.getItem('mayday-free-chat-complete') === 'true' && localStorage.getItem('mayday-month-visit-complete') !== 'true') return 'month-free-time'
-    if (saved === 'completed' && localStorage.getItem('mayday-next-month-day-complete') === 'true' && localStorage.getItem('mayday-year-end-day-complete') !== 'true' && localStorage.getItem('mayday-year-end-started') !== 'true') return 'year-end-intro'
+    if (saved === 'completed' && localStorage.getItem('mayday-next-month-day-complete') === 'true' && localStorage.getItem('mayday-year-end-day-complete') !== 'true') return 'year-end-intro'
     if (saved === 'completed' && localStorage.getItem('mayday-month-day-complete') === 'true' && localStorage.getItem('mayday-next-month-started') !== 'true') return 'next-month-intro'
     const savedMonthVisitTarget = localStorage.getItem('mayday-month-visit-target')
     if (saved === 'month-visit' && (!savedMonthVisitTarget || !monthVisitOrder.includes(savedMonthVisitTarget as RouteCharacterId))) return 'month-free-time'
@@ -3533,9 +3533,10 @@ function App() {
     if (!yearEndGreetingTarget || yearEndChatMode !== 'incoming' || yearEndGreetingTarget === 'youda' || yearEndFirstReplySent) return
     const choice = yearEndNewYearReplies[yearEndGreetingTarget][index]
     if (!choice) return
+    const replyMinute = 7 + yearEndGreetingIndex * 2
     appendChatMessages(yearEndGreetingTarget, [
-      { from: 'me', text: choice.text, time: '00:07' },
-      ...choice.response.map((text, responseIndex) => ({ from: yearEndGreetingTarget, text, time: responseIndex === 0 ? '00:08' : '00:09' })),
+      { from: 'me', text: choice.text, time: '00:' + String(replyMinute).padStart(2, '0') },
+      ...choice.response.map((text, responseIndex) => ({ from: yearEndGreetingTarget, text, time: '00:' + String(replyMinute + responseIndex + 1).padStart(2, '0') })),
     ], '1997年1月1日・凌晨')
     addRouteAffection(yearEndGreetingTarget, choice.affection)
     setYearEndFirstReplySent(true)
@@ -3598,7 +3599,7 @@ function App() {
     const round = rounds[yearEndFreeChatRound]
     const choice = round?.choices[index]
     if (!choice) return
-    const minute = 20 + yearEndFreeChatRound * 5
+    const minute = 20 + yearEndGreetingIndex * 2 + yearEndFreeChatRound * 5
     appendChatMessages(yearEndGreetingTarget, [
       { from: 'me', text: choice.text, time: '00:' + String(minute).padStart(2, '0') },
       ...choice.response.map((text, responseIndex) => ({ from: yearEndGreetingTarget, text, time: '00:' + String(minute + responseIndex + 1).padStart(2, '0') })),
