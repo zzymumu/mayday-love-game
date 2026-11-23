@@ -78,7 +78,7 @@ export const winterExamTutoringRounds: WinterRound[] = [
     prompt: '這裡少寫了一步。妳剛剛是不是算到後面就開始趕了？來，筆給妳，這次妳自己寫，我坐旁邊看。',
     choices: [
       { text: '你坐這麼近，我有點緊張啦。', response: [{ kind: 'dialogue', speaker: '溫尚翊', text: '蛤？我坐這裡才看得到妳寫什麼啊。' }, { kind: 'dialogue', speaker: '溫尚翊', text: '……不然我往旁邊一點。可是妳不要又趁我坐遠了就偷懶喔。' }], affection: { wen: 3 } },
-      { text: '你剛剛頭髮碰到我了啦。', response: [{ kind: 'dialogue', speaker: '溫尚翊', text: '有嗎？抱歉啦。' }, { kind: 'dialogue', speaker: '溫尚翊', text: '他往後坐了一點，卻還是忍不住笑：妳現在到底是在算標準差，還是在檢查我頭髮有沒有整理好？' }], affection: { wen: 3 } },
+      { text: '你剛剛頭髮碰到我了啦。', response: [{ kind: 'dialogue', speaker: '溫尚翊', text: '有嗎？抱歉啦。' }, { kind: 'narration', text: '他往後坐了一點，卻還是忍不住笑。' }, { kind: 'dialogue', speaker: '溫尚翊', text: '妳現在到底是在算標準差，還是在檢查我頭髮有沒有整理好？' }], affection: { wen: 3 } },
       { text: '我是在測試你有沒有認真看，抓到你漏掉的地方了吧？', response: [{ kind: 'dialogue', speaker: '溫尚翊', text: '喔？現在還會反過來考老師了喔？' }, { kind: 'dialogue', speaker: '溫尚翊', text: '好啦，算妳厲害。那這題就交給妳自己做完，我在旁邊監考。' }], affection: { wen: 2 } },
     ],
   },
