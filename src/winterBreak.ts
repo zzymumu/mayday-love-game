@@ -89,7 +89,7 @@ export const winterExamTutoringRounds: WinterRound[] = [
     choices: [
       { text: '有啦！不過餅乾我可以收下，謝謝溫老師。', response: [{ kind: 'dialogue', speaker: '溫尚翊', text: '少來，什麼溫老師。妳叫得這麼正式，我都要以為自己在補習班打工了。' }, { kind: 'dialogue', speaker: '溫尚翊', text: '我記得妳喜歡這個口味，剛好看到就買了。快吃啦，等一下還有最後一題。' }], affection: { wen: 3 } },
       { text: '其實沒有……我本來想算完再去吃。', response: [{ kind: 'dialogue', speaker: '溫尚翊', text: '妳喔，讀書也不是這樣讀的。' }, { kind: 'dialogue', speaker: '溫尚翊', text: '先吃一點，等一下我陪妳去買東西。題目又不會趁妳吃飯的時候自己跑掉。' }], affection: { wen: 3 } },
-      { text: '你怎麼連我喜歡吃什麼都記得？', response: [{ kind: 'dialogue', speaker: '溫尚翊', text: '就……之前看妳買過啊。這有什麼好奇怪的。' }, { kind: 'dialogue', speaker: '溫尚翊', text: '他把視線移回講義，耳朵卻有點紅：快吃啦，不要一直問，餅乾都要被妳問到軟掉了。' }], affection: { wen: 3 } },
+      { text: '你怎麼連我喜歡吃什麼都記得？', response: [{ kind: 'dialogue', speaker: '溫尚翊', text: '就……之前看妳買過啊。這有什麼好奇怪的。' }, { kind: 'narration', text: '他把視線移回講義，耳朵卻有點紅。' }, { kind: 'dialogue', speaker: '溫尚翊', text: '快吃啦，不要一直問，餅乾都要被妳問到軟掉了。' }], affection: { wen: 3 } },
     ],
   },
   {
