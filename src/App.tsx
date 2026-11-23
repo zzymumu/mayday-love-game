@@ -4131,7 +4131,7 @@ function App() {
   }
 
   useEffect(() => {
-    const rewriteKey = 'mayday-diary-narrative-rewrite-v3'
+    const rewriteKey = 'mayday-diary-narrative-rewrite-v4'
     if (localStorage.getItem(rewriteKey) === 'true') return
 
     if (yearEndDiaryData) {
