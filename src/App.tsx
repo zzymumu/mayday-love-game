@@ -5464,6 +5464,280 @@ function App() {
                 </div>
               )}
 
+              {storyStage === 'winter-exam-intro' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">一九九七年・一月</div>
+                    <div className="story-contact-title">
+                      <strong>期末考前一週</strong>
+                      <small>1997 年 1 月 7 日・台北</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">EXAM WEEK · 考試倒數</div>
+                    <h2 className="story-scene-title">統計學，拜託對我好一點。</h2>
+                    <StoryBlocks blocks={winterExamIntroBlocks} />
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={() => changeStage(winterExamTutoringUnlocked ? 'winter-exam-notification' : 'winter-break-practice')}>
+                      {winterExamTutoringUnlocked ? '拿起手機，主動問溫尚翊' : '考完期末考，半個月後迎接寒假'} <ChevronRight size={15} />
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'winter-exam-notification' && (
+                <div className="invite-notification-overlay">
+                  <div className="invite-notification-card">
+                    <div className="invite-notification-top">
+                      <span className="invite-notification-icon"><MessageSquare size={17} /></span>
+                      <span><strong>特別劇情提示</strong><small>1 月 7 日・晚上</small></span>
+                    </div>
+                    <h2>要不要找溫尚翊幫忙？</h2>
+                    <p>統計學的講義越看越讓人頭痛。你想起溫尚翊之前提過自己還滿擅長這一科，猶豫了一會兒，還是決定主動傳訊息問問他。</p>
+                    <p>這次不是他先來找你，是你鼓起勇氣去問他能不能幫忙補習。</p>
+                    <div className="invite-notification-actions">
+                      <button className="story-primary-button" onClick={() => changeStage('winter-exam-tutoring')}>傳訊息問他 <ChevronRight size={15} /></button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'winter-exam-tutoring' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">期末考前・特別篇</div>
+                    <div className="story-contact-title">
+                      <strong>和溫尚翊在圖書館補習</strong>
+                      <small>1997 年 1 月 8 日・下午</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">STUDY DATE · 統計學急救</div>
+                    <h2 className="story-scene-title">今天的老師，是溫尚翊。</h2>
+                    <StoryBlocks blocks={winterExamTutoringIntroBlocks} />
+                    {winterExamTutoringRounds.slice(0, winterExamReplies.length).map((round, index) => {
+                      const selected = round.choices[winterExamReplies[index]]
+                      if (!selected) return null
+                      return (
+                        <div className="month-visit-round-history" key={index}>
+                          {round.scene && <StoryBlocks blocks={[{ kind: 'narration', text: round.scene }]} />}
+                          <StoryBlocks blocks={[
+                            { kind: 'dialogue', speaker: round.promptSpeaker, text: round.prompt },
+                            { kind: 'dialogue', speaker: '你', text: selected.text },
+                            ...selected.response,
+                          ]} />
+                        </div>
+                      )
+                    })}
+                    {currentWinterExamRound ? (
+                      <>
+                        {currentWinterExamRound.scene && <StoryBlocks blocks={[{ kind: 'narration', text: currentWinterExamRound.scene }]} />}
+                        <StoryBlocks blocks={[{ kind: 'dialogue', speaker: currentWinterExamRound.promptSpeaker, text: currentWinterExamRound.prompt }]} />
+                        <div className="choice-area">
+                          <div className="choice-heading">第 {winterExamReplies.length + 1}/5 輪・你想怎麼回答？</div>
+                          {currentWinterExamRound.choices.map((choice, index) => (
+                            <button className="reply-choice" key={index} onClick={() => chooseWinterExamReply(index)}>
+                              <span>{choice.text}</span><ChevronRight size={15} />
+                            </button>
+                          ))}
+                          <small>每個選擇都會影響溫尚翊對你的感受。</small>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <StoryBlocks blocks={winterExamTutoringEnding} />
+                        <div className="reunion-pause-note">今天的五輪補習互動已經完成。</div>
+                      </>
+                    )}
+                  </div>
+                  {winterExamReplies.length === winterExamTutoringRounds.length && (
+                    <div className="story-action-bar">
+                      <button className="story-primary-button" onClick={() => changeStage('winter-break-practice')}>收好講義，半個月後就是寒假 <ChevronRight size={15} /></button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {storyStage === 'winter-break-practice' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">寒假第一天</div>
+                    <div className="story-contact-title">
+                      <strong>諺明哥的練團室</strong>
+                      <small>1997 年 1 月 22 日・傍晚</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">WINTER BREAK · 練團前</div>
+                    <h2 className="story-scene-title">六個人，又湊在一起了。</h2>
+                    <StoryBlocks blocks={winterBreakPracticeBlocks} />
+                    {winterBreakPracticeRounds.slice(0, winterPracticeReplies.length).map((round, index) => {
+                      const selected = round.choices[winterPracticeReplies[index]]
+                      if (!selected) return null
+                      return (
+                        <div className="month-visit-round-history" key={index}>
+                          {round.scene && <StoryBlocks blocks={[{ kind: 'narration', text: round.scene }]} />}
+                          <StoryBlocks blocks={[
+                            { kind: 'dialogue', speaker: round.promptSpeaker, text: round.prompt },
+                            { kind: 'dialogue', speaker: '你', text: selected.text },
+                            ...selected.response,
+                          ]} />
+                        </div>
+                      )
+                    })}
+                    {currentWinterPracticeRound ? (
+                      <>
+                        {currentWinterPracticeRound.scene && <StoryBlocks blocks={[{ kind: 'narration', text: currentWinterPracticeRound.scene }]} />}
+                        <StoryBlocks blocks={[{ kind: 'dialogue', speaker: currentWinterPracticeRound.promptSpeaker, text: currentWinterPracticeRound.prompt }]} />
+                        <div className="choice-area">
+                          <div className="choice-heading">練團室裡・你想怎麼接話？</div>
+                          {currentWinterPracticeRound.choices.map((choice, index) => (
+                            <button className="reply-choice" key={index} onClick={() => chooseWinterPracticeReply(index)}>
+                              <span>{choice.text}</span><ChevronRight size={15} />
+                            </button>
+                          ))}
+                          <small>大家的反應和好感度會隨你的回答改變。</small>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <StoryBlocks blocks={winterBreakPracticeEnding} />
+                        <div className="reunion-pause-note">練團告一段落，五個人準備出發去酒吧。</div>
+                      </>
+                    )}
+                  </div>
+                  {winterPracticeReplies.length === winterBreakPracticeRounds.length && (
+                    <div className="story-action-bar">
+                      <button className="story-primary-button" onClick={finishWinterPractice}>一起去酒吧看他們駐唱 <ChevronRight size={15} /></button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {storyStage === 'winter-break-gig' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">寒假・今晚的演出</div>
+                    <div className="story-contact-title">
+                      <strong>酒吧駐唱</strong>
+                      <small>1997 年 1 月 22 日・晚上</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">LIVEHOUSE · FIVE ON STAGE</div>
+                    <h2 className="story-scene-title">燈亮起來的時候。</h2>
+                    <StoryBlocks blocks={winterBreakGigIntroBlocks} />
+                    <div className="month-visit-round-history">
+                      <StoryBlocks blocks={winterGigFocusBlocks[winterGigFocusCharacter]} />
+                    </div>
+                    <StoryBlocks blocks={winterBreakGigEndingBlocks} />
+                    <div className="reunion-pause-note">今晚的演出已經結束。佑達留下來整理器材，其他人先到門口透透氣。</div>
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={finishWinterGig}>演出結束，走出酒吧 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'winter-break-pickup' && (
+                <div className="invite-notification-overlay">
+                  <div className="invite-notification-card">
+                    <div className="invite-notification-top">
+                      <span className="invite-notification-icon"><MessageSquare size={17} /></span>
+                      <span><strong>劉諺明</strong><small>1 月 22 日・深夜</small></span>
+                    </div>
+                    <h2>諺明哥到酒吧外面了。</h2>
+                    <p>演出剛結束，手機就震了一下。諺明哥傳來訊息，說他已經在外面等你，還特地帶了外套，想陪你走到公車站。</p>
+                    <div className="invite-notification-actions">
+                      <button className="story-primary-button" onClick={() => changeStage('winter-break-bus-choice')}>出去找諺明哥 <ChevronRight size={15} /></button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'winter-break-bus-choice' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">演出結束・散場後</div>
+                    <div className="story-contact-title">
+                      <strong>一起走去公車站</strong>
+                      <small>1997 年 1 月 22 日・深夜</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">AFTER SHOW · WHO GOES WITH YOU?</div>
+                    <h2 className="story-scene-title">今晚想和誰多走一段路？</h2>
+                    <StoryBlocks blocks={winterYanmingPickupAvailable ? winterYanmingPickupBlocks : [
+                      { kind: 'narration', text: '你走到酒吧門口，夜風一下子吹散了舞台上的熱度。佑達被老闆留下來結帳和確認器材，溫尚翊、阿信、瑪莎和石頭則站在騎樓下，正聊著剛才哪一段接得最好。遠處的公車站亮著燈，下一班車還有一點時間。' },
+                    ]} />
+                    <div className="choice-area">
+                      <div className="choice-heading">選一個人，陪你走到公車站</div>
+                      {(['wen', 'ashin', 'masa', 'stone', ...(winterYanmingPickupAvailable ? ['yanming'] : [])] as WinterCharacterId[]).map((character) => (
+                        <button className="reply-choice" key={character} onClick={() => chooseWinterBusStopCharacter(character)}>
+                          <span>{winterBusStopRoutes[character].label}</span><ChevronRight size={15} />
+                        </button>
+                      ))}
+                      <small>佑達要留下來收拾器材，這次就不列入同行選擇。</small>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'winter-break-bus' && winterBusStopCharacter && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">散場後・夜風裡</div>
+                    <div className="story-contact-title">
+                      <strong>{winterBusStopRoutes[winterBusStopCharacter].title}</strong>
+                      <small>1997 年 1 月 22 日・深夜</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">THE WAY TO THE BUS STOP</div>
+                    <h2 className="story-scene-title">{winterBusStopRoutes[winterBusStopCharacter].title}</h2>
+                    <StoryBlocks blocks={winterBusStopRoutes[winterBusStopCharacter].blocks} />
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={startWinterDiary}>回到家，寫下今天的日記 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'winter-diary' && winterDiaryData && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">寒假特別篇・私人日記</div>
+                    <div className="story-contact-title">
+                      <strong>寒假的第一個晚上</strong>
+                      <small>1997 年 1 月 22 日・星期三</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">1997 · WINTER JOURNAL</div>
+                    <h2 className="story-scene-title">{winterDiaryData.title}</h2>
+                    <div className="diary-paper story-diary-paper">
+                      <span className="diary-date">1997 年 1 月 22 日・星期三</span>
+                      <h2>{winterDiaryData.title}</h2>
+                      {winterDiaryData.sections.map((section) => (
+                        <DiarySection key={section.label} label={section.label} text={section.text} />
+                      ))}
+                    </div>
+                    <div className="reunion-pause-note">這篇日記會保留在日記列表裡，之後也可以重新打開來看。</div>
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={finishWinterDiary}>合上日記，繼續寒假生活 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
               {storyStage === 'paused' && (
                 <div className="paused-story-banner">
                   <div>
