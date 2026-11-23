@@ -1862,11 +1862,13 @@ function App() {
 
   const finishThresholdCall = () => {
     if (!activeCallCharacter || !callReplied) return
-    setCallHistory((current) => [{ id: 'call-' + Date.now(), character: activeCallCharacter, status: 'answered', time: '18:38' }, ...current])
+    setCallHistory((current) => [{ id: 'call-' + Date.now(), character: activeCallCharacter, status: 'answered', time: '18:38', date: saveGameDate }, ...current])
     setActiveCallCharacter(null)
     setCallRoundIndex(0)
     setCallReplied(false)
     setCallTranscript([])
+    setCallExperienceContext(null)
+    localStorage.removeItem('mayday-call-experience-context')
   }
 
   const finishFreeChat = () => {
@@ -2042,7 +2044,7 @@ function App() {
   }
 
   const resetLocalData = () => {
-    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-month-visit-target', 'mayday-month-visit-choice', 'mayday-month-visit-replies', 'mayday-month-visit-complete', 'mayday-route-affection', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming', 'mayday-active-call-character', 'mayday-call-round-index', 'mayday-call-replied', 'mayday-call-transcript'].forEach((key) => localStorage.removeItem(key))
+    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-month-visit-target', 'mayday-month-visit-choice', 'mayday-month-visit-replies', 'mayday-month-visit-complete', 'mayday-route-affection', 'mayday-shared-experience-log', 'mayday-call-experience-context', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming', 'mayday-active-call-character', 'mayday-call-round-index', 'mayday-call-replied', 'mayday-call-transcript'].forEach((key) => localStorage.removeItem(key))
     SAVE_SLOT_IDS.forEach((slot) => localStorage.removeItem(SAVE_SLOT_PREFIX + slot))
     setPlayerName('')
     setNameDraft('')
@@ -2073,6 +2075,8 @@ function App() {
     setMonthVisitTarget(null)
     setMonthVisitReplies([])
     setRouteAffection({ wen: 0, masa: 0, ashin: 0, stone: 0, yanming: 0 })
+    setSharedExperienceLog({})
+    setCallExperienceContext(null)
     setDay2StrollAccepted(false)
     setDay2DiaryUnlocked(false)
     setSelectedDiaryDate(null)
@@ -3135,7 +3139,7 @@ function App() {
                               <div className="call-history-row" key={entry.id}>
                                 <span className="call-history-avatar">{person.avatar}</span>
                                 <span className="call-history-copy"><strong>{person.name}</strong><small>{entry.status === 'missed' ? '未接來電' : '已接來電'}</small></span>
-                                <span className="call-history-time">10/16<br/>{entry.time}</span>
+                                <span className="call-history-time">{(entry.date ?? '1996.10.16').slice(5).replace('.', '/')}<br/>{entry.time}</span>
                               </div>
                             )
                           }) : <div className="call-history-empty"><Phone size={24}/><strong>還沒有通話紀錄</strong><small>當有人打電話給你，這裡就會留下紀錄。</small></div>}
@@ -3282,8 +3286,10 @@ function App() {
                     <p>正在打電話給你……</p>
                     <div className="call-action-row">
                       <button className="call-decline-button" onClick={() => {
-                        setCallHistory((current) => [{ id: 'call-' + Date.now(), character: incomingCallCharacter, status: 'missed', time: '18:35' }, ...current])
+                        setCallHistory((current) => [{ id: 'call-' + Date.now(), character: incomingCallCharacter, status: 'missed', time: '18:35', date: saveGameDate }, ...current])
                         setIncomingCallCharacter(null)
+                        setCallExperienceContext(null)
+                        localStorage.removeItem('mayday-call-experience-context')
                         localStorage.removeItem('mayday-incoming-call')
                       }}><X size={18}/>拒絕</button>
                       <button className="call-answer-button" onClick={answerIncomingCall}><Phone size={18}/>接聽</button>
