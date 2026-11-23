@@ -1713,6 +1713,25 @@ function App() {
   }
 
   const startDay2FreeTime = () => {
+    const day2Experiences = {
+      ...sharedExperienceLog,
+      wen: {
+        character: 'wen' as const,
+        source: 'day2' as const,
+        date: saveGameDate,
+        eventKey: day2StrollAccepted ? 'day2-stroll-and-bookstore' : 'day2-ice-and-walk-home',
+        day2StrollAccepted,
+      },
+      ashin: {
+        character: 'ashin' as const,
+        source: 'day2' as const,
+        date: saveGameDate,
+        eventKey: 'day2-campus-ice-and-record-store',
+        day2StrollAccepted,
+      },
+    }
+    setSharedExperienceLog(day2Experiences)
+    localStorage.setItem('mayday-shared-experience-log', JSON.stringify(day2Experiences))
     setFreeChatTarget(null)
     localStorage.removeItem('mayday-free-chat-target')
     setFreeChatRound(0)
@@ -1732,8 +1751,39 @@ function App() {
   }
 
   const getCallRounds = (character: RouteCharacterId): ChatRound[] => {
-    if (character === 'wen') return day2StrollAccepted ? wenStrollCallScript : wenHomeCallScript
-    return thresholdCallScripts[character]
+    const context = callExperienceContext?.character === character
+      ? callExperienceContext
+      : sharedExperienceLog[character] ?? {
+          character,
+          source: 'day2' as const,
+          date: saveGameDate,
+          eventKey: day2StrollAccepted ? 'day2-stroll' : 'day2-after-ice',
+          day2StrollAccepted,
+        }
+    const earlierRouteRounds = character === 'wen'
+      ? (context.day2StrollAccepted ? wenStrollCallScript : wenHomeCallScript)
+      : thresholdCallScripts[character]
+    const selectedRounds = context.source === 'month-visit'
+      ? monthVisitCallScripts[character]
+      : context.source === 'free-chat'
+        ? [freeChatCallOpeners[character], ...earlierRouteRounds.slice(1)]
+        : earlierRouteRounds
+
+    if (context.date === saveGameDate) return selectedRounds
+    const adjustTimeReference = (value: string) => value
+      .replace(/今天/g, '那天')
+      .replace(/剛剛/g, '那時候')
+      .replace(/明天/g, '之後')
+      .replace(/今晚/g, '那天晚上')
+    return selectedRounds.map((round) => ({
+      ...round,
+      incoming: adjustTimeReference(round.incoming),
+      choices: round.choices.map((choice) => ({
+        ...choice,
+        text: adjustTimeReference(choice.text),
+        response: choice.response.map(adjustTimeReference),
+      })),
+    }))
   }
 
   const startFreeChat = (character: RouteCharacterId) => {
@@ -1821,6 +1871,16 @@ function App() {
 
   const finishFreeChat = () => {
     if (!freeChatTarget || !freeChatReplied || freeChatRound !== 4) return
+    const freeChatExperience: CharacterExperienceRecord = {
+      character: freeChatTarget,
+      source: 'free-chat',
+      date: saveGameDate,
+      eventKey: 'day2-free-chat',
+      day2StrollAccepted,
+    }
+    const nextExperienceLog = { ...sharedExperienceLog, [freeChatTarget]: freeChatExperience }
+    setSharedExperienceLog(nextExperienceLog)
+    localStorage.setItem('mayday-shared-experience-log', JSON.stringify(nextExperienceLog))
     localStorage.setItem('mayday-free-chat-complete', 'true')
     setSelectedSmsThread(null)
     setActiveApp(null)
@@ -1863,6 +1923,17 @@ function App() {
 
   const finishMonthVisit = () => {
     if (!monthVisitTarget || monthVisitReplies.length !== monthVisitRoutes[monthVisitTarget].rounds.length) return
+    const visitExperience: CharacterExperienceRecord = {
+      character: monthVisitTarget,
+      source: 'month-visit',
+      date: saveGameDate,
+      eventKey: monthVisitRoutes[monthVisitTarget].title,
+      day2StrollAccepted,
+      choices: [...monthVisitReplies],
+    }
+    const nextExperienceLog = { ...sharedExperienceLog, [monthVisitTarget]: visitExperience }
+    setSharedExperienceLog(nextExperienceLog)
+    localStorage.setItem('mayday-shared-experience-log', JSON.stringify(nextExperienceLog))
     localStorage.setItem('mayday-month-visit-complete', 'true')
     changeStage('month-visit-complete')
   }
@@ -1905,6 +1976,18 @@ function App() {
   }
 
   const finishFirstChapter = () => {
+    const firstChapterExperiences = freeTimeOrder.reduce((records, character) => {
+      records[character] = {
+        character,
+        source: 'first-chapter',
+        date: saveGameDate,
+        eventKey: 'first-rehearsal-room-meeting',
+        day2StrollAccepted: false,
+      }
+      return records
+    }, {} as Partial<Record<RouteCharacterId, CharacterExperienceRecord>>)
+    setSharedExperienceLog(firstChapterExperiences)
+    localStorage.setItem('mayday-shared-experience-log', JSON.stringify(firstChapterExperiences))
     setFirstChapterComplete(true)
     localStorage.setItem('mayday-chapter1-complete', 'true')
     localStorage.removeItem('mayday-greetings-complete')
