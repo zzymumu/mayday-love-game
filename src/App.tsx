@@ -2569,6 +2569,33 @@ function App() {
   }
 
 
+  const openNextMonthInviteChat = (character: RouteCharacterId) => {
+    const route = nextMonthInviteRoutes[character]
+    setNextMonthInviteTarget(character)
+    localStorage.setItem('mayday-next-month-invite-target', character)
+    setNextMonthInviteTeaseChoice(null)
+    localStorage.removeItem('mayday-next-month-invite-tease-choice')
+    setNextMonthInviteReplyChoice(null)
+    localStorage.removeItem('mayday-next-month-invite-reply-choice')
+
+    if (localStorage.getItem('mayday-next-month-invite-thread-started') !== character) {
+      const entries: NewChatEntry[] = route.invitation.map((message, index) => ({
+        from: character,
+        text: message.text,
+        time: '10:' + String(10 + index).padStart(2, '0'),
+      }))
+      if (!route.teaseChoices?.length && route.replyPrompt) {
+        entries.push({ from: character, text: route.replyPrompt, time: '10:' + String(10 + entries.length).padStart(2, '0') })
+      }
+      appendChatMessages(character, entries, '12月14日・上午')
+      localStorage.setItem('mayday-next-month-invite-thread-started', character)
+    }
+
+    setSelectedSmsThread(character)
+    setActiveApp('messages')
+    changeStage('next-month-invite-chat')
+  }
+
   const startNextMonthFlow = () => {
     const candidates = monthVisitOrder.filter((id) => routeAffection[id] >= NEXT_MONTH_INVITE_THRESHOLD)
     setNextMonthInviteCandidates(candidates)
@@ -2576,17 +2603,20 @@ function App() {
     localStorage.setItem('mayday-next-month-invite-candidates', JSON.stringify(candidates))
     setNextMonthInviteTeaseChoice(null)
     localStorage.removeItem('mayday-next-month-invite-tease-choice')
+    setNextMonthInviteReplyChoice(null)
+    localStorage.removeItem('mayday-next-month-invite-reply-choice')
+    localStorage.removeItem('mayday-next-month-invite-thread-started')
     setNextMonthOpenDayReplies([])
     localStorage.setItem('mayday-next-month-open-day-replies', '[]')
     setNextMonthFreeChatTarget(null)
     localStorage.removeItem('mayday-next-month-free-chat-target')
     if (candidates.length === 1) {
-      setNextMonthInviteTarget(candidates[0])
-      localStorage.setItem('mayday-next-month-invite-target', candidates[0])
-      changeStage('next-month-invite')
+      openNextMonthInviteChat(candidates[0])
     } else if (candidates.length > 1) {
       setNextMonthInviteTarget(null)
       localStorage.removeItem('mayday-next-month-invite-target')
+      setSelectedSmsThread(null)
+      setActiveApp(null)
       changeStage('next-month-invite-notification')
     } else {
       setNextMonthInviteTarget(null)
@@ -2597,39 +2627,55 @@ function App() {
 
   const chooseNextMonthInviteTarget = (character: RouteCharacterId) => {
     if (!nextMonthInviteCandidates.includes(character)) return
-    setNextMonthInviteTarget(character)
-    localStorage.setItem('mayday-next-month-invite-target', character)
-    setNextMonthInviteTeaseChoice(null)
-    localStorage.removeItem('mayday-next-month-invite-tease-choice')
-    changeStage('next-month-invite')
+    openNextMonthInviteChat(character)
   }
 
   const chooseNextMonthInviteTease = (choiceIndex: number) => {
-    if (!nextMonthInviteTarget) return
-    const choice = nextMonthInviteRoutes[nextMonthInviteTarget].teaseChoices?.[choiceIndex]
-    if (!choice || nextMonthInviteTeaseChoice !== null) return
+    if (!nextMonthInviteTarget || nextMonthInviteTeaseChoice !== null) return
+    const character = nextMonthInviteTarget
+    const route = nextMonthInviteRoutes[character]
+    const choice = route.teaseChoices?.[choiceIndex]
+    if (!choice) return
+    const baseMinute = 10 + route.invitation.length
+    appendChatMessages(character, [
+      { from: 'me', text: choice.text, time: '10:' + String(baseMinute).padStart(2, '0') },
+      ...choice.response.map((text, index) => ({
+        from: character,
+        text,
+        time: '10:' + String(baseMinute + index + 1).padStart(2, '0'),
+      })),
+      { from: character, text: route.replyPrompt, time: '10:' + String(baseMinute + choice.response.length + 1).padStart(2, '0') },
+    ], '12月14日・上午')
     setNextMonthInviteTeaseChoice(choiceIndex)
     localStorage.setItem('mayday-next-month-invite-tease-choice', String(choiceIndex))
-    addRouteAffection(nextMonthInviteTarget, choice.affection)
+    addRouteAffection(character, choice.affection)
   }
 
-  const startNextMonthOpenDay = () => {
-    setNextMonthEventKind('open-day')
-    setNextMonthEventCharacter(null)
-    localStorage.setItem('mayday-next-month-event-kind', 'open-day')
-    localStorage.removeItem('mayday-next-month-event-character')
-    setNextMonthOpenDayTarget(null)
-    setNextMonthOpenDayReplies([])
-    localStorage.removeItem('mayday-next-month-open-day-target')
-    localStorage.setItem('mayday-next-month-open-day-replies', '[]')
-    setActiveApp(null)
-    setSelectedSmsThread(null)
-    changeStage('next-month-open-day')
+  const chooseNextMonthInviteReply = (choiceIndex: number) => {
+    if (!nextMonthInviteTarget || nextMonthInviteReplyChoice !== null) return
+    const character = nextMonthInviteTarget
+    const route = nextMonthInviteRoutes[character]
+    const choice = route.replyChoices[choiceIndex]
+    if (!choice) return
+    const minute = 24
+    appendChatMessages(character, [
+      { from: 'me', text: choice.text, time: '10:' + String(minute).padStart(2, '0') },
+      ...choice.response.map((text, index) => ({
+        from: character,
+        text,
+        time: '10:' + String(minute + index + 1).padStart(2, '0'),
+      })),
+    ], '12月14日・上午')
+    setNextMonthInviteReplyChoice(choiceIndex)
+    localStorage.setItem('mayday-next-month-invite-reply-choice', String(choiceIndex))
+    addRouteAffection(character, choice.affection)
   }
 
-  const respondNextMonthInvite = (accept: boolean) => {
-    if (!nextMonthInviteTarget) return
-    if (!accept) {
+  const continueNextMonthInvite = () => {
+    if (!nextMonthInviteTarget || nextMonthInviteReplyChoice === null) return
+    const choice = nextMonthInviteRoutes[nextMonthInviteTarget].replyChoices[nextMonthInviteReplyChoice]
+    if (!choice) return
+    if (!choice.accepted) {
       startNextMonthOpenDay()
       return
     }
@@ -2637,6 +2683,8 @@ function App() {
     setNextMonthEventCharacter(nextMonthInviteTarget)
     localStorage.setItem('mayday-next-month-event-kind', 'invite')
     localStorage.setItem('mayday-next-month-event-character', nextMonthInviteTarget)
+    setSelectedSmsThread(null)
+    setActiveApp(null)
     changeStage('next-month-invite-date')
   }
 
