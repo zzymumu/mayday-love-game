@@ -1584,3 +1584,80 @@ button { cursor: pointer; }
 .month-visit-picker .free-time-person {
   min-height: 55px;
 }
+
+
+/* December multi-invite notification */
+.invite-notification-overlay {
+  position: absolute;
+  z-index: 18;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: rgba(31, 37, 33, .42);
+  border-radius: 7px;
+  backdrop-filter: blur(2px);
+}
+.invite-notification-card {
+  width: min(100%, 330px);
+  padding: 18px 17px 14px;
+  border: 1px solid rgba(230, 219, 204, .95);
+  border-radius: 15px;
+  color: #55483e;
+  background: #fffdf9;
+  box-shadow: 0 16px 42px rgba(30, 27, 22, .24);
+}
+.invite-notification-top {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 15px;
+  color: #8b7768;
+}
+.invite-notification-top > span:last-child {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 10px;
+}
+.invite-notification-top small {
+  color: #a99b8d;
+  font-size: 9px;
+}
+.invite-notification-icon {
+  width: 31px;
+  height: 31px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  color: #fff;
+  background: #8d9d87;
+}
+.invite-notification-card h2 {
+  margin: 0 0 9px;
+  color: #4e433a;
+  font-family: 'Noto Serif TC', serif;
+  font-size: 17px;
+  font-weight: 700;
+}
+.invite-notification-card p {
+  margin: 0 0 7px;
+  color: #79695d;
+  font-size: 11px;
+  line-height: 1.8;
+}
+.invite-notification-actions {
+  display: grid;
+  gap: 7px;
+  margin-top: 16px;
+}
+.invite-notification-actions .story-primary-button {
+  min-height: 36px;
+  justify-content: center;
+}
+@media (max-width: 420px) {
+  .invite-notification-overlay { padding: 16px; }
+  .invite-notification-card { padding: 16px 14px 12px; }
+}
