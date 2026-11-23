@@ -3863,13 +3863,14 @@ function App() {
     if (!winterBusStopCharacter) return
     const focusOrder: WinterCharacterId[] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
     const focusCharacter = focusOrder.reduce((best, character) => routeAffection[character] > routeAffection[best] ? character : best, focusOrder[0])
-    const focusSummary: Record<WinterCharacterId, string> = {
+    const focusSummaries: Record<WinterCharacterId, string> = {
       wen: '今晚我最常注意的是溫尚翊。平常說話有點嘴硬的人，一站上舞台卻自在得不得了。中間換歌時他還往我這邊看了一眼，接下來那段吉他前奏彈得特別有精神。',
       ashin: '今晚我最常注意的是阿信。他站在麥克風前時，聲音一下子就把整間酒吧填滿，唱到台下跟著拍手時，笑得像收到很好的回應。',
       masa: '今晚我最常注意的是瑪莎。他在台上比平常安靜得多，Bass 卻彈得很穩，還趁換段時故意朝我做表情，害我差點笑出聲。',
       stone: '今晚我最常注意的是石頭。他和溫尚翊的吉他聲接得很漂亮，台上看起來沉穩，卻一直留意台下有沒有人被擋住、能不能看清楚。',
       yanming: '今晚我好幾次想起諺明哥下午坐在鼓組前的樣子。那段節奏乾淨又俐落，連佑達都看得眼睛發亮。雖然他沒有跟著上台，下午那一段卻成了今晚最特別的回憶之一。',
     }
+    const focusSummary = focusSummaries[focusCharacter]
     const examSummary = winterExamTutoringUnlocked
       ? '期末考前一週，我主動找溫尚翊問能不能幫我補習統計學。他答應得很乾脆，還特地帶了整理好的筆記到圖書館。從平均數、中位數一路講到標準差，最後我終於能自己把模擬考的題目算完。原本很怕的期末考，因為那個下午好像沒有那麼可怕了。'
       : '一月初進入期末考週，統計學的講義和考古題把桌面堆得滿滿的。考完後才發現，這一週過得比想像中快，終於可以暫時把課本闔起來，迎接寒假。'
