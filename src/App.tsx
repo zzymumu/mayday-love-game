@@ -1905,7 +1905,48 @@ function App() {
   }, [activeCallCharacter, callRoundIndex, callReplied, callTranscript])
 
   useEffect(() => {
-    if (!['day2-complete', 'month-visit-complete', 'next-month-invite-date', 'next-month-open-day-visit-complete', 'next-month-free-chat', 'next-month-diary'].includes(storyStage) || activeApp !== null || incomingCallCharacter || activeCallCharacter) return
+    const legacyInviteOnly = ['next-month-free-chat', 'next-month-diary'].includes(storyStage)
+      && localStorage.getItem('mayday-next-month-event-kind') === 'invite'
+      && !localStorage.getItem('mayday-next-month-open-day-target')
+      && localStorage.getItem('mayday-next-month-day-complete') !== 'true'
+    if (!legacyInviteOnly) return
+
+    setNextMonthFreeChatTarget(null)
+    setNextMonthFreeChatRound(0)
+    setNextMonthFreeChatReplied(false)
+    setNextMonthFreeChatOpeningSent(false)
+    setNextMonthFreeChatReplies([])
+    localStorage.removeItem('mayday-next-month-free-chat-target')
+    localStorage.setItem('mayday-next-month-free-chat-round', '0')
+    localStorage.setItem('mayday-next-month-free-chat-replied', 'false')
+    localStorage.setItem('mayday-next-month-free-chat-opening-sent', 'false')
+    localStorage.setItem('mayday-next-month-free-chat-replies', '[]')
+
+    setNextMonthDiaryUnlocked(false)
+    setNextMonthDiaryData(null)
+    localStorage.removeItem('mayday-next-month-diary-unlocked')
+    localStorage.removeItem('mayday-next-month-diary-data')
+
+    setNextMonthOpenDayTarget(null)
+    setNextMonthOpenDayReplies([])
+    localStorage.removeItem('mayday-next-month-open-day-target')
+    localStorage.setItem('mayday-next-month-open-day-replies', '[]')
+    setNextMonthEventKind('open-day')
+    setNextMonthEventCharacter(null)
+    localStorage.setItem('mayday-next-month-event-kind', 'open-day')
+    localStorage.removeItem('mayday-next-month-event-character')
+    setActiveApp(null)
+    setSelectedSmsThread(null)
+    setStoryStage('next-month-open-day')
+    localStorage.setItem('mayday-story-stage', 'next-month-open-day')
+  }, [])
+
+  useEffect(() => {
+    const legacyInviteOnly = ['next-month-free-chat', 'next-month-diary'].includes(storyStage)
+      && localStorage.getItem('mayday-next-month-event-kind') === 'invite'
+      && !localStorage.getItem('mayday-next-month-open-day-target')
+      && localStorage.getItem('mayday-next-month-day-complete') !== 'true'
+    if (legacyInviteOnly || !['day2-complete', 'month-visit-complete', 'next-month-invite-date', 'next-month-open-day-visit-complete', 'next-month-free-chat', 'next-month-diary'].includes(storyStage) || activeApp !== null || incomingCallCharacter || activeCallCharacter) return
     if (!pendingCallCharacter) {
       const eligible = freeTimeOrder.find((id) => routeAffection[id] >= AFFECTION_CALL_THRESHOLD && localStorage.getItem('mayday-call-v2-triggered-' + id) !== 'true')
       if (eligible) {
