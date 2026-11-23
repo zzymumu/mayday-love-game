@@ -5822,7 +5822,11 @@ function App() {
                     <div className="story-kicker">AFTER SHOW · WHO GOES WITH YOU?</div>
                     <h2 className="story-scene-title">今晚想和誰多走一段路？</h2>
                     <StoryBlocks blocks={winterYanmingPickupAvailable ? winterYanmingPickupBlocks : [
-                      { kind: 'narration', text: '你走到酒吧門口，夜風一下子吹散了舞台上的熱度。佑達被老闆留下來結帳和確認器材，溫尚翊、阿信、瑪莎和石頭則站在騎樓下，正聊著剛才哪一段接得最好。遠處的公車站亮著燈，下一班車還有一點時間。' },
+                      { kind: 'narration', text: '你走到酒吧門口，夜風一下子吹散了舞台上的熱度。剛才還在台下拍手的客人陸續回到自己的座位，幾個人經過你們身邊時，還笑著說今晚的表演很精彩，卻沒有人認出他們是誰。' },
+                      { kind: 'dialogue', speaker: '錢佑達', text: '你們先去公車站啦，我跟老闆對一下器材清單，很快就追上！' },
+                      { kind: 'dialogue', speaker: '蔡昇晏', text: '你最好快一點，剛剛不是還喊著要再唱一首？現在收東西倒是慢吞吞。' },
+                      { kind: 'narration', text: '阿信把外套搭在手臂上，還在輕聲哼著最後一首歌的旋律；石頭確認琴袋拉鍊都拉好了，才把背帶往肩上調整；溫尚翊和瑪莎仍在爭論剛才那個小節，誰也不肯先認輸。你站在他們旁邊聽著，忽然覺得剛才舞台上的熱鬧還沒有散去。' },
+                      { kind: 'narration', text: '公車站就在前面幾分鐘的路程。夜風有點涼，路口的車聲一陣一陣經過；幾個人看了看你，又看了看站牌的方向，像是都想陪你走完這一段。' },
                     ]} />
                     <div className="choice-area">
                       <div className="choice-heading">選一個人，陪你走到公車站</div>
@@ -5856,7 +5860,7 @@ function App() {
                       if (!selected) return null
                       return (
                         <div className="month-visit-round-history" key={index}>
-                          {round.scene && <StoryBlocks blocks={[{ kind: 'narration', text: round.scene }]} />}
+                          {round.sceneBlocks ? <StoryBlocks blocks={round.sceneBlocks} /> : round.scene && <StoryBlocks blocks={[{ kind: 'narration', text: round.scene }]} />}
                           <StoryBlocks blocks={[
                             { kind: 'dialogue', speaker: round.promptSpeaker, text: round.prompt },
                             { kind: 'dialogue', speaker: '你', text: selected.text },
@@ -5867,7 +5871,7 @@ function App() {
                     })}
                     {currentWinterBusStopRound ? (
                       <>
-                        {currentWinterBusStopRound.scene && <StoryBlocks blocks={[{ kind: 'narration', text: currentWinterBusStopRound.scene }]} />}
+                        {currentWinterBusStopRound.sceneBlocks ? <StoryBlocks blocks={currentWinterBusStopRound.sceneBlocks} /> : currentWinterBusStopRound.scene && <StoryBlocks blocks={[{ kind: 'narration', text: currentWinterBusStopRound.scene }]} />}
                         <StoryBlocks blocks={[{ kind: 'dialogue', speaker: currentWinterBusStopRound.promptSpeaker, text: currentWinterBusStopRound.prompt }]} />
                         <div className="choice-area">
                           <div className="choice-heading">第 {winterBusStopReplies.length + 1}/3 輪・你想怎麼回答？</div>
@@ -5882,7 +5886,6 @@ function App() {
                     ) : (
                       <>
                         <StoryBlocks blocks={winterBusStopRoutes[winterBusStopCharacter].endingBlocks} />
-                        <div className="reunion-pause-note">三輪散場互動已經完成，公車也到了。</div>
                       </>
                     )}
                   </div>
