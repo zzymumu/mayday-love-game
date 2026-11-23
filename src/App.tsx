@@ -1037,6 +1037,46 @@ const monthPastAshinChatScripts: ChatRound[] = [
   makeChatRound('跟妳聊天滿舒服的，不一定要有什麼特別的事。有時候只是交換一下最近聽的歌，也覺得很開心馁。', '我也是啊，跟你聊天不太需要想話題。', '那很好啊，想到什麼就說什麼，不用每次都準備得很正式馁。', '那下次換我推薦歌給你。', '好啊，我很期待。也想知道妳最近喜歡什麼樣的旋律。', '說好了喔，下次不能嫌我推薦得太冷門。', '哈哈，不會啦。妳願意聽，我就很高興了馁。', 3),
 ]
 
+const monthAfterWenStrollChatScripts: ChatRound[] = [
+  makeChatRound('妳之前挑的那張明信片，後來有沒有一直放在書桌上？', '有啊，偶爾看到還是會想起那天。', '那就好，我還怕妳隨手塞進抽屜就忘了。', '你不是說那個圖案很像我嗎？我還是想知道哪裡像。', '就很自在啊。妳每次都要我講得很清楚欸。', '那下次你再陪我去挑一張。', '好啊，不過這次不要站在那裡挑半天，最後還是選第一張。', 3),
+  makeChatRound('我後來又翻到那本攝影雜誌，裡面有幾張街景拍得還不錯。', '你是不是也喜歡那幾張？', '嗯，沒有特別擺拍，反而很像平常真的會看到的樣子。', '下次我們可以一起去找那種地方。', '可以啊，台北有不少這樣的小巷子。', '你不要到時候又嫌我走太慢。', '我哪有嫌過妳？只是怕妳看到什麼就停下來。', 3),
+  makeChatRound('妳上次說想找機會拍照，最近有沒有真的拿相機出來？', '有啊，不過拍得沒有很好。', '多拍幾次就會順手了，不用一開始就要求自己拍得很好。', '那你下次要陪我一起拍。', '好啊，我可以幫妳看一下角度。', '你是不是覺得我連相機都拿不穩？', '我可沒有這樣說喔。妳不要自己先冤枉我。', 3),
+  makeChatRound('有時候會想起那天走回去的路，明明沒有特別做什麼，卻覺得滿舒服的。', '因為那天沒有趕時間啊。', '對啊，慢慢走、隨便聊幾句，這樣就很好。', '那下次也不要急著把我送回家。', '哈哈，妳先不要走到一半又說累就好。', '我哪有那麼容易累！', '好啦，知道妳很有精神。', 3),
+  makeChatRound('下次如果又有空，妳還想去哪裡走走？', '想去一個沒去過的地方。', '那我們可以慢慢找，不用一次決定。', '你先想幾個地方，我再挑。', '好啊，我整理好再問妳。', '不准又說等有空，結果拖一個月。', '知道啦，這次不會讓妳等那麼久。', 3),
+]
+
+const monthAfterWenHomeChatScripts: ChatRound[] = [
+  makeChatRound('上次妳提到的那家麵店，我後來經過時有看一下，生意好像真的不錯。', '對吧！我一直想找時間去吃。', '那下次就去啊，妳不是說要帶我去？', '我有說過嗎？我怎麼不記得。', '妳少來，明明是妳先提的。', '好啦，那我找一天請你。', '這可是妳自己說的，我先記下來。', 3),
+  makeChatRound('妳上次走到巷口時，包包肩帶又滑下來了嗎？', '沒有啦，我後來有調短一點。', '那就好，不然妳每次都要停下來拉。', '你是不是很在意這種小事？', '看到就順手幫一下啊，不然要看妳一路忙著拉肩帶喔。', '那下次你再幫我看。', '妳自己的包包自己顧啦。……好啦，我看到會提醒妳。', 3),
+  makeChatRound('那天送妳到家附近，我回去後才想到還有一句話忘了跟妳說。', '什麼話？你現在才想起來喔？', '就想說那天其實滿開心的，沒有因為妳提早回去就覺得掃興。', '我知道啊，你那時候不是也說下次再約。', '對啊，所以下次不要又自己亂想。', '那下次真的要記得約。', '知道啦，這次我會先把時間留起來。', 3),
+  makeChatRound('最近有沒有又找到什麼想吃的店？妳上次一路講了好幾家。', '有啊，不過要看你有沒有空。', '妳先傳給我，我看看哪天可以。', '你不要又臨時被練團抓走。', '哈哈，這個我不能保證啦，不過我會先跟妳說。', '那我就先把名單準備好。', '好，妳負責找，我負責看時間。', 3),
+  makeChatRound('有時候覺得，跟妳走一段平常的路也滿有意思的。', '你現在是在稱讚我很會找路嗎？', '我是在說有人一起走，路就不會那麼無聊。', '那下次你還要陪我走。', '好啦，有空就陪妳。', '說好了喔。', '嗯，說好了。', 3),
+]
+
+const monthAfterFreeChatScripts: Partial<Record<RouteCharacterId, ChatRound[]>> = {
+  masa: [
+    makeChatRound('上次聊完以後，我又想起幾件小時候的事。妳還記不記得以前常去的那條巷子？', '當然記得啊，那時候我們常常在那裡晃。', '妳記性還不錯嘛，我還以為妳只記得我的糗事。', '我哪有！你的糗事比較值得記住而已。', '妳看，現在還不是一樣。', '那你還記得我們以前最常買什麼嗎？', '冰啊，妳每次都要挑半天，最後還是選那幾種。', 3),
+    makeChatRound('前陣子跟石頭被老師留下來那件事，現在想起來還是很煩。', '誰叫你們要被抓到，這不是剛好而已嗎？', '妳到底站哪一邊的？', '我站在有乖乖上課的那一邊。', '好喔，現在連妳都要唸我。', '那你下次會不會乖一點？', '會啦會啦，妳不要一直重複。', 2),
+    makeChatRound('妳上次問我這幾年過得怎麼樣，我後來想想，好像還有很多事沒講。', '那你現在可以慢慢講啊。', '可以啊，只是有些事真的要從頭說起。', '那我有時間可以聽。', '妳這樣講，我會真的找妳聊很久喔。', '你以前不是最會講話嗎？', '那也要看對象啊。', 3),
+    makeChatRound('對了，我之前說要找時間請妳吃飯，沒有忘記啦。', '我還以為你忘了呢。', '我哪有那麼容易忘記，妳不要一直懷疑我。', '那你要說到做到喔。', '知道啦，等時間對上就約。', '我可是會記帳的。', '妳真的很會欸，連這個都要記。', 3),
+    makeChatRound('這次不要又隔那麼久才聊啦，有想到什麼就傳訊息給我。', '那你也要主動找我啊。', '好啦，我會啊。', '不可以每次都等我先開口。', '知道啦，妳很囉嗦欸。', '你明明就很喜歡聽我囉嗦。', '……妳少得意。', 3),
+  ],
+  stone: [
+    makeChatRound('上次妳問我被老師留下來的事，後來還有沒有覺得很擔心？', '有一點啦，不過你說沒事我就放心了。', '真的沒事，只是被提醒幾句，以後會注意。', '那就好，你不要什麼都自己扛著。', '謝謝妳，我會記得。', '你有時候也可以跟大家說，不用都自己處理。', '嗯，我知道。大家一起分擔會比較好。', 3),
+    makeChatRound('我後來想起來，妳第一次坐在練團室牆邊時，我一直怕妳不小心踩到線。', '你那時候真的提醒好多次。', '因為地上東西多，第一次來不熟悉很容易沒注意到。', '可是你也沒有直接把我趕走啊。', '怎麼會，妳坐得很自在就好。', '那下次我還可以坐那個位置嗎？', '可以啊，我會先幫妳看看旁邊有沒有東西。', 3),
+    makeChatRound('最近妳的報告還順利嗎？上次聽妳說好幾份都擠在一起。', '差不多完成了，終於可以喘口氣。', '那很好，忙完也要記得休息，不要馬上又把行程排滿。', '你也要記得吃飯，不要只顧著關心我。', '好，我會注意。', '那我們互相提醒好了。', '好啊，這樣比較不容易忘記。', 3),
+    makeChatRound('有時候我會想，妳明明是特地來關心我們，最後卻還一直怕打擾到別人。', '我只是怕你們忙嘛。', '不會打擾的，妳來了大家都知道。', '真的嗎？', '真的啊，妳不用每次都先替別人想太多。', '那下次我就不客氣了。', '好啊，妳放輕鬆就好。', 3),
+    makeChatRound('下次如果有機會一起吃飯，就不要趕時間了。', '好啊，這次換我們慢慢吃。', '嗯，慢慢聊也很好。', '你要記得把自己那份吃完。', '哈哈，好，我會記得。', '說定了。', '說定了。', 3),
+  ],
+  yanming: [
+    makeChatRound('上次妳說想再了解練團室的器材，最近還有興趣嗎？', '有啊，只是怕自己記不住。', '不用一次記住，先知道大概用途就好。', '那下次你可以再教我一點嗎？', '可以啊，我會照妳能理解的方式慢慢說。', '你真的很有耐心欸。', '做事情本來就要一步一步來。', 3),
+    makeChatRound('最近練團室的時間排得比較滿，我把每個時段重新核對了一次。', '你是不是每天都要確認好多次？', '重要的事情多確認一次，大家就比較不會白跑。', '難怪你總是把事情安排得那麼清楚。', '習慣了，先整理好，後面就比較順。', '有沒有什麼我可以幫忙的？', '有需要我會跟妳說，妳不用特地把自己排得太滿。', 3),
+    makeChatRound('妳上次問我是不是每件事都會先檢查，其實也不是不相信大家。', '我知道，你只是想讓事情穩妥一點。', '對，大家都忙，先確認好可以少很多臨時狀況。', '跟你一起做事真的很安心。', '謝謝妳這樣說，能讓大家放心就好。', '你也要記得休息，不要一直忙。', '好，我會注意時間。', 3),
+    makeChatRound('妳最近課業還好嗎？學期中間常常會突然多出很多事情。', '還可以，我有慢慢排時間。', '那就好，事情一件一件做，不用急著全部完成。', '你每次都這樣提醒我。', '因為這樣比較不容易把自己弄得太累。', '那我也提醒你，忙完要記得喝水。', '哈哈，好，謝謝妳。', 3),
+    makeChatRound('下次來練團室，妳可以先跟我說一聲。我如果有空，再帶妳看看其他器材。', '好啊，那我就等你有空。', '不用急，時間對得上再說。', '我會先問，不會突然跑去打擾你。', '這樣最好，大家都方便。', '那就約好了。', '好，約好了。', 3),
+  ],
+}
+
 const monthPastChatDiary: Record<RouteCharacterId, string> = {
   wen: '晚上我沒有再把話題放在今天的行程，而是主動找溫尚翊聊了聊。從上次一起走過的路和那些沒說完的話開始，聊著聊著又回到我們平常熟悉的鬥嘴節奏。他還是嘴硬，卻沒有真的把我的話晾在一邊。',
   ashin: '晚上我主動找阿信聊天，接著前陣子聊過的音樂話題往下說。他分享最近想到的歌，也問我最近的課業和心情。和他聊天不用急著找話題，總能很自然地把一句話接下去。',
@@ -1847,6 +1887,16 @@ function App() {
     if (masaCheckInRound === masaCheckinRounds.length - 1) {
       setMasaCheckInSent(true)
       localStorage.setItem('mayday-masa-checkin-complete-v2', 'true')
+      const experience: CharacterExperienceRecord = {
+        character: 'masa',
+        source: 'day2',
+        date: saveGameDate,
+        eventKey: 'day2-masa-check-in',
+        day2StrollAccepted,
+      }
+      const nextExperienceLog = { ...sharedExperienceLog, masa: experience }
+      setSharedExperienceLog(nextExperienceLog)
+      localStorage.setItem('mayday-shared-experience-log', JSON.stringify(nextExperienceLog))
     }
   }
 
@@ -1876,6 +1926,16 @@ function App() {
     addRouteAffection('stone', choice.affection)
     setStoneCheckInSent(true)
     localStorage.setItem('mayday-stone-checkin-sent', 'true')
+    const experience: CharacterExperienceRecord = {
+      character: 'stone',
+      source: 'day2',
+      date: saveGameDate,
+      eventKey: 'day2-stone-check-in',
+      day2StrollAccepted,
+    }
+    const nextExperienceLog = { ...sharedExperienceLog, stone: experience }
+    setSharedExperienceLog(nextExperienceLog)
+    localStorage.setItem('mayday-shared-experience-log', JSON.stringify(nextExperienceLog))
   }
 
   const goToIceDate = () => {
@@ -2152,6 +2212,12 @@ function App() {
 
   const getMonthFreeChatRounds = (character: RouteCharacterId): ChatRound[] => {
     if (character === monthVisitTarget) return monthFreeChatScripts[character]
+    const latestExperience = sharedExperienceLog[character]
+    if (latestExperience?.source === 'free-chat') {
+      if (character === 'wen') return day2StrollAccepted ? monthAfterWenStrollChatScripts : monthAfterWenHomeChatScripts
+      if (character === 'ashin') return monthPastAshinChatScripts
+      return monthAfterFreeChatScripts[character] ?? freeTimeChats[character]
+    }
     if (character === 'ashin') return monthPastAshinChatScripts
     const previousRounds = character === 'wen' ? getFreeTimeRounds('wen') : freeTimeChats[character]
     const adjustPastReference = (value: string) => value
