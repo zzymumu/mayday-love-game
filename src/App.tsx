@@ -2034,7 +2034,8 @@ function App() {
       : storyStage === 'walk' ? '16:30'
         : storyStage === 'dinner' ? '19:10'
           : storyStage === 'after-dinner' ? '20:35'
-            : storyStage === 'ending' || storyStage === 'completed' || storyStage === 'greetings' ? '21:18'
+            : storyStage === 'ending' || storyStage === 'greetings' ? '21:18'
+              : storyStage === 'completed' ? (localStorage.getItem('mayday-year-end-day-complete') === 'true' ? '00:40' : '21:18')
               : storyStage === 'classroom' || storyStage === 'masa-checkin' || storyStage === 'stone-checkin' ? '10:12'
                 : storyStage === 'ice-date' ? '16:20'
                   : storyStage === 'stroll' ? '17:05'
@@ -2048,7 +2049,7 @@ function App() {
                                   : ['year-end-intro', 'year-end-invite-notification', 'year-end-invite-picker', 'year-end-shopping-notification', 'year-end-shopping-chat', 'year-end-shopping'].includes(storyStage) ? '14:30'
                                     : storyStage === 'year-end-fireworks' ? '23:40'
                                       : ['year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker'].includes(storyStage) ? '00:15'
-                                        : storyStage === 'year-end-diary' || (storyStage === 'completed' && localStorage.getItem('mayday-year-end-day-complete') === 'true') ? '00:40'
+                                        : storyStage === 'year-end-diary' ? '00:40'
                                           : '17:20'
   const effectiveDateStage = storyStage === 'paused' ? resumeStage : storyStage
   const isSecondDay = ['classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete'].includes(effectiveDateStage)
