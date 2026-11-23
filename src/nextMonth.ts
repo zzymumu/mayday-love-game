@@ -57,14 +57,14 @@ export const nextMonthInviteRoutes: Record<NextMonthCharacterId, NextMonthInvite
     teasePrompt: '你想怎麼回他？',
     replyPrompt: '所以，妳到底要不要跟我去啦？',
     replyChoices: [
-      { text: '好啊！電影幾點開始？', response: ['晚上七點啦，我們可以先去吃點東西。', '那就這樣說定喔。'], affection: 3, accepted: true },
+      { text: '好啊！電影幾點開始？', response: ['晚上七點啦，我們可以先去吃點東西。', '那就這樣說定喔。'], affection: 4, accepted: true },
       { text: '可以啊，不過電影不好看我可是會抱怨的喔。', response: ['蛤？妳要求很多欸。', '好啦，票都買了，妳就來看啦。'], affection: 3, accepted: true },
       { text: '這週六可能不行欸，下次再約我好不好？', response: ['喔，好啊，沒關係啦。', '妳有空再跟我說就好。'], affection: 0, accepted: false },
     ],
     teaseChoices: [
       { text: '買多了？你原本是約誰啊？', response: ['蛤？沒有約誰啦！', '就剛好買多了，妳問題很多欸。'], affection: 3 },
       { text: '兩張？那你怎麼不找別人去？', response: ['我就問妳啊，不然咧？'], affection: 2 },
-      { text: '你該不會是特地買給我的吧？', response: ['……妳不要自己亂想。', '我只是看到場次不錯，順手買的啦。'], affection: 3 },
+      { text: '你該不會是特地買給我的吧？', response: ['……妳不要自己亂想。', '我只是看到場次不錯，順手買的啦。'], affection: 4 },
     ],
     rounds: [
       { scene: '電影院大廳裡人來人往，溫尚翊把那桶已經買好的爆米花抱在手上，往飲料櫃檯看了一眼，轉頭問你。', prompt: '妳要喝什麼？我去排。', choices: [
@@ -73,9 +73,9 @@ export const nextMonthInviteRoutes: Record<NextMonthCharacterId, NextMonthInvite
         { text: '我想喝紅茶就好，不用買太多。', response: ['好啊，那我去排。', '爆米花已經夠多了，等一下吃不完又要怪我。'], affection: 1 },
       ] },
       { scene: '電影開始後，影廳裡慢慢安靜下來。中間有一段反轉，你忍不住轉頭看他，發現他也正好看過來。', prompt: '剛剛那個轉折，妳覺得怎樣？', choices: [
-        { text: '我覺得前面有埋伏筆欸，你有發現嗎？', response: ['有啊，不然我剛剛幹嘛一直看那邊。', '妳還看得滿仔細的嘛。'], affection: 3 },
-        { text: '你剛剛是不是偷看我反應？', response: ['蛤？我是在看字幕啦！', '妳不要自己想太多。'], affection: 2 },
-        { text: '我承認，中間有一點想睡。', response: ['妳有沒有搞錯？才看到一半欸。', '算了，至少爆米花有吃完。'], affection: 1 },
+        { text: '我有猜到啦。倒是你，剛剛轉頭看我好幾次，是怕我被嚇到喔？', response: ['妳哪有看得那麼清楚？我只是剛好轉過去。', '……而且妳剛剛那個表情，真的很好認啦。'], affection: 4 },
+        { text: '劇情還可以，不過你剛剛偷看我的那一下，我比較有印象。', response: ['蛤？妳到底有沒有在看電影啦？', '我哪有偷看，妳不要亂記。'], affection: 3 },
+        { text: '我有一段沒看懂，等一下你坐近一點講給我聽。', response: ['現在就要講喔？電影還沒演完欸。', '……好啦，等一下再講，妳先看。'], affection: 2 },
       ] },
       { scene: '散場時人潮慢慢往出口移動。你們還在爭論結局，溫尚翊忽然指了指隔壁亮著燈的遊樂場。', prompt: '那邊有娃娃機，要不要去玩一下？', choices: [
         { text: '要！我剛剛就看到那隻小熊了。', response: ['妳眼睛也太尖了吧。', '走啦，我看一下哪台比較好夾。'], affection: 3 },
@@ -89,7 +89,7 @@ export const nextMonthInviteRoutes: Record<NextMonthCharacterId, NextMonthInvite
       ] },
       { scene: '溫尚翊把最後一枚代幣推進去，這次沒有急著按，反而蹲下來仔細看了看玩偶的位置。他調整好角度，按下搖桿，爪子終於穩穩抓住那隻小熊，晃了兩下後掉進出口。聽見聲音，他立刻抬頭看你，眉毛一挑，嘴角怎麼也壓不下去，明明想裝鎮定，眼神卻寫滿了「我就說吧」。', prompt: '怎樣？我就說會中吧。剛剛是誰一直在旁邊懷疑我的？', choices: [
         { text: '好啦好啦，你最厲害，行了吧？', response: ['這還差不多，早這樣講不就好了。', '拿著，這隻給妳。記得說是我夾的。'], affection: 3 },
-        { text: '你看你，得意得尾巴都要翹起來了。', response: ['有嗎？我這叫對自己的技術有信心。', '而且妳剛剛不是一直盯著它？現在拿到了，笑一個。'], affection: 3 },
+        { text: '你看你，得意得尾巴都要翹起來了。', response: ['有嗎？我這叫對自己的技術有信心。', '而且妳剛剛不是一直盯著它？現在拿到了，笑一個。'], affection: 2 },
         { text: '哼，還不是夾了好幾次。', response: ['欸，妳到底會不會稱讚人？', '反正最後有夾到就好啦，拿去。'], affection: 1 },
       ] },
     ],
@@ -330,11 +330,11 @@ export const nextMonthOpenDayIntroBlocks: NextMonthStoryBlock[] = [
   { kind: 'dialogue', speaker: '瑪莎', text: '妳笑什麼？等一下他把整袋吃完，妳就知道我們為什麼要先搶了。' },
   { kind: 'dialogue', speaker: '你', text: '我看你明明也很想吃，還裝得一副在管理秩序的樣子。' },
   { kind: 'dialogue', speaker: '瑪莎', text: '我是在維持社團財產安全，懂不懂？' },
-  { kind: 'narration', text: '石頭把幾瓶飲料搬到桌子底下，順手將一張紙箱攤平墊在潮濕的桌腳旁；諺明則從工具袋裡拿出延長線和轉接頭，一邊對清單，一邊確認電源位置。阿信抱著另一疊傳單走過來，把兩種不同顏色的紙分開放在你面前。' },
+  { kind: 'narration', text: '石頭把幾瓶飲料搬到桌子底下，順手將一張紙箱攤平墊在潮濕的桌腳旁。阿信抱著另一疊傳單走過來，把兩種不同顏色的紙分開放在你面前。' },
   { kind: 'dialogue', speaker: '陳信宏', text: '妳來得剛好～這兩疊不要混在一起喔，黃色是活動流程，白色才是社團報名。剛剛有人拿錯，差點把整疊帶走馁。' },
   { kind: 'dialogue', speaker: '你', text: '你們這裡事情也太多了吧，我才剛來就要考分類。' },
   { kind: 'dialogue', speaker: '陳信宏', text: '哈哈，等一下人更多，可能還會有新的考題。先把這關過了就好馁。' },
-  { kind: 'narration', text: '你低頭整理紙張，旁邊不時傳來瑪莎和佑達互相指責的聲音。溫尚翊一邊試音，一邊伸手把快被風吹走的報名表壓住；石頭拿膠帶固定桌布，諺明蹲在音箱旁檢查接頭。原本還有點空的廣場，沒多久就被學生和攤位填滿。' },
+  { kind: 'narration', text: '你低頭整理紙張，旁邊不時傳來瑪莎和佑達互相指責的聲音。溫尚翊一邊試音，一邊伸手把快被風吹走的報名表壓住；石頭拿膠帶固定桌布。原本還有點空的廣場，沒多久就被學生和攤位填滿。' },
   { kind: 'dialogue', speaker: '溫尚翊', text: '這疊先放我右手邊。等一下有人來問社團，再把白色那張給他。妳忙完就去逛，不用一直站在這裡。' },
   { kind: 'dialogue', speaker: '你', text: '知道啦。你先把那條線弄好，不然等一下又要被瑪莎嫌。' },
   { kind: 'dialogue', speaker: '瑪莎', text: '我聽到了喔！而且我不是嫌，我是在幫他把問題講出來。' },
@@ -457,9 +457,9 @@ export const nextMonthOpenDayRoutes: Record<NextMonthCharacterId, NextMonthOpenD
     ending: [{ kind: 'narration', text: '回到攤位前，石頭把相機放回包裡，還特地確認背帶沒有勾到桌角。你手裡多了一張明信片，照片則要等沖洗好才看得到。那種還沒拿到、卻已經開始期待的感覺，讓你忍不住又低頭看了一眼明信片。' }],
   },
   yanming: {
-    label: '劉諺明', subtitle: '幫忙接應練團室送來的器材', location: '台灣大學・椰風搖滾社攤位', title: '臨時來支援的諺明哥', kicker: '上午・活動廣場入口',
+    label: '劉諺明', subtitle: '到校門口接應練團室送來的器材', location: '台灣大學・校門口至椰風搖滾社攤位', title: '臨時來支援的諺明哥', kicker: '上午・校門口',
     blocks: [
-      { kind: 'narration', text: '活動廣場入口處，一個紙箱擋住了半個指示牌。你走近才看見諺明哥站在旁邊，手裡還拎著一袋導線和轉接頭。他不是台大的學生，今天是受溫尚翊拜託，從練團室送一批備用器材過來，卻不太熟校園裡的路。' },
+      { kind: 'narration', text: '你收到溫尚翊傳來的訊息，說諺明哥已經到校門口了，請你過去接一下。你走到校門口時，遠遠就看見一個紙箱擋住了半個指示牌。諺明哥站在旁邊，手裡還拎著一袋導線和轉接頭。他不是台大的學生，今天是受溫尚翊拜託，從練團室送一批備用器材過來，校園又大，一時找不到椰風攤位的位置。' },
       { kind: 'dialogue', speaker: '劉諺明', text: '不好意思，妳可以帶我去椰風那個攤位嗎？我怕把器材放錯地方。' },
     ],
     rounds: [
@@ -489,7 +489,7 @@ export const nextMonthOpenDayRoutes: Record<NextMonthCharacterId, NextMonthOpenD
         { text: '所以今天的臨時助手有沒有工資？', response: ['有啊，剛剛不是說請妳喝飲料？', '下次到練團室再補給妳。'], affection: 1 },
       ] },
     ],
-    ending: [{ kind: 'narration', text: '諺明哥離開後，你把束線帶放進攤位的工具盒。溫尚翊一邊整理剛接好的線，一邊說這次總算沒有少東西。你想起剛才他抱著紙箱在校園入口找路的樣子，忍不住又笑了一下。' }],
+    ending: [{ kind: 'narration', text: '諺明哥離開後，你把束線帶放進攤位的工具盒。溫尚翊一邊整理剛接好的線，一邊說這次總算沒有少東西。你想起剛才他抱著紙箱在校門口找路的樣子，忍不住又笑了一下。' }],
   },
   ashin: {
     label: '陳信宏', subtitle: '一起逛手作攤和小遊戲', location: '台灣大學・活動廣場', title: '手繪書籤和小熊吊飾', kicker: '上午・活動廣場',
