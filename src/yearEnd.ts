@@ -459,6 +459,36 @@ export const yearEndFireworksEnding: YearEndStoryBlock[] = [
   { kind: 'narration', text: '你們沒有急著散開。煙火還在遠處一聲聲響著，零食袋被風吹得沙沙作響，六個人的聲音混在一起，吵吵鬧鬧的，卻讓這個跨年夜變得格外真實。' },
 ]
 
+export type YearEndInviteReplyChoice = YearEndSmsChoice & { accepted: boolean }
+
+export const yearEndShoppingReplyChoices: Record<YearEndRouteCharacterId, YearEndInviteReplyChoice[]> = {
+  wen: [
+    { text: '好啊，我下午有空，幾點碰面？', response: ['那兩點半好了，我在市場入口等妳。', '不要遲到喔，我才不想一個人提那麼多東西。'], affection: 3, accepted: true },
+    { text: '可以啊，反正我也想出去走走。', response: ['好，那就一起去。', '我先把清單整理好，等等傳給妳碰面的地方。'], affection: 2, accepted: true },
+    { text: '今天想先在家休息，年貨你們先買吧。', response: ['好啦，沒關係。', '妳今天就好好休息，晚上記得來就好。'], affection: 1, accepted: false },
+  ],
+  masa: [
+    { text: '好啊！我去幫你監督，免得你買錯。', response: ['妳最好是真的來幫忙，不是來增加我的工作量。', '兩點半市場口見，快一點喔！'], affection: 3, accepted: true },
+    { text: '可以，但買完要請我吃東西。', response: ['妳很會欸，還沒出門就先談條件。', '好啦，買完再看妳想吃什麼。'], affection: 2, accepted: true },
+    { text: '今天不太方便，你自己加油哈哈。', response: ['蛤？妳就這樣丟下我喔！', '好啦好啦，我自己去，妳晚上再來。'], affection: 1, accepted: false },
+  ],
+  ashin: [
+    { text: '好啊！我也想看看有什麼好看的小裝飾。', response: ['太好了馁，那我們兩點半在巷口見。', '妳不用趕，慢慢來就好。'], affection: 3, accepted: true },
+    { text: '可以呀，順便幫你挑糖果。', response: ['好啊，那我就把選擇權交給妳一半。', '等等見馁。'], affection: 2, accepted: true },
+    { text: '今天想在家整理一下，可能沒辦法出門。', response: ['沒關係啦，妳先忙自己的事。', '晚上見面的時候再一起熱鬧就好馁。'], affection: 1, accepted: false },
+  ],
+  stone: [
+    { text: '好啊，我下午有空，可以一起去。', response: ['好，那我們兩點半在市場旁邊碰面。', '外面有點冷，妳記得多穿一件。'], affection: 3, accepted: true },
+    { text: '可以，剛好我也想買一點東西。', response: ['那就一起去吧。', '我先把清單帶著，到了再慢慢看。'], affection: 2, accepted: true },
+    { text: '今天可能不太方便，你自己去可以嗎？', response: ['可以啊，沒關係。', '妳先忙，晚上見面的時候再說。'], affection: 1, accepted: false },
+  ],
+  yanming: [
+    { text: '好啊，我下午可以一起去。', response: ['好，那兩點半在市場入口見。', '我會先把清單整理好，到了就可以直接開始。'], affection: 3, accepted: true },
+    { text: '可以，我幫你一起確認數量。', response: ['那就麻煩妳了。', '有妳一起看，應該會更周全。'], affection: 2, accepted: true },
+    { text: '今天想先休息，可能沒辦法一起去。', response: ['沒關係，妳先休息。', '我會把需要的東西準備好，晚上再見。'], affection: 1, accepted: false },
+  ],
+}
+
 export const yearEndNewYearMessages: Record<YearEndRouteCharacterId, string> = {
   wen: '新年快樂啦。剛剛煙火有看到嗎？回去路上小心一點，到了跟我說一聲。',
   masa: '新年快樂！！！剛剛那個煙火是不是差點把妳嚇到？哈哈哈哈，我有看到喔。',
