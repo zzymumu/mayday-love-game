@@ -301,7 +301,7 @@ export const winterBusStopRoutes: Record<WinterCharacterId, WinterBusStopRoute> 
     title: '和陳信宏走到公車站',
     blocks: [
       { kind: 'narration', text: '阿信把麥克風線交回店裡，拿起搭在椅背上的外套，等你一起走出酒吧。門一關，裡面的熱鬧聲就被留在身後。他走在靠馬路的那一側，手裡轉著剛才沒喝完的水，聽你提起台上幾個人鬧成一團的樣子，忍不住笑了。' },
-      { kind: 'narration', text: '走到巷口，他還回頭看了一眼，確認其他人沒有跟出來，才像終於能喘口氣似的把肩膀放鬆。你們沿著騎樓慢慢走，剛才在台上那個總能接住大家玩笑的人，現在說話反而有點孩子氣。' },
+      { kind: 'narration', text: '你們沿著騎樓慢慢走。剛才在台上那個總能接住大家玩笑的人，現在說話反而有點孩子氣。' },
     ],
     rounds: [
       {
@@ -322,7 +322,7 @@ export const winterBusStopRoutes: Record<WinterCharacterId, WinterBusStopRoute> 
         promptSpeaker: '陳信宏',
         prompt: '有沒有撞到？手腕會不會痛？',
         choices: [
-          { text: '我沒事啦，你剛剛也差點跌倒。', response: [{ kind: 'dialogue', speaker: '陳信宏', text: '我還好，妳沒事比較重要。' }, { kind: 'narration', text: '他低頭看了一眼自己的鞋，確認真的沒扭到，才又看回你，這次沒有急著往前走。' }], affection: { ashin: 3 } },
+          { text: '我沒事啦，你剛剛也差點跌倒。', response: [{ kind: 'dialogue', speaker: '陳信宏', text: '我還好，妳沒事比較重要。' }, { kind: 'narration', text: '他聽你這麼說，這才露出一點笑意，卻仍陪你在原地緩了緩，沒有急著往前走。' }], affection: { ashin: 3 } },
           { text: '你剛剛反應好快，我都還沒看清楚。', response: [{ kind: 'dialogue', speaker: '陳信宏', text: '我也是聽到聲音才回頭，真的差一點。' }, { kind: 'narration', text: '他說完笑了一下，像是想把剛才的緊張帶過去，卻還是忍不住又看了看你有沒有擦傷。' }], affection: { ashin: 3 } },
           { text: '我剛剛真的嚇了一跳，差點以為要撞上了。', response: [{ kind: 'dialogue', speaker: '陳信宏', text: '先在這裡站一下，等車真的走遠再走。' }, { kind: 'narration', text: '他沒有急著安慰你，只陪你站在鐵門旁，等路口恢復安靜，才問你要不要繼續走。' }], affection: { ashin: 4 } },
         ],
