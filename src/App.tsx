@@ -189,7 +189,7 @@ const storyStageLabels: Record<StoryStage, string> = {
   'day2-diary': '寫下第二篇日記', 'free-time': '自由活動', 'free-chat': '自由聊天',
   'day2-complete': '第二天結束', 'month-free-time': '一個月後・自由活動', 'month-visit': '一個月後・外出見面', 'month-visit-complete': '一個月後・見面結束', 'month-free-chat': '一個月後・自由對話', 'month-diary': '一個月後・私人日記',
   'next-month-intro': '又一個月後・校園開放日', 'next-month-invite-notification': '有人想約你', 'next-month-invite-picker': '看看是誰想約你', 'next-month-invite': '回覆邀約', 'next-month-invite-chat': '邀約簡訊', 'next-month-invite-date': '赴約', 'next-month-open-day': '椰風搖滾社・校園開放日', 'next-month-open-day-picker': '一起逛校園', 'next-month-open-day-visit': '校園散步', 'next-month-open-day-visit-complete': '校園開放日・見面結束', 'next-month-free-chat': '十二月・自由對話', 'next-month-diary': '十二月・私人日記',
-  'year-end-intro': '十二月三十一日・跨年篇', 'year-end-invite-notification': '收到年貨邀約', 'year-end-invite-picker': '選擇邀約對象', 'year-end-shopping-notification': '年貨邀約簡訊', 'year-end-shopping-chat': '回覆年貨邀約', 'year-end-shopping': '一起買年貨', 'year-end-fireworks': '六人跨年煙火', 'year-end-new-year-notification': '收到新年祝福', 'year-end-new-year-chat': '回覆新年祝福', 'year-end-free-chat': '新年自由聊天', 'year-end-free-chat-picker': '新年自由活動', 'year-end-diary': '1996 年最後一篇日記', paused: '故事暫停',
+  'year-end-intro': '十二月三十一日・跨年篇', 'year-end-invite-notification': '收到年貨邀約', 'year-end-invite-picker': '選擇邀約對象', 'year-end-shopping-notification': '年貨邀約簡訊', 'year-end-shopping-chat': '回覆年貨邀約', 'year-end-shopping': '一起買年貨', 'year-end-fireworks': '七人跨年煙火', 'year-end-new-year-notification': '收到新年祝福', 'year-end-new-year-chat': '回覆新年祝福', 'year-end-free-chat': '新年自由聊天', 'year-end-free-chat-picker': '新年自由活動', 'year-end-diary': '1996 年最後一篇日記', paused: '故事暫停',
 }
 const readSaveSlot = (slot: number): SaveSlotData | null => {
   try {
@@ -3709,7 +3709,7 @@ function App() {
       sections: [
         { label: 'CHRISTMAS · 聖誕節的餘韻', text: '聖誕節那幾天，校園和街道都掛起了燈飾。交換禮物、期末報告和偶爾收到的訊息，讓十二月過得比想像中快。等桌曆翻到最後一天，才發現一九九六年真的要結束了。' },
         { label: 'AFTERNOON · 年貨採買', text: shoppingSummary },
-        { label: 'MIDNIGHT · 六個人的煙火', text: '晚上我和溫尚翊、陳信宏、瑪莎、石錦航、諺明哥、佑達一起到河堤放煙火。大家分零食、整理仙女棒、互相鬧來鬧去，最後一起倒數迎接一九九七年。煙火升起來的時候，六個人的聲音全混在一起，吵得不得了，卻也讓人捨不得那麼快散場。' },
+        { label: 'MIDNIGHT · 七個人的煙火', text: '晚上我和溫尚翊、陳信宏、瑪莎、石錦航、諺明哥、佑達一起到河堤放煙火。大家分零食、整理仙女棒、互相鬧來鬧去，最後一起倒數迎接一九九七年。煙火升起來的時候，七個人的聲音全混在一起，吵得不得了，卻也讓人捨不得那麼快散場。' },
         { label: 'NEW YEAR · 凌晨的訊息', text: [greetingSummary, proactiveSummary, extendedSummary].join('\n\n') },
         { label: 'BEFORE SLEEP · 睡前補記', text: '今天真的很熱鬧。從聖誕節一路走到跨年，身邊的人、收到的訊息，還有夜空裡最後一朵煙火，都像是替這一年好好畫下了句點。希望一九九七年也能有很多值得記住的日子。' },
       ],
@@ -5140,7 +5140,7 @@ function App() {
                   </div>
                   <div className="story-narrative-scroll">
                     <div className="story-kicker">河堤旁・晚上九點多</div>
-                    <h2 className="story-scene-title">六個人的跨年夜</h2>
+                    <h2 className="story-scene-title">七個人的跨年夜</h2>
                     <StoryBlocks blocks={yearEndFireworksIntroBlocks} />
                     {yearEndFireworksRounds.slice(0, yearEndFireworksReplies.length).map((round, index) => {
                       const selected = round.choices[yearEndFireworksReplies[index]]
