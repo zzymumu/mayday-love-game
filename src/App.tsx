@@ -3677,26 +3677,19 @@ function App() {
               )}
 
               {storyStage === 'next-month-invite-notification' && (
-                <div className="story-screen-overlay">
-                  <div className="story-screen-head">
-                    <div className="chapter-mark">手機通知</div>
-                    <div className="story-contact-title">
-                      <strong>一則特別消息</strong>
-                      <small>1996 年 12 月 14 日・上午</small>
+                <div className="invite-notification-overlay">
+                  <div className="invite-notification-card">
+                    <div className="invite-notification-top">
+                      <span className="invite-notification-icon"><MessageSquare size={17} /></span>
+                      <span><strong>特別通知</strong><small>剛剛</small></span>
                     </div>
-                    <span className="story-head-spacer" />
-                  </div>
-                  <div className="story-narrative-scroll">
-                    <div className="story-kicker">手機螢幕忽然亮了起來</div>
-                    <h2 className="story-scene-title">有人想約你出去！</h2>
-                    <StoryBlocks blocks={[
-                      { kind: 'narration', text: '你剛把包包放下，手機就亮了起來。最近好像有人想趁著有空，約你一起出去走走。' },
-                      { kind: 'narration', text: '要不要看看是誰？' },
-                    ]} />
-                  </div>
-                  <div className="story-action-bar">
-                    <button className="story-primary-button" onClick={() => changeStage('next-month-invite-picker')}>看看是誰 <ChevronRight size={15} /></button>
-                    <button className="story-primary-button secondary-chat-action" onClick={startNextMonthOpenDay}>今天先去社團幫忙 <ChevronRight size={15} /></button>
+                    <h2>有人想約你出去！</h2>
+                    <p>最近好像有人想趁著有空，約你一起出去走走。</p>
+                    <p>要不要看看是誰？</p>
+                    <div className="invite-notification-actions">
+                      <button className="story-primary-button" onClick={() => changeStage('next-month-invite-picker')}>看看是誰 <ChevronRight size={15} /></button>
+                      <button className="story-primary-button secondary-chat-action" onClick={startNextMonthOpenDay}>今天先去社團幫忙 <ChevronRight size={15} /></button>
+                    </div>
                   </div>
                 </div>
               )}
