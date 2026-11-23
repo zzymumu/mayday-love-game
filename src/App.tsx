@@ -6414,7 +6414,7 @@ function App() {
                                       <DiarySection key={section.label} label={section.label} text={section.text} />
                                     ))}
                                   </div>
-                                ) :                                 {selectedDiaryDate === '1996-12-31' && yearEndDiaryUnlocked && yearEndDiaryData ? (
+                                ) : selectedDiaryDate === '1996-12-31' && yearEndDiaryUnlocked && yearEndDiaryData ? (
                                   <div className="diary-paper">
                                     <span className="diary-date">1996 年 12 月 31 日・星期二</span>
                                     <h2>{yearEndDiaryData.title}</h2>
