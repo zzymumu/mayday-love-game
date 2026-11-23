@@ -2092,28 +2092,40 @@ function App() {
     }
     setMonthFreeChatStarted(true)
     localStorage.setItem('mayday-month-free-chat-started', 'true')
+    setMonthFreeChatOpeningSent(false)
+    localStorage.setItem('mayday-month-free-chat-opening-sent', 'false')
     setMonthFreeChatRound(0)
     localStorage.setItem('mayday-month-free-chat-round', '0')
     setMonthFreeChatReplied(false)
     localStorage.setItem('mayday-month-free-chat-replied', 'false')
     setMonthFreeChatReplies([])
     localStorage.setItem('mayday-month-free-chat-replies', '[]')
-    appendChatMessages(character, [
-      { from: 'me', text: monthFreeChatOpeners[character], time: '18:10' },
-      { from: character, text: monthFreeChatScripts[character][0].incoming, time: '18:11' },
-    ], '11月16日・晚上')
     setSelectedSmsThread(character)
     setActiveApp('messages')
     changeStage('month-free-chat')
   }
 
+  const chooseMonthFreeChatOpening = (choiceIndex: number) => {
+    if (!monthVisitTarget || !monthFreeChatStarted || monthFreeChatOpeningSent) return
+    const character = monthVisitTarget
+    const opening = monthFreeChatOpeners[character][choiceIndex]
+    if (!opening) return
+    appendChatMessages(character, [
+      { from: 'me', text: opening.text, time: '18:10' },
+      { from: character, text: opening.response, time: '18:11' },
+      { from: character, text: monthFreeChatScripts[character][0].incoming, time: '18:12' },
+    ], '11月16日・晚上')
+    setMonthFreeChatOpeningSent(true)
+    localStorage.setItem('mayday-month-free-chat-opening-sent', 'true')
+  }
+
   const chooseMonthFreeChatReply = (choiceIndex: number) => {
-    if (!monthVisitTarget || monthFreeChatReplied) return
+    if (!monthVisitTarget || !monthFreeChatOpeningSent || monthFreeChatReplied) return
     const character = monthVisitTarget
     const round = monthFreeChatScripts[character][monthFreeChatRound]
     const choice = round?.choices[choiceIndex]
     if (!choice) return
-    const minute = 12 + monthFreeChatRound * 2
+    const minute = 13 + monthFreeChatRound * 2
     const time = '18:' + String(minute).padStart(2, '0')
     appendChatMessages(character, [
       { from: 'me', text: choice.text, time },
@@ -2137,7 +2149,7 @@ function App() {
   }
 
   const finishMonthFreeChat = () => {
-    if (!monthVisitTarget || !monthFreeChatStarted || !monthFreeChatReplied || monthFreeChatRound !== 4 || monthFreeChatReplies.length !== 5) return
+    if (!monthVisitTarget || !monthFreeChatStarted || !monthFreeChatOpeningSent || !monthFreeChatReplied || monthFreeChatRound !== 4 || monthFreeChatReplies.length !== 5) return
     const experience: CharacterExperienceRecord = {
       character: monthVisitTarget,
       source: 'month-free-chat',
