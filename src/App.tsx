@@ -3872,7 +3872,7 @@ function App() {
         { label: 'DECEMBER · 聖誕節還沒散場', text: '聖誕節那幾天，台北街上到處都是燈。系上交換禮物時，我抽到包裝漂亮、拆開卻是兩雙厚襪子的禮物，西藍花笑我今年至少不會凍到腳。我嘴上嫌棄，回家卻立刻穿上了。桌曆翻到最後一頁時才突然想到，原來再過幾個小時，一九九六年就真的要結束了。' },
         { label: 'AFTERNOON · 年貨採買', text: shoppingSummary },
         { label: 'MIDNIGHT · 河堤邊的七個人', text: '晚上九點多到河堤時，佑達已經把一大袋零食放在地上，瑪莎正伸手想翻，被他擋了好幾次。石頭蹲在旁邊顧相機和底片，阿信忙著把熱的、常溫的飲料分開，諺明哥則把水、垃圾袋和煙火用品放好，還不忘確認大家站的位置安全。溫尚翊在另一邊拆仙女棒，聽見我來才抬頭叫我過去。光是看他們各忙各的、又一直互相插嘴，我就覺得今晚肯定不會安靜。\n\n快到十二點時，佑達的倒數聲最大，瑪莎偏偏故意慢半拍，兩個人差點又為了誰帶錯拍子吵起來。第一朵煙火升上去時，大家卻同時安靜了一下。金色和紅色的光落在每個人臉上，佑達喊得像在主持全場，阿信笑著祝大家新年快樂，石頭說要把照片洗出來，諺明哥還在提醒大家記得收垃圾。溫尚翊手裡拿著最後一支沒點燃的仙女棒，轉過來對我說：「新年快樂啦。今天有來就好。」這句話比煙火還讓我記得住。' },
-        { label: 'NEW YEAR · 凌晨的訊息', text: [greetingSummary, proactiveSummary, extendedSummary].join('\\n\\n') },
+        { label: 'NEW YEAR · 凌晨的訊息', text: [greetingSummary, proactiveSummary, extendedSummary].join('\n\n') },
         { label: 'BEFORE SLEEP · 寫給明年', text: '回到家後，耳朵裡好像還有河堤那邊的笑聲和煙火聲。鞋子脫下來才發現站了好久，手機裡也還留著幾句沒捨得立刻關掉的訊息。今天沒有什麼特別盛大的安排，卻剛好把想見的人都聚在一起了。希望一九九七年也能常常有這種晚上，大家都在，誰也不用急著先走。' },
       ],
     }
@@ -4092,9 +4092,9 @@ function App() {
     return {
       title: '一月二十二日，耳朵裡還有今晚的歌',
       sections: [
-        { label: 'THE DAY · 寒假第一場熱鬧', text: examSummary + '\\n\\n' + rehearsalSummary },
+        { label: 'THE DAY · 寒假第一場熱鬧', text: examSummary + '\n\n' + rehearsalSummary },
         { label: 'LIVEHOUSE · 五個人的舞台', text: livehouseSummary },
-        { label: 'AFTER SHOW · 散場以後', text: pickupSummary + '\\n\\n' + winterBusStopRoutes[winterBusStopCharacter].diarySummary },
+        { label: 'AFTER SHOW · 散場以後', text: pickupSummary + '\n\n' + winterBusStopRoutes[winterBusStopCharacter].diarySummary },
         { label: 'BEFORE SLEEP · 寫在最後', text: beforeSleepSummaries[focusCharacter] },
       ],
     }
