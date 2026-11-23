@@ -3837,43 +3837,49 @@ function App() {
     }
   }
 
-  const startYearEndDiary = () => {
+  const buildYearEndDiaryData = (): YearEndDiaryData => {
     const shoppingAccepted = yearEndInviteTarget !== null
       && yearEndShoppingReplyChoice !== null
       && yearEndShoppingReplyChoices[yearEndInviteTarget][yearEndShoppingReplyChoice]?.accepted === true
     const shoppingSummary = shoppingAccepted && yearEndInviteTarget
       ? ({
-          wen: '下午跟溫尚翊去了市場和雜貨店。他拿著清單一路提醒我不要亂買，自己卻也多挑了好幾包糖果。最後兩個人提著滿滿的袋子往回走，還約好晚上不要遲到。',
-          masa: '下午跟瑪莎去了老街市場。他一路嫌清單太長，卻又忍不住往袋子裡加零食，最後還把背面漏看的項目補齊。兩個人一路鬥嘴，倒也把事情買得差不多了。',
-          ashin: '下午跟阿信去了年貨店和文具店。他挑了糖果，也買了幾張準備送給大家的小卡片，還認真挑了掛在晚上集合地點的裝飾。整個下午走得很慢，卻很舒服。',
-          stone: '下午跟石頭去了市場旁的雜貨店。他仔細挑了餅乾和飲料，還替大家把東西分好，最後把一張街景明信片送給我。明明只是出來採買，卻被他照顧得很周到。',
-          yanming: '下午跟諺明哥去市場和雜貨行。他把清單分門別類，連數量和收納都先想好了，還提醒我一起確認用品。東西買得很有效率，晚上要用的也都準備齊全。',
+          wen: '溫尚翊把清單折得方方正正，連花生、瓜子和仙女棒都分好數量，還一本正經地叫我當他的採購顧問。偏偏到了糖果攤，他一眼就挑出我喜歡的口味，說這有什麼好忘的。結帳時最重的袋子又被他先拿走，只把裝糖果的輕袋交給我。走到街口，他看我把手縮進袖子裡，還停下來買熱飲。嘴上說是怕我晚上沒力氣玩，明明就是怕我冷吧。',
+          masa: '瑪莎拿著一張皺巴巴的清單，嘴裡還惦記著地瓜球，才走進市場就差點讓風把清單吹走。試吃辣味餅乾時明明辣得眼睛都紅了，還硬說只是市場太熱；試橘子又酸得皺起整張臉，卻堅持下一瓣一定比較甜。最荒謬的是，東西都快買齊了，他才發現清單背面還藏著一行字。看他盯著那張紙沉默的樣子，我真的笑了一路。',
+          ashin: '阿信先遞給我一杯熱豆漿，說怕我還沒吃東西。年貨店裡他挑了梅子糖，還記得我不喜歡太甜的；到了文具店，又認真挑紅色小卡，想替每個人的袋子寫一句祝福。只是綁卡片的細繩最後纏住了自己的手指，越解越亂，我只好坐在旁邊幫他。後來他又挑了一盞紙燈籠，說晚上掛起來大家遠遠就看得到。連採買都能被他弄得很有過年的樣子。',
+          stone: '石頭一路上都在留意小地方。經過糖果攤時，他先問我能不能幫他看一下光線，接著才拿相機把那排玻璃罐拍下來；走進雜貨店，又為了一包餅乾的包裝和旁邊的舊海報研究了好一會兒。結帳時他發現紙袋底有點潮，立刻蹲下來把飲料和餅乾重新分開，怕回去時餅乾被壓碎。最後在街邊挑了一張冬天街景的明信片，說想把今天的光留起來。跟他逛市場，連普通的東西都會變得值得看一眼。',
+          yanming: '諺明哥把清單分門別類，連哪些先買、哪些最後再拿都想好了，卻沒有催我跟著他趕路。買瓜子時他還先問大家到底吃不吃得完，飲料店排隊時則把筆遞給我，讓我幫忙記數量。到了雜貨行，他把每盒煙火的標示看得很仔細，確認使用方式才放進袋子。最後經過紅豆餅攤，他看我停了兩次，乾脆把袋子放下來買了兩個，還把比較完整的那個遞給我。清單很完整，連我想吃什麼他也沒漏掉。',
         } as Record<YearEndRouteCharacterId, string>)[yearEndInviteTarget]
       : yearEndInviteTarget && yearEndShoppingReplyChoice !== null
-        ? '下午收到' + characterNames[yearEndInviteTarget] + '的邀約，不過我婉拒了。雖然沒有一起出門買年貨，還是約好晚上見面跨年。'
-        : '下午留在家裡整理東西，沒有另外出門採買。'
+        ? '下午收到邀約時，我最後還是婉拒了。對方沒有勉強，只叫我先好好休息，晚上再一起去河堤。這樣也好，難得有半天空檔，我把房間裡的東西整理了一下，留著力氣等晚上的熱鬧。'
+        : '下午沒有另外出門採買。我在家整理了一下東西，偶爾看一眼手機，想著晚上那群人應該又會把河堤弄得很吵。'
+
     const activeNames = yearEndGreetingQueue.map((character) => characterNames[character])
     const proactiveNames = yearEndProactiveSent.map((character) => characterNames[character])
     const extendedNames = yearEndExtendedChatCharacters.map((character) => characterNames[character])
     const greetingSummary = activeNames.length
-      ? '跨過十二點後，' + activeNames.join('、') + '都主動傳來新年快樂，我也一一回覆了。'
-      : '跨過十二點後，沒有收到達到好感度門檻的主動新年訊息。'
+      ? '十二點一過，手機在口袋裡接連震了幾次。' + activeNames.join('、') + '先後傳來新年快樂。我站在河堤邊，手指都被風吹得有點僵，還是忍不住一個個回覆。'
+      : '跨過十二點後，手機安靜了一會兒，沒有收到達到好感度門檻的主動新年訊息。'
     const proactiveSummary = proactiveNames.length
-      ? '後來我又主動向' + proactiveNames.join('、') + '說了新年快樂。'
-      : '其他人的新年祝福，我沒有特別再一一傳訊息。'
+      ? '回完那些祝福後，我又主動找了' + proactiveNames.join('、') + '說新年快樂。明明剛才才在大家面前一起倒數，隔著手機再說一次，感覺又有點不一樣。'
+      : '後來我沒有再另外主動傳訊息，只把剛剛那陣熱鬧留在心裡。'
     const extendedSummary = extendedNames.length
-      ? '我還和' + extendedNames.join('、') + '多聊了幾輪，聊到新的一年才慢慢收起手機。'
-      : '回覆完祝福後，我沒有再把聊天延長，讓大家都早點回去休息。'
-    const data: YearEndDiaryData = {
+      ? '原本以為回完訊息就能收起手機，結果又和' + extendedNames.join('、') + '多聊了幾輪。明明已經過了十二點，話題還是從今晚的小事一路延伸，讓我回到家後又多坐了一會兒。'
+      : '祝福回完後，我沒有再把聊天延長。手機終於安靜下來，才發現自己站在外面那麼久，手指都快凍僵了。'
+
+    return {
       title: '把一九九六年的最後一頁留給今晚',
       sections: [
-        { label: 'CHRISTMAS · 聖誕節的餘韻', text: '聖誕節那幾天，校園和街道都掛起了燈飾。交換禮物、期末報告和偶爾收到的訊息，讓十二月過得比想像中快。等桌曆翻到最後一天，才發現一九九六年真的要結束了。' },
+        { label: 'DECEMBER · 聖誕節還沒散場', text: '聖誕節那幾天，台北街上到處都是燈。系上交換禮物時，我抽到包裝漂亮、拆開卻是兩雙厚襪子的禮物，西藍花笑我今年至少不會凍到腳。我嘴上嫌棄，回家卻立刻穿上了。桌曆翻到最後一頁時才突然想到，原來再過幾個小時，一九九六年就真的要結束了。' },
         { label: 'AFTERNOON · 年貨採買', text: shoppingSummary },
-        { label: 'MIDNIGHT · 七個人的煙火', text: '晚上我和溫尚翊、陳信宏、瑪莎、石錦航、諺明哥、佑達一起到河堤放煙火。大家分零食、整理仙女棒、互相鬧來鬧去，最後一起倒數迎接一九九七年。煙火升起來的時候，七個人的聲音全混在一起，吵得不得了，卻也讓人捨不得那麼快散場。' },
-        { label: 'NEW YEAR · 凌晨的訊息', text: [greetingSummary, proactiveSummary, extendedSummary].join('\n\n') },
-        { label: 'BEFORE SLEEP · 睡前補記', text: '今天真的很熱鬧。從聖誕節一路走到跨年，身邊的人、收到的訊息，還有夜空裡最後一朵煙火，都像是替這一年好好畫下了句點。希望一九九七年也能有很多值得記住的日子。' },
+        { label: 'MIDNIGHT · 河堤邊的七個人', text: '晚上九點多到河堤時，佑達已經把一大袋零食放在地上，瑪莎正伸手想翻，被他擋了好幾次。石頭蹲在旁邊顧相機和底片，阿信忙著把熱的、常溫的飲料分開，諺明哥則把水、垃圾袋和煙火用品放好，還不忘確認大家站的位置安全。溫尚翊在另一邊拆仙女棒，聽見我來才抬頭叫我過去。光是看他們各忙各的、又一直互相插嘴，我就覺得今晚肯定不會安靜。\n\n快到十二點時，佑達的倒數聲最大，瑪莎偏偏故意慢半拍，兩個人差點又為了誰帶錯拍子吵起來。第一朵煙火升上去時，大家卻同時安靜了一下。金色和紅色的光落在每個人臉上，佑達喊得像在主持全場，阿信笑著祝大家新年快樂，石頭說要把照片洗出來，諺明哥還在提醒大家記得收垃圾。溫尚翊手裡拿著最後一支沒點燃的仙女棒，轉過來對我說：「新年快樂啦。今天有來就好。」這句話比煙火還讓我記得住。' },
+        { label: 'NEW YEAR · 凌晨的訊息', text: [greetingSummary, proactiveSummary, extendedSummary].join('\\n\\n') },
+        { label: 'BEFORE SLEEP · 寫給明年', text: '回到家後，耳朵裡好像還有河堤那邊的笑聲和煙火聲。鞋子脫下來才發現站了好久，手機裡也還留著幾句沒捨得立刻關掉的訊息。今天沒有什麼特別盛大的安排，卻剛好把想見的人都聚在一起了。希望一九九七年也能常常有這種晚上，大家都在，誰也不用急著先走。' },
       ],
     }
+  }
+
+  const startYearEndDiary = () => {
+    const data = buildYearEndDiaryData()
     setYearEndDiaryData(data)
     setYearEndDiaryUnlocked(true)
     localStorage.setItem('mayday-year-end-diary-data', JSON.stringify(data))
@@ -4043,51 +4049,60 @@ function App() {
     if (affection) addRouteAffection(winterBusStopCharacter, affection)
   }
 
-  const startWinterDiary = () => {
-    if (!winterBusStopCharacter || winterBusStopReplies.length !== winterBusStopRoutes[winterBusStopCharacter].rounds.length) return
+  const buildWinterDiaryData = (): WinterDiaryData => {
+    if (!winterBusStopCharacter) throw new Error('Missing bus-stop character')
     const diaryFocusOrder: WinterCharacterId[] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
     const focusCharacter = diaryFocusOrder.reduce((best, character) => routeAffection[character] > routeAffection[best] ? character : best, diaryFocusOrder[0])
 
     const examSummary = winterExamTutoringUnlocked
-      ? '我原本只是想找溫尚翊救救統計學，結果他一開口又把聯考數學滿分掛在嘴邊，真想把那張講義卷起來敲他。偏偏他又不是只會嘴上厲害：哪一題我把條件放反、哪一步跳太快，他都看得出來；我只是多看了點心櫃檯兩眼，他休息時就真的把東西買回來。最過分的是，收東西時他說「又不是只有補習才能找我」。我當下只顧著回嘴，走出圖書館後卻一直想起那句話。'
-      : '期末考那幾天，我每天都在跟機率統計搏鬥。公式明明看過好幾遍，題目一換個問法，我又開始懷疑自己是不是連中文都讀不懂。考完那天把筆放下來，第一個念頭不是去哪裡玩，而是終於可以不用再看貝氏定理了。現在想起來，還是覺得那幾天過得好狼狽。'
+      ? '期末考終於過去了。想到一月初那次統計學補習，我還是會想起自己把講義翻得亂七八糟，溫尚翊卻一眼就看出我卡在哪裡。最可惡的是，他講完題目還要把聯考數學滿分掛在嘴邊；但收東西時那句「又不是只有補習才能找我」，我到現在居然還記得。這個人真的很會把一句話講得像沒什麼，害我回家還要自己想半天。'
+      : '期末考結束已經半個月了。想到那幾天的機率統計，我現在還是想把講義闔起來。公式明明看過，題目只要換個問法，我就開始懷疑自己是不是把每個字都看反了。幸好現在總算放寒假，至少今天不用再跟貝氏定理大眼瞪小眼。'
 
     const rehearsalSummary = focusCharacter === 'yanming'
-      ? '練團室裡，瑪莎和佑達為了半拍吵得像要把導線拆成兩派，溫尚翊一邊調音一邊喊重來。原本以為諺明哥又會像平常一樣在旁邊替大家收拾，沒想到大家把鼓棒塞到他手裡，他坐下後第一個節拍就讓整個房間安靜了。連佑達都忘了接話。諺明哥最後還是笑著說「手還記得啦」，但我看得出來，他不是隨便敲敲而已。'
-      : '練團室裡最吵的不是音箱，是瑪莎和佑達。兩個人為了半拍互相指控，溫尚翊一邊調音一邊當裁判；阿信拿著歌序笑到肩膀發抖，石頭則低頭調背帶，像早就習慣這種場面。直到諺明哥被大家拱上鼓椅，房間忽然安靜下來——佑達甚至忘了接話。諺明哥只打了幾個小節，就讓人知道他那句「很久沒打」根本是在客氣。'
+      ? '今天六個人都擠到諺明哥家裡，客廳一下子變成臨時排練室。瑪莎嫌佑達把導線繞得像麵線，佑達不服氣地說自己明明有收好；溫尚翊蹲在音箱旁確認接線，阿信拿著歌序，石頭調吉他背帶，我坐在旁邊差點連熱茶都忘了喝。最精彩的是大家把鼓棒塞到諺明哥手裡。他原本還說很久沒打，坐下後卻只試了幾下，整段節奏就乾乾淨淨地跑起來。低音鼓踩得穩，軍鼓和鈸一層層推上去，佑達站在旁邊看得眼睛都亮了。最後那一下落下，客廳安靜了半秒才一起拍手。諺明哥只說「手還記得啦」，我卻覺得他根本是在客氣。'
+      : '今天六個人都擠到諺明哥家裡，客廳裡堆著音箱、導線和器材箱，連走路都得先看腳邊。瑪莎嫌佑達把導線繞成一團，佑達立刻反駁，兩個人還沒正式開始就先吵了半天；溫尚翊蹲在音箱旁調接線，阿信拿著歌序忍笑，石頭則低頭調整吉他背帶。我坐在沙發邊看他們一遍遍重來，原本只是半拍沒對上，最後卻吵得像要把整條導線拆成兩派。直到諺明哥被大家拱上鼓椅，房間才真的安靜下來。他明明說很久沒打，手一落下去卻把節奏抓得又穩又漂亮，連佑達都忘了接話。看他們六個人在同一個客廳裡各忙各的，又能在音樂一進來時接得那麼準，突然覺得這群人湊在一起真的很不可思議。'
+
+    const bandStageIntro = '晚上到了巷子裡的小酒吧，真正站上台的是五個人：阿信拿起麥克風，溫尚翊和石頭背好吉他，瑪莎接上 Bass，佑達坐到鼓椅。諺明哥沒有上台，下午在他家客廳那段鼓聲倒是一直留在我腦袋裡。試音時瑪莎和佑達又為了音量互相嫌棄，溫尚翊一句「兩個都退一格」才把大家拉回來。燈光暗下去後，第一個鼓點落下，原本聊天的客人慢慢轉過頭，後面幾首歌也越唱越順。'
 
     const stageFocusSummaries: Record<Exclude<WinterCharacterId, 'yanming'>, string> = {
-      wen: '我本來提醒自己要好好聽歌，結果溫尚翊一走到台前，視線就完全不聽使喚。他把外套隨手搭在音箱上，黑色 T 恤和斜過肩頭的吉他背帶，在暖黃燈下俐落得要命。間奏時他往前踏了一步，抬眼正好找到我；我還沒來得及移開，他就挑了下眉，嘴角那點笑意像是只留給我看的。下一秒他又轉回去，把尾音收得乾乾淨淨，害我到現在還在回想那個眼神。',
-      ashin: '阿信一開口，我才發現自己剛才一直在等那個聲音。副歌唱到高處，他沒有硬把聲音往上推，而是穩穩拉住尾音，再走到台前讓大家接唱。看到我也跟著唱，他彎起眼睛笑了一下，轉眼又把麥克風遞給前排。那個笑很短，卻讓我整首歌都忍不住跟著他。',
-      masa: '瑪莎一開始還在台上對著佑達挑眉，Bass 一落下，整個人卻突然安靜得只剩手指在動。他把節奏壓得很穩，間奏還故意往前推了一點，溫尚翊立刻接上，兩個人的眼神交換快得像在說暗號。等他抬頭看見我比大拇指，又立刻露出那副「現在知道誰重要了吧」的表情。真是的，連帥都要順便討誇。',
-      stone: '石頭沒有刻意往前站，卻把每一次接拍都做得剛剛好。溫尚翊的旋律往上走，他就在另一邊穩穩接住；兩把吉他交錯的時候，他抬起眼，神情一下子變得很專注。我一直看著，直到最後一個和弦落下，他才發現，回給我一個很淡的笑。明明沒有多做什麼，我卻記得特別清楚。',
+      wen: '唱到中段，溫尚翊把外套拉鍊一扯，隨手搭在音箱上，黑色 T 恤和吉他背帶一下子全露出來。他低頭踩下效果器，手指沿著琴頸滑過去，間奏一進就往台前踏了半步。那段旋律又快又乾淨，燈光掃過他的眉眼時，他抬頭正好找到我。我明明坐在第一排附近，卻還是忘了要把視線移開。他眉梢一挑，嘴角那點笑意像是故意留給我看的，下一秒又轉回去把最後一個音收得俐落。拜託，這種時候誰還記得自己原本是來聽歌的。',
+      ashin: '阿信唱進副歌時，整間店的聊天聲真的慢慢停了下來。他握著麥克風走到台前，尾音穩穩拉住，沒有急著把歌唱完，反而把麥克風遞向前排，讓大家一起接下一句。看到我也跟著唱，他彎起眼睛笑了一下，那個笑很短，卻讓我後面幾句都忍不住跟得更大聲。平常聊天時他總是溫溫柔柔的，站在台上卻有種很自然的光，讓人不知不覺就跟著他走。',
+      masa: '瑪莎一開始還在台上對佑達挑眉，Bass 一落下去，整個人卻突然專心到只剩手指在動。低音穩穩托住整首歌，間奏時他還故意把節奏往前推了一點，溫尚翊立刻接上，兩個人的默契快得像早就講好暗號。最後一記重拍收得乾淨，他抬頭看見我比大拇指，馬上露出那副「現在知道誰才是關鍵了吧」的表情。真是的，連帥都要順便討誇。',
+      stone: '石頭沒有刻意往台前搶位置，卻把每一次接拍都接得剛剛好。溫尚翊的旋律往上走，他就在另一邊穩穩托住；兩把吉他交錯時，他低頭聽準對方的音，再把自己的那條線乾淨地送出去。最後一個和弦落下，他抬起眼，發現我一直望著他，台上那種專注才慢慢化成一個很淡的笑。沒有很誇張的動作，卻讓我一直記得那個瞬間。',
     }
 
     const livehouseSummary = focusCharacter === 'yanming'
-      ? '今晚鼓椅上坐的是佑達，不是諺明哥，我當然知道。可每次鼓點落下，我還是會想起下午他坐上鼓椅時的樣子。很奇怪，明明眼前的舞台那麼熱鬧，我卻一直把兩個畫面放在一起看。'
-      : stageFocusSummaries[focusCharacter]
+      ? bandStageIntro + '每次佑達的鼓點一落，我就會想起下午諺明哥握著鼓棒的樣子。今晚坐在鼓椅上的確實是佑達，他打得也很有勁；可是下午那個原本說自己很久沒打、最後卻讓整個客廳安靜下來的人，還是我今晚最想回想的畫面。'
+      : bandStageIntro + stageFocusSummaries[focusCharacter]
 
     const pickupSummary = winterYanmingPickupAvailable
-      ? '散場時手機震了一下，諺明哥真的已經站在酒吧外面等我，手上還拿著多帶來的外套。明明只是說會來接一下，他卻連我會不會冷都想到了。'
-      : '散場時店裡的掌聲還沒完全停下來，佑達留下來清點器材。我站在門邊等大家收拾，熱鬧一點一點退掉，才發現耳朵裡還留著最後一句合唱的回音。'
+      ? winterBusStopCharacter === 'yanming'
+        ? '散場時手機震了一下，諺明哥真的已經站在酒吧外面等我，手裡還拿著多帶來的外套。看到他時，我才想起下午他說會過來接一下；他沒有催我，只把外套遞過來，等我穿好才陪我往公車站走。'
+        : '散場時手機震了一下，諺明哥真的已經站在酒吧外面等我，手裡還拿著多帶來的外套。他先確認我有沒有冷到，之後我選了' + characterNames[winterBusStopCharacter] + '陪我走到公車站。今晚連散場都比平常熱鬧，還有人特地跑來等我。'
+      : '散場時佑達被老闆留下來核對鼓組配件，還隔著門喊大家先走。店裡的掌聲和聊天聲慢慢退下去，我站在門邊等其他人收好東西，耳朵裡卻還留著最後一段合唱的回音。'
 
     const beforeSleepSummaries: Record<WinterCharacterId, string> = {
-      wen: '回到家，腦子裡還是那個抬眼的瞬間。溫尚翊平常講話總是一副沒什麼了不起的樣子，站上台卻完全不是那回事。最討厭的是，他好像知道我在看，偏偏還故意笑了一下。明明只是兩秒鐘，我卻一路記到現在。算了，明天再假裝自己沒有一直想到好了。',
-      ashin: '阿信的聲音到現在還留在耳朵裡。我喜歡他唱歌時那種很投入的樣子，也喜歡他把麥克風遞出去、讓整間店一起唱的時候。明明台下那麼多人，他還是有看到我跟著唱。回家後我又把最後一句哼了一遍，才發現自己一直在笑。',
-      masa: '瑪莎今晚認真起來真的很不講理。平常最愛吐槽的人，一碰到 Bass 就像換了一個人；偏偏一下台又立刻恢復那副欠揍的樣子。最後還要跟佑達爭誰接得最好，害阿信差點笑場。這種人真的很吵，可是少了他大概也不會這麼好玩。',
-      stone: '石頭在台上其實沒有做什麼特別誇張的動作，可我就是一直看得到他。兩把吉他交錯時，他抬眼的那一下很短，卻讓我記到現在。更何況他還說想把今晚那段旋律整理成另一個版本，問我願不願意先聽。明明只是一句很輕的邀請，我卻已經開始期待了。',
-      yanming: '今晚站在舞台上的鼓手是佑達，可我回家後還是一直想起下午的諺明哥。原來一個人不必出現在所有地方，也能一直留在另一個人的注意力裡。那幾個節拍、他額角的汗，還有他笑著說「手還記得啦」的樣子，到現在都沒有散掉。',
+      wen: '回家後我才發現，腦袋裡最清楚的不是哪一首歌，而是他把外套搭上音箱、往前踏那半步的樣子。溫尚翊平常講話總是一副沒什麼了不起的樣子，站上台卻完全不是那回事。最討厭的是，他好像知道我在看，還偏偏抬眼笑了一下。明明只有兩秒，我現在卻還在想。',
+      ashin: '阿信最後那句副歌到現在還在我腦袋裡轉。我喜歡他唱歌時很投入的樣子，也喜歡他把麥克風遞出去，讓整間店一起唱的時候。台下明明那麼多人，他還是有看到我跟著唱。回家路上我又小聲哼了一遍，才發現自己一路都在笑。',
+      masa: '瑪莎今晚認真起來真的很不講理。平常最愛吐槽的人，一碰到 Bass 就像換了一個人；偏偏一下台又立刻恢復那副欠揍的樣子，還要跟佑達爭最後那個鼓花到底誰接得最好。這種人真的很吵，可是想到他抬頭看見我比大拇指時那個得意表情，我又忍不住笑。',
+      stone: '石頭在台上沒有做什麼誇張的動作，可我就是一直看得到他。兩把吉他交錯時，他抬眼的那一下很短，卻讓我記到現在。更何況他還提過想把今晚那段旋律整理成另一個版本，問我願不願意先聽。明明只是一句很輕的邀請，我卻已經開始期待下一次了。',
+      yanming: '今晚坐在鼓椅上的是佑達，不是諺明哥，我沒有搞錯。可是回家後，我還是一直想起下午他轉著鼓棒、坐下來試拍的樣子。那幾個節拍乾淨得讓人忘記呼吸，最後他還只是笑著說「手還記得啦」。原來有些人不用站在今晚的舞台上，也能讓我整晚都記得他。',
     }
 
-    const data: WinterDiaryData = {
+    return {
       title: '一月二十二日，耳朵裡還有今晚的歌',
       sections: [
-        { label: 'THE DAY · 今天好吵', text: examSummary + '\n\n' + rehearsalSummary },
-        { label: 'LIVEHOUSE · 舞台上', text: livehouseSummary },
-        { label: 'AFTER SHOW · 散場以後', text: pickupSummary + '\n\n' + winterBusStopRoutes[winterBusStopCharacter].diarySummary },
+        { label: 'THE DAY · 寒假第一場熱鬧', text: examSummary + '\\n\\n' + rehearsalSummary },
+        { label: 'LIVEHOUSE · 五個人的舞台', text: livehouseSummary },
+        { label: 'AFTER SHOW · 散場以後', text: pickupSummary + '\\n\\n' + winterBusStopRoutes[winterBusStopCharacter].diarySummary },
         { label: 'BEFORE SLEEP · 寫在最後', text: beforeSleepSummaries[focusCharacter] },
       ],
     }
+  }
+
+  const startWinterDiary = () => {
+    if (!winterBusStopCharacter || winterBusStopReplies.length !== winterBusStopRoutes[winterBusStopCharacter].rounds.length) return
+    const data = buildWinterDiaryData()
     setWinterDiaryData(data)
     setWinterDiaryUnlocked(true)
     localStorage.setItem('mayday-winter-diary-data', JSON.stringify(data))
@@ -4104,6 +4119,23 @@ function App() {
     setSelectedSmsThread(null)
     changeStage('completed')
   }
+
+  useEffect(() => {
+    const rewriteKey = 'mayday-diary-narrative-rewrite-v2'
+    if (localStorage.getItem(rewriteKey) === 'true') return
+
+    if (yearEndDiaryData) {
+      const refreshed = buildYearEndDiaryData()
+      setYearEndDiaryData(refreshed)
+      localStorage.setItem('mayday-year-end-diary-data', JSON.stringify(refreshed))
+    }
+    if (winterDiaryData && winterBusStopCharacter && winterBusStopReplies.length === winterBusStopRoutes[winterBusStopCharacter].rounds.length) {
+      const refreshed = buildWinterDiaryData()
+      setWinterDiaryData(refreshed)
+      localStorage.setItem('mayday-winter-diary-data', JSON.stringify(refreshed))
+    }
+    localStorage.setItem(rewriteKey, 'true')
+  }, [])
 
   const chooseReunionReply = (key: ReunionReplyKey) => {
     const selected = reunionReplies[key]
@@ -6665,13 +6697,6 @@ function App() {
                                   <strong>寫下來的日子</strong>
                                   <small>點選日期，可以重新讀一遍當時的心情。</small>
                                 </div>
-                                {nextMonthDiaryUnlocked && nextMonthDiaryData && (
-                                  <button className="diary-entry-row" onClick={() => setSelectedDiaryDate('1996-12-14')}>
-                                    <span className="diary-entry-date">14<br/><small>DEC</small></span>
-                                    <span className="diary-entry-copy"><strong>{nextMonthDiaryData.title}</strong><small>{nextMonthDiaryData.eventSummary.slice(0, 44)}…</small></span>
-                                    <ChevronRight size={16} />
-                                  </button>
-                                )}
                                 {winterDiaryUnlocked && winterDiaryData && (
                                   <button className="diary-entry-row" onClick={() => setSelectedDiaryDate('1997-01-22')}>
                                     <span className="diary-entry-date">22<br/><small>JAN</small></span>
@@ -6683,6 +6708,13 @@ function App() {
                                   <button className="diary-entry-row" onClick={() => setSelectedDiaryDate('1996-12-31')}>
                                     <span className="diary-entry-date">31<br/><small>DEC</small></span>
                                     <span className="diary-entry-copy"><strong>{yearEndDiaryData.title}</strong><small>{yearEndDiaryData.sections[2]?.text.slice(0, 44)}…</small></span>
+                                    <ChevronRight size={16} />
+                                  </button>
+                                )}
+                                {nextMonthDiaryUnlocked && nextMonthDiaryData && (
+                                  <button className="diary-entry-row" onClick={() => setSelectedDiaryDate('1996-12-14')}>
+                                    <span className="diary-entry-date">14<br/><small>DEC</small></span>
+                                    <span className="diary-entry-copy"><strong>{nextMonthDiaryData.title}</strong><small>{nextMonthDiaryData.eventSummary.slice(0, 44)}…</small></span>
                                     <ChevronRight size={16} />
                                   </button>
                                 )}
