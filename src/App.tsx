@@ -28,10 +28,12 @@ import {
   nextMonthOpenDayIntroBlocks,
   nextMonthOpenDayRoutes,
   nextMonthFreeChatOpeners,
+  nextMonthFreeChatContextRounds,
   nextMonthFreeChatScripts,
   nextMonthChatDiary,
   nextMonthDiaryCopy,
   type NextMonthDiaryData,
+  type NextMonthFreeChatContext,
 } from './nextMonth'
 
 type AppKey = 'messages' | 'contacts' | 'calls' | 'diary' | 'calendar' | 'photos' | 'music' | 'notes' | 'settings'
@@ -50,7 +52,7 @@ type ChatChoice = { text: string; response: string[]; affection: number; nextInc
 type ChatRound = { incoming: string; choices: ChatChoice[] }
 type CallLogEntry = { id: string; character: RouteCharacterId; status: 'answered' | 'missed'; time: string; date?: string }
 type CallTranscriptLine = { speaker: RouteCharacterId | 'me'; text: string }
-type CallExperienceSource = 'first-chapter' | 'day2' | 'free-chat' | 'month-visit' | 'month-free-chat'
+type CallExperienceSource = 'first-chapter' | 'day2' | 'free-chat' | 'month-visit' | 'month-free-chat' | 'next-month-invite' | 'next-month-open-day' | 'next-month-free-chat'
 type CharacterExperienceRecord = {
   character: RouteCharacterId
   source: CallExperienceSource
@@ -1612,6 +1614,12 @@ function App() {
     const saved = Number(localStorage.getItem('mayday-next-month-invite-reply-choice') ?? '-1')
     return Number.isInteger(saved) && saved >= 0 && saved <= 2 ? saved : null
   })
+  const [nextMonthInviteDateReplies, setNextMonthInviteDateReplies] = useState<number[]>(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('mayday-next-month-invite-date-replies') ?? '[]')
+      return Array.isArray(saved) ? saved.filter((value): value is number => Number.isInteger(value) && value >= 0 && value <= 2).slice(0, 5) : []
+    } catch { return [] }
+  })
   const [nextMonthOpenDayTarget, setNextMonthOpenDayTarget] = useState<RouteCharacterId | null>(() => {
     const saved = localStorage.getItem('mayday-next-month-open-day-target')
     return saved && monthVisitOrder.includes(saved as RouteCharacterId) ? saved as RouteCharacterId : null
@@ -2577,6 +2585,8 @@ function App() {
     localStorage.removeItem('mayday-next-month-invite-tease-choice')
     setNextMonthInviteReplyChoice(null)
     localStorage.removeItem('mayday-next-month-invite-reply-choice')
+    setNextMonthInviteDateReplies([])
+    localStorage.setItem('mayday-next-month-invite-date-replies', '[]')
 
     if (localStorage.getItem('mayday-next-month-invite-thread-started') !== character) {
       const entries: NewChatEntry[] = route.invitation.map((message, index) => ({
@@ -2605,6 +2615,8 @@ function App() {
     localStorage.removeItem('mayday-next-month-invite-tease-choice')
     setNextMonthInviteReplyChoice(null)
     localStorage.removeItem('mayday-next-month-invite-reply-choice')
+    setNextMonthInviteDateReplies([])
+    localStorage.removeItem('mayday-next-month-invite-date-replies')
     localStorage.removeItem('mayday-next-month-invite-thread-started')
     setNextMonthOpenDayReplies([])
     localStorage.setItem('mayday-next-month-open-day-replies', '[]')
@@ -2679,6 +2691,8 @@ function App() {
       startNextMonthOpenDay()
       return
     }
+    setNextMonthInviteDateReplies([])
+    localStorage.setItem('mayday-next-month-invite-date-replies', '[]')
     setNextMonthEventKind('invite')
     setNextMonthEventCharacter(nextMonthInviteTarget)
     localStorage.setItem('mayday-next-month-event-kind', 'invite')
@@ -2688,9 +2702,34 @@ function App() {
     changeStage('next-month-invite-date')
   }
 
+  const chooseNextMonthInviteDateReply = (choiceIndex: number) => {
+    if (!nextMonthInviteTarget || nextMonthInviteDateReplies.length >= 5) return
+    const route = nextMonthInviteRoutes[nextMonthInviteTarget]
+    const choice = route.rounds[nextMonthInviteDateReplies.length]?.choices[choiceIndex]
+    if (!choice) return
+    const nextReplies = [...nextMonthInviteDateReplies, choiceIndex]
+    setNextMonthInviteDateReplies(nextReplies)
+    localStorage.setItem('mayday-next-month-invite-date-replies', JSON.stringify(nextReplies))
+    addRouteAffection(nextMonthInviteTarget, choice.affection)
+  }
+
+  const finishNextMonthInviteDate = () => {
+    if (!nextMonthInviteTarget || nextMonthInviteDateReplies.length !== 5) return
+    const experience: CharacterExperienceRecord = {
+      character: nextMonthInviteTarget,
+      source: 'next-month-invite',
+      date: saveGameDate,
+      eventKey: 'next-month-invite:' + nextMonthInviteRoutes[nextMonthInviteTarget].title,
+      day2StrollAccepted,
+      choices: [...nextMonthInviteDateReplies],
+    }
+    const nextExperienceLog = { ...sharedExperienceLog, [nextMonthInviteTarget]: experience }
+    setSharedExperienceLog(nextExperienceLog)
+    localStorage.setItem('mayday-shared-experience-log', JSON.stringify(nextExperienceLog))
+    startNextMonthOpenDay()
+  }
+
   const startNextMonthOpenDay = () => {
-    setNextMonthInviteTarget(null)
-    localStorage.removeItem('mayday-next-month-invite-target')
     setNextMonthEventKind('open-day')
     setNextMonthEventCharacter(null)
     localStorage.setItem('mayday-next-month-event-kind', 'open-day')
@@ -2732,7 +2771,7 @@ function App() {
     if (!nextMonthOpenDayTarget || nextMonthOpenDayReplies.length !== 5) return
     const experience: CharacterExperienceRecord = {
       character: nextMonthOpenDayTarget,
-      source: 'month-free-chat',
+      source: 'next-month-open-day',
       date: saveGameDate,
       eventKey: 'next-month-open-day:' + nextMonthOpenDayRoutes[nextMonthOpenDayTarget].title,
       day2StrollAccepted,
@@ -2776,11 +2815,28 @@ function App() {
     setActiveApp('messages')
   }
 
+  const getNextMonthFreeChatContext = (character: RouteCharacterId): NextMonthFreeChatContext => {
+    const inviteChoice = nextMonthInviteTarget && nextMonthInviteReplyChoice !== null
+      ? nextMonthInviteRoutes[nextMonthInviteTarget].replyChoices[nextMonthInviteReplyChoice]
+      : null
+    const sharedInvite = nextMonthInviteTarget === character && inviteChoice?.accepted === true
+    const sharedOpenDay = nextMonthOpenDayTarget === character
+    if (sharedInvite && sharedOpenDay) return 'both'
+    if (sharedInvite) return 'invite'
+    if (sharedOpenDay) return 'open-day'
+    return 'general'
+  }
+
+  const getNextMonthFreeChatRounds = (character: RouteCharacterId) => [
+    nextMonthFreeChatContextRounds[character][getNextMonthFreeChatContext(character)],
+    ...nextMonthFreeChatScripts[character],
+  ]
+
   const chooseNextMonthFreeChatOpening = (choiceIndex: number) => {
     if (!nextMonthFreeChatTarget || nextMonthFreeChatOpeningSent) return
     const character = nextMonthFreeChatTarget
     const opening = nextMonthFreeChatOpeners[character][choiceIndex]
-    const firstRound = nextMonthFreeChatScripts[character][0]
+    const firstRound = getNextMonthFreeChatRounds(character)[0]
     if (!opening || !firstRound) return
     appendChatMessages(character, [
       { from: 'me', text: opening.text, time: '20:10' },
@@ -2795,7 +2851,8 @@ function App() {
   const chooseNextMonthFreeChatReply = (choiceIndex: number) => {
     if (!nextMonthFreeChatTarget || !nextMonthFreeChatOpeningSent || nextMonthFreeChatReplied) return
     const character = nextMonthFreeChatTarget
-    const round = nextMonthFreeChatScripts[character][nextMonthFreeChatRound]
+    const rounds = getNextMonthFreeChatRounds(character)
+    const round = rounds[nextMonthFreeChatRound]
     const choice = round?.choices[choiceIndex]
     if (!choice) return
     const minute = 13 + nextMonthFreeChatRound * 2
@@ -2812,7 +2869,7 @@ function App() {
       const nextRound = nextMonthFreeChatRound + 1
       setNextMonthFreeChatRound(nextRound)
       localStorage.setItem('mayday-next-month-free-chat-round', String(nextRound))
-      appendChatMessages(character, [{ from: character, text: choice.nextIncoming ?? nextMonthFreeChatScripts[character][nextRound].incoming, time: '20:' + String(minute + 1).padStart(2, '0') }], '12月14日・晚上')
+      appendChatMessages(character, [{ from: character, text: choice.nextIncoming ?? rounds[nextRound].incoming, time: '20:' + String(minute + 1).padStart(2, '0') }], '12月14日・晚上')
       setNextMonthFreeChatReplied(false)
       localStorage.setItem('mayday-next-month-free-chat-replied', 'false')
     } else {
