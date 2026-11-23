@@ -4064,15 +4064,9 @@ function App() {
     const diaryFocusOrder: WinterCharacterId[] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
     const focusCharacter = diaryFocusOrder.reduce((best, character) => routeAffection[character] > routeAffection[best] ? character : best, diaryFocusOrder[0])
 
-    const examSummary = winterExamTutoringUnlocked
-      ? '期末考總算結束了。想到一月初那個下午，我還是會想起圖書館桌上那疊被我畫得亂七八糟的統計講義。溫尚翊明明一直拿聯考數學滿分炫耀，真的開始教時倒是有耐心，連我卡在同一題好幾次都沒有不耐煩。最煩的是，他最後那句「又不是只有補習才能找我」講得太自然，害我到現在想起來還是會自己偷笑。'
-      : '期末考已經過去半個月，想到那幾天被機率統計追著跑的日子，還是覺得腦袋發麻。幸好現在終於放寒假了，今天不用再對著講義發呆，總算可以把時間拿來做點比較好玩的事。'
+    const rehearsalSummary = '下午走進練團室，熟悉的器材味先一步迎上來。地上的導線還沒完全收好，瑪莎蹲在旁邊嫌佑達把線繞得像一碗麵，佑達立刻回嘴，說那叫收得快，不叫亂。阿信拿著歌序在旁邊笑，石頭調整吉他背帶，溫尚翊則蹲在音箱旁確認接線，偶爾抬頭叫他們兩個先把嘴巴停一下。明明只是準備出發前順幾首歌，整間練團室卻像開了好幾個頻道，誰也不肯輸。後來諺明哥被大家起鬨，才終於坐到鼓組前。起初只是幾下試拍，下一秒節奏就完整地跑了起來，低音鼓踩得穩，軍鼓和鈸一層層推上去。佑達站在旁邊看得眼睛都亮了，瑪莎甚至吹了聲口哨。最後一下收住，大家安靜了半秒才拍手。諺明哥還是笑著說「手還記得而已」，但那個俐落勁，真的不是一句手還記得就能帶過。'
 
-    const rehearsalSummary = focusCharacter === 'yanming'
-      ? '下午大家約在練團室碰面，門一推開就是熟悉的器材味，地上幾條導線還沒收好，瑪莎已經先嫌佑達整理得像一團麵線。佑達當然不服，兩個人一邊搬東西一邊鬥嘴，阿信拿著歌序在旁邊笑，石頭低頭調吉他背帶，溫尚翊則蹲在音箱旁確認接線。我本來只是坐在旁邊看他們忙，沒想到最後大家竟然把鼓棒塞到諺明哥手裡。他一開始還推說很久沒打，真的坐上鼓椅後卻完全不是那回事：手腕一落，節奏乾淨俐落地跑起來，低音鼓和軍鼓接得穩穩的，連佑達都站在旁邊看傻了。最後一個重拍收住，大家先安靜了一秒，接著才一起拍手。諺明哥還是那句「手還記得啦」，但我覺得他根本是在客氣。'
-      : '下午大家約在練團室集合，器材和導線幾乎占掉半個地板。瑪莎嫌佑達把線繞得亂七八糟，佑達立刻回嘴，兩個人一來一往，害我連熱茶都差點忘了喝；阿信拿著歌序努力把笑憋回去，石頭在旁邊調吉他，溫尚翊則蹲著檢查音箱和接線。真正開始練之後，大家才終於把玩笑收一點，哪裡慢半拍、哪裡要重來，全都講得毫不客氣。後來諺明哥被大家拱上鼓椅，原本還說很久沒打，結果鼓棒一落下去，節奏穩得讓人完全想不到他剛才還在推辭。佑達在旁邊看得比誰都認真，最後那一下收得漂亮，連瑪莎都沒立刻吐槽。看他們在練團室裡吵吵鬧鬧，音樂一進來卻又能接得那麼準，我真的很喜歡這種時候。'
-
-    const bandStageIntro = '晚上到了巷子裡的小酒吧，真正站上台的是五個人：阿信拿起麥克風，溫尚翊和石頭背好吉他，瑪莎接上 Bass，佑達坐到鼓椅。諺明哥沒有上台，下午在他家客廳那段鼓聲倒是一直留在我腦袋裡。試音時瑪莎和佑達又為了音量互相嫌棄，溫尚翊一句「兩個都退一格」才把大家拉回來。燈光暗下去後，第一個鼓點落下，原本聊天的客人慢慢轉過頭，後面幾首歌也越唱越順。'
+    const bandStageIntro = '晚上到了巷子裡的小酒吧，五個人各自走向自己的位置：阿信拿起麥克風，溫尚翊和石頭背好吉他，瑪莎接上 Bass，佑達坐到鼓椅。試音時瑪莎和佑達又為了音量互相嫌棄，溫尚翊一句「兩個都退一格」才把大家拉回來。燈光暗下去後，第一個鼓點落下，原本聊天的客人慢慢轉過頭。前幾首歌越唱越順，掌聲和跟唱聲也慢慢把小小的店面填滿。'
 
     const stageFocusSummaries: Record<Exclude<WinterCharacterId, 'yanming'>, string> = {
       wen: '唱到中段，溫尚翊把外套拉鍊一扯，隨手搭在音箱上，黑色 T 恤和吉他背帶一下子全露出來。他低頭踩下效果器，手指沿著琴頸滑過去，間奏一進就往台前踏了半步。那段旋律又快又乾淨，燈光掃過他的眉眼時，他抬頭正好找到我。我明明坐在第一排附近，卻還是忘了要把視線移開。他眉梢一挑，嘴角那點笑意像是故意留給我看的，下一秒又轉回去把最後一個音收得俐落。拜託，這種時候誰還記得自己原本是來聽歌的。',
@@ -4082,7 +4076,7 @@ function App() {
     }
 
     const livehouseSummary = focusCharacter === 'yanming'
-      ? bandStageIntro + '每次佑達的鼓點一落，我就會想起下午諺明哥握著鼓棒的樣子。今晚坐在鼓椅上的確實是佑達，他打得也很有勁；可是下午那個原本說自己很久沒打、最後卻讓整個客廳安靜下來的人，還是我今晚最想回想的畫面。'
+      ? bandStageIntro + '佑達今晚坐在鼓椅上，越打越起勁，尾奏那段鼓花更是讓全場拍手。可是每次鼓點落下，我還是會想起下午諺明哥坐上鼓椅的樣子。兩個人完全不同的力道，卻都讓人忍不住一直看。'
       : bandStageIntro + stageFocusSummaries[focusCharacter]
 
     const pickupSummary = winterYanmingPickupAvailable
@@ -4099,13 +4093,22 @@ function App() {
       yanming: '今晚坐在酒吧鼓椅上的是佑達，我當然知道。可是我一直想到下午在練團室的諺明哥。他原本還說很久沒打，結果大家才起鬨幾句，他坐下握住鼓棒的樣子就完全不一樣了。第一個節拍落下去，我真的有種「欸，原來他這麼帥」的感覺。更好笑的是，大家拍完手他還一臉平常地說只是手還記得。拜託，這種程度哪裡只是記得而已。'
     }
 
+    const afterShow = winterBusStopRoutes[winterBusStopCharacter].diarySummary
+    const closingThoughts: Record<WinterCharacterId, string> = {
+      wen: '回到家才發現，腦袋裡最吵的不是酒吧的音樂，是他站在燈光底下那個抬眼的瞬間。溫尚翊平常明明很愛嘴硬，偏偏一拿起吉他就帥得很理直氣壯。最好笑的是，他好像還知道我有在看，害我現在躺在床上還是忍不住回想。明天看到他，我一定要裝得自然一點……應該啦。',
+      ashin: '回家後副歌還在腦袋裡繞。阿信唱歌時那種投入，跟平常說話時溫溫柔柔的樣子不太一樣，尤其把麥克風遞向台下、看見我也跟著唱的時候，那個笑真的很容易讓人記住。今天明明很熱鬧，現在安靜下來，反而還有點捨不得。',
+      masa: '瑪莎今天真的很吵，從練團室一路鬥嘴到酒吧，連最後一首的鼓花都能拿來跟佑達爭功。可是 Bass 一進來，他又帥得讓人很難吐槽。最討厭他那個得意的表情，明明只是被我比了個大拇指，就像拿到什麼年度大獎一樣。下次一定要找機會把他那副嘴臉拍下來。',
+      stone: '石頭在台上還是很安靜，卻把每個音都接得剛剛好。雙吉他交錯的時候，我看著他低頭聽拍、再抬眼確認彼此的默契，突然覺得有些人的魅力就是這樣，不用特別做什麼，也會讓人一直注意。想到他說想把那段旋律整理給我聽，已經開始期待了。',
+      yanming: '今天最意外的驚喜，應該就是諺明哥拿起鼓棒的那一刻。平常看他總是在照顧場地、提醒大家收東西，沒想到坐上鼓椅後整個人像換了一種氣場。那幾個節拍又穩又俐落，連佑達都看得服氣。大家散場後還在聊他的鼓，我也一樣。原來一直很可靠的人，認真起來也可以這麼讓人移不開眼。',
+    }
+
     return {
-      title: '一月二十二日，今天真的太熱鬧了',
+      title: '一月二十二日，還不想讓今天結束',
       sections: [
-        { label: 'AFTERNOON · 練團室裡', text: examSummary + '\n\n' + rehearsalSummary },
-        { label: 'TONIGHT · 小酒吧的燈光', text: livehouseSummary },
-        { label: 'AFTER SHOW · 散場以後', text: pickupSummary + '\n\n' + winterBusStopRoutes[winterBusStopCharacter].diarySummary },
-        { label: 'BEFORE SLEEP · 還不想睡', text: beforeSleepSummaries[focusCharacter] },
+        { label: 'TODAY · 寒假第一天', text: '最後一科考試早就結束了，今天才真的有寒假開始的感覺。下午收到消息要去練團室，說晚上出發前大家先順幾首歌。我本來以為只是去坐著聽，結果一走進去就被那群人的聲音包圍。' + '\n\n' + rehearsalSummary },
+        { label: 'TONIGHT · 小酒吧', text: livehouseSummary },
+        { label: 'AFTER SHOW · 回家的路', text: pickupSummary + '\n\n' + afterShow },
+        { label: '1:00 AM · 偷偷記一下', text: closingThoughts[focusCharacter] },
       ],
     }
   }
@@ -4131,7 +4134,7 @@ function App() {
   }
 
   useEffect(() => {
-    const rewriteKey = 'mayday-diary-narrative-rewrite-v4'
+    const rewriteKey = 'mayday-diary-narrative-rewrite-v5'
     if (localStorage.getItem(rewriteKey) === 'true') return
 
     if (yearEndDiaryData) {
