@@ -1989,6 +1989,31 @@ function App() {
       return saved && typeof saved.title === 'string' && Array.isArray(saved.sections) ? saved : null
     } catch { return null }
   })
+  const [winterExamTutoringUnlocked, setWinterExamTutoringUnlocked] = useState(() => localStorage.getItem('mayday-winter-exam-tutoring-unlocked') === 'true')
+  const [winterExamReplies, setWinterExamReplies] = useState<number[]>(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('mayday-winter-exam-replies') ?? '[]')
+      return Array.isArray(saved) ? saved.filter((value): value is number => Number.isInteger(value) && value >= 0 && value <= 2).slice(0, 5) : []
+    } catch { return [] }
+  })
+  const [winterPracticeReplies, setWinterPracticeReplies] = useState<number[]>(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('mayday-winter-practice-replies') ?? '[]')
+      return Array.isArray(saved) ? saved.filter((value): value is number => Number.isInteger(value) && value >= 0 && value <= 2).slice(0, 1) : []
+    } catch { return [] }
+  })
+  const [winterYanmingPickupAvailable, setWinterYanmingPickupAvailable] = useState(() => localStorage.getItem('mayday-winter-yanming-pickup-available') === 'true')
+  const [winterBusStopCharacter, setWinterBusStopCharacter] = useState<WinterCharacterId | null>(() => {
+    const saved = localStorage.getItem('mayday-winter-bus-stop-character')
+    return saved && ['wen', 'masa', 'ashin', 'stone', 'yanming'].includes(saved) ? saved as WinterCharacterId : null
+  })
+  const [winterDiaryUnlocked, setWinterDiaryUnlocked] = useState(() => localStorage.getItem('mayday-winter-diary-unlocked') === 'true')
+  const [winterDiaryData, setWinterDiaryData] = useState<WinterDiaryData | null>(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('mayday-winter-diary-data') ?? 'null') as WinterDiaryData | null
+      return saved && typeof saved.title === 'string' && Array.isArray(saved.sections) ? saved : null
+    } catch { return null }
+  })
   const [routeAffection, setRouteAffection] = useState<Record<RouteCharacterId, number>>(() => {
     let saved: Partial<Record<RouteCharacterId, number>> = {}
     try { saved = JSON.parse(localStorage.getItem('mayday-route-affection') ?? '{}') as Partial<Record<RouteCharacterId, number>> } catch { saved = {} }
