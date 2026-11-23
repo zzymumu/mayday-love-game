@@ -3654,6 +3654,364 @@ function App() {
                 </div>
               )}
 
+
+              {storyStage === 'next-month-intro' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">又一個月後</div>
+                    <div className="story-contact-title">
+                      <strong>十二月的校園開放日</strong>
+                      <small>1996 年 12 月 14 日・星期六</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">時間又往前走了一個月</div>
+                    <h2 className="story-scene-title">最近，好像有些不一樣了</h2>
+                    <StoryBlocks blocks={nextMonthIntroBlocks} />
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={startNextMonthFlow}>看看今天會發生什麼事 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'next-month-invite-notification' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">手機通知</div>
+                    <div className="story-contact-title">
+                      <strong>一則特別消息</strong>
+                      <small>1996 年 12 月 14 日・上午</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">手機螢幕忽然亮了起來</div>
+                    <h2 className="story-scene-title">有人想約你出去！</h2>
+                    <StoryBlocks blocks={[
+                      { kind: 'narration', text: '你剛把包包放下，手機就亮了起來。最近好像有人想趁著有空，約你一起出去走走。' },
+                      { kind: 'narration', text: '要不要看看是誰？' },
+                    ]} />
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={() => changeStage('next-month-invite-picker')}>看看是誰 <ChevronRight size={15} /></button>
+                    <button className="story-primary-button secondary-chat-action" onClick={startNextMonthOpenDay}>今天先去社團幫忙 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'next-month-invite-picker' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">有人想約你</div>
+                    <div className="story-contact-title">
+                      <strong>想先看看誰的邀請？</strong>
+                      <small>1996 年 12 月 14 日・上午</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">手機裡有幾則還沒回覆的訊息</div>
+                    <h2 className="story-scene-title">選一個人看看吧</h2>
+                    <p className="narrative-paragraph">每個人好像都有自己的安排。你想先回覆誰？</p>
+                    <div className="month-visit-picker">
+                      {nextMonthInviteCandidates.map((id) => {
+                        const person = characterInfo.find((item) => item.id === id)!
+                        return (
+                          <button className="free-time-person" key={id} onClick={() => chooseNextMonthInviteTarget(id)}>
+                            <span className="sms-avatar">{person.avatar}</span>
+                            <span><strong>{person.name}</strong><small>有話想跟你說</small></span>
+                            <ChevronRight size={15} />
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button secondary-chat-action" onClick={startNextMonthOpenDay}>先去社團幫忙 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'next-month-invite' && currentNextMonthInvite && nextMonthInviteTarget && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">收到邀請</div>
+                    <div className="story-contact-title">
+                      <strong>{characterNames[nextMonthInviteTarget]}</strong>
+                      <small>1996 年 12 月 14 日・上午</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">訊息裡有一個邀請</div>
+                    <h2 className="story-scene-title">{currentNextMonthInvite.title}</h2>
+                    <StoryBlocks blocks={currentNextMonthInvite.invitation} />
+                    {currentNextMonthInvite.teasePrompt && nextMonthInviteTeaseChoice === null && (
+                      <div className="choice-area">
+                        <div className="choice-heading">{currentNextMonthInvite.teasePrompt}</div>
+                        {currentNextMonthInvite.teaseChoices?.map((choice, index) => (
+                          <button className="reply-choice" key={index} onClick={() => chooseNextMonthInviteTease(index)}>
+                            <span>{choice.text}</span><ChevronRight size={15} />
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                    {currentNextMonthInvite.teasePrompt && nextMonthInviteTeaseChoice !== null && currentNextMonthInvite.teaseChoices?.[nextMonthInviteTeaseChoice] && (
+                      <StoryBlocks blocks={[
+                        { kind: 'dialogue', speaker: '你', text: currentNextMonthInvite.teaseChoices[nextMonthInviteTeaseChoice].text },
+                        ...currentNextMonthInvite.teaseChoices[nextMonthInviteTeaseChoice].response.map((text) => ({ kind: 'dialogue' as const, speaker: characterNames[nextMonthInviteTarget], text })),
+                      ]} />
+                    )}
+                  </div>
+                  {(!currentNextMonthInvite.teaseChoices || nextMonthInviteTeaseChoice !== null) && (
+                    <div className="story-action-bar">
+                      <button className="story-primary-button" onClick={() => respondNextMonthInvite(true)}>好啊，我去 <ChevronRight size={15} /></button>
+                      <button className="story-primary-button secondary-chat-action" onClick={() => respondNextMonthInvite(false)}>今天不太方便，先不去了 <ChevronRight size={15} /></button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {storyStage === 'next-month-invite-date' && nextMonthInviteTarget && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">今天的約定</div>
+                    <div className="story-contact-title">
+                      <strong>{nextMonthInviteRoutes[nextMonthInviteTarget].title}</strong>
+                      <small>{nextMonthInviteRoutes[nextMonthInviteTarget].location}・1996 年 12 月</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">赴約・下午到晚上</div>
+                    <h2 className="story-scene-title">{nextMonthInviteRoutes[nextMonthInviteTarget].title}</h2>
+                    <StoryBlocks blocks={nextMonthInviteRoutes[nextMonthInviteTarget].activity} />
+                    <div className="reunion-pause-note">今天的邀約已經好好記下來了。</div>
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={startNextMonthFreeChat}>回家後，找一個人聊聊 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'next-month-open-day' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">十二月・校園開放日</div>
+                    <div className="story-contact-title">
+                      <strong>椰風搖滾社今天也很忙</strong>
+                      <small>1996 年 12 月 14 日・星期六</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">上午八點二十分・台大校園</div>
+                    <h2 className="story-scene-title">今天的攤位好熱鬧</h2>
+                    <StoryBlocks blocks={nextMonthOpenDayIntroBlocks} />
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={() => changeStage('next-month-open-day-picker')}>先忙完，再去逛逛 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'next-month-open-day-picker' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">校園開放日</div>
+                    <div className="story-contact-title">
+                      <strong>想和誰單獨逛逛？</strong>
+                      <small>1996 年 12 月 14 日・上午</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">攤位暫時有人顧著</div>
+                    <h2 className="story-scene-title">出去走一小段吧</h2>
+                    <StoryBlocks blocks={[
+                      { kind: 'narration', text: '人潮稍微散開了一點，溫尚翊讓大家輪流去休息。錢佑達還在旁邊興奮地研究下一個要看的攤位，瑪莎叫他不要再亂跑。你看了看周圍，想趁這個空檔找一個人單獨逛逛校園。' },
+                    ]} />
+                    <div className="month-visit-picker">
+                      {monthVisitOrder.map((id) => {
+                        const person = characterInfo.find((item) => item.id === id)!
+                        const route = nextMonthOpenDayRoutes[id]
+                        return (
+                          <button className="free-time-person" key={id} onClick={() => chooseNextMonthOpenDayTarget(id)}>
+                            <span className="sms-avatar">{person.avatar}</span>
+                            <span><strong>{person.name}</strong><small>{route.subtitle}</small></span>
+                            <ChevronRight size={15} />
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'next-month-open-day-visit' && currentNextMonthOpenDay && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">校園開放日</div>
+                    <div className="story-contact-title">
+                      <strong>{currentNextMonthOpenDay.label}</strong>
+                      <small>{currentNextMonthOpenDay.location}・1996 年 12 月 14 日</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">{currentNextMonthOpenDay.kicker}</div>
+                    <h2 className="story-scene-title">{currentNextMonthOpenDay.title}</h2>
+                    <StoryBlocks blocks={currentNextMonthOpenDay.blocks} />
+                    {currentNextMonthOpenDay.rounds.slice(0, nextMonthOpenDayReplies.length).map((round, index) => {
+                      const selected = round.choices[nextMonthOpenDayReplies[index]]
+                      if (!selected) return null
+                      return (
+                        <div className="month-visit-round-history" key={index}>
+                          {round.scene && <StoryBlocks blocks={[{ kind: 'narration', text: round.scene }]} />}
+                          <StoryBlocks blocks={[
+                            { kind: 'dialogue', speaker: currentNextMonthOpenDay.label, text: round.prompt },
+                            { kind: 'dialogue', speaker: '你', text: selected.text },
+                            ...selected.response.map((text) => ({ kind: 'dialogue' as const, speaker: currentNextMonthOpenDay.label, text })),
+                          ]} />
+                        </div>
+                      )
+                    })}
+                    {currentNextMonthOpenDayRound ? (
+                      <>
+                        {currentNextMonthOpenDayRound.scene && <StoryBlocks blocks={[{ kind: 'narration', text: currentNextMonthOpenDayRound.scene }]} />}
+                        <StoryBlocks blocks={[{ kind: 'dialogue', speaker: currentNextMonthOpenDay.label, text: currentNextMonthOpenDayRound.prompt }]} />
+                        <div className="choice-area">
+                          <div className="choice-heading">第 {nextMonthOpenDayReplies.length + 1}/5 輪・你想怎麼回應？</div>
+                          {currentNextMonthOpenDayRound.choices.map((choice, index) => (
+                            <button className="reply-choice" key={index} onClick={() => chooseNextMonthOpenDayReply(index)}>
+                              <span>{choice.text}</span><ChevronRight size={15} />
+                            </button>
+                          ))}
+                          <small>每個選擇都會影響對方的感受。</small>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <StoryBlocks blocks={currentNextMonthOpenDay.ending} />
+                        <div className="reunion-pause-note">今天的五輪互動已經完成。</div>
+                      </>
+                    )}
+                  </div>
+                  {nextMonthOpenDayReplies.length === 5 && (
+                    <div className="story-action-bar">
+                      <button className="story-primary-button" onClick={finishNextMonthOpenDayVisit}>收好今天的回憶 <ChevronRight size={15} /></button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {storyStage === 'next-month-open-day-visit-complete' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">校園開放日・午後</div>
+                    <div className="story-contact-title">
+                      <strong>回到椰風搖滾社</strong>
+                      <small>1996 年 12 月 14 日</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">攤位前又熱鬧起來了</div>
+                    <h2 className="story-scene-title">還有一些話，留到晚上再說</h2>
+                    <StoryBlocks blocks={[
+                      { kind: 'narration', text: '你們回到攤位時，溫尚翊正忙著跟新生介紹社團，佑達在旁邊比手畫腳，瑪莎一臉受不了地叫他小聲一點。石頭和諺明正在整理器材，阿信則把最後幾張傳單放回桌上。你看著大家忙成一團，忽然覺得今天過得很快。' },
+                      { kind: 'narration', text: '活動結束後回到家，你還想主動找一個人聊聊。' },
+                    ]} />
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={startNextMonthFreeChat}>回家後，選擇今晚聊天對象 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'next-month-free-chat' && nextMonthFreeChatTarget === null && activeApp === null && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">十二月・晚上</div>
+                    <div className="story-contact-title">
+                      <strong>自由對話</strong>
+                      <small>1996 年 12 月 14 日・晚上</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">回到家，手機就在手邊</div>
+                    <h2 className="story-scene-title">今晚想主動找誰聊聊？</h2>
+                    <StoryBlocks blocks={[
+                      { kind: 'narration', text: '你沒有急著休息，先把包包裡的東西放好，才拿起手機。今天發生了不少事，突然想找個人說說話。沒一起單獨逛校園的人，也可以從自己的日常開始聊，不會突然知道你白天和誰去了哪裡。' },
+                    ]} />
+                    <div className="month-visit-picker">
+                      {monthVisitOrder.map((id) => {
+                        const person = characterInfo.find((item) => item.id === id)!
+                        return (
+                          <button className="free-time-person" key={id} onClick={() => chooseNextMonthFreeChatTarget(id)}>
+                            <span className="sms-avatar">{person.avatar}</span>
+                            <span><strong>{person.name}</strong><small>主動傳訊息聊聊日常</small></span>
+                            <ChevronRight size={15} />
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'next-month-free-chat' && nextMonthFreeChatTarget !== null && activeApp === null && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">十二月・晚上</div>
+                    <div className="story-contact-title">
+                      <strong>{characterNames[nextMonthFreeChatTarget]}</strong>
+                      <small>自由對話・1996 年 12 月 14 日</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">訊息還在等你開口</div>
+                    <h2 className="story-scene-title">想好要傳什麼了嗎？</h2>
+                    <StoryBlocks blocks={[{ kind: 'narration', text: '你已經選好今晚想找的人。打開訊息，先由你傳出第一句話。' }]} />
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={() => openMessagesApp(nextMonthFreeChatTarget)}>打開訊息 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'next-month-diary' && nextMonthDiaryData && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">十二月・私人日記</div>
+                    <div className="story-contact-title">
+                      <strong>今天想記下來的事</strong>
+                      <small>1996 年 12 月 14 日・星期六</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">晚上回到家・翻開日記</div>
+                    <h2 className="story-scene-title">{nextMonthDiaryData.title}</h2>
+                    <div className="diary-paper story-diary-paper">
+                      <span className="diary-date">1996 年 12 月 14 日・星期六</span>
+                      <h2>{nextMonthDiaryData.title}</h2>
+                      <p>{nextMonthDiaryData.eventSummary}</p>
+                      <p>{nextMonthDiaryData.chatSummary}</p>
+                      <p>{nextMonthDiaryData.ending}</p>
+                    </div>
+                    <div className="reunion-pause-note">這篇日記會留在日記列表裡，之後也可以重新打開來看。</div>
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={finishNextMonthChapter}>合上日記，結束今天 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
               {storyStage === 'paused' && (
                 <div className="paused-story-banner">
                   <div>
