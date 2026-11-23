@@ -48,6 +48,24 @@ type StoryBlock = { kind: 'narration' | 'dialogue' | 'aside'; text: string; spea
 type StoryScene = { kicker: string; title: string; blocks: StoryBlock[]; button: string }
 type SmsMessage = { id: string; date: string; time?: string; from: CharacterId | 'me'; text: string }
 type NewChatEntry = { from: CharacterId | 'me'; text: string; time?: string }
+
+const removeDuplicateWenMovieInviteLine = (messages: SmsMessage[]): SmsMessage[] => {
+  let removed = false
+  const normalized = messages.filter((message, index) => {
+    const previous = messages[index - 1]
+    const next = messages[index + 1]
+    const isDuplicate =
+      message.from === 'wen' &&
+      message.text === '妳到底要不要去啦！' &&
+      previous?.from === 'wen' &&
+      previous.text === '我就問妳啊，不然咧？' &&
+      next?.from === 'wen' &&
+      next.text === '所以，妳到底要不要跟我去啦？'
+    if (isDuplicate) removed = true
+    return !isDuplicate
+  })
+  return removed ? normalized : messages
+}
 type ChatChoice = { text: string; response: string[]; affection: number; nextIncoming?: string }
 type ChatRound = { incoming: string; choices: ChatChoice[] }
 type CallLogEntry = { id: string; character: RouteCharacterId; status: 'answered' | 'missed'; time: string; date?: string }
@@ -85,7 +103,27 @@ const readSaveSlot = (slot: number): SaveSlotData | null => {
     if (!raw) return null
     const parsed = JSON.parse(raw) as Partial<SaveSlotData>
     if (parsed.version !== 1 || typeof parsed.savedAt !== 'string' || typeof parsed.gameDate !== 'string' || typeof parsed.gameTime !== 'string' || typeof parsed.stage !== 'string' || !Object.prototype.hasOwnProperty.call(storyStageLabels, parsed.stage) || !parsed.data || typeof parsed.data !== 'object' || Array.isArray(parsed.data)) return null
-    return parsed as SaveSlotData
+    const validated = parsed as SaveSlotData
+    const savedChats = validated.data['mayday-chat-messages']
+    if (savedChats) {
+      try {
+        const chats = JSON.parse(savedChats) as Partial<Record<CharacterId, SmsMessage[]>>
+        if (Array.isArray(chats.wen)) {
+          const wenMessages = removeDuplicateWenMovieInviteLine(chats.wen)
+          if (wenMessages !== chats.wen) {
+            const migrated: SaveSlotData = {
+              ...validated,
+              data: { ...validated.data, 'mayday-chat-messages': JSON.stringify({ ...chats, wen: wenMessages }) },
+            }
+            localStorage.setItem(SAVE_SLOT_PREFIX + slot, JSON.stringify(migrated))
+            return migrated
+          }
+        }
+      } catch {
+        // Keep the save slot unchanged if its message history cannot be parsed.
+      }
+    }
+    return validated
   } catch {
     return null
   }
@@ -1613,7 +1651,7 @@ function App() {
         if (parsed && greetingOrder.every((id) => Array.isArray(parsed[id]))) {
           const migrated: Record<CharacterId, SmsMessage[]> = {
             ...parsed,
-            wen: parsed.wen.map((message) => message.text === '今天大家好像都滿喜歡妳的，尤其阿信，一直找妳聊天。'
+            wen: removeDuplicateWenMovieInviteLine(parsed.wen).map((message) => message.text === '今天大家好像都滿喜歡妳的，尤其阿信，一直找妳聊天。'
               ? { ...message, text: '剛剛在唱片行，妳跟阿信聊得滿開心的嘛。' }
               : message),
             ashin: parsed.ashin.map((message) => ['剛剛在樂器行碰到你們，感覺你們今天心情很好。我也順利買到吉他弦了。', '剛剛一起逛唱片行滿開心的，妳最後有沒有挑到喜歡的？我本來還想多介紹幾張，結果得趕回去練團。'].includes(message.text)
