@@ -356,4 +356,3 @@ export const winterBusStopRoutes: Record<WinterCharacterId, WinterBusStopRoute> 
   },
 
 }
-}
