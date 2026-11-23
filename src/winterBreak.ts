@@ -406,6 +406,8 @@ export const winterBusStopRoutes: Record<WinterCharacterId, WinterBusStopRoute> 
       { kind: 'narration', text: '石頭把最後一條導線交給店裡的人，走出門時先回頭確認沒有東西遺漏。你們沿著比較安靜的那側騎樓往公車站走，酒吧裡的音樂聲漸漸遠去，夜風把剛才舞台上的熱度慢慢吹散。' },
       { kind: 'narration', text: '他沒有急著找話題，只配合你的步伐走在旁邊。走到路燈下時，他才提起剛才那段兩把吉他交錯的地方，說其中有一個音其實是臨時改的，還問你有沒有聽出來。' },
       { kind: 'dialogue', speaker: '石錦航', text: '剛剛那段兩把吉他交錯的地方，妳有聽清楚嗎？' },
+      { kind: 'dialogue', speaker: '你', text: '有啊，聽到了。兩把吉他疊在一起的時候很好聽。' },
+      { kind: 'dialogue', speaker: '石錦航', text: '那就好，我還怕現場太吵，妳聽不清楚。' },
     ],
     rounds: [
       {
