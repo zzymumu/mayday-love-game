@@ -1090,6 +1090,35 @@ button { cursor: pointer; }
   font-size: 16px;
   line-height: 1.6;
 }
+.diary-section + .diary-section {
+  margin-top: 19px;
+  padding-top: 13px;
+  border-top: 1px solid #eee4d8;
+}
+.diary-section-label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 9px;
+  color: #b1937e;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: .1em;
+}
+.diary-section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e9dccb;
+}
+.diary-section p {
+  margin-bottom: 11px;
+  text-indent: 2em;
+}
+.diary-section p:last-child {
+  margin-bottom: 0;
+}
 .diary-paper p {
   margin: 0 0 13px;
   color: #75665a;
