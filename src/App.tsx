@@ -2880,14 +2880,23 @@ function App() {
 
   const finishNextMonthFreeChat = () => {
     if (!nextMonthFreeChatTarget || !nextMonthFreeChatOpeningSent || !nextMonthFreeChatReplied || nextMonthFreeChatRound !== 4 || nextMonthFreeChatReplies.length !== 5) return
-    const eventCharacter = nextMonthEventCharacter ?? nextMonthInviteTarget ?? nextMonthOpenDayTarget ?? nextMonthFreeChatTarget
-    const eventKind = nextMonthEventKind ?? 'open-day'
-    const copy = nextMonthDiaryCopy[eventCharacter]
+    const eventCharacter = nextMonthOpenDayTarget ?? nextMonthInviteTarget ?? nextMonthFreeChatTarget
+    const openDayCopy = nextMonthDiaryCopy[eventCharacter]
+    const inviteChoice = nextMonthInviteTarget && nextMonthInviteReplyChoice !== null
+      ? nextMonthInviteRoutes[nextMonthInviteTarget].replyChoices[nextMonthInviteReplyChoice]
+      : null
+    const acceptedInviteCopy = nextMonthInviteTarget && inviteChoice?.accepted
+      ? nextMonthDiaryCopy[nextMonthInviteTarget]
+      : null
+    const eventSummary = [
+      acceptedInviteCopy?.inviteSummary,
+      openDayCopy.openDaySummary,
+    ].filter(Boolean).join('\n\n')
     const diaryData: NextMonthDiaryData = {
-      title: eventKind === 'invite' ? copy.inviteTitle : copy.openDayTitle,
-      eventSummary: eventKind === 'invite' ? copy.inviteSummary : copy.openDaySummary,
+      title: acceptedInviteCopy ? '今天真的發生好多事！' : openDayCopy.openDayTitle,
+      eventSummary,
       chatSummary: nextMonthChatDiary[nextMonthFreeChatTarget],
-      ending: copy.ending,
+      ending: openDayCopy.ending,
       eventCharacter,
       chatCharacter: nextMonthFreeChatTarget,
     }
@@ -2897,9 +2906,9 @@ function App() {
     localStorage.setItem('mayday-next-month-diary-unlocked', 'true')
     const experience: CharacterExperienceRecord = {
       character: nextMonthFreeChatTarget,
-      source: 'month-free-chat',
+      source: 'next-month-free-chat',
       date: saveGameDate,
-      eventKey: 'next-month-free-chat:' + eventKind + ':' + eventCharacter,
+      eventKey: 'next-month-free-chat:' + (acceptedInviteCopy ? 'invite:' + nextMonthInviteTarget : 'no-invite') + ':open-day:' + (nextMonthOpenDayTarget ?? 'none'),
       day2StrollAccepted,
       choices: [...nextMonthFreeChatReplies],
     }
@@ -3126,6 +3135,7 @@ function App() {
   const currentMonthVisit = monthVisitTarget ? monthVisitRoutes[monthVisitTarget] : null
   const currentMonthVisitRound = currentMonthVisit?.rounds[monthVisitReplies.length] ?? null
   const currentNextMonthInvite = nextMonthInviteTarget ? nextMonthInviteRoutes[nextMonthInviteTarget] : null
+  const currentNextMonthInviteRound = currentNextMonthInvite?.rounds[nextMonthInviteDateReplies.length] ?? null
   const currentNextMonthOpenDay = nextMonthOpenDayTarget ? nextMonthOpenDayRoutes[nextMonthOpenDayTarget] : null
   const currentNextMonthOpenDayRound = currentNextMonthOpenDay?.rounds[nextMonthOpenDayReplies.length] ?? null
   const currentGreetingRound = greetingChats[currentGreetingId][Math.min(greetingRound, greetingChats[currentGreetingId].length - 1)]
@@ -3894,25 +3904,60 @@ function App() {
                 </div>
               )}
 
-              {storyStage === 'next-month-invite-date' && nextMonthInviteTarget && (
+              {storyStage === 'next-month-invite-date' && currentNextMonthInvite && nextMonthInviteTarget && (
                 <div className="story-screen-overlay">
                   <div className="story-screen-head">
                     <div className="chapter-mark">今天的約定</div>
                     <div className="story-contact-title">
-                      <strong>{nextMonthInviteRoutes[nextMonthInviteTarget].title}</strong>
-                      <small>{nextMonthInviteRoutes[nextMonthInviteTarget].location}・1996 年 12 月</small>
+                      <strong>{currentNextMonthInvite.title}</strong>
+                      <small>{currentNextMonthInvite.location}・1996 年 12 月</small>
                     </div>
                     <span className="story-head-spacer" />
                   </div>
                   <div className="story-narrative-scroll">
                     <div className="story-kicker">赴約・下午到晚上</div>
-                    <h2 className="story-scene-title">{nextMonthInviteRoutes[nextMonthInviteTarget].title}</h2>
-                    <StoryBlocks blocks={nextMonthInviteRoutes[nextMonthInviteTarget].activity} />
-                    <div className="reunion-pause-note">今天的邀約已經好好記下來了。</div>
+                    <h2 className="story-scene-title">{currentNextMonthInvite.title}</h2>
+                    <StoryBlocks blocks={currentNextMonthInvite.activity} />
+                    {currentNextMonthInvite.rounds.slice(0, nextMonthInviteDateReplies.length).map((round, index) => {
+                      const selected = round.choices[nextMonthInviteDateReplies[index]]
+                      if (!selected) return null
+                      return (
+                        <div className="month-visit-round-history" key={index}>
+                          {round.scene && <StoryBlocks blocks={[{ kind: 'narration', text: round.scene }]} />}
+                          <StoryBlocks blocks={[
+                            { kind: 'dialogue', speaker: currentNextMonthInvite.invitation[0]?.speaker ?? characterNames[nextMonthInviteTarget], text: round.prompt },
+                            { kind: 'dialogue', speaker: '你', text: selected.text },
+                            ...selected.response.map((text) => ({ kind: 'dialogue' as const, speaker: currentNextMonthInvite.invitation[0]?.speaker ?? characterNames[nextMonthInviteTarget], text })),
+                          ]} />
+                        </div>
+                      )
+                    })}
+                    {currentNextMonthInviteRound ? (
+                      <>
+                        {currentNextMonthInviteRound.scene && <StoryBlocks blocks={[{ kind: 'narration', text: currentNextMonthInviteRound.scene }]} />}
+                        <StoryBlocks blocks={[{ kind: 'dialogue', speaker: currentNextMonthInvite.invitation[0]?.speaker ?? characterNames[nextMonthInviteTarget], text: currentNextMonthInviteRound.prompt }]} />
+                        <div className="choice-area">
+                          <div className="choice-heading">第 {nextMonthInviteDateReplies.length + 1}/5 輪・你想怎麼回應？</div>
+                          {currentNextMonthInviteRound.choices.map((choice, index) => (
+                            <button className="reply-choice" key={index} onClick={() => chooseNextMonthInviteDateReply(index)}>
+                              <span>{choice.text}</span><ChevronRight size={15} />
+                            </button>
+                          ))}
+                          <small>每個選擇都會影響對方的感受與好感度。</small>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <StoryBlocks blocks={currentNextMonthInvite.ending} />
+                        <div className="reunion-pause-note">這次約會的五輪互動已經完成。</div>
+                      </>
+                    )}
                   </div>
-                  <div className="story-action-bar">
-                    <button className="story-primary-button" onClick={startNextMonthFreeChat}>回家後，找一個人聊聊 <ChevronRight size={15} /></button>
-                  </div>
+                  {nextMonthInviteDateReplies.length === 5 && (
+                    <div className="story-action-bar">
+                      <button className="story-primary-button" onClick={finishNextMonthInviteDate}>收起手機，繼續校園開放日主線 <ChevronRight size={15} /></button>
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -4598,7 +4643,7 @@ function App() {
                               {storyStage === 'next-month-free-chat' && nextMonthFreeChatTarget && selectedSmsThread === nextMonthFreeChatTarget && nextMonthFreeChatOpeningSent && !nextMonthFreeChatReplied && (
                                 <div className="choice-area">
                                   <div className="choice-heading">十二月・自由對話・第 {nextMonthFreeChatRound + 1}/5 輪</div>
-                                  {nextMonthFreeChatScripts[nextMonthFreeChatTarget][nextMonthFreeChatRound].choices.map((choice, index) => (
+                                  {getNextMonthFreeChatRounds(nextMonthFreeChatTarget)[nextMonthFreeChatRound].choices.map((choice, index) => (
                                     <button className="reply-choice" key={index} onClick={() => chooseNextMonthFreeChatReply(index)}>
                                       <span>{choice.text}</span><ChevronRight size={15} />
                                     </button>
