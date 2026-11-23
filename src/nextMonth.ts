@@ -48,7 +48,7 @@ export const nextMonthIntroBlocks: NextMonthStoryBlock[] = [
 export const nextMonthInviteRoutes: Record<NextMonthCharacterId, NextMonthInviteRoute> = {
   wen: {
     title: '多買的兩張電影票',
-    location: '台北・電影院與遊樂場',
+    location: '台北・電影院',
     invitation: [
       { kind: 'dialogue', speaker: '溫尚翊', text: '欸，妳這禮拜六有空嗎？' },
       { kind: 'dialogue', speaker: '溫尚翊', text: '我這邊多兩張電影票，放著也是浪費，妳要不要一起去看？' },
@@ -58,7 +58,7 @@ export const nextMonthInviteRoutes: Record<NextMonthCharacterId, NextMonthInvite
     replyPrompt: '所以，妳到底要不要跟我去啦？',
     replyChoices: [
       { text: '好啊！電影幾點開始？', response: ['晚上七點啦，我們可以先去吃點東西。', '那就這樣說定喔。'], affection: 3, accepted: true },
-      { text: '可以啊，不過抓娃娃你要負責喔。', response: ['蛤？怎麼還附帶這個條件啦。', '好啦，如果夾不到妳不准笑我。'], affection: 3, accepted: true },
+      { text: '可以啊，不過電影不好看我可是會抱怨的喔。', response: ['蛤？妳要求很多欸。', '好啦，票都買了，妳就來看啦。'], affection: 3, accepted: true },
       { text: '這週六可能不行欸，下次再約我好不好？', response: ['喔，好啊，沒關係啦。', '妳有空再跟我說就好。'], affection: 0, accepted: false },
     ],
     teaseChoices: [
@@ -67,10 +67,10 @@ export const nextMonthInviteRoutes: Record<NextMonthCharacterId, NextMonthInvite
       { text: '你該不會是特地買給我的吧？', response: ['……妳不要自己亂想。', '我只是看到場次不錯，順手買的啦。'], affection: 3 },
     ],
     rounds: [
-      { scene: '販賣部前面排著幾個人，溫尚翊把錢包拿出來，讓你先看菜單。', prompt: '妳要吃什麼？我去排。', choices: [
-        { text: '甜的爆米花，還要一杯可樂！', response: ['妳是來看電影還是來吃東西？', '好啦，站這裡等，不要亂跑。'], affection: 3 },
-        { text: '你吃什麼我就跟著買。', response: ['妳連這個都懶得選喔？', '那我買一樣的，等一下不要嫌。'], affection: 2 },
-        { text: '先不用，留點錢等一下抓娃娃。', response: ['電影都還沒開始，妳已經想到遊樂場？', '……好啦，等一下看時間。'], affection: 1 },
+      { scene: '電影院大廳裡人來人往，溫尚翊把那桶已經買好的爆米花抱在手上，往飲料櫃檯看了一眼，轉頭問你。', prompt: '妳要喝什麼？我去排。', choices: [
+        { text: '可樂！看電影一定要配可樂啊。', response: ['知道了啦，妳先站這邊等。', '不要亂跑喔，我一下就回來。'], affection: 3 },
+        { text: '你喝什麼我就跟著買。', response: ['妳都不先問喔？', '我喝紅茶啦，那就幫妳也買一杯。'], affection: 2 },
+        { text: '我想喝紅茶就好，不用買太多。', response: ['好啊，那我去排。', '爆米花已經夠多了，等一下吃不完又要怪我。'], affection: 1 },
       ] },
       { scene: '電影開始後，影廳裡慢慢安靜下來。中間有一段反轉，你忍不住轉頭看他，發現他也正好看過來。', prompt: '剛剛那個轉折，妳覺得怎樣？', choices: [
         { text: '我覺得前面有埋伏筆欸，你有發現嗎？', response: ['有啊，不然我剛剛幹嘛一直看那邊。', '妳還看得滿仔細的嘛。'], affection: 3 },
@@ -266,7 +266,7 @@ export const nextMonthInviteRoutes: Record<NextMonthCharacterId, NextMonthInvite
     invitation: [
       { kind: 'dialogue', speaker: '陳信宏', text: '欸，妳最近有沒有空啊？我想問妳一件事喔。' },
       { kind: 'dialogue', speaker: '陳信宏', text: '我最近有點想去唱歌啦，想說妳要不要一起去？' },
-      { kind: 'dialogue', speaker: '陳信宏', text: '自己去好像有點無聊馁，妳有空的話陪我去，好不好？' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '而且我們也好一陣子沒有一起出去玩了，想說這次可以約妳。' },
     ],
     replyPrompt: '妳有空的話，我們一起去，好不好？',
     replyChoices: [
@@ -276,7 +276,7 @@ export const nextMonthInviteRoutes: Record<NextMonthCharacterId, NextMonthInvite
     ],
     rounds: [
       { scene: '包廂裡的燈光有點暗，點歌本攤在桌上。阿信拿著筆，等你先選歌。', prompt: '妳先點啦，今天第一首想唱什麼？', choices: [
-        { text: '我想唱一首五月天的歌！', response: ['好啊～那我可以跟妳一起唱嗎？', '妳先選，我幫妳找伴奏。'], affection: 3 },
+        { text: '我想唱一首最近很喜歡的歌！', response: ['好啊～那我可以跟妳一起唱嗎？', '妳先選，我幫妳找伴奏喔。'], affection: 3 },
         { text: '你先唱一首給我聽嘛。', response: ['欸？突然這樣我會有點不好意思喔。', '好啦，那我先唱一首比較熟的。'], affection: 2 },
         { text: '我還沒想好，我們先點吃的。', response: ['哈哈，好啊，妳慢慢看啦。', '我先點個薯條，不然等一下唱到一半會餓。'], affection: 1 },
       ] },
@@ -528,7 +528,7 @@ export const nextMonthFreeChatOpeners: Record<NextMonthCharacterId, NextMonthCha
   ],
   ashin: [
     { text: '我回到家了～你現在有空嗎？', response: '有啊～妳到家就好啦，怎麼了？', affection: 3 },
-    { text: '我剛剛想到一首歌，想問你喔。', response: '好啊，哪一首？妳跟我說說看喔。', affection: 2 },
+    { text: '我剛剛想到一件好笑的事，想跟你說。', response: '好呀～是什麼事？妳說給我聽。', affection: 2 },
     { text: '今天有件小事想跟你分享。', response: '好呀，妳慢慢說啦，我在聽。', affection: 1 },
   ],
   stone: [
@@ -589,20 +589,20 @@ export const nextMonthFreeChatContextRounds: Record<NextMonthCharacterId, Record
     ] },
   },
   ashin: {
-    invite: { incoming: '剛剛在KTV唱的那首歌，妳回家之後是不是還在哼啊？', choices: [
-      { text: '有啊，我現在腦袋還在循環。', response: ['哈哈，我也是啦，剛剛回家路上還在哼。', '唱到副歌的時候真的滿開心的。'], affection: 3, nextIncoming: '欸，妳最近上課還順利嗎？' },
-      { text: '有，但我一直記錯歌詞。', response: ['沒關係啦，我剛剛也有唱錯。', '下次我們再一起練熟一點。'], affection: 2, nextIncoming: '欸，妳最近上課還順利嗎？' },
-      { text: '沒有，我現在只記得你唱錯的那一句。', response: ['欸～妳怎麼一直記得那個啦。', '下次我一定要唱對給妳聽。'], affection: 1, nextIncoming: '欸，妳最近上課還順利嗎？' },
+    invite: { incoming: '剛剛從KTV出來，妳不是還說有點餓？回家有沒有再吃東西啊？', choices: [
+      { text: '有啊！我又去買了鹽酥雞，哈哈。', response: ['哈哈，妳真的很會找東西吃欸。', '有吃就好啦，今天也玩得滿晚的。'], affection: 3, nextIncoming: '欸，妳最近上課還順利嗎？' },
+      { text: '沒有啦，太晚了，我回家就直接洗澡了。', response: ['那也好啦，晚一點就不要吃太多。', '妳今天應該也累了吧？'], affection: 2, nextIncoming: '欸，妳最近上課還順利嗎？' },
+      { text: '你不是也說餓嗎？你後來有吃東西嗎？', response: ['有啦，我回去有先弄點東西吃。', '妳不用擔心我啦，先顧好自己。'], affection: 1, nextIncoming: '欸，妳最近上課還順利嗎？' },
     ] },
     'open-day': { incoming: '今天那張校園明信片，妳有沒有好好收起來？', choices: [
       { text: '有啊，我想夾在筆記本裡。', response: ['這樣很好欸，之後翻到應該會想起今天。', '那張的顏色我也滿喜歡的。'], affection: 3, nextIncoming: '欸，妳最近上課還順利嗎？' },
       { text: '有，不過我差點忘記放哪裡。', response: ['哈哈，妳要不要先放在固定的地方？', '不然真的很容易找不到。'], affection: 2, nextIncoming: '欸，妳最近上課還順利嗎？' },
       { text: '我本來想買，後來又忘記了。', response: ['沒關係啦，下次看到喜歡的再買。', '不用每次都勉強自己帶東西回家。'], affection: 1, nextIncoming: '欸，妳最近上課還順利嗎？' },
     ] },
-    both: { incoming: '今天白天逛校園，晚上又唱了那麼多歌，妳現在是不是還有旋律在腦袋裡？', choices: [
-      { text: '有啊，而且我還在想剛剛那首要不要再唱一次。', response: ['哈哈，那下次可以再點。', '我剛剛也覺得那首唱得滿過癮的。'], affection: 3, nextIncoming: '欸，妳最近上課還順利嗎？' },
-      { text: '我現在喉嚨有點累了啦。', response: ['那妳要多喝水喔。', '今天唱得很開心，不過也要讓喉嚨休息一下。'], affection: 2, nextIncoming: '欸，妳最近上課還順利嗎？' },
-      { text: '我只記得你搶麥克風的樣子。', response: ['我哪有搶啦，是剛好輪到我。', '好啦，下次讓妳先唱。'], affection: 1, nextIncoming: '欸，妳最近上課還順利嗎？' },
+    both: { incoming: '今天從早上的校園活動一路忙到晚上，妳回家是不是累壞了？', choices: [
+      { text: '真的欸，我一坐下來就不想動了。', response: ['哈哈，那妳先好好休息啦。', '今天跑來跑去的，回家當然會累。'], affection: 3, nextIncoming: '欸，妳最近上課還順利嗎？' },
+      { text: '還好啦，就是腳有一點痠。', response: ['那明天不要又穿那雙不好走的鞋喔。', '有空就坐著休息一下。'], affection: 2, nextIncoming: '欸，妳最近上課還順利嗎？' },
+      { text: '我現在只想躺平，什麼都不想管。', response: ['那就先不要管啦，明天再說。', '記得洗澡，不要直接睡著喔。'], affection: 1, nextIncoming: '欸，妳最近上課還順利嗎？' },
     ] },
     general: { incoming: '今天攤位一直有人來問東問西，妳後來有沒有找到喜歡的社團？', choices: [
       { text: '有看到幾個滿有趣的，不過還沒決定。', response: ['那可以慢慢看啊，不用急著選。', '有喜歡的活動再去試試看。'], affection: 3, nextIncoming: '欸，妳最近上課還順利嗎？' },
@@ -702,25 +702,25 @@ export const nextMonthFreeChatScripts: Record<NextMonthCharacterId, NextMonthCha
     ] },
   ],
   ashin: [
-    { incoming: '欸，妳最近上課還順利嗎？有沒有哪一堂特別難熬？', choices: [
-      { text: '有一堂課老師講得超快，我都來不及抄。', response: ['那妳可以跟同學借一下筆記喔。', '不要因為漏掉一點就覺得自己跟不上啦。'], affection: 3, nextIncoming: '我最近也在整理一些歌詞，常常寫到一半又覺得不太對。' },
-      { text: '還好啦，只是報告有點多。', response: ['期末前真的會突然忙起來欸。', '妳記得留一點時間休息喔。'], affection: 2, nextIncoming: '我最近也在整理一些歌詞，常常寫到一半又覺得不太對。' },
-      { text: '我現在只想放假。', response: ['哈哈，我懂啦。', '再撐一下，忙完就可以好好睡幾天了。'], affection: 1, nextIncoming: '我最近也在整理一些歌詞，常常寫到一半又覺得不太對。' },
+    { incoming: '欸，妳今天上課還順利嗎？有沒有遇到什麼好玩的事？', choices: [
+      { text: '有啊！下課去買飲料，結果店員把我的名字聽錯了。', response: ['哈哈，怎麼會聽成那樣啦？', '妳是不是當場不知道要不要糾正他？'], affection: 3, nextIncoming: '我今天去買晚餐的時候，在店門口想了好久。' },
+      { text: '還好啦，就是老師今天講得有點快。', response: ['辛苦妳了欸，筆記有來得及抄嗎？', '如果有漏掉的地方，可以再問同學喔。'], affection: 2, nextIncoming: '我今天去買晚餐的時候，在店門口想了好久。' },
+      { text: '沒有欸，我今天差點睡過頭。', response: ['欸？那妳最後有趕上嗎？', '還好沒有真的遲到啦。'], affection: 1, nextIncoming: '我今天去買晚餐的時候，在店門口想了好久。' },
     ] },
-    { incoming: '我最近也在整理一些歌詞，常常寫到一半又覺得不太對。', choices: [
-      { text: '你會不會寫到一半突然想到別的旋律？', response: ['會啊，有時候本來想寫這個，結果腦袋跑去別的地方。', '所以我會先把想到的東西記下來。'], affection: 3, nextIncoming: '妳平常聽歌會不會特別注意歌詞？' },
-      { text: '那你可以先放著，過幾天再看。', response: ['我也是這樣想欸。', '有時候隔一陣子回來看，會比較知道問題在哪。'], affection: 2, nextIncoming: '妳平常聽歌會不會特別注意歌詞？' },
-      { text: '寫不出來就先去吃東西啦。', response: ['哈哈，妳的解決方法很直接欸。', '不過吃點東西好像真的會比較有精神。'], affection: 1, nextIncoming: '妳平常聽歌會不會特別注意歌詞？' },
+    { incoming: '我今天去買晚餐的時候，在店門口想了好久，最後還是買了平常那一家。', choices: [
+      { text: '你也太難決定了吧，哈哈哈。', response: ['真的啊，明明每次都說要換一家。', '結果走到門口又覺得熟悉的比較安心。'], affection: 3, nextIncoming: '妳是不是也常常這樣，想換口味又怕踩雷？' },
+      { text: '那你到底吃了什麼？', response: ['雞腿飯啊，最普通的那種。', '不過今天那家青菜給得滿多的。'], affection: 2, nextIncoming: '妳是不是也常常這樣，想換口味又怕踩雷？' },
+      { text: '下次我幫你選啦，不准反悔。', response: ['好啊～那我就把這個任務交給妳了。', '妳不要到時候也站在那邊選半天喔。'], affection: 1, nextIncoming: '妳是不是也常常這樣，想換口味又怕踩雷？' },
     ] },
-    { incoming: '妳平常聽歌會不會特別注意歌詞？', choices: [
-      { text: '會啊，有時候一句歌詞會記很久。', response: ['我也是欸。', '有些話如果直接說出來很奇怪，放進歌裡就剛剛好。'], affection: 3, nextIncoming: '對了，妳最近有沒有想做但一直沒時間做的事？' },
-      { text: '我比較注意旋律，歌詞常常聽不清楚。', response: ['哈哈，這樣也很好啊。', '有時候旋律先讓人喜歡上，才會想去看歌詞。'], affection: 2, nextIncoming: '對了，妳最近有沒有想做但一直沒時間做的事？' },
-      { text: '看心情，有時候只想聽背景音樂。', response: ['嗯，我懂。', '有時候不想想太多，聽著就好。'], affection: 1, nextIncoming: '對了，妳最近有沒有想做但一直沒時間做的事？' },
+    { incoming: '妳是不是也常常這樣，想換口味又怕踩雷？', choices: [
+      { text: '對啊！每次都看很久，最後還是點一樣的。', response: ['哈哈，原來妳也一樣。', '那下次我們可以各點一種，分著吃看看啊。'], affection: 3, nextIncoming: '對了，妳最近有沒有在看什麼好看的連續劇？' },
+      { text: '不會啊，我看到沒吃過的就想試試看。', response: ['那妳膽子滿大的欸。', '有踩雷的話記得跟我分享喔。'], affection: 2, nextIncoming: '對了，妳最近有沒有在看什麼好看的連續劇？' },
+      { text: '我只要看到有甜點就會改變主意。', response: ['這個理由很有說服力喔。', '吃完正餐還有甜點，感覺很不錯。'], affection: 1, nextIncoming: '對了，妳最近有沒有在看什麼好看的連續劇？' },
     ] },
-    { incoming: '對了，妳最近有沒有想做但一直沒時間做的事？', choices: [
-      { text: '我想找一天去書店慢慢逛。', response: ['聽起來不錯欸。', '找個沒課的下午去，不用趕時間。'], affection: 3 },
-      { text: '我想把房間整理好，但一直拖。', response: ['哈哈，這個好像很多人都會。', '先整理桌子就好，不用一次弄完。'], affection: 2 },
-      { text: '我想睡到自然醒。', response: ['這個願望很實際喔。', '希望妳真的可以找一天好好睡。'], affection: 1 },
+    { incoming: '對了，妳最近有沒有在看什麼好看的連續劇？', choices: [
+      { text: '有！我最近每次都想說只看一集，結果停不下來。', response: ['哈哈，這個我懂啦。', '妳先不要熬夜追，明天還要上課喔。'], affection: 3 },
+      { text: '沒有欸，最近都在忙課業。', response: ['那等忙完再找一部來看啊。', '偶爾也要留一點時間給自己放鬆。'], affection: 2 },
+      { text: '有啊，但我不告訴你，怕你劇透。', response: ['好啦好啦，我不問。', '等妳看完再跟我說好不好看。'], affection: 1 },
     ] },
   ],
   stone: [
@@ -772,7 +772,7 @@ export const nextMonthFreeChatScripts: Record<NextMonthCharacterId, NextMonthCha
 export const nextMonthChatDiary: Record<NextMonthCharacterId, string> = {
   wen: '晚上我自己先敲了溫尚翊。從白天發生的事聊起，後來又莫名其妙扯到報告、練團和吃飯。這個人講話還是一樣直接，嘴上嫌我問題很多，卻又真的會接著我的話聊下去。每次跟他講話都很容易鬥嘴。',
   masa: '晚上我主動找瑪莎聊天，果然沒幾句就開始互相吐槽。他很會抓我話裡的小漏洞，還故意把普通的小事講得很好笑。明明有時候真的很想翻白眼，結果還是被他逗到笑出來。',
-  ashin: '晚上找阿信聊了一下。他回訊息的語氣還是軟軟的，會很認真接住我講的每件小事，也會分享他最近聽到的歌、想到的旋律。跟他聊天不用一直想著要講什麼，想到什麼就慢慢說，時間一下子就過去了。',
+  ashin: '晚上找阿信聊了幾句。從今天上課遇到的小糗事聊到晚餐，他說自己站在店門口想了半天，最後還是買了平常那家。後來又聊到最近有沒有好看的連續劇，講著講著就忘了時間。跟他聊天真的不用一直想話題，想到什麼就慢慢說，滿舒服的。',
   stone: '晚上我主動傳訊息給石頭。話題從今天的事情慢慢聊到課業、照片和一些很小的日常。他不會一直追問，也不會急著給答案，但總是記得我前面說過什麼。這樣聊天真的很舒服。',
   yanming: '晚上找諺明哥聊了幾句。他還是很有條理，聊到課業時會認真給我一些實際的建議，也會分享練團室最近在整理什麼。不是很熱鬧的聊天，但每句話都讓人覺得很踏實。',
 }
