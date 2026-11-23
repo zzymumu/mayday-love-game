@@ -2022,6 +2022,12 @@ function App() {
     const saved = localStorage.getItem('mayday-winter-bus-stop-character')
     return saved && ['wen', 'masa', 'ashin', 'stone', 'yanming'].includes(saved) ? saved as WinterCharacterId : null
   })
+  const [winterBusStopReplies, setWinterBusStopReplies] = useState<number[]>(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('mayday-winter-bus-stop-replies') ?? '[]')
+      return Array.isArray(saved) ? saved.filter((value): value is number => Number.isInteger(value) && value >= 0 && value <= 2).slice(0, 3) : []
+    } catch { return [] }
+  })
   const [winterDiaryUnlocked, setWinterDiaryUnlocked] = useState(() => localStorage.getItem('mayday-winter-diary-unlocked') === 'true')
   const [winterDiaryData, setWinterDiaryData] = useState<WinterDiaryData | null>(() => {
     try {
@@ -2208,6 +2214,7 @@ function App() {
     put('mayday-winter-practice-replies', JSON.stringify(winterPracticeReplies))
     put('mayday-winter-yanming-pickup-available', String(winterYanmingPickupAvailable))
     put('mayday-winter-bus-stop-character', winterBusStopCharacter)
+    put('mayday-winter-bus-stop-replies', JSON.stringify(winterBusStopReplies))
     put('mayday-winter-diary-unlocked', String(winterDiaryUnlocked))
     put('mayday-winter-diary-data', winterDiaryData ? JSON.stringify(winterDiaryData) : null)
     put('mayday-route-affection', JSON.stringify(routeAffection))
@@ -2300,10 +2307,11 @@ function App() {
     localStorage.setItem('mayday-winter-yanming-pickup-available', String(winterYanmingPickupAvailable))
     if (winterBusStopCharacter) localStorage.setItem('mayday-winter-bus-stop-character', winterBusStopCharacter)
     else localStorage.removeItem('mayday-winter-bus-stop-character')
+    localStorage.setItem('mayday-winter-bus-stop-replies', JSON.stringify(winterBusStopReplies))
     localStorage.setItem('mayday-winter-diary-unlocked', String(winterDiaryUnlocked))
     if (winterDiaryData) localStorage.setItem('mayday-winter-diary-data', JSON.stringify(winterDiaryData))
     else localStorage.removeItem('mayday-winter-diary-data')
-  }, [winterExamChatReplyChoice, winterExamTutoringUnlocked, winterExamReplies, winterPracticeReplies, winterYanmingPickupAvailable, winterBusStopCharacter, winterDiaryUnlocked, winterDiaryData])
+  }, [winterExamChatReplyChoice, winterExamTutoringUnlocked, winterExamReplies, winterPracticeReplies, winterYanmingPickupAvailable, winterBusStopCharacter, winterBusStopReplies, winterDiaryUnlocked, winterDiaryData])
 
   useEffect(() => {
     localStorage.setItem('mayday-year-end-invite-candidates', JSON.stringify(yearEndInviteCandidates))
@@ -3826,6 +3834,7 @@ function App() {
     setWinterPracticeReplies([])
     setWinterYanmingPickupAvailable(false)
     setWinterBusStopCharacter(null)
+    setWinterBusStopReplies([])
     setWinterDiaryUnlocked(false)
     setWinterDiaryData(null)
     setActiveApp(null)
@@ -3939,12 +3948,26 @@ function App() {
   const chooseWinterBusStopCharacter = (character: WinterCharacterId) => {
     if (character === 'yanming' && !winterYanmingPickupAvailable) return
     setWinterBusStopCharacter(character)
+    setWinterBusStopReplies([])
     localStorage.setItem('mayday-winter-bus-stop-character', character)
+    localStorage.setItem('mayday-winter-bus-stop-replies', '[]')
     changeStage('winter-break-bus')
   }
 
+  const chooseWinterBusStopReply = (choiceIndex: number) => {
+    if (!winterBusStopCharacter || winterBusStopReplies.length >= 3) return
+    const round = winterBusStopRoutes[winterBusStopCharacter].rounds[winterBusStopReplies.length]
+    const choice = round?.choices[choiceIndex]
+    if (!choice) return
+    const nextReplies = [...winterBusStopReplies, choiceIndex]
+    setWinterBusStopReplies(nextReplies)
+    localStorage.setItem('mayday-winter-bus-stop-replies', JSON.stringify(nextReplies))
+    const affection = choice.affection[winterBusStopCharacter] ?? 0
+    if (affection) addRouteAffection(winterBusStopCharacter, affection)
+  }
+
   const startWinterDiary = () => {
-    if (!winterBusStopCharacter) return
+    if (!winterBusStopCharacter || winterBusStopReplies.length !== winterBusStopRoutes[winterBusStopCharacter].rounds.length) return
     const diaryFocusOrder: WinterCharacterId[] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
     const focusCharacter = diaryFocusOrder.reduce((best, character) => routeAffection[character] > routeAffection[best] ? character : best, diaryFocusOrder[0])
     const stageFocusSummaries: Record<Exclude<WinterCharacterId, 'yanming'>, string> = {
@@ -3974,7 +3997,7 @@ function App() {
         { label: 'EXAMS · 期末考前', text: examSummary },
         { label: 'REHEARSAL · 諺明哥的練團室', text: rehearsalSummary },
         { label: 'LIVEHOUSE · 今晚的駐唱', text: livehouseSummary },
-        { label: 'AFTER SHOW · 散場以後', text: pickupSummary + '\n\n' + winterBusStopRoutes[winterBusStopCharacter].diarySummary },
+        { label: 'AFTER SHOW · 散場以後', text: pickupSummary + '\n\n' + winterBusStopRoutes[winterBusStopCharacter].diarySummary + '\n\n那三輪路上的對話，我選擇了：「' + winterBusStopRoutes[winterBusStopCharacter].rounds.map((round, index) => round.choices[winterBusStopReplies[index]]?.text).filter(Boolean).join('」、「') + '」。' },
         { label: 'BEFORE SLEEP · 睡前補記', text: beforeSleepSummary },
       ],
     }
@@ -4236,6 +4259,7 @@ function App() {
   const currentYearEndFireworksRound = yearEndFireworksRounds[yearEndFireworksReplies.length] ?? null
   const currentWinterExamRound = winterExamTutoringRounds[winterExamReplies.length] ?? null
   const currentWinterPracticeRound = winterBreakPracticeRounds[winterPracticeReplies.length] ?? null
+  const currentWinterBusStopRound = winterBusStopCharacter ? winterBusStopRoutes[winterBusStopCharacter].rounds[winterBusStopReplies.length] ?? null : null
   const winterFocusOrder: WinterCharacterId[] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
   const winterGigFocusCharacter = winterFocusOrder.reduce((best, character) => routeAffection[character] > routeAffection[best] ? character : best, winterFocusOrder[0])
   const currentGreetingRound = greetingChats[currentGreetingId][Math.min(greetingRound, greetingChats[currentGreetingId].length - 1)]
@@ -5827,10 +5851,46 @@ function App() {
                     <div className="story-kicker">THE WAY TO THE BUS STOP</div>
                     <h2 className="story-scene-title">{winterBusStopRoutes[winterBusStopCharacter].title}</h2>
                     <StoryBlocks blocks={winterBusStopRoutes[winterBusStopCharacter].blocks} />
+                    {winterBusStopRoutes[winterBusStopCharacter].rounds.slice(0, winterBusStopReplies.length).map((round, index) => {
+                      const selected = round.choices[winterBusStopReplies[index]]
+                      if (!selected) return null
+                      return (
+                        <div className="month-visit-round-history" key={index}>
+                          {round.scene && <StoryBlocks blocks={[{ kind: 'narration', text: round.scene }]} />}
+                          <StoryBlocks blocks={[
+                            { kind: 'dialogue', speaker: round.promptSpeaker, text: round.prompt },
+                            { kind: 'dialogue', speaker: '你', text: selected.text },
+                            ...selected.response,
+                          ]} />
+                        </div>
+                      )
+                    })}
+                    {currentWinterBusStopRound ? (
+                      <>
+                        {currentWinterBusStopRound.scene && <StoryBlocks blocks={[{ kind: 'narration', text: currentWinterBusStopRound.scene }]} />}
+                        <StoryBlocks blocks={[{ kind: 'dialogue', speaker: currentWinterBusStopRound.promptSpeaker, text: currentWinterBusStopRound.prompt }]} />
+                        <div className="choice-area">
+                          <div className="choice-heading">第 {winterBusStopReplies.length + 1}/3 輪・你想怎麼回答？</div>
+                          {currentWinterBusStopRound.choices.map((choice, index) => (
+                            <button className="reply-choice" key={index} onClick={() => chooseWinterBusStopReply(index)}>
+                              <span>{choice.text}</span><ChevronRight size={15} />
+                            </button>
+                          ))}
+                          <small>每一輪都會影響你和對方之間的好感度。</small>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <StoryBlocks blocks={winterBusStopRoutes[winterBusStopCharacter].endingBlocks} />
+                        <div className="reunion-pause-note">三輪散場互動已經完成，公車也到了。</div>
+                      </>
+                    )}
                   </div>
-                  <div className="story-action-bar">
-                    <button className="story-primary-button" onClick={startWinterDiary}>回到家，寫下今天的日記 <ChevronRight size={15} /></button>
-                  </div>
+                  {winterBusStopReplies.length === winterBusStopRoutes[winterBusStopCharacter].rounds.length && (
+                    <div className="story-action-bar">
+                      <button className="story-primary-button" onClick={startWinterDiary}>回到家，寫下今天的日記 <ChevronRight size={15} /></button>
+                    </div>
+                  )}
                 </div>
               )}
 
