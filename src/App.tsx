@@ -670,6 +670,8 @@ const nextMonthLaterCallScripts: Record<RouteCharacterId, ChatRound[]> = {
 }
 
 const thresholdCallScripts: Record<RouteCharacterId, ChatRound[]> = {
+  // Wen uses the route-specific home/stroll call scripts below.
+  wen: [],
   masa: [
     makeChatRound('欸，妳到家了沒？我剛剛才想到，今天在店裡那幾張照片妳有沒有看到最後一張？', '有啊，你那張閉著眼睛的最好笑。', '那張不算啦，是我媽拍太快。', '我看你根本是不想讓大家看到。', '誰小時候沒有幾張很蠢的照片？', '下次我也要帶照片去，換我笑你。', '妳敢帶來我就敢看，誰怕誰。', 3),
     makeChatRound('剛剛回家我媽還問，妳是不是又要跟我吵到忘記吃飯。', '阿姨很了解我們嘛。', '她說妳以前也是這樣，講到一半就忘記自己要幹嘛。', '你不要把自己講得很無辜。', '我哪有？我明明都記得。', '那你記不記得以前欠我的冰？', '……妳怎麼又想到這個啦。', 3),
