@@ -49,8 +49,66 @@ type StoryScene = { kicker: string; title: string; blocks: StoryBlock[]; button:
 type SmsMessage = { id: string; date: string; time?: string; from: CharacterId | 'me'; text: string }
 type NewChatEntry = { from: CharacterId | 'me'; text: string; time?: string }
 
-const splitDiaryParagraphs = (value: string): string[] =>
-  value.split(/(?:\r?\n)+|\\n+/).map((paragraph) => paragraph.trim()).filter(Boolean)
+const splitDiaryParagraphs = (value: string): string[] => {
+  const blocks = value
+    .replace(/\r\n/g, '\n')
+    .replace(/\\n/g, '\n')
+    .split(/\n+/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean)
+  const paragraphs: string[] = []
+
+  blocks.forEach((block) => {
+    const sentences = block.match(/[^。！？!?]+[。！？!?]["」』）)]*|[^。！？!?]+$/g) ?? [block]
+    let current = ''
+    let sentenceCount = 0
+    const flush = () => {
+      if (current.trim()) paragraphs.push(current.trim())
+      current = ''
+      sentenceCount = 0
+    }
+
+    sentences.forEach((sentence) => {
+      if (sentence.length > 78) {
+        flush()
+        const clauses = sentence.match(/[^，,；;]+[，,；;]?/g) ?? [sentence]
+        let clauseGroup = ''
+        clauses.forEach((clause) => {
+          if (clauseGroup && clauseGroup.length + clause.length > 64) {
+            paragraphs.push(clauseGroup.trim())
+            clauseGroup = clause
+          } else {
+            clauseGroup += clause
+          }
+        })
+        if (clauseGroup.trim()) paragraphs.push(clauseGroup.trim())
+        return
+      }
+
+      if (current && (current.length + sentence.length > 78 || sentenceCount >= 2)) flush()
+      current += sentence
+      sentenceCount += 1
+    })
+
+    flush()
+  })
+
+  return paragraphs
+}
+
+const DiarySection = ({ label, text }: { label: string; text: string }) => {
+  const paragraphs = splitDiaryParagraphs(text)
+  if (!paragraphs.length) return null
+
+  return (
+    <section className="diary-section">
+      <div className="diary-section-label">{label}</div>
+      {paragraphs.map((paragraph, index) => (
+        <p key={`${label}-${index}`}>{paragraph}</p>
+      ))}
+    </section>
+  )
+}
 
 const removeDuplicateWenMovieInviteLine = (messages: SmsMessage[]): SmsMessage[] => {
   let removed = false
@@ -3779,20 +3837,17 @@ function App() {
                     <div className="diary-paper story-diary-paper">
                       <span className="diary-date">1996 年 10 月 16 日・星期三</span>
                       <h2>今天原本只是想去吃一碗冰。</h2>
-                      <p>下課後跟著溫尚翊去吃冰，沒想到在路上又遇見阿信。後來三個人一起逛了唱片行，他講起音樂的時候真的很認真，連一首歌要從哪裡開始聽都會仔細介紹。</p>
-                      {day2StrollAccepted ? (
-                        <>
-                          <p>阿信走後，溫尚翊問我要不要再逛一下。我本來沒有特別想去哪裡，最後還是跟著他去了附近的小書店。</p>
-                          <p>我們在裡面待了好一會兒，聊了些很普通的事情。他有時候真的很會惹人嫌，可是跟他一起走路，好像連沒有目的地也不會覺得無聊。逛完之後，他還一路陪我走回家，站在門口等我進去才離開。</p>
-                        </>
-                      ) : (
-                        <>
-                          <p>阿信走後，溫尚翊問我要不要再逛一下。我想了想，還是跟他說今天差不多了，想先回家。</p>
-                          <p>他沒有勉強我，還是陪我慢慢走回家，直到我站在家門口才轉身離開。臨走前還提醒我早點休息，明明只是很平常的一句話，卻讓人覺得今天好像被好好照顧了一下。</p>
-                        </>
-                      )}
-                      <p>今天又和阿信多聊了一會兒，也和原本就認識的人多相處了一段時間。明明沒有發生什麼大事，卻覺得這一天比平常長了很多。</p>
-                      <p>不知道明天又會收到誰的訊息。</p>
+                      <DiarySection label="TODAY · 今天記事" text={[
+                        '下課後跟著溫尚翊去吃冰，沒想到在路上又遇見阿信。後來三個人一起逛了唱片行，他講起音樂的時候真的很認真，連一首歌要從哪裡開始聽都會仔細介紹。',
+                        day2StrollAccepted
+                          ? '阿信走後，溫尚翊問我要不要再逛一下。我本來沒有特別想去哪裡，最後還是跟著他去了附近的小書店。'
+                          : '阿信走後，溫尚翊問我要不要再逛一下。我想了想，還是跟他說今天差不多了，想先回家。',
+                        day2StrollAccepted
+                          ? '我們在裡面待了好一會兒，聊了些很普通的事情。他有時候真的很會惹人嫌，可是跟他一起走路，好像連沒有目的地也不會覺得無聊。逛完之後，他還一路陪我走回家，站在門口等我進去才離開。'
+                          : '他沒有勉強我，還是陪我慢慢走回家，直到我站在家門口才轉身離開。臨走前還提醒我早點休息，明明只是很平常的一句話，卻讓人覺得今天好像被好好照顧了一下。',
+                        '今天又和阿信多聊了一會兒，也和原本就認識的人多相處了一段時間。明明沒有發生什麼大事，卻覺得這一天比平常長了很多。',
+                        '不知道明天又會收到誰的訊息。',
+                      ].join('\n\n')} />
                     </div>
                   </div>
                   <div className="story-action-bar">
@@ -4017,9 +4072,9 @@ function App() {
                     <div className="diary-paper story-diary-paper">
                       <span className="diary-date">1996 年 11 月 16 日・星期六</span>
                       <h2>{monthDiaryEntries[monthVisitTarget].title}</h2>
-                      <p>{monthDiaryEntries[monthVisitTarget].visit}</p>
-                      <p>{getMonthFreeChatDiaryText(monthFreeChatTarget ?? monthVisitTarget)}</p>
-                      <p>{monthDiaryEntries[monthVisitTarget].ending}</p>
+                      <DiarySection label="DAYTIME · 白天記事" text={monthDiaryEntries[monthVisitTarget].visit} />
+                      <DiarySection label="NIGHT · 晚上聊天" text={getMonthFreeChatDiaryText(monthFreeChatTarget ?? monthVisitTarget)} />
+                      <DiarySection label="BEFORE SLEEP · 睡前補記" text={monthDiaryEntries[monthVisitTarget].ending} />
                     </div>
                     <div className="reunion-pause-note">好啦，今天就先寫到這裡。明天再看這頁的時候，希望我不要覺得自己太花癡。</div>
                   </div>
@@ -4405,9 +4460,9 @@ function App() {
                     <div className="diary-paper story-diary-paper">
                       <span className="diary-date">1996 年 12 月 14 日・星期六</span>
                       <h2>{nextMonthDiaryData.title}</h2>
-                      <p>{nextMonthDiaryData.eventSummary}</p>
-                      <p>{nextMonthDiaryData.chatSummary}</p>
-                      <p>{nextMonthDiaryData.ending}</p>
+                      <DiarySection label="DAYTIME · 白天記事" text={nextMonthDiaryData.eventSummary} />
+                      <DiarySection label="NIGHT · 晚上聊天" text={nextMonthDiaryData.chatSummary} />
+                      <DiarySection label="BEFORE SLEEP · 睡前補記" text={nextMonthDiaryData.ending} />
                     </div>
                     <div className="reunion-pause-note">這篇日記會留在日記列表裡，之後也可以重新打開來看。</div>
                   </div>
@@ -5018,37 +5073,36 @@ function App() {
                                   <div className="diary-paper">
                                     <span className="diary-date">1996 年 11 月 16 日・星期六</span>
                                     <h2>{monthDiaryEntries[monthVisitTarget].title}</h2>
-                                    <p>{monthDiaryEntries[monthVisitTarget].visit}</p>
-                                    <p>{getMonthFreeChatDiaryText(monthFreeChatTarget ?? monthVisitTarget)}</p>
-                                    <p>{monthDiaryEntries[monthVisitTarget].ending}</p>
+                                    <DiarySection label="DAYTIME · 白天記事" text={monthDiaryEntries[monthVisitTarget].visit} />
+                                    <DiarySection label="NIGHT · 晚上聊天" text={getMonthFreeChatDiaryText(monthFreeChatTarget ?? monthVisitTarget)} />
+                                    <DiarySection label="BEFORE SLEEP · 睡前補記" text={monthDiaryEntries[monthVisitTarget].ending} />
                                   </div>
                                 ) : selectedDiaryDate === '1996-10-16' && day2DiaryUnlocked ? (
                                   <div className="diary-paper">
                                     <span className="diary-date">1996 年 10 月 16 日・星期三</span>
                                     <h2>本來只是想吃冰，結果行程一直加長。</h2>
-                                    <p>下課後跟著溫尚翊去吃冰，沒想到路上又遇到阿信。後來三個人一起逛唱片行，阿信一講起音樂就停不下來，連哪張唱片適合從哪一首開始聽都介紹得清清楚楚。我本來只是想買碗冰，最後卻站在唱片架前聽了半天，差點忘記時間。</p>
-                                    {day2StrollAccepted ? (
-                                      <>
-                                        <p>阿信走後，溫尚翊問我要不要再逛一下。我明明心裡想著今天已經走很多路了，嘴巴卻很快就答應。最後跟著他去了附近的小書店，在裡面磨蹭了好一會兒。</p>
-                                        <p>我們聊的都是些很普通的事，可是跟他一起走路，好像連沒有目的地都不會覺得無聊。他有時候真的很會惹人嫌，偏偏又會在回家時一路陪著我，站在門口等我進去才離開。這種人到底要怎麼辦啦。</p>
-                                      </>
-                                    ) : (
-                                      <>
-                                        <p>阿信走後，溫尚翊問我要不要再逛一下。我想了想，還是說今天差不多了，想先回家。他沒有勉強我，陪我慢慢走回去，到了門口還提醒我早點休息。</p>
-                                        <p>明明只是很平常的一段路，卻因為有人陪著走，好像也沒有那麼想趕快到家。</p>
-                                      </>
-                                    )}
-                                    <p>今天走得比平常久，腳有點酸，心情倒是很好。阿信聊的那些歌還在腦袋裡轉，溫尚翊說話的樣子也一直跑出來。到底是去吃冰，還是順便收集回憶的啊？</p>
+                                    <DiarySection label="TODAY · 今天記事" text={[
+                                      '下課後跟著溫尚翊去吃冰，沒想到路上又遇到阿信。後來三個人一起逛唱片行，阿信一講起音樂就停不下來，連哪張唱片適合從哪一首開始聽都介紹得清清楚楚。我本來只是想買碗冰，最後卻站在唱片架前聽了半天，差點忘記時間。',
+                                      day2StrollAccepted
+                                        ? '阿信走後，溫尚翊問我要不要再逛一下。我明明心裡想著今天已經走很多路了，嘴巴卻很快就答應。最後跟著他去了附近的小書店，在裡面磨蹭了好一會兒。'
+                                        : '阿信走後，溫尚翊問我要不要再逛一下。我想了想，還是說今天差不多了，想先回家。他沒有勉強我，陪我慢慢走回去，到了門口還提醒我早點休息。',
+                                      day2StrollAccepted
+                                        ? '我們聊的都是些很普通的事，可是跟他一起走路，好像連沒有目的地也不會覺得無聊。他有時候真的很會惹人嫌，偏偏又會在回家時一路陪著我，站在門口等我進去才離開。這種人到底要怎麼辦啦。'
+                                        : '明明只是很平常的一段路，卻因為有人陪著走，好像也沒有那麼想趕快到家。',
+                                      '今天走得比平常久，腳有點酸，心情倒是很好。阿信聊的那些歌還在腦袋裡轉，溫尚翊說話的樣子也一直跑出來。到底是去吃冰，還是順便收集回憶的啊？',
+                                    ].join('\n\n')} />
                                   </div>
                                 ) : (
                                   <div className="diary-paper">
                                     <span className="diary-date">1996 年 10 月 15 日・星期二</span>
                                     <h2>我真的沒想到會在這裡遇到他！</h2>
-                                    <p>今天跟著溫尚翊去練團室，本來只是想看看他們平常練團的地方，誰知道一進去就碰到瑪莎。我第一眼還有點不敢認，畢竟小時候搬家後就再也沒見過了，明明名字一直記得，卻不知道他現在變成什麼樣子。</p>
-                                    <p>搬家前他把地址寫給我，說以後一定要聯絡。結果那場雨把紙上的字沖得模模糊糊，我後來還是留了很久，偶爾拿出來看，想說到底還找不找得到。</p>
-                                    <p>結果今天居然就這樣遇到本人。也太扯了吧！本來有好多話想問，真的見到人反而不知道從哪一句開始，最後只顧著發愣。</p>
-                                    <p>更讓我意外的是，他居然跟溫尚翊認識。這兩個人到底是怎麼湊在一起的？我現在腦袋還有點亂，明天一定要找機會問清楚。</p>
-                                    <p>明明只是去看一下練團室，結果回家後一直在想今天的事。這種事情也太像電影了吧，拜託不要是我自己想太多。</p>
+                                    <DiarySection label="TODAY · 今天記事" text={[
+                                      '今天跟著溫尚翊去練團室，本來只是想看看他們平常練團的地方，誰知道一進去就碰到瑪莎。我第一眼還有點不敢認，畢竟小時候搬家後就再也沒見過了，明明名字一直記得，卻不知道他現在變成什麼樣子。',
+                                      '搬家前他把地址寫給我，說以後一定要聯絡。結果那場雨把紙上的字沖得模模糊糊，我後來還是留了很久，偶爾拿出來看，想說到底還找不找得到。',
+                                      '結果今天居然就這樣遇到本人。也太扯了吧！本來有好多話想問，真的見到人反而不知道從哪一句開始，最後只顧著發愣。',
+                                      '更讓我意外的是，他居然跟溫尚翊認識。這兩個人到底是怎麼湊在一起的？我現在腦袋還有點亂，明天一定要找機會問清楚。',
+                                      '明明只是去看一下練團室，結果回家後一直在想今天的事。這種事情也太像電影了吧，拜託不要是我自己想太多。',
+                                    ].join('\n\n')} />
                                   </div>
                                 )}
                               </>
