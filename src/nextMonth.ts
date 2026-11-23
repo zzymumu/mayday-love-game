@@ -513,168 +513,258 @@ export const nextMonthOpenDayRoutes: Record<NextMonthCharacterId, NextMonthOpenD
   },
 }
 
+export type NextMonthFreeChatContext = 'invite' | 'open-day' | 'both' | 'general'
+
 export const nextMonthFreeChatOpeners: Record<NextMonthCharacterId, NextMonthChatOpening[]> = {
   wen: [
-    { text: '你今天忙完了沒？我剛剛回家才發現腳好酸。', response: '剛忙完啦。妳今天走很多路喔？回去先坐一下，不要又忙著整理東西。', affection: 2 },
-    { text: '我剛剛看到一個很好笑的東西，第一個就想到你。', response: '什麼東西？妳先講，我聽聽看。', affection: 3 },
-    { text: '今天的傳單是不是還有剩？我是不是可以帶幾張回家？', response: '有啦，妳要拿就拿。只是不要拿回去當草稿紙喔。', affection: 1 },
+    { text: '你回去了喔？我剛剛想到一件事想問你。', response: '嗯，剛到。什麼事？', affection: 2 },
+    { text: '我今天有個小插曲，想跟你講哈哈。', response: '又怎樣？妳先說。', affection: 3 },
+    { text: '你現在有空嗎？我不會耽誤你很久啦。', response: '有啦，講啊。', affection: 1 },
   ],
   masa: [
-    { text: '我今天回家才發現，買的東西好像有點太多了。', response: '妳又買了什麼？先說好，不要叫我幫妳拿。', affection: 2 },
-    { text: '欸，我剛剛想到一件小時候的事。', response: '真的假的？妳這次又想到什麼了？', affection: 3 },
-    { text: '你今天是不是又吃了很多東西？', response: '妳怎麼一開口就在管我吃什麼啦？', affection: 1 },
+    { text: '我剛剛想到你今天那個表情，笑死。', response: '妳最好不是又要拿我開玩笑。', affection: 3 },
+    { text: '欸，我有件事想問你，先說不准吐槽我。', response: '妳都這樣講了，我更想吐槽了。說吧。', affection: 2 },
+    { text: '你現在在幹嘛？我想跟你講件事。', response: '剛坐下來。妳又有什麼新鮮事？', affection: 1 },
   ],
   ashin: [
-    { text: '我剛剛回家了～今天走到腳有點酸。你呢？', response: '我也剛到家欸。妳先坐一下啦，今天是不是走了滿多路？', affection: 3 },
-    { text: '我剛剛整理包包，發現裡面有一張不知道哪來的傳單哈哈。', response: '哈哈，妳是不是今天拿太多了？我剛剛也在包包裡找到一張。', affection: 2 },
-    { text: '你今天晚餐吃什麼？我現在有點餓。', response: '我剛剛隨便吃了一點。妳還沒吃喔？要記得吃東西欸。', affection: 1 },
+    { text: '我回到家了～你現在有空嗎？', response: '有啊，妳到家就好。怎麼啦？', affection: 3 },
+    { text: '我剛剛想到一首歌，想問你喔。', response: '好啊，哪一首？妳說說看。', affection: 2 },
+    { text: '今天有件小事想跟你分享。', response: '好呀，我在聽。', affection: 1 },
   ],
   stone: [
-    { text: '我回到家了，今天好像一直在走來走去。', response: '到家就好。妳先休息一下，今天人多，應該滿累的。', affection: 3 },
-    { text: '我剛剛發現飲料忘在包包裡，還好沒有打翻。', response: '那就好，包包裡如果有紙或筆記就麻煩了。', affection: 2 },
-    { text: '你今天回去之後還要忙嗎？', response: '還有一點事情要整理，不過不急。妳呢？', affection: 1 },
+    { text: '你到家了嗎？我剛剛想到一件事。', response: '到了，妳呢？怎麼了？', affection: 3 },
+    { text: '我剛剛整理東西，突然想到你說的話。', response: '是喔，妳想到什麼？', affection: 2 },
+    { text: '想問你一個小問題，不知道你忙不忙。', response: '我現在有空，妳問吧。', affection: 1 },
   ],
   yanming: [
-    { text: '今天終於忙完了！你那邊還順利嗎？', response: '差不多都整理好了，謝謝妳今天幫忙。妳回去路上還順利嗎？', affection: 3 },
-    { text: '我剛剛想到今天有個地方好像放錯了。', response: '妳說哪一個？如果是器材的話，我明天再確認一下。', affection: 2 },
-    { text: '你今天有沒有記得吃飯啊？', response: '有，今天有按時吃。妳也要記得照顧自己。', affection: 1 },
+    { text: '你忙完了嗎？想問你一件事。', response: '剛忙完，妳說。', affection: 3 },
+    { text: '今天那件事我回家才想到，還想跟你確認一下。', response: '好，妳把想到的地方告訴我。', affection: 2 },
+    { text: '你現在方便嗎？有個小問題想請教你。', response: '方便，妳問看看。', affection: 1 },
   ],
+}
+
+export const nextMonthFreeChatContextRounds: Record<NextMonthCharacterId, Record<NextMonthFreeChatContext, NextMonthChatRound>> = {
+  wen: {
+    invite: { incoming: '剛剛那部片，妳真的覺得結尾有那麼好猜喔？', choices: [
+      { text: '有啦，前面那個細節就怪怪的。', response: ['真的假的？我還以為妳沒注意到。', '看來妳有認真看，不是只顧著吃爆米花。'], affection: 3, nextIncoming: '對了，妳上次說那份報告，現在有進度了沒？' },
+      { text: '我只記得你一直偷吃我的爆米花。', response: ['蛤？我哪有！妳自己吃不完還怪我喔。', '下次各買各的，省得妳算帳。'], affection: 2, nextIncoming: '對了，妳上次說那份報告，現在有進度了沒？' },
+      { text: '其實我比較在意娃娃機，電影還好。', response: ['妳今天到底是來看電影還是夾娃娃的？', '下次先講，我就直接帶妳去遊樂場。'], affection: 1, nextIncoming: '對了，妳上次說那份報告，現在有進度了沒？' },
+    ] },
+    'open-day': { incoming: '今天去拿海報那段路，妳有沒有真的休息到？', choices: [
+      { text: '有啊，還買到熱飲，剛剛好。', response: ['那就好，妳早上一直站著發傳單。', '回去不要又忙到忘記休息。'], affection: 3, nextIncoming: '對了，妳上次說那份報告，現在有進度了沒？' },
+      { text: '你明明就是想趁機偷懶吧。', response: ['我是在拿海報好不好！', '順便喘口氣不行喔？'], affection: 2, nextIncoming: '對了，妳上次說那份報告，現在有進度了沒？' },
+      { text: '沒有，回去還是被你抓去繼續忙。', response: ['不然咧，攤位又不會自己顧。', '下次人少一點再讓妳休息。'], affection: 1, nextIncoming: '對了，妳上次說那份報告，現在有進度了沒？' },
+    ] },
+    both: { incoming: '妳今天從攤位忙到晚上看電影，現在是不是累翻了？', choices: [
+      { text: '有一點，但今天很好玩。', response: ['那就好，至少沒有白忙。', '明天不要又排一堆事情，聽到沒？'], affection: 3, nextIncoming: '對了，妳上次說那份報告，現在有進度了沒？' },
+      { text: '你才是吧，白天忙完晚上還陪我。', response: ['我哪有那麼弱。', '……不過今天是有點累啦。'], affection: 2, nextIncoming: '對了，妳上次說那份報告，現在有進度了沒？' },
+      { text: '我現在只想躺平，誰都不要吵我。', response: ['好啦，那妳快去休息。', '手機不要拿著滑到半夜。'], affection: 1, nextIncoming: '對了，妳上次說那份報告，現在有進度了沒？' },
+    ] },
+    general: { incoming: '今天攤位那邊忙成那樣，妳後來有沒有逛到想看的？', choices: [
+      { text: '有啊，我還看到一個很有趣的社團。', response: ['喔？哪一個？', '下次有空再去看看啊。'], affection: 3, nextIncoming: '對了，妳上次說那份報告，現在有進度了沒？' },
+      { text: '沒有，光發傳單就快把我累死。', response: ['我就知道妳會這樣講。', '下次人多的時候不要站在最前面。'], affection: 2, nextIncoming: '對了，妳上次說那份報告，現在有進度了沒？' },
+      { text: '我都在看你們忙，滿好笑的。', response: ['妳是來幫忙還是來看戲的？', '算了，至少妳有把傳單發完。'], affection: 1, nextIncoming: '對了，妳上次說那份報告，現在有進度了沒？' },
+    ] },
+  },
+  masa: {
+    invite: { incoming: '妳回去有沒有又餓？剛剛那袋東西到底有沒有吃完？', choices: [
+      { text: '吃完了啦，你不是也吃很多。', response: ['我那是幫忙消耗，不然放著浪費。', '妳不要把責任都推給我。'], affection: 3, nextIncoming: '對了，我剛剛回家又被叫去跑腿。' },
+      { text: '還剩一點，我留著明天吃。', response: ['妳確定明天還記得它？', '不要放到最後變成冰箱考古。'], affection: 2, nextIncoming: '對了，我剛剛回家又被叫去跑腿。' },
+      { text: '沒有，我現在又想吃別的了。', response: ['妳的胃是沒有下班時間喔？', '好啦，下次再帶妳去找新的。'], affection: 1, nextIncoming: '對了，我剛剛回家又被叫去跑腿。' },
+    ] },
+    'open-day': { incoming: '剛剛桌遊最後那一局，妳是不是故意放水？', choices: [
+      { text: '我才沒有，是你自己運氣好。', response: ['喔～輸了就說別人運氣好。', '妳這個藉口我給零分。'], affection: 3, nextIncoming: '對了，我剛剛回家又被叫去跑腿。' },
+      { text: '你玩到一半還偷看我的牌欸！', response: ['我那是在研究規則好不好。', '妳不要亂告狀。'], affection: 2, nextIncoming: '對了，我剛剛回家又被叫去跑腿。' },
+      { text: '我只是想讓你開心一下。', response: ['少來，妳明明就很想贏。', '下次再玩，我不會讓妳了。'], affection: 1, nextIncoming: '對了，我剛剛回家又被叫去跑腿。' },
+    ] },
+    both: { incoming: '妳今天白天陪我逛攤位，晚上又跑來夜市，體力也太好了吧。', choices: [
+      { text: '是你一直說下一攤才是最後一攤欸。', response: ['我有說啊，最後一攤是指每一個當下。', '這樣有什麼問題？'], affection: 3, nextIncoming: '對了，我剛剛回家又被叫去跑腿。' },
+      { text: '跟你出門就是會不小心吃很多。', response: ['妳不要怪我，明明是妳自己每攤都想試。', '不過今天吃得還不錯啦。'], affection: 2, nextIncoming: '對了，我剛剛回家又被叫去跑腿。' },
+      { text: '我現在真的需要一張床。', response: ['哈哈，早叫妳不要每攤都買。', '快去休息啦，明天再抱怨。'], affection: 1, nextIncoming: '對了，我剛剛回家又被叫去跑腿。' },
+    ] },
+    general: { incoming: '妳有看到佑達今天找不到攤位那段嗎？我真的快笑死。', choices: [
+      { text: '有啊，他怎麼可以走到一半就忘記目的地。', response: ['他看到什麼都想停下來看啊。', '我都懷疑他是來參觀不是來幫忙的。'], affection: 3, nextIncoming: '對了，我剛剛回家又被叫去跑腿。' },
+      { text: '你還不是一直嫌他，結果自己也笑最大聲。', response: ['我那是被他氣笑的。', '這兩件事不一樣好不好。'], affection: 2, nextIncoming: '對了，我剛剛回家又被叫去跑腿。' },
+      { text: '我覺得他滿可愛的啊。', response: ['妳跟他一樣，看到什麼都覺得可愛。', '難怪你們聊得來。'], affection: 1, nextIncoming: '對了，我剛剛回家又被叫去跑腿。' },
+    ] },
+  },
+  ashin: {
+    invite: { incoming: '剛剛在KTV唱的那首歌，妳回家之後有沒有又哼起來？', choices: [
+      { text: '有啊，我現在腦袋還在循環。', response: ['哈哈，我也是欸。', '剛剛唱到副歌的時候真的滿開心的。'], affection: 3, nextIncoming: '欸，妳最近上課還順利嗎？' },
+      { text: '有，但我一直記錯歌詞。', response: ['沒關係啦，我剛剛也有唱錯。', '下次我們再一起練熟一點。'], affection: 2, nextIncoming: '欸，妳最近上課還順利嗎？' },
+      { text: '沒有，我現在只記得你唱錯的那一句。', response: ['欸～妳怎麼一直記得那個啦。', '下次我一定要唱對給妳聽。'], affection: 1, nextIncoming: '欸，妳最近上課還順利嗎？' },
+    ] },
+    'open-day': { incoming: '今天那張校園明信片，妳有沒有好好收起來？', choices: [
+      { text: '有啊，我想夾在筆記本裡。', response: ['這樣很好欸，之後翻到應該會想起今天。', '那張的顏色我也滿喜歡的。'], affection: 3, nextIncoming: '欸，妳最近上課還順利嗎？' },
+      { text: '有，不過我差點忘記放哪裡。', response: ['哈哈，妳要不要先放在固定的地方？', '不然真的很容易找不到。'], affection: 2, nextIncoming: '欸，妳最近上課還順利嗎？' },
+      { text: '我本來想買，後來又忘記了。', response: ['沒關係啦，下次看到喜歡的再買。', '不用每次都勉強自己帶東西回家。'], affection: 1, nextIncoming: '欸，妳最近上課還順利嗎？' },
+    ] },
+    both: { incoming: '今天白天逛校園，晚上又唱了那麼多歌，妳現在是不是還有旋律在腦袋裡？', choices: [
+      { text: '有啊，而且我還在想剛剛那首要不要再唱一次。', response: ['哈哈，那下次可以再點。', '我剛剛也覺得那首唱得滿過癮的。'], affection: 3, nextIncoming: '欸，妳最近上課還順利嗎？' },
+      { text: '我現在喉嚨有點累了啦。', response: ['那妳要多喝水喔。', '今天唱得很開心，不過也要讓喉嚨休息一下。'], affection: 2, nextIncoming: '欸，妳最近上課還順利嗎？' },
+      { text: '我只記得你搶麥克風的樣子。', response: ['我哪有搶啦，是剛好輪到我。', '好啦，下次讓妳先唱。'], affection: 1, nextIncoming: '欸，妳最近上課還順利嗎？' },
+    ] },
+    general: { incoming: '今天攤位一直有人來問東問西，妳後來有沒有找到喜歡的社團？', choices: [
+      { text: '有看到幾個滿有趣的，不過還沒決定。', response: ['那可以慢慢看啊，不用急著選。', '有喜歡的活動再去試試看。'], affection: 3, nextIncoming: '欸，妳最近上課還順利嗎？' },
+      { text: '我光幫忙就快沒時間逛了。', response: ['辛苦妳了啦。', '下次如果還有活動，我們可以早一點去逛。'], affection: 2, nextIncoming: '欸，妳最近上課還順利嗎？' },
+      { text: '我只看到吃的攤位，哈哈。', response: ['哈哈，這也很重要啊。', '下次再找時間去吃妳剛剛沒買到的。'], affection: 1, nextIncoming: '欸，妳最近上課還順利嗎？' },
+    ] },
+  },
+  stone: {
+    invite: { incoming: '剛剛河邊那陣風，妳回去有沒有覺得冷？', choices: [
+      { text: '有一點，不過你外套很有用。', response: ['那就好，還好有帶。', '回去再喝點熱的，會舒服一點。'], affection: 3, nextIncoming: '妳最近那份報告有比較順利嗎？' },
+      { text: '還好啦，我沒有你想得那麼怕冷。', response: ['哈哈，好，我知道了。', '只是河邊風比較大，提醒妳一下。'], affection: 2, nextIncoming: '妳最近那份報告有比較順利嗎？' },
+      { text: '你自己才要小心吧，外套都給我了。', response: ['我走一走就不冷了。', '不過謝謝妳有想到我。'], affection: 1, nextIncoming: '妳最近那份報告有比較順利嗎？' },
+    ] },
+    'open-day': { incoming: '剛剛作品展那張操場照片，妳後來有沒有再回去看？', choices: [
+      { text: '有啊，光線真的很好看。', response: ['我也覺得，那張看起來很自然。', '沒有刻意擺姿勢的照片反而很有感覺。'], affection: 3, nextIncoming: '妳最近那份報告有比較順利嗎？' },
+      { text: '我後來比較喜歡手作卡片那一區。', response: ['那邊也很不錯，東西都滿有巧思的。', '妳有挑到喜歡的嗎？'], affection: 2, nextIncoming: '妳最近那份報告有比較順利嗎？' },
+      { text: '我忘記是哪張了，你下次再帶我看。', response: ['好啊，下次經過可以再去看看。', '我記得大概在哪個位置。'], affection: 1, nextIncoming: '妳最近那份報告有比較順利嗎？' },
+    ] },
+    both: { incoming: '今天白天看作品展，晚上又去河邊走走，妳會不會覺得行程太滿？', choices: [
+      { text: '不會啊，兩個地方感覺完全不一樣。', response: ['那就好，我也覺得今天安排得剛剛好。', '有熱鬧的地方，也有安靜的時間。'], affection: 3, nextIncoming: '妳最近那份報告有比較順利嗎？' },
+      { text: '有一點，不過我很喜歡河邊那段。', response: ['嗯，那段真的比較安靜。', '下次如果妳想走走，也可以再去。'], affection: 2, nextIncoming: '妳最近那份報告有比較順利嗎？' },
+      { text: '我現在只想睡到明天中午。', response: ['哈哈，那妳今晚就早點睡。', '明天醒來應該就有精神了。'], affection: 1, nextIncoming: '妳最近那份報告有比較順利嗎？' },
+    ] },
+    general: { incoming: '今天開放日人好多，妳回去之後有沒有終於安靜下來？', choices: [
+      { text: '有啊，回家之後整個人都放鬆了。', response: ['那就好，今天真的滿熱鬧的。', '偶爾安靜一下也很好。'], affection: 3, nextIncoming: '妳最近那份報告有比較順利嗎？' },
+      { text: '我耳朵現在好像還聽得到音樂聲。', response: ['哈哈，今天試音真的很大聲。', '晚上應該會安靜很多。'], affection: 2, nextIncoming: '妳最近那份報告有比較順利嗎？' },
+      { text: '我還想再去逛一次，剛剛有幾攤沒看到。', response: ['那可以找時間再去。', '今天人太多，有些地方確實不好逛。'], affection: 1, nextIncoming: '妳最近那份報告有比較順利嗎？' },
+    ] },
+  },
+  yanming: {
+    invite: { incoming: '今天整理器材時妳幫忙找到的轉接頭，我已經放回固定位置了。', choices: [
+      { text: '很好！下次就不用再找半天了。', response: ['是啊，固定位置比較不容易弄丟。', '今天謝謝妳一起確認。'], affection: 3, nextIncoming: '妳最近期末報告的進度還好嗎？' },
+      { text: '我是不是可以領一個最佳尋寶獎？', response: ['哈哈，可以，今天確實幫了不少忙。', '下次有需要再請妳當顧問。'], affection: 2, nextIncoming: '妳最近期末報告的進度還好嗎？' },
+      { text: '我只是剛好看到啦，沒有那麼厲害。', response: ['能注意到細節就很好了。', '不用太客氣。'], affection: 1, nextIncoming: '妳最近期末報告的進度還好嗎？' },
+    ] },
+    'open-day': { incoming: '今天拿活動用品那一趟，妳手上那袋有沒有太重？', choices: [
+      { text: '還好啊，你才是抱著整箱走的人。', response: ['我平常搬習慣了。', '不過下次還是分開拿比較安全。'], affection: 3, nextIncoming: '妳最近期末報告的進度還好嗎？' },
+      { text: '有一點，回家手腕還有點痠。', response: ['那今晚先不要提重的東西。', '如果明天還不舒服，就多休息一下。'], affection: 2, nextIncoming: '妳最近期末報告的進度還好嗎？' },
+      { text: '你是不是故意把輕的留給我？', response: ['不是故意，是重量本來就要分配好。', '讓妳拿得動比較重要。'], affection: 1, nextIncoming: '妳最近期末報告的進度還好嗎？' },
+    ] },
+    both: { incoming: '今天早上活動、後來又到練團室幫忙，妳應該累了吧。', choices: [
+      { text: '有一點，但今天做了好多事。', response: ['那就好，至少今天很充實。', '今晚先休息，其他事情明天再處理。'], affection: 3, nextIncoming: '妳最近期末報告的進度還好嗎？' },
+      { text: '你也很忙啊，還要顧兩邊。', response: ['事情分開處理就還好。', '謝謝妳有注意到。'], affection: 2, nextIncoming: '妳最近期末報告的進度還好嗎？' },
+      { text: '我現在只想把鞋子脫掉。', response: ['哈哈，那先坐下來休息。', '今天走很多路，腳痠很正常。'], affection: 1, nextIncoming: '妳最近期末報告的進度還好嗎？' },
+    ] },
+    general: { incoming: '今天活動結束後，器材都已經歸位了。妳回家還順利嗎？', choices: [
+      { text: '順利啊，回家路上還買了晚餐。', response: ['那就好，有吃東西就好。', '今天忙了一天，晚餐不要隨便省略。'], affection: 3, nextIncoming: '妳最近期末報告的進度還好嗎？' },
+      { text: '有一點塞車，不過還好。', response: ['週末活動結束後通常會比較多人。', '還好妳有平安到家。'], affection: 2, nextIncoming: '妳最近期末報告的進度還好嗎？' },
+      { text: '我差點坐過站，哈哈。', response: ['還好有注意到。', '下次搭車可以先設個提醒。'], affection: 1, nextIncoming: '妳最近期末報告的進度還好嗎？' },
+    ] },
+  },
 }
 
 export const nextMonthFreeChatScripts: Record<NextMonthCharacterId, NextMonthChatRound[]> = {
   wen: [
-    { incoming: '妳今天回去之後有沒有先休息？我看妳白天一直在跑來跑去。', choices: [
-      { text: '有啦，我現在已經躺在床上了。', response: ['那就好，今天辛苦妳了。', '明天不要又一早跑來學校。'], affection: 2, nextIncoming: '對了，今天有個新生問了我好幾次社團平常在做什麼。' },
-      { text: '沒有，我還在整理今天拿回來的東西。', response: ['妳也太有精神了吧。', '先放著啦，明天再整理也不會怎樣。'], affection: 3, nextIncoming: '對了，今天有個新生問了我好幾次社團平常在做什麼。' },
-      { text: '你是不是也還沒休息？', response: ['我剛坐下來而已啦。', '妳不要轉移話題，先顧好自己。'], affection: 1, nextIncoming: '今天有個新生問了我好幾次社團平常在做什麼。' },
+    { incoming: '對了，妳上次說那份報告，現在有進度了沒？', choices: [
+      { text: '有啦，終於找到資料了。', response: ['那就趕快趁現在把它寫完。', '不要又拖到最後一天才在那邊哀。'], affection: 3, nextIncoming: '我今天練團時試了一段新的吉他編曲。' },
+      { text: '還沒，我每次打開檔案就想關掉。', response: ['妳是有多不想寫？', '先寫一頁啦，不要一直逃避。'], affection: 2, nextIncoming: '我今天練團時試了一段新的吉他編曲。' },
+      { text: '你要不要幫我寫？我請你喝飲料。', response: ['想得美，飲料拿來我也不會幫妳寫。', '妳自己的報告自己負責。'], affection: 1, nextIncoming: '我今天練團時試了一段新的吉他編曲。' },
     ] },
-    { incoming: '對了，今天有個新生問了我好幾次社團平常在做什麼。', choices: [
-      { text: '你有沒有好好介紹？不要只說來彈吉他。', response: ['我有講啦，還介紹了平常會做的活動。', '妳以為我只會彈吉他喔？'], affection: 2, nextIncoming: '最近學校的報告是不是很多？妳上次說那份弄完了沒？' },
-      { text: '你是不是講到自己都忘記時間？', response: ['哪有，我有看時間。', '只是那個學弟問得比較仔細。'], affection: 3, nextIncoming: '最近學校的報告是不是很多？妳上次說那份弄完了沒？' },
-      { text: '那他有沒有報名？', response: ['有啊，填完表就走了。', '希望他是真的有興趣，不是被佑達嚇到才填的。'], affection: 1, nextIncoming: '妳上次說的報告弄完了沒？' },
+    { incoming: '我今天練團時試了一段新的吉他編曲。', choices: [
+      { text: '真的假的？有沒有錄下來給我聽？', response: ['還沒整理好，等弄順一點再說。', '現在聽可能會被妳笑。'], affection: 3, nextIncoming: '妳最近是不是又找到什麼好吃的店？' },
+      { text: '你是不是又彈到忘記時間？', response: ['哪有，我有看時間。', '只是大家討論比較久而已。'], affection: 2, nextIncoming: '妳最近是不是又找到什麼好吃的店？' },
+      { text: '我只想知道你有沒有記得吃飯。', response: ['有啦，妳很煩欸。', '今天有吃，不用一直提醒。'], affection: 1, nextIncoming: '妳最近是不是又找到什麼好吃的店？' },
     ] },
-    { incoming: '最近學校的報告是不是很多？妳上次說那份弄完了沒？', choices: [
-      { text: '快了！我終於找到資料了。', response: ['那就好，至少有進度了。', '剩下的慢慢弄，不要熬太晚。'], affection: 3, nextIncoming: '妳平常壓力大的時候都怎麼放鬆？' },
-      { text: '還沒啦，我現在看到那份報告就頭痛。', response: ['哈哈，那妳先做一小段就好。', '不要一直拖到最後一天。'], affection: 2, nextIncoming: '妳平常壓力大的時候都怎麼放鬆？' },
-      { text: '你要不要幫我寫？我請你喝飲料。', response: ['妳想得美。', '飲料可以，報告自己寫。'], affection: 1, nextIncoming: '妳平常壓力大的時候都怎麼放鬆？' },
+    { incoming: '妳最近是不是又找到什麼好吃的店？', choices: [
+      { text: '有！下次我帶你去。', response: ['先把店名傳給我，不要到時候找不到。', '如果真的好吃再考慮。'], affection: 3, nextIncoming: '好啦，我要去洗澡了，妳也早點睡。' },
+      { text: '還沒有，我最近都在吃學餐。', response: ['學餐也不至於每天都一樣吧。', '偶爾出去換換口味啦。'], affection: 2, nextIncoming: '好啦，我要去洗澡了，妳也早點睡。' },
+      { text: '有啊，但我不告訴你。', response: ['小氣欸，問一下也不行。', '算了，妳哪天想講再講。'], affection: 1, nextIncoming: '好啦，我要去洗澡了，妳也早點睡。' },
     ] },
-    { incoming: '妳平常壓力大的時候都怎麼放鬆？', choices: [
-      { text: '找朋友聊天，或是出去走走。', response: ['這樣不錯啊，總比一直悶著好。', '有空就出去透透氣。'], affection: 3, nextIncoming: '那下次妳如果想出去走走，可以先問我有沒有空。' },
-      { text: '吃東西！吃完就覺得人生又有希望了。', response: ['哈哈，妳真的很愛吃。', '那下次找一家新的店去試試看。'], affection: 2, nextIncoming: '那下次妳如果想出去走走，可以先問我有沒有空。' },
-      { text: '睡覺，什麼都不想管。', response: ['這個也很有效啦。', '不過不要睡過頭，隔天還有課。'], affection: 1, nextIncoming: '那下次妳如果想出去走走，可以先問我有沒有空。' },
-    ] },
-    { incoming: '那下次妳如果想出去走走，可以先問我有沒有空。', choices: [
-      { text: '好啊，那你不可以說沒空。', response: ['妳先問再說啦。', '如果時間可以，我就陪妳去。'], affection: 3 },
-      { text: '你這樣算不算在約我？', response: ['蛤？妳不要什麼都拿來問啦。', '……反正有空就可以一起出去啊。'], affection: 2 },
-      { text: '好，我記下來了。', response: ['知道了啦。', '妳也早點睡，明天見。'], affection: 1 },
+    { incoming: '好啦，我要去洗澡了，妳也早點睡。', choices: [
+      { text: '知道啦，你不要洗到睡著。', response: ['妳才會吧。', '手機放下，快去睡。'], affection: 3 },
+      { text: '晚安，明天不要又遲到。', response: ['我哪有常常遲到？', '晚安啦。'], affection: 2 },
+      { text: '好啦，掰掰。', response: ['嗯，掰。', '記得把報告打開。'], affection: 1 },
     ] },
   ],
   masa: [
-    { incoming: '妳今天回家有沒有把東西放好？不要又全部丟在椅子上。', choices: [
-      { text: '你怎麼知道我都放椅子上？', response: ['猜的啊，妳看起來就很像會這樣。', '不然妳現在敢不敢拍給我看？'], affection: 2, nextIncoming: '我剛剛回家被我媽叫去買東西，結果差點忘記要買什麼。' },
-      { text: '有啦，我今天很勤勞。', response: ['真的假的？太陽從西邊出來喔。', '那我是不是要鼓掌一下？'], affection: 3, nextIncoming: '我剛剛回家被我媽叫去買東西，結果差點忘記要買什麼。' },
-      { text: '沒有，等一下再整理。', response: ['我就知道。', '妳真的很會拖欸。'], affection: 1, nextIncoming: '我剛剛回家被我媽叫去買東西，結果差點忘記要買什麼。' },
+    { incoming: '我剛剛回家又被叫去跑腿，真的很煩。', choices: [
+      { text: '哈哈哈，你不是很會跑？', response: ['妳很想被我記仇是不是？', '下次換妳去買。'], affection: 3, nextIncoming: '我媽還叫我順便買一堆東西，清單長得要命。' },
+      { text: '阿姨是不是覺得你最閒？', response: ['她可能覺得我看起來很閒。', '明明我也有自己的事要做。'], affection: 2, nextIncoming: '我媽還叫我順便買一堆東西，清單長得要命。' },
+      { text: '你有沒有又忘記要買什麼？', response: ['妳不要一直記得那件事好不好！', '那次是意外。'], affection: 1, nextIncoming: '我媽還叫我順便買一堆東西，清單長得要命。' },
     ] },
-    { incoming: '我剛剛回家被我媽叫去買東西，結果差點忘記要買什麼。', choices: [
-      { text: '你是不是走到店裡才發現忘記？', response: ['對啊，站在那邊想超久。', '最後還打電話回家問。'], affection: 3, nextIncoming: '妳小時候也常常忘東忘西，還記得嗎？' },
-      { text: '哈哈哈哈，你也有今天。', response: ['妳笑什麼啦，誰沒有忘記過。', '妳以前更誇張好不好。'], affection: 2, nextIncoming: '妳小時候也常常忘東忘西，還記得嗎？' },
-      { text: '下次我幫你寫清單。', response: ['不用啦，我又不是小朋友。', '不過妳要寫也可以，反正我不一定會照著買。'], affection: 1, nextIncoming: '妳小時候也常常忘東忘西，還記得嗎？' },
+    { incoming: '我媽還叫我順便買一堆東西，清單長得要命。', choices: [
+      { text: '拍給我看，我幫你檢查有沒有漏。', response: ['妳是要幫忙還是要看笑話？', '算了，傳給妳看一下。'], affection: 3, nextIncoming: '妳最近有沒有在追什麼連續劇？' },
+      { text: '你就照清單買啊，有這麼難嗎？', response: ['妳講得很簡單欸。', '店裡東西那麼多，誰記得住。'], affection: 2, nextIncoming: '妳最近有沒有在追什麼連續劇？' },
+      { text: '我覺得你需要一個秘書。', response: ['那妳要應徵嗎？薪水很低喔。', '而且還要被我嫌。'], affection: 1, nextIncoming: '妳最近有沒有在追什麼連續劇？' },
     ] },
-    { incoming: '妳小時候也常常忘東忘西，還記得嗎？', choices: [
-      { text: '我哪有！你不要亂講。', response: ['妳有啊，還把東西放我家忘記拿回去。', '我那時候還幫妳收著欸。'], affection: 3, nextIncoming: '最近有沒有什麼想吃的？' },
-      { text: '真的假的？我完全不記得了。', response: ['妳當然不記得，都是我在幫妳收尾。', '所以我才記得很清楚。'], affection: 2, nextIncoming: '最近有沒有什麼想吃的？' },
-      { text: '你是不是又想翻我黑歷史？', response: ['哈哈，被妳發現了。', '放心啦，今天先不講。'], affection: 1, nextIncoming: '最近有沒有什麼想吃的？' },
+    { incoming: '妳最近有沒有在追什麼連續劇？', choices: [
+      { text: '有啊，我最近每天都想看下一集。', response: ['這麼誇張？講來聽聽。', '不要爆雷，我還沒看。'], affection: 3, nextIncoming: '我剛剛本來想早點睡，結果又被佑達打電話。' },
+      { text: '沒有欸，最近都在忙課業。', response: ['妳也太認真了吧。', '偶爾還是要休息一下。'], affection: 2, nextIncoming: '我剛剛本來想早點睡，結果又被佑達打電話。' },
+      { text: '有，但你一定會嫌我看的很無聊。', response: ['妳先講，我再決定要不要嫌。', '我又沒有那麼難伺候。'], affection: 1, nextIncoming: '我剛剛本來想早點睡，結果又被佑達打電話。' },
     ] },
-    { incoming: '最近有沒有什麼想吃的？', choices: [
-      { text: '我想吃冰！', response: ['現在天氣有點冷欸。', '不過妳想吃的話，改天還是可以去。'], affection: 3, nextIncoming: '好啦，今天先不吵妳了。' },
-      { text: '想吃你上次說的那家麵店。', response: ['那家喔？可以啊，找一天去。', '這次不要又讓妳等太久。'], affection: 2, nextIncoming: '好啦，今天先不吵妳了。' },
-      { text: '我還沒想到，想到再跟你說。', response: ['好啦，妳慢慢想。', '反正吃的東西不怕沒得選。'], affection: 1, nextIncoming: '好啦，今天先不吵妳了。' },
-    ] },
-    { incoming: '好啦，今天先不吵妳了。', choices: [
-      { text: '你哪有吵，我還滿喜歡跟你聊天的。', response: ['……妳今天真的很會講欸。', '好啦，晚安。'], affection: 3 },
-      { text: '那你早點睡，不要又被阿姨叫起來。', response: ['知道啦，妳也是。', '明天再聊。'], affection: 2 },
-      { text: '晚安啦，瑪莎。', response: ['晚安啦。', '不要又熬夜。'], affection: 1 },
+    { incoming: '我剛剛本來想早點睡，結果又被佑達打電話。', choices: [
+      { text: '他又怎麼了啦？', response: ['問我明天要不要一起吃飯，講了半天都沒講到重點。', '我真的服了他。'], affection: 3 },
+      { text: '你不要接啊，讓他自己冷靜。', response: ['我也想啊，結果他一直打。', '算了，明天再跟他算帳。'], affection: 2 },
+      { text: '哈哈哈，你們兩個很吵欸。', response: ['妳現在才知道？', '好啦，我先不跟妳吵了。'], affection: 1 },
     ] },
   ],
   ashin: [
-    { incoming: '妳今天回家之後有沒有先吃點東西？', choices: [
-      { text: '有啊，我剛剛還吃了一大碗。', response: ['那就好，我剛剛還怕妳忙到忘記吃飯。', '吃飽一點比較有精神。'], affection: 3, nextIncoming: '我今天回家才發現，外套口袋裡還有一張小攤位的折價券。' },
-      { text: '還沒欸，我現在才想到。', response: ['欸，那妳先去找點東西吃啦。', '不用急著回我，吃完再說也可以。'], affection: 2, nextIncoming: '我今天回家才發現，外套口袋裡還有一張小攤位的折價券。' },
-      { text: '你是不是也還沒吃？', response: ['我有吃啦，妳不要擔心。', '不過妳這樣問，我有點開心欸。'], affection: 1, nextIncoming: '我今天回家才發現，外套口袋裡還有一張小攤位的折價券。' },
+    { incoming: '欸，妳最近上課還順利嗎？有沒有哪一堂特別難熬？', choices: [
+      { text: '有一堂課老師講得超快，我都來不及抄。', response: ['那妳可以跟同學借一下筆記喔。', '不要因為漏掉一點就覺得自己跟不上啦。'], affection: 3, nextIncoming: '我最近也在整理一些歌詞，常常寫到一半又覺得不太對。' },
+      { text: '還好啦，只是報告有點多。', response: ['期末前真的會突然忙起來欸。', '妳記得留一點時間休息喔。'], affection: 2, nextIncoming: '我最近也在整理一些歌詞，常常寫到一半又覺得不太對。' },
+      { text: '我現在只想放假。', response: ['哈哈，我懂啦。', '再撐一下，忙完就可以好好睡幾天了。'], affection: 1, nextIncoming: '我最近也在整理一些歌詞，常常寫到一半又覺得不太對。' },
     ] },
-    { incoming: '我今天回家才發現，外套口袋裡還有一張小攤位的折價券。', choices: [
-      { text: '哈哈哈，你是不是忘記拿出來了？', response: ['對啊，剛剛洗手才摸到。', '還好沒有跟著衣服一起洗掉。'], affection: 3, nextIncoming: '妳平常會把小票根或折價券留下來嗎？' },
-      { text: '那張還能用嗎？', response: ['我看了一下，還沒過期。', '下次經過就可以拿去用。'], affection: 2, nextIncoming: '妳平常會把小票根或折價券留下來嗎？' },
-      { text: '你是不是常常把東西塞口袋忘記？', response: ['有時候啦，尤其是小小張的東西。', '妳不要把我講得那麼迷糊喔。'], affection: 1, nextIncoming: '妳平常會把小票根或折價券留下來嗎？' },
+    { incoming: '我最近也在整理一些歌詞，常常寫到一半又覺得不太對。', choices: [
+      { text: '你會不會寫到一半突然想到別的旋律？', response: ['會啊，有時候本來想寫這個，結果腦袋跑去別的地方。', '所以我會先把想到的東西記下來。'], affection: 3, nextIncoming: '妳平常聽歌會不會特別注意歌詞？' },
+      { text: '那你可以先放著，過幾天再看。', response: ['我也是這樣想欸。', '有時候隔一陣子回來看，會比較知道問題在哪。'], affection: 2, nextIncoming: '妳平常聽歌會不會特別注意歌詞？' },
+      { text: '寫不出來就先去吃東西啦。', response: ['哈哈，妳的解決方法很直接欸。', '不過吃點東西好像真的會比較有精神。'], affection: 1, nextIncoming: '妳平常聽歌會不會特別注意歌詞？' },
     ] },
-    { incoming: '妳平常會把小票根或折價券留下來嗎？', choices: [
-      { text: '會啊，有時候看到就會想起那天去哪裡。', response: ['我也是欸。', '有些東西明明很小，過一陣子看到還是會想起來。'], affection: 3, nextIncoming: '妳最近在學校有沒有遇到什麼好玩的事？' },
-      { text: '不會，我通常都直接丟掉。', response: ['哈哈，那妳包包應該比較不會亂。', '我有時候也會忘記清。'], affection: 2, nextIncoming: '妳最近在學校有沒有遇到什麼好玩的事？' },
-      { text: '看心情，有時候留著有時候就丟了。', response: ['這樣也很好啊，不用什麼都留。', '想留的再收起來就好。'], affection: 1, nextIncoming: '妳最近在學校有沒有遇到什麼好玩的事？' },
+    { incoming: '妳平常聽歌會不會特別注意歌詞？', choices: [
+      { text: '會啊，有時候一句歌詞會記很久。', response: ['我也是欸。', '有些話如果直接說出來很奇怪，放進歌裡就剛剛好。'], affection: 3, nextIncoming: '對了，妳最近有沒有想做但一直沒時間做的事？' },
+      { text: '我比較注意旋律，歌詞常常聽不清楚。', response: ['哈哈，這樣也很好啊。', '有時候旋律先讓人喜歡上，才會想去看歌詞。'], affection: 2, nextIncoming: '對了，妳最近有沒有想做但一直沒時間做的事？' },
+      { text: '看心情，有時候只想聽背景音樂。', response: ['嗯，我懂。', '有時候不想想太多，聽著就好。'], affection: 1, nextIncoming: '對了，妳最近有沒有想做但一直沒時間做的事？' },
     ] },
-    { incoming: '妳最近在學校有沒有遇到什麼好玩的事？', choices: [
-      { text: '有啊，昨天上課有人把老師叫錯名字。', response: ['真的假的？那老師有沒有生氣？', '我光想就覺得很好笑。'], affection: 3, nextIncoming: '下次妳遇到好玩的事，也可以再跟我說。' },
-      { text: '最近都在忙報告，好像沒什麼特別的。', response: ['那也很辛苦欸。', '忙完之後記得給自己放個假。'], affection: 2, nextIncoming: '下次妳遇到好玩的事，也可以再跟我說。' },
-      { text: '有啊，不過我先保密。', response: ['欸，還要保密喔？', '好啦，那我下次再問妳。'], affection: 1, nextIncoming: '下次妳遇到好玩的事，也可以再跟我說。' },
-    ] },
-    { incoming: '下次妳遇到好玩的事，也可以再跟我說。', choices: [
-      { text: '好啊，你也要跟我分享你的。', response: ['好啊，我想到就傳給妳。', '妳也不要嫌我講太多喔。'], affection: 3 },
-      { text: '那你要負責聽我抱怨。', response: ['哈哈，可以啊。', '不過如果是太累的事，還是要記得休息。'], affection: 2 },
-      { text: '你會不會覺得我很吵？', response: ['不會啦，怎麼會。', '妳想到什麼就說啊。'], affection: 1 },
+    { incoming: '對了，妳最近有沒有想做但一直沒時間做的事？', choices: [
+      { text: '我想找一天去書店慢慢逛。', response: ['聽起來不錯欸。', '找個沒課的下午去，不用趕時間。'], affection: 3 },
+      { text: '我想把房間整理好，但一直拖。', response: ['哈哈，這個好像很多人都會。', '先整理桌子就好，不用一次弄完。'], affection: 2 },
+      { text: '我想睡到自然醒。', response: ['這個願望很實際喔。', '希望妳真的可以找一天好好睡。'], affection: 1 },
     ] },
   ],
   stone: [
-    { incoming: '妳今天回家後有沒有把外套穿好？晚上風有點大。', choices: [
-      { text: '有啦，我已經換上厚的了。', response: ['那就好，最近晚上真的比較涼。', '不要為了方便就穿太少。'], affection: 3, nextIncoming: '我剛剛整理桌子，找到上次忘記收起來的便條紙。' },
-      { text: '你怎麼還記得這種小事？', response: ['剛好想到而已。', '今天走了一整天，怕妳回去會冷。'], affection: 2, nextIncoming: '我剛剛整理桌子，找到上次忘記收起來的便條紙。' },
-      { text: '我現在還不冷啦。', response: ['好，那就好。', '如果晚點覺得冷，記得加件衣服。'], affection: 1, nextIncoming: '我剛剛整理桌子，找到上次忘記收起來的便條紙。' },
+    { incoming: '妳最近那份報告有比較順利嗎？之前聽妳說卡在資料上。', choices: [
+      { text: '有，終於找到幾篇可以用的資料了。', response: ['那就好，接下來應該會比較順。', '記得把資料來源先整理起來，後面比較省時間。'], affection: 3, nextIncoming: '我最近整理照片，發現有幾張一直忘記拿去洗。' },
+      { text: '還是有點卡，我可能要換個方向。', response: ['如果原本的方向真的不好找，也可以試著縮小題目。', '不用急著一次決定。'], affection: 2, nextIncoming: '我最近整理照片，發現有幾張一直忘記拿去洗。' },
+      { text: '我現在看到報告兩個字就頭痛。', response: ['哈哈，先休息一下也沒關係。', '等精神好一點再繼續。'], affection: 1, nextIncoming: '我最近整理照片，發現有幾張一直忘記拿去洗。' },
     ] },
-    { incoming: '我剛剛整理桌子，找到上次忘記收起來的便條紙。', choices: [
-      { text: '上面寫了什麼？', response: ['是之前記的一些待辦，差點忘記。', '還好今天有整理到。'], affection: 2, nextIncoming: '妳平常會不會把事情都寫在紙上？' },
-      { text: '你是不是很常整理東西？', response: ['有空就會整理一下。', '不然東西一直堆著，之後更難找。'], affection: 3, nextIncoming: '妳平常會不會把事情都寫在紙上？' },
-      { text: '我桌上現在還有一堆紙，哈哈。', response: ['那妳有空也整理一下吧。', '不用一次整理完，先分一小疊就好。'], affection: 1, nextIncoming: '妳平常會不會把事情都寫在紙上？' },
+    { incoming: '我最近整理照片，發現有幾張一直忘記拿去洗。', choices: [
+      { text: '是之前出去玩的照片嗎？', response: ['對，有幾張光線滿好的。', '想說洗出來放在桌上。'], affection: 3, nextIncoming: '妳平常會把照片貼在房間嗎？' },
+      { text: '你怎麼突然想到要整理照片？', response: ['剛好翻到以前的底片。', '有些照片放久了，看到還是會想起當時的事。'], affection: 2, nextIncoming: '妳平常會把照片貼在房間嗎？' },
+      { text: '我相簿裡也有一堆還沒整理。', response: ['那可以慢慢挑，不用一次整理完。', '先把喜歡的幾張留下來就好。'], affection: 1, nextIncoming: '妳平常會把照片貼在房間嗎？' },
     ] },
-    { incoming: '妳平常會不會把事情都寫在紙上？', choices: [
-      { text: '會啊，不然我真的會忘記。', response: ['我也是。', '寫下來之後比較不會一直記掛著。'], affection: 3, nextIncoming: '最近有沒有哪件事讓妳覺得很開心？' },
-      { text: '不會，我都靠腦袋記。', response: ['那妳記性應該不錯。', '不過重要的事還是寫一下比較保險。'], affection: 2, nextIncoming: '最近有沒有哪件事讓妳覺得很開心？' },
-      { text: '想到才寫，常常寫完就忘記放哪裡。', response: ['哈哈，那妳可能需要固定放在一個地方。', '不然真的很容易找不到。'], affection: 1, nextIncoming: '最近有沒有哪件事讓妳覺得很開心？' },
+    { incoming: '妳平常會把照片貼在房間嗎？', choices: [
+      { text: '會啊，看到就會想起那段時間。', response: ['這樣滿好的。', '房間裡有一些自己的回憶，感覺會比較自在。'], affection: 3, nextIncoming: '最近有沒有哪件小事讓妳覺得很開心？' },
+      { text: '不太會，我怕牆壁變得很亂。', response: ['那就放在相簿裡也可以。', '不一定要貼出來才算留下來。'], affection: 2, nextIncoming: '最近有沒有哪件小事讓妳覺得很開心？' },
+      { text: '我都塞在抽屜裡，想到才拿出來看。', response: ['這樣也不錯啊。', '有時候突然翻到，還會有驚喜。'], affection: 1, nextIncoming: '最近有沒有哪件小事讓妳覺得很開心？' },
     ] },
-    { incoming: '最近有沒有哪件事讓妳覺得很開心？', choices: [
-      { text: '有啊，今天逛校園就滿開心的。', response: ['那就好。', '偶爾有這種不趕時間的日子，滿好的。'], affection: 3, nextIncoming: '希望妳最近都能有這樣的小空檔。' },
-      { text: '暫時想不到欸，最近都在忙。', response: ['那妳先把手上的事情慢慢做完。', '忙完之後再安排一點自己喜歡的事。'], affection: 2, nextIncoming: '希望妳最近都能有這樣的小空檔。' },
-      { text: '有人請我吃東西就會很開心。', response: ['哈哈，這個目標很實際。', '下次有機會再一起去吃。'], affection: 1, nextIncoming: '希望妳最近都能有這樣的小空檔。' },
-    ] },
-    { incoming: '希望妳最近都能有這樣的小空檔。', choices: [
-      { text: '那下次也要找你一起。', response: ['好啊，有空就一起走走。', '妳也要記得留時間給自己。'], affection: 3 },
-      { text: '你也是，不要一直忙。', response: ['我會的，謝謝妳。', '妳也早點休息。'], affection: 2 },
-      { text: '好啦，知道了。', response: ['嗯，晚安。', '明天再聊。'], affection: 1 },
+    { incoming: '最近有沒有哪件小事讓妳覺得很開心？', choices: [
+      { text: '今天有一段時間不用趕路，慢慢走很舒服。', response: ['這樣很好啊。', '偶爾不用趕時間，心情真的會差很多。'], affection: 3 },
+      { text: '我買到一直想吃的點心了。', response: ['哈哈，那很值得開心。', '喜歡的東西有買到就好。'], affection: 2 },
+      { text: '暫時想不到欸，最近都在忙。', response: ['沒關係，不用每天都要有什麼大事。', '有空就讓自己放鬆一下。'], affection: 1 },
     ] },
   ],
   yanming: [
-    { incoming: '今天回去之後還順利嗎？有沒有覺得太累？', choices: [
-      { text: '還好，今天其實滿充實的。', response: ['那就好。', '今天活動人多，回去休息一下比較好。'], affection: 3, nextIncoming: '我剛剛把今天的清單重新整理了一遍。' },
-      { text: '有一點累，不過還可以。', response: ['那妳今晚就早點休息。', '明天不要排太多事情。'], affection: 2, nextIncoming: '我剛剛把今天的清單重新整理了一遍。' },
-      { text: '我現在只想躺著不動。', response: ['哈哈，那就先好好休息。', '今天辛苦妳了。'], affection: 1, nextIncoming: '我剛剛把今天的清單重新整理了一遍。' },
+    { incoming: '妳最近期末報告的進度還好嗎？時間安排得過來嗎？', choices: [
+      { text: '有排進度，應該可以按時完成。', response: ['那很好，照著進度走就可以。', '如果中間有變動，再調整就好。'], affection: 3, nextIncoming: '我這幾天把練團室的器材清單重新整理了一次。' },
+      { text: '有點趕，我還有兩份報告沒開始。', response: ['那可以先把截止日期列出來。', '先處理比較急的，不用同時想全部。'], affection: 2, nextIncoming: '我這幾天把練團室的器材清單重新整理了一次。' },
+      { text: '我完全不想面對，想先放假。', response: ['哈哈，這個心情我理解。', '不過先完成一小部分，壓力會少一點。'], affection: 1, nextIncoming: '我這幾天把練團室的器材清單重新整理了一次。' },
     ] },
-    { incoming: '我剛剛把今天的清單重新整理了一遍。', choices: [
-      { text: '你真的很有條理欸。', response: ['習慣了，事情多的時候不記下來很容易漏。', '整理好之後也比較安心。'], affection: 3, nextIncoming: '妳平常做報告會先列大綱嗎？' },
-      { text: '有沒有發現我哪裡做錯？', response: ['沒有，妳今天幫忙的地方都做得很好。', '不用一直擔心自己有沒有弄錯。'], affection: 2, nextIncoming: '妳平常做報告會先列大綱嗎？' },
-      { text: '我看到清單就頭痛。', response: ['哈哈，那妳可以先列最重要的幾項。', '不用把所有事情一次寫完。'], affection: 1, nextIncoming: '妳平常做報告會先列大綱嗎？' },
+    { incoming: '我這幾天把練團室的器材清單重新整理了一次。', choices: [
+      { text: '是不是以後找東西會快很多？', response: ['是，位置和數量都重新確認過了。', '大家照著清單收，會比較不容易漏。'], affection: 3, nextIncoming: '妳平常做事情會先安排順序嗎？' },
+      { text: '你真的很習慣把事情整理得清清楚楚。', response: ['工作一多就需要這樣，不然容易忘記。', '整理好之後也比較放心。'], affection: 2, nextIncoming: '妳平常做事情會先安排順序嗎？' },
+      { text: '我看到清單就覺得頭很痛。', response: ['哈哈，那妳可以先列最重要的幾件。', '不需要一開始就寫得很完整。'], affection: 1, nextIncoming: '妳平常做事情會先安排順序嗎？' },
     ] },
-    { incoming: '妳平常做報告會先列大綱嗎？', choices: [
-      { text: '會啊，先列出來比較不會亂。', response: ['這樣很好，後面比較容易補內容。', '也比較知道自己還缺什麼。'], affection: 3, nextIncoming: '如果妳最近有事情卡住，也可以跟我說。' },
-      { text: '不會，我通常想到哪裡寫到哪裡。', response: ['那也可以，不過最後記得整理一下順序。', '不然讀的人可能會跟不上。'], affection: 2, nextIncoming: '如果妳最近有事情卡住，也可以跟我說。' },
-      { text: '看老師要求，有時候很隨便。', response: ['哈哈，至少要先看清楚題目。', '不然寫完才發現方向不對就麻煩了。'], affection: 1, nextIncoming: '如果妳最近有事情卡住，也可以跟我說。' },
+    { incoming: '妳平常做事情會先安排順序嗎？', choices: [
+      { text: '會啊，不然很容易漏掉。', response: ['這樣很好，事情多的時候特別有用。', '也比較知道哪一件要先完成。'], affection: 3, nextIncoming: '最近有沒有想學的新東西？' },
+      { text: '看情況，有時候想到什麼就先做什麼。', response: ['也可以，只要最後有確認就好。', '每個人習慣不太一樣。'], affection: 2, nextIncoming: '最近有沒有想學的新東西？' },
+      { text: '我常常排了計畫又不照著做。', response: ['那就把計畫排鬆一點。', '留一些彈性，反而比較容易做到。'], affection: 1, nextIncoming: '最近有沒有想學的新東西？' },
     ] },
-    { incoming: '如果妳最近有事情卡住，也可以跟我說。', choices: [
-      { text: '好啊，那我下次真的要問你了。', response: ['沒問題，能幫忙的我會盡量幫。', '不過也不要什麼都自己扛著。'], affection: 3, nextIncoming: '今天謝謝妳，早點休息。' },
-      { text: '我只是偶爾抱怨一下啦。', response: ['抱怨也沒關係。', '有時候說出來會比較輕鬆。'], affection: 2, nextIncoming: '今天謝謝妳，早點休息。' },
-      { text: '那你也可以跟我抱怨啊。', response: ['哈哈，好。', '有時候我也會需要有人聽我說幾句。'], affection: 1, nextIncoming: '今天謝謝妳，早點休息。' },
-    ] },
-    { incoming: '今天謝謝妳，早點休息。', choices: [
-      { text: '今天也謝謝你照顧大家。', response: ['大家一起幫忙才順利。', '晚安，明天也要加油。'], affection: 3 },
-      { text: '你也不要忙到太晚。', response: ['我會注意的，謝謝妳提醒。', '妳先休息。'], affection: 2 },
-      { text: '晚安，諺明哥。', response: ['晚安。', '有需要再傳訊息給我。'], affection: 1 },
+    { incoming: '最近有沒有想學的新東西？', choices: [
+      { text: '我想學一點吉他，但還沒開始。', response: ['可以先從簡單的和弦開始。', '有興趣的話，不用急著一次學很多。'], affection: 3 },
+      { text: '我想學做菜，至少不要每次都吃外面。', response: ['這個很實用。', '可以先從簡單的家常菜開始。'], affection: 2 },
+      { text: '我想學怎麼早睡。', response: ['這個確實需要練習。', '可以先固定一個時間把事情收尾。'], affection: 1 },
     ] },
   ],
 }
