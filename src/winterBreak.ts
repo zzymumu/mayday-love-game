@@ -291,7 +291,7 @@ export const winterBusStopRoutes: Record<WinterCharacterId, WinterBusStopRoute> 
       { kind: 'narration', text: '公車的車燈從街口轉進來，溫尚翊先看了一眼車牌，又伸手替你把背包肩帶拉正。他站在靠近車門的地方，等車停穩才示意你先上。' },
       { kind: 'dialogue', speaker: '溫尚翊', text: '上車裡面找個位置坐。到家傳訊息給我，還有，剛剛那件事不准回去跟瑪莎講。' },
       { kind: 'dialogue', speaker: '你', text: '為什麼？他知道了又會怎樣？' },
-      { kind: 'dialogue', speaker: '溫尚翊', text: '他會笑一整年啦，妳不要害我。' },
+      { kind: 'dialogue', speaker: '溫尚翊', text: '沒有為什麼啦！' },
       { kind: 'dialogue', speaker: '溫尚翊', text: '快上車！' },
     ],
     diarySummary: '溫尚翊一路都在嘴硬，明明在台上看見我，走下台又不肯承認。巷口那台機車突然衝出來時，他一把把我拉進懷裡，還對著騎士用台語髒話破口大罵。等他低頭發現我還靠在他胸前、整張臉都紅了，自己也跟著不自在起來。到了公車站，他還叮嚀我到家要傳訊息，最後又急著叫我快上車。這個人真的很會裝沒事。',
@@ -316,10 +316,8 @@ export const winterBusStopRoutes: Record<WinterCharacterId, WinterBusStopRoute> 
       },
       {
         sceneBlocks: [
-          { kind: 'narration', text: '走到騎樓比較窄的地方，身後忽然傳來機車催油門的聲音。阿信回頭時，車子已經貼著路邊衝過來。他反射性地跨到你前面，手臂擋了一下，另一手握住你的前臂把你往店家門邊帶。你被他拉得踉蹌半步，他自己也差點踩空。' },
-          { kind: 'dialogue', speaker: '陳信宏', text: '欸！慢一點啦！騎樓有人耶！' },
-          { kind: 'narration', text: '機車擦過去後，他先把你帶到鐵門旁，手還扶著你的手臂。等你站穩，他才像突然想起來似的鬆開，低頭看了看你的手腕和膝蓋。剛才那一下來得太快，他的表情也還沒完全緩過來。' },
-          { kind: 'narration', text: '你說自己沒事，他卻又確認了一次，直到你真的活動了一下手腕，他才吐出一口氣，伸手把被風吹亂的頭髮撥回耳後，像是想讓自己也鎮定下來。' },
+          { kind: 'narration', text: '走到騎樓比較窄的地方，身後忽然傳來機車催油門的聲音。阿信回頭時，車子已經貼著路邊衝過來。他立刻伸手拉住你的前臂，把你往店家門邊帶，自己也跟著跨到外側擋了一下。你被他拉得踉蹌半步，他趕緊扶住你，等車子擦身過去才慢慢鬆開手。' },
+          { kind: 'narration', text: '他沒有追著機車喊，也沒有回頭責怪對方，只是一直看著你。先確認你站穩，再看你的手腕和膝蓋，眉頭始終皺著，像是你還沒開口說沒事，他就沒辦法放心。' },
         ],
         promptSpeaker: '陳信宏',
         prompt: '有沒有撞到？手腕會不會痛？',
@@ -411,27 +409,26 @@ export const winterBusStopRoutes: Record<WinterCharacterId, WinterBusStopRoute> 
     ],
     rounds: [
       {
-        scene: '石頭沒有急著往前走，而是配合你的速度慢慢走在旁邊。他提起剛才那段交錯的旋律，說其中有一個音其實是臨時改的。你看見他講到音樂時眼神會變得很專注，連平常不太明顯的笑意都多了一點。',
+        scene: '剛才那段吉他的話題說完後，石頭沒有再繼續解釋。他走了一小段，才發現你一直看著他。路燈下，他抬眼和你對上視線，像是把這件事放在心裡一會兒了，終於還是問了出口。',
         promptSpeaker: '石錦航',
         prompt: '妳剛才是不是一直看我這邊？我有幾次抬頭，都剛好看到妳。',
         choices: [
-          { text: '因為你彈那段的時候，整個人都不太一樣。', response: [{ kind: 'dialogue', speaker: '石錦航', text: '哪裡不一樣？' }, { kind: 'narration', text: '他問得很認真，像是真的想知道你看見了什麼。你還沒回答，他就先低頭笑了一下，耳根悄悄紅了。' }], affection: { stone: 3 } },
-          { text: '我有聽到啊，你把最後那個音收得很漂亮。', response: [{ kind: 'dialogue', speaker: '石錦航', text: '妳連那個地方都有注意到喔？' }, { kind: 'narration', text: '他把那段旋律又輕輕哼了一次，還特地放慢速度，像是只想讓你一個人聽清楚。' }], affection: { stone: 3 } },
-          { text: '我在看你是不是也會看過來，結果真的有。', response: [{ kind: 'dialogue', speaker: '石錦航', text: '……原來妳有發現。' }, { kind: 'narration', text: '他沒有急著解釋，只是笑著把視線移到前方，走了一小段又回頭確認你還在身邊。' }], affection: { stone: 3 } },
+          { text: '因為你彈吉他的時候很專注，我就忍不住一直看。', response: [{ kind: 'dialogue', speaker: '石錦航', text: '是喔？我還以為妳在看別的地方。' }, { kind: 'narration', text: '他笑得很淺，視線落回前方，卻沒有掩飾聽見這句話後的開心。' }], affection: { stone: 3 } },
+          { text: '你每次抬頭，我們都剛好對到眼啊。', response: [{ kind: 'dialogue', speaker: '石錦航', text: '那可能不是剛好。' }, { kind: 'narration', text: '他說完才像意識到自己講得太直接，輕輕咳了一聲，把目光轉向路口。' }], affection: { stone: 4 } },
+          { text: '我在看你會不會發現，結果真的被你抓到了。', response: [{ kind: 'dialogue', speaker: '石錦航', text: '原來妳是故意的喔。' }, { kind: 'narration', text: '他忍不住笑了，沒有再追問，只把步伐放慢，和你並肩走在路燈下。' }], affection: { stone: 3 } },
         ],
       },
       {
         sceneBlocks: [
-          { kind: 'narration', text: '你們走到騎樓轉角，一台機車忽然從巷子裡斜斜衝出來。石頭聽見引擎聲，幾乎是反射地伸手攬住你的肩背，把你整個人往店家騎樓內縮了一步，自己則側身擋在外面。車頭從他身前掠過，琴袋撞上他的腿，他卻連低頭看一眼都沒有。' },
-          { kind: 'narration', text: '等機車騎遠，他沒有立刻問你有沒有嚇到，而是先蹲下來看你的鞋尖和膝蓋，確認你剛才退那一步有沒有擦到地面。你看見他眉頭皺得很深，手掌在半空停了一下，像是怕直接碰到你會讓你更不自在。' },
-          { kind: 'dialogue', speaker: '石錦航', text: '先別動，我看看妳有沒有擦傷，好不好？' },
+          { kind: 'narration', text: '你們走到騎樓轉角，一台機車忽然從巷子裡斜斜衝出來。石頭聽見引擎聲，幾乎是反射地攬住你的肩背，把你往店家騎樓裡帶，自己側身擋在外面。車頭從他身前掠過，琴袋撞上他的腿，他也沒低頭看，只先確認你已經退到安全的位置。' },
+          { kind: 'narration', text: '車子騎遠後，他仍扶著你的手臂，低頭看了看你的神情。見你還有點愣，他沒有催你往前，也沒有急著追問，只把聲音放輕，陪你在騎樓裡緩一緩。' },
         ],
         promptSpeaker: '石錦航',
-        prompt: '膝蓋有沒有碰到？手也給我看一下，我想確認一下。',
+        prompt: '有沒有嚇到？要不要先在這裡站一下？',
         choices: [
-          { text: '我真的沒事，你怎麼還蹲下來了啦。', response: [{ kind: 'dialogue', speaker: '石錦航', text: '我看清楚一點比較放心。妳剛剛退得很急，我怕鞋子磨到。' }, { kind: 'narration', text: '他確認你的膝蓋沒有擦傷，才站起來把琴袋重新背好。剛才那一下，他自己的手肘其實也撞到了牆邊，卻完全沒有提。' }, { kind: 'dialogue', speaker: '你', text: '那你自己呢？手肘有沒有撞到？' }, { kind: 'dialogue', speaker: '石錦航', text: '一點點而已，真的沒事。' }], affection: { stone: 4 } },
-          { text: '你剛才是不是也嚇到了？', response: [{ kind: 'dialogue', speaker: '石錦航', text: '嗯，有一點。我剛剛只怕沒把妳帶進來。' }, { kind: 'narration', text: '他說得很輕，沒有誇張地形容剛才有多危險，只是把手掌慢慢收回去，指節還因為用力而有些發白。' }, { kind: 'dialogue', speaker: '石錦航', text: '下次如果聽到車聲，先停一下，不要急著往前走，好嗎？' }], affection: { stone: 4 } },
-          { text: '你剛剛沒有拉我的手，反而把我整個往裡帶欸。', response: [{ kind: 'dialogue', speaker: '石錦航', text: '我看到車子過來時，妳手上還拿著東西，怕拉手會讓妳重心不穩。' }, { kind: 'narration', text: '他解釋得很仔細，像是在把剛才每一個動作重新想過一次。說完，他才抬起眼睛看你，確認你是真的沒事。' }, { kind: 'dialogue', speaker: '石錦航', text: '只要妳沒有受傷就好。' }], affection: { stone: 4 } },
+          { text: '我沒事啦，你剛剛反應好快。', response: [{ kind: 'dialogue', speaker: '石錦航', text: '妳沒事就好，剛才真的很突然。' }, { kind: 'narration', text: '他這才稍微放鬆，手卻還停在你手臂旁邊，等你自己站穩後才收回去。' }], affection: { stone: 4 } },
+          { text: '你剛才是不是也嚇到了？', response: [{ kind: 'dialogue', speaker: '石錦航', text: '嗯，有一點。車子突然衝出來，我也來不及多想。' }, { kind: 'narration', text: '他低頭看了看被琴袋撞到的腿，這時才像感覺到疼似的皺了下眉，卻先問你要不要繼續走。' }, { kind: 'dialogue', speaker: '石錦航', text: '如果還沒緩過來，我們就再站一下。' }], affection: { stone: 4 } },
+          { text: '我剛剛有點腿軟，可以陪我站一下嗎？', response: [{ kind: 'dialogue', speaker: '石錦航', text: '好啊，不急，我陪妳。' }, { kind: 'narration', text: '他把琴袋放到牆邊，站在你旁邊等了一會兒，沒有一直問東問西，只在你抬頭時回你一個安定的笑。' }], affection: { stone: 4 } },
         ],
       },
       {
