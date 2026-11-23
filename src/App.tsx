@@ -38,7 +38,7 @@ type ChatChoice = { text: string; response: string[]; affection: number }
 type ChatRound = { incoming: string; choices: ChatChoice[] }
 type CallLogEntry = { id: string; character: RouteCharacterId; status: 'answered' | 'missed'; time: string; date?: string }
 type CallTranscriptLine = { speaker: RouteCharacterId | 'me'; text: string }
-type CallExperienceSource = 'first-chapter' | 'day2' | 'free-chat' | 'month-visit'
+type CallExperienceSource = 'first-chapter' | 'day2' | 'free-chat' | 'month-visit' | 'month-free-chat'
 type CharacterExperienceRecord = {
   character: RouteCharacterId
   source: CallExperienceSource
@@ -1333,7 +1333,7 @@ function App() {
   const [callExperienceContext, setCallExperienceContext] = useState<CharacterExperienceRecord | null>(() => {
     try {
       const saved = JSON.parse(localStorage.getItem('mayday-call-experience-context') ?? 'null') as CharacterExperienceRecord | null
-      return saved && freeTimeOrder.includes(saved.character) && ['first-chapter', 'day2', 'free-chat', 'month-visit'].includes(saved.source) && typeof saved.date === 'string' ? saved : null
+      return saved && freeTimeOrder.includes(saved.character) && ['first-chapter', 'day2', 'free-chat', 'month-visit', 'month-free-chat'].includes(saved.source) && typeof saved.date === 'string' ? saved : null
     } catch { return null }
   })
   const [pendingCallCharacter, setPendingCallCharacter] = useState<RouteCharacterId | null>(() => {
@@ -1850,7 +1850,7 @@ function App() {
     const earlierRouteRounds = character === 'wen'
       ? (context.day2StrollAccepted ? wenStrollCallScript : wenHomeCallScript)
       : thresholdCallScripts[character]
-    const selectedRounds = context.source === 'month-visit'
+    const selectedRounds = context.source === 'month-visit' || context.source === 'month-free-chat'
       ? monthVisitCallScripts[character]
       : context.source === 'free-chat'
         ? [freeChatCallOpeners[character], ...earlierRouteRounds.slice(1)]
@@ -2027,9 +2027,84 @@ function App() {
     changeStage('month-visit-complete')
   }
 
+  const startMonthFreeChat = () => {
+    if (!monthVisitTarget) return
+    const character = monthVisitTarget
+    if (localStorage.getItem('mayday-month-free-chat-started') === 'true') {
+      setSelectedSmsThread(character)
+      setActiveApp('messages')
+      changeStage('month-free-chat')
+      return
+    }
+    setMonthFreeChatStarted(true)
+    localStorage.setItem('mayday-month-free-chat-started', 'true')
+    setMonthFreeChatRound(0)
+    localStorage.setItem('mayday-month-free-chat-round', '0')
+    setMonthFreeChatReplied(false)
+    localStorage.setItem('mayday-month-free-chat-replied', 'false')
+    setMonthFreeChatReplies([])
+    localStorage.setItem('mayday-month-free-chat-replies', '[]')
+    appendChatMessages(character, [
+      { from: 'me', text: monthFreeChatOpeners[character], time: '18:10' },
+      { from: character, text: monthFreeChatScripts[character][0].incoming, time: '18:11' },
+    ], '11月16日・晚上')
+    setSelectedSmsThread(character)
+    setActiveApp('messages')
+    changeStage('month-free-chat')
+  }
+
+  const chooseMonthFreeChatReply = (choiceIndex: number) => {
+    if (!monthVisitTarget || monthFreeChatReplied) return
+    const character = monthVisitTarget
+    const round = monthFreeChatScripts[character][monthFreeChatRound]
+    const choice = round?.choices[choiceIndex]
+    if (!choice) return
+    const minute = 12 + monthFreeChatRound * 2
+    const time = '18:' + String(minute).padStart(2, '0')
+    appendChatMessages(character, [
+      { from: 'me', text: choice.text, time },
+      ...choice.response.map((text) => ({ from: character, text, time })),
+    ], '11月16日・晚上')
+    const nextReplies = [...monthFreeChatReplies, choiceIndex]
+    setMonthFreeChatReplies(nextReplies)
+    localStorage.setItem('mayday-month-free-chat-replies', JSON.stringify(nextReplies))
+    addRouteAffection(character, choice.affection)
+    if (monthFreeChatRound < monthFreeChatScripts[character].length - 1) {
+      const nextRound = monthFreeChatRound + 1
+      setMonthFreeChatRound(nextRound)
+      localStorage.setItem('mayday-month-free-chat-round', String(nextRound))
+      appendChatMessages(character, [{ from: character, text: monthFreeChatScripts[character][nextRound].incoming, time: '18:' + String(minute + 1).padStart(2, '0') }], '11月16日・晚上')
+      setMonthFreeChatReplied(false)
+      localStorage.setItem('mayday-month-free-chat-replied', 'false')
+    } else {
+      setMonthFreeChatReplied(true)
+      localStorage.setItem('mayday-month-free-chat-replied', 'true')
+    }
+  }
+
+  const finishMonthFreeChat = () => {
+    if (!monthVisitTarget || !monthFreeChatStarted || !monthFreeChatReplied || monthFreeChatRound !== 4 || monthFreeChatReplies.length !== 5) return
+    const experience: CharacterExperienceRecord = {
+      character: monthVisitTarget,
+      source: 'month-free-chat',
+      date: saveGameDate,
+      eventKey: monthVisitRoutes[monthVisitTarget].title + '・晚間自由對話',
+      day2StrollAccepted,
+      choices: [...monthFreeChatReplies],
+    }
+    const nextExperienceLog = { ...sharedExperienceLog, [monthVisitTarget]: experience }
+    setSharedExperienceLog(nextExperienceLog)
+    localStorage.setItem('mayday-shared-experience-log', JSON.stringify(nextExperienceLog))
+    localStorage.setItem('mayday-month-free-chat-complete', 'true')
+    setSelectedSmsThread(null)
+    setActiveApp(null)
+    changeStage('month-diary')
+  }
+
   const finishMonthChapter = () => {
     setSelectedSmsThread(null)
     setActiveApp(null)
+    localStorage.setItem('mayday-month-day-complete', 'true')
     changeStage('completed')
   }
 
