@@ -3948,23 +3948,23 @@ function App() {
     const diaryFocusOrder: WinterCharacterId[] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
     const focusCharacter = diaryFocusOrder.reduce((best, character) => routeAffection[character] > routeAffection[best] ? character : best, diaryFocusOrder[0])
     const stageFocusSummaries: Record<Exclude<WinterCharacterId, 'yanming'>, string> = {
-      wen: '溫尚翊站在燈光底下，袖口捲起來，吉他背帶斜過肩膀。間奏時他往前踏了一步，手指在琴弦上跑得又快又穩，抬頭時還剛好和我對上眼。最過分的是，他明明看見我一直盯著他，還故意裝作只是剛好往台下看。那個忍著笑的表情，我到現在想起來都覺得心跳快了一拍。',
-      ashin: '阿信一走到麥克風前，整個人就像換了個樣子。第一句唱出來，原本還在聊天的人都安靜了；唱到副歌，他看見台下跟著唱，眼睛彎起來的那個笑真的很溫柔。中間換歌時，他還特地找到我的位置，朝我點了點頭。我明明只是坐在台下，卻有種被他好好看見的感覺。',
-      masa: '瑪莎拿起 Bass 之後反而安靜得不得了，低頭調好旋鈕，手指一落弦，整首歌的節奏就穩穩地被他托住。間奏時他還和溫尚翊、石頭用眼神較勁，最後收音收得漂亮得要命。偏偏一抬頭看到我在笑，他又立刻挑眉，一副「有聽到我的厲害吧」的樣子，真是拿他沒辦法。',
-      stone: '石頭在舞台另一邊低著頭彈吉他，沒有刻意搶鏡，卻把每個和弦都接得剛剛好。溫尚翊的旋律往上走時，他穩穩地把下一拍接住，兩把吉他疊在一起的那一刻，我真的有點看呆。最後他抬起頭朝我笑了一下，很淡，卻讓我記了整晚。',
+      wen: '溫尚翊站在舞台中央，袖口捲到手肘，吉他背帶斜過胸前。暖黃燈光落在他的側臉，他低頭彈奏時手指俐落得像在琴弦上跑過一陣風；間奏往前踏步、抬眼找到我的那一瞬間，整個人耀眼得讓我忘了拍手。他明明看見我一直盯著他，還故意揚起嘴角，像是知道自己很帥，偏偏只讓我看見。',
+      ashin: '阿信握著麥克風唱出第一句時，整間店像慢慢靜了下來。副歌他走到舞台前沿，微微仰頭唱出那個長音，側燈落在眉眼和額前的髮絲上，聲音又亮又有力量。最讓我心動的是，他唱完睜開眼就找到我的位置，看見我跟著唱，眼睛彎起來的笑意全留在下一句歌裡。',
+      masa: '瑪莎把 Bass 往肩上一掛，平常那副愛吐槽的表情一下子收起來。低音一落，整首歌的節奏就被他穩穩抓住；他手指沿著琴頸俐落移動，和怪獸隔著舞台交換眼神、下一拍默契接上。那個專注又帶點得意的樣子真的很帥，偏偏一抬頭看見我在笑，他又挑眉，好像在問我有沒有聽懂他的厲害。',
+      stone: '石頭站在舞台另一側，沒有刻意搶鏡，卻把每個音都彈得乾淨又準。燈光沿著肩線落下，他低頭專注地接住怪獸往上走的旋律，兩把吉他交錯時，他抬眼的神情忽然變得很銳利。最後一個和弦落下，他才看見我一直望著他，回給我一個很淡、卻讓我記了整晚的笑。',
     }
     const examSummary = winterExamTutoringUnlocked
       ? '我本來只是想找溫尚翊救救我的統計學，沒想到他一見面就拿聯考數學滿分來炫耀，還一副「這種程度難不倒我」的樣子，真的很欠揍。可是他連飲料都先替我買好了，看到我盯著點心櫃檯看，休息時又真的跑去買了一份。講義攤開後，他把椅子挪到我旁邊，偶爾低頭跟我看同一頁，肩膀近得讓我有點分心。明明一直嘴硬說自己只是順手，卻連我哪裡看不懂、什麼時候該休息都記得。最後我問他下次還能不能找他，他說「又不是只有補習才能找我」。這句話害我一路走出圖書館都還在想。'
       : '期末考那幾天，我每天都在跟機率統計搏鬥。講義上那些公式看起來都認識，放進題目裡卻像故意跟我作對。好不容易考完，才發現自己連抱怨的力氣都快用完了。'
     const rehearsalSummary = focusCharacter === 'yanming'
-      ? '今天下午最讓我忘不掉的，是諺明哥終於坐上鼓椅的那一刻。大家原本只是鬧著玩，他還推說很久沒打了，結果袖子一捲、鼓棒落下，整個房間像忽然被他抓住節奏。低音鼓踩得穩，軍鼓和鈸聲一層層推開，連佑達都站在旁邊看傻了。我本來想跟著大家起鬨，結果那幾秒竟然只顧著看他的手。明明只是幾個小節，我卻一直記到晚上。後來他把鼓棒放回架上，留在練團室幫忙看器材，沒有跟我們去酒吧；可那段節奏一直在我腦子裡，怎麼也散不掉。'
-      : '下午的練團室根本沒有安靜過。瑪莎和佑達為了半拍到底是誰慢吵了好幾輪，溫尚翊一邊調音一邊叫他們先把歌唱完，阿信和石頭倒是很有默契地在旁邊笑。諺明哥後來還是被大家拱上鼓椅，敲了幾個小節，佑達那個看傻眼的表情真的很好笑。等他們重新把歌序順過一遍，五個人就帶著器材出發去酒吧了。'
+      ? '今天下午最讓我忘不掉的，是諺明哥坐上鼓椅的那一刻。大家起鬨時他還笑著推辭，真的拿起鼓棒後卻把袖子捲到手肘，背脊挺直，先在指間轉了半圈才落下第一記。低音鼓踩得穩，軍鼓和鈸聲一層層推開，鼓棒在他手裡俐落地翻飛，連佑達都看得忘了說話。我本來也想跟著大家起鬨，最後卻只顧著看他的手和隨節奏起落的肩背。最後一下收住，他額角帶著汗，卻只是笑著說「手還記得啦」。他後來留在練團室幫忙看器材，沒有跟我們去酒吧，可那幾個小節我到晚上都還記得。'
+      : '下午的練團室根本沒有安靜過。瑪莎和佑達為了半拍到底是誰慢吵了好幾輪，怪獸一邊調音一邊叫他們先把歌唱完，阿信和石頭倒是很有默契地在旁邊笑。諺明哥後來還是被大家拱上鼓椅，敲了幾個小節，佑達那個看傻眼的表情真的很好笑。等他們重新把歌序順過一遍，五個人就帶著器材出發去酒吧了。'
     const livehouseSummary = focusCharacter === 'yanming'
       ? '到了酒吧，五個人站上小小的舞台，跟下午在練團室鬧成一團的樣子完全不同。阿信一開口，店裡就慢慢安靜下來；溫尚翊和石頭的吉他互相接住，瑪莎的 Bass 把節奏壓得穩穩的，佑達在後面打得熱鬧。我跟著台下的人一起拍手、一起唱，卻也在某個鼓點落下時想起下午的諺明哥。諺明哥沒有參加今晚的駐唱，舞台上的鼓聲是佑達打的；可每當鼓點落下，我還是會想起下午他坐上鼓椅的樣子。'
       : '到了酒吧，五個人一站上台，剛才還在練團室互相吐槽的聲音就全變成了音樂。阿信一開口，店裡真的安靜了下來；溫尚翊和石頭的吉他一來一往，瑪莎的 Bass 把整首歌托得很穩，佑達在後面越打越起勁。' + stageFocusSummaries[focusCharacter]
     const pickupSummary = winterYanmingPickupAvailable
       ? '散場後手機震了一下，諺明哥真的已經在酒吧外面等我，還多帶了一件外套。明明下午才說結束後傳訊息給他，沒想到他真的把這句話記住了。'
-      : '散場時，酒吧裡的掌聲還沒完全停下來，佑達留下來收器材，其他人陪我走到門口。夜風一吹，才發現剛才唱到發熱的臉慢慢涼了下來。'
+      : '散場時，酒吧裡的掌聲還沒完全停下來，佑達留下來收器材。我站在門邊等著大家收拾好，夜風從門縫灌進來，才發現剛才唱到發熱的臉慢慢涼了下來。'
     const beforeSleepSummary = focusCharacter === 'yanming'
       ? '回到家洗完澡，我才發現自己一路都在哼下午聽見的那段節奏。明明晚上看了那麼精彩的演出，最後留在腦子裡的，卻是諺明哥坐上鼓椅時那個有點不好意思的笑。原來有些人不用站在舞台上，也會讓人記很久。'
       : '回到家以後，耳朵裡還留著最後一首歌的尾音。我把外套掛好，才發現自己走了一路還在想剛才那個眼神、那句話，或是那個沒來得及多停留的瞬間。今天明明累得要命，卻有點捨不得這麼快睡著。'
@@ -4236,7 +4236,7 @@ function App() {
   const currentYearEndFireworksRound = yearEndFireworksRounds[yearEndFireworksReplies.length] ?? null
   const currentWinterExamRound = winterExamTutoringRounds[winterExamReplies.length] ?? null
   const currentWinterPracticeRound = winterBreakPracticeRounds[winterPracticeReplies.length] ?? null
-  const winterFocusOrder: WinterCharacterId[] = ['wen', 'ashin', 'masa', 'stone']
+  const winterFocusOrder: WinterCharacterId[] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
   const winterGigFocusCharacter = winterFocusOrder.reduce((best, character) => routeAffection[character] > routeAffection[best] ? character : best, winterFocusOrder[0])
   const currentGreetingRound = greetingChats[currentGreetingId][Math.min(greetingRound, greetingChats[currentGreetingId].length - 1)]
   const currentThreadMessages: SmsMessage[] = selectedSmsThread === 'wen'
@@ -5760,7 +5760,7 @@ function App() {
                       <StoryBlocks blocks={winterGigFocusBlocks[winterGigFocusCharacter]} />
                     </div>
                     <StoryBlocks blocks={winterBreakGigEndingBlocks} />
-                    <div className="reunion-pause-note">今晚的演出已經結束。佑達留下來整理器材，其他人先到門口透透氣。</div>
+                    <div className="reunion-pause-note">今晚的演出已經結束。佑達留下來整理器材，你可以決定和誰一起走去公車站。</div>
                   </div>
                   <div className="story-action-bar">
                     <button className="story-primary-button" onClick={finishWinterGig}>演出結束，走出酒吧 <ChevronRight size={15} /></button>
