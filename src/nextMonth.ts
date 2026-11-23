@@ -2,12 +2,15 @@ export type NextMonthCharacterId = 'wen' | 'masa' | 'ashin' | 'stone' | 'yanming
 export type NextMonthStoryBlock = { kind: 'narration' | 'dialogue' | 'aside'; text: string; speaker?: string }
 export type NextMonthChoice = { text: string; response: string[]; affection: number }
 export type NextMonthRound = { scene?: string; prompt: string; choices: NextMonthChoice[] }
+export type NextMonthInviteReplyChoice = NextMonthChoice & { accepted: boolean }
 export type NextMonthInviteRoute = {
   title: string
   location: string
   invitation: NextMonthStoryBlock[]
   teasePrompt?: string
   teaseChoices?: NextMonthChoice[]
+  replyPrompt: string
+  replyChoices: NextMonthInviteReplyChoice[]
   activity: NextMonthStoryBlock[]
 }
 export type NextMonthOpenDayRoute = {
@@ -47,8 +50,15 @@ export const nextMonthInviteRoutes: Record<NextMonthCharacterId, NextMonthInvite
     invitation: [
       { kind: 'dialogue', speaker: '溫尚翊', text: '欸，妳這禮拜六有空嗎？' },
       { kind: 'dialogue', speaker: '溫尚翊', text: '我這邊多兩張電影票，放著也是浪費，妳要不要一起去看？' },
+      { kind: 'dialogue', speaker: '溫尚翊', text: '如果妳有空啦。' },
     ],
-    teasePrompt: '他停了一下，又補了一句：「如果妳有空啦。」你想怎麼回他？',
+    teasePrompt: '你想怎麼回他？',
+    replyPrompt: '所以，妳到底要不要跟我去啦？',
+    replyChoices: [
+      { text: '好啊！電影幾點開始？', response: ['晚上七點啦，我們可以先去吃點東西。', '那就這樣說定喔。'], affection: 3, accepted: true },
+      { text: '可以啊，不過抓娃娃你要負責喔。', response: ['蛤？怎麼還附帶這個條件啦。', '好啦，如果夾不到妳不准笑我。'], affection: 3, accepted: true },
+      { text: '這週六可能不行欸，下次再約我好不好？', response: ['喔，好啊，沒關係啦。', '妳有空再跟我說就好。'], affection: 0, accepted: false },
+    ],
     teaseChoices: [
       { text: '買多了？你原本是約誰啊？', response: ['蛤？沒有約誰啦！', '就剛好買多了，妳問題很多欸。'], affection: 3 },
       { text: '兩張？那你怎麼不找別人去？', response: ['我就問妳啊，不然咧？', '妳到底要不要去啦！'], affection: 2 },
@@ -75,6 +85,12 @@ export const nextMonthInviteRoutes: Record<NextMonthCharacterId, NextMonthInvite
       { kind: 'dialogue', speaker: '蔡昇晏', text: '最近有一間夜市多了幾攤吃的，帶妳去看看啊。' },
       { kind: 'dialogue', speaker: '蔡昇晏', text: '先說好，妳不要每一攤都只看不買，站在那邊選半天。' },
     ],
+    replyPrompt: '妳要不要一起去？',
+    replyChoices: [
+      { text: '好啊！你說的那幾攤我都想吃。', response: ['哈哈，妳先不要期待太高。', '那晚上見，記得不要遲到。'], affection: 3, accepted: true },
+      { text: '你是不是想找人陪你吃？', response: ['不然咧，一個人吃很無聊欸。', '所以妳到底來不來？'], affection: 2, accepted: true },
+      { text: '今天晚上不行欸，下次再去！', response: ['好啦，那下次再找時間。', '妳不要到時候又說忘記。'], affection: 0, accepted: false },
+    ],
     activity: [
       { kind: 'narration', text: '晚上你們在夜市入口碰面。人潮比想像中多，攤販的燈一盞接一盞亮著，空氣裡混著胡椒、油炸食物和甜湯的味道。瑪莎一見到你就把手裡的零錢袋晃了晃，說今天的任務是把幾家新攤位都吃過一遍。' },
       { kind: 'dialogue', speaker: '蔡昇晏', text: '走啦，先去買那個。聽說還不錯。' },
@@ -93,6 +109,12 @@ export const nextMonthInviteRoutes: Record<NextMonthCharacterId, NextMonthInvite
       { kind: 'dialogue', speaker: '石錦航', text: '最近晚上天氣還不錯。' },
       { kind: 'dialogue', speaker: '石錦航', text: '妳有沒有空？想不想去河堤走走，順便看看星星？' },
       { kind: 'dialogue', speaker: '石錦航', text: '如果太冷的話，我們就早點回來。' },
+    ],
+    replyPrompt: '妳如果願意，我們可以找個時間去走走。',
+    replyChoices: [
+      { text: '好啊，聽起來很舒服。', response: ['那我們晚一點再出發，天黑前可以走一段。', '如果冷的話就早點回來。'], affection: 3, accepted: true },
+      { text: '你是不是有什麼話想跟我說？', response: ['沒有特別啦，只是想說最近都在忙。', '如果妳願意一起走走，我會很開心。'], affection: 2, accepted: true },
+      { text: '今天可能不太方便，下次好嗎？', response: ['好啊，沒關係。', '妳先忙自己的事情，改天再約。'], affection: 0, accepted: false },
     ],
     activity: [
       { kind: 'narration', text: '晚上你們沿著河堤慢慢走。遠處的車燈在橋面上移動，河面偶爾反出一點光，風比白天大一些。石頭把帶來的外套遞給你，自己只穿著原本那件，說走一走就不冷了。' },
@@ -113,6 +135,12 @@ export const nextMonthInviteRoutes: Record<NextMonthCharacterId, NextMonthInvite
       { kind: 'dialogue', speaker: '劉諺明', text: '妳這幾天有沒有空？想拜託妳過來幫忙整理一下東西。' },
       { kind: 'dialogue', speaker: '劉諺明', text: '不會耽誤妳太久，忙完我請妳吃點東西。' },
     ],
+    replyPrompt: '妳方便的話，再跟我說一聲就好。',
+    replyChoices: [
+      { text: '好啊，我可以去幫忙。', response: ['那就麻煩妳了。', '忙完我會請妳吃飯，不會讓妳白忙。'], affection: 3, accepted: true },
+      { text: '怎麼突然缺人？你們最近很忙嗎？', response: ['最近場地安排比較多，大家都分身乏術。', '妳有空再來就好，不用勉強。'], affection: 2, accepted: true },
+      { text: '今天不太方便欸，下次再找我！', response: ['好，沒問題。', '妳先忙自己的事。'], affection: 0, accepted: false },
+    ],
     activity: [
       { kind: 'narration', text: '你到練團室時，諺明已經把需要整理的器材和清單放在桌上。他先帶你確認哪些東西要搬、哪些要留下，再把幾條導線分開放好。整個地方看起來比平常更忙，門外不時有人進來詢問時段。' },
       { kind: 'dialogue', speaker: '劉諺明', text: '今天真的麻煩妳了。這幾箱先放到裡面，標籤朝外，等一下比較好找。' },
@@ -131,6 +159,12 @@ export const nextMonthInviteRoutes: Record<NextMonthCharacterId, NextMonthInvite
       { kind: 'dialogue', speaker: '陳信宏', text: '欸，妳最近有沒有空啊？' },
       { kind: 'dialogue', speaker: '陳信宏', text: '我有點想去唱歌，想說問妳要不要一起去。' },
       { kind: 'dialogue', speaker: '陳信宏', text: '一個人去好像有點無聊，妳如果有空再跟我說就好。' },
+    ],
+    replyPrompt: '妳有空的話，我們一起去，好不好？',
+    replyChoices: [
+      { text: '好啊！我也想唱歌了。', response: ['真的喔？那太好了。', '妳想唱什麼可以先想一下，我去訂時間。'], affection: 3, accepted: true },
+      { text: '你想唱歌怎麼不找怪獸他們？', response: ['哈哈，他們有時候會比較忙嘛。', '而且我也想找妳一起唱啊。'], affection: 2, accepted: true },
+      { text: '今天可能不行欸，下次我們再約。', response: ['沒關係啦，妳有空再說就好。', '下次再找時間也可以。'], affection: 0, accepted: false },
     ],
     activity: [
       { kind: 'narration', text: '你們約在KTV樓下碰面。阿信比約定時間早到了一點，手裡拿著飲料單，看到你時先笑著問你有沒有吃晚餐。進包廂後，他把點歌本推到你面前，說今天你先選，不用客氣。' },
