@@ -264,34 +264,34 @@ export const nextMonthInviteRoutes: Record<NextMonthCharacterId, NextMonthInvite
     title: '一起去唱KTV',
     location: '台北・KTV',
     invitation: [
-      { kind: 'dialogue', speaker: '陳信宏', text: '欸，妳最近有沒有空啊？' },
-      { kind: 'dialogue', speaker: '陳信宏', text: '我有點想去唱歌，想說問妳要不要一起去。' },
-      { kind: 'dialogue', speaker: '陳信宏', text: '一個人去好像有點無聊，妳如果有空再跟我說就好。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '欸，妳最近有沒有空啊？我想問妳一件事喔。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '我最近有點想去唱歌啦，想說妳要不要一起去？' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '自己去好像有點無聊馁，妳有空的話陪我去，好不好？' },
     ],
     replyPrompt: '妳有空的話，我們一起去，好不好？',
     replyChoices: [
-      { text: '好啊！我也想唱歌了。', response: ['真的喔？那太好了。', '妳想唱什麼可以先想一下，我去訂時間。'], affection: 3, accepted: true },
-      { text: '你想唱歌怎麼不找怪獸他們？', response: ['哈哈，他們有時候會比較忙嘛。', '而且我也想找妳一起唱啊。'], affection: 2, accepted: true },
+      { text: '好啊！我也想唱歌了。', response: ['真的喔？那太好了啦。', '妳想唱什麼可以先想一下，我去訂時間喔。'], affection: 3, accepted: true },
+      { text: '你想唱歌怎麼不找怪獸他們？', response: ['哈哈，他們最近也忙嘛。', '而且我也想找妳一起唱啦。'], affection: 2, accepted: true },
       { text: '今天可能不行欸，下次我們再約。', response: ['沒關係啦，妳有空再說就好。', '下次再找時間也可以。'], affection: 0, accepted: false },
     ],
     rounds: [
       { scene: '包廂裡的燈光有點暗，點歌本攤在桌上。阿信拿著筆，等你先選歌。', prompt: '妳先點啦，今天第一首想唱什麼？', choices: [
         { text: '我想唱一首五月天的歌！', response: ['好啊～那我可以跟妳一起唱嗎？', '妳先選，我幫妳找伴奏。'], affection: 3 },
         { text: '你先唱一首給我聽嘛。', response: ['欸？突然這樣我會有點不好意思喔。', '好啦，那我先唱一首比較熟的。'], affection: 2 },
-        { text: '我還沒想好，我們先點吃的。', response: ['哈哈，好啊，妳慢慢看。', '我先點個薯條，不然等一下唱到一半會餓。'], affection: 1 },
+        { text: '我還沒想好，我們先點吃的。', response: ['哈哈，好啊，妳慢慢看啦。', '我先點個薯條，不然等一下唱到一半會餓。'], affection: 1 },
       ] },
       { scene: '第一首歌唱完，阿信把麥克風放回桌上，自己先笑了出來。他剛剛有一句進得太早，還被你抓包。', prompt: '剛剛是不是有一句唱太快了？', choices: [
         { text: '有啊！我都還沒唱你就進來了。', response: ['哈哈，對不起啦，我剛剛太急了。', '下一首我會等妳，不搶拍了。'], affection: 3 },
-        { text: '還好啦，我覺得滿可愛的。', response: ['真的喔？那我就放心了。', '妳不要只是安慰我喔。'], affection: 2 },
+        { text: '還好啦，我覺得滿可愛的。', response: ['真的喔？那我就放心啦。', '妳不要只是安慰我喔。'], affection: 2 },
         { text: '你是不是太久沒來唱歌了？', response: ['有一點欸，最近都在忙別的事情。', '今天剛好可以放鬆一下。'], affection: 1 },
       ] },
       { scene: '服務生送來飲料和小吃。阿信把薯條推到你面前，又翻開點歌本，停在一首你們都聽過的歌。', prompt: '這首妳會唱嗎？要不要一起唱？', choices: [
-        { text: '會啊！這首我很熟。', response: ['太好了，那我們一起唱～', '副歌妳唱，我來接後面。'], affection: 3 },
-        { text: '我會一點點，你不要笑我喔。', response: ['不會啦，唱歌本來就是開心就好。', '我可以小聲一點陪妳唱。'], affection: 2 },
-        { text: '我想聽你唱完整首。', response: ['好啊，那妳要幫我打分數嗎？', '不要太嚴格喔。'], affection: 1 },
+        { text: '會啊！這首我很熟。', response: ['太好了啦，那我們一起唱～', '副歌妳唱，我來接後面。'], affection: 3 },
+        { text: '我會一點點，你不要笑我喔。', response: ['不會啦，唱歌本來就是開心就好。', '我可以小聲一點陪妳唱喔。'], affection: 2 },
+        { text: '我想聽你唱完整首。', response: ['好啊，那妳要幫我打分數喔？', '不要太嚴格喔。'], affection: 1 },
       ] },
       { scene: '唱到後面，你們開始亂點歌，還把幾首完全不同風格的歌接在一起。阿信笑到差點按錯下一首。', prompt: '妳是不是故意挑這種歌來整我？', choices: [
-        { text: '對啊，想看看你到底會多少首。', response: ['哈哈，妳這樣很像在考試欸。', '好啦，我盡量不要讓妳失望。'], affection: 3 },
+        { text: '對啊，想看看你到底會多少首。', response: ['哈哈，妳這樣很像在考試喔。', '好啦，我盡量不要讓妳失望。'], affection: 3 },
         { text: '沒有啦，我只是覺得這首很好笑。', response: ['我也覺得欸，剛剛差點笑到唱不下去。', '下次可以再找一些奇怪的歌來唱。'], affection: 2 },
         { text: '你剛剛唱得太認真，我忍不住想鬧你。', response: ['欸，被妳發現了喔。', '那我下首歌要更認真一點了。'], affection: 1 },
       ] },
@@ -527,9 +527,9 @@ export const nextMonthFreeChatOpeners: Record<NextMonthCharacterId, NextMonthCha
     { text: '你現在在幹嘛？我想跟你講件事。', response: '剛坐下來。妳又有什麼新鮮事？', affection: 1 },
   ],
   ashin: [
-    { text: '我回到家了～你現在有空嗎？', response: '有啊，妳到家就好。怎麼啦？', affection: 3 },
-    { text: '我剛剛想到一首歌，想問你喔。', response: '好啊，哪一首？妳說說看。', affection: 2 },
-    { text: '今天有件小事想跟你分享。', response: '好呀，我在聽。', affection: 1 },
+    { text: '我回到家了～你現在有空嗎？', response: '有啊～妳到家就好啦，怎麼了？', affection: 3 },
+    { text: '我剛剛想到一首歌，想問你喔。', response: '好啊，哪一首？妳跟我說說看喔。', affection: 2 },
+    { text: '今天有件小事想跟你分享。', response: '好呀，妳慢慢說啦，我在聽。', affection: 1 },
   ],
   stone: [
     { text: '你到家了嗎？我剛剛想到一件事。', response: '到了，妳呢？怎麼了？', affection: 3 },
@@ -589,8 +589,8 @@ export const nextMonthFreeChatContextRounds: Record<NextMonthCharacterId, Record
     ] },
   },
   ashin: {
-    invite: { incoming: '剛剛在KTV唱的那首歌，妳回家之後有沒有又哼起來？', choices: [
-      { text: '有啊，我現在腦袋還在循環。', response: ['哈哈，我也是欸。', '剛剛唱到副歌的時候真的滿開心的。'], affection: 3, nextIncoming: '欸，妳最近上課還順利嗎？' },
+    invite: { incoming: '剛剛在KTV唱的那首歌，妳回家之後是不是還在哼啊？', choices: [
+      { text: '有啊，我現在腦袋還在循環。', response: ['哈哈，我也是啦，剛剛回家路上還在哼。', '唱到副歌的時候真的滿開心的。'], affection: 3, nextIncoming: '欸，妳最近上課還順利嗎？' },
       { text: '有，但我一直記錯歌詞。', response: ['沒關係啦，我剛剛也有唱錯。', '下次我們再一起練熟一點。'], affection: 2, nextIncoming: '欸，妳最近上課還順利嗎？' },
       { text: '沒有，我現在只記得你唱錯的那一句。', response: ['欸～妳怎麼一直記得那個啦。', '下次我一定要唱對給妳聽。'], affection: 1, nextIncoming: '欸，妳最近上課還順利嗎？' },
     ] },
