@@ -66,6 +66,22 @@ const removeDuplicateWenMovieInviteLine = (messages: SmsMessage[]): SmsMessage[]
   })
   return removed ? normalized : messages
 }
+
+const removeDuplicateMasaErrandLine = (messages: SmsMessage[]): SmsMessage[] => {
+  let seen = false
+  let removed = false
+  const normalized = messages.filter((message) => {
+    const isErrandLine = message.from === 'masa' && message.text === '我媽還叫我順便買一堆東西，清單長得要命。'
+    if (!isErrandLine) return true
+    if (seen) {
+      removed = true
+      return false
+    }
+    seen = true
+    return true
+  })
+  return removed ? normalized : messages
+}
 type ChatChoice = { text: string; response: string[]; affection: number; nextIncoming?: string }
 type ChatRound = { incoming: string; choices: ChatChoice[] }
 type CallLogEntry = { id: string; character: RouteCharacterId; status: 'answered' | 'missed'; time: string; date?: string }
@@ -108,16 +124,20 @@ const readSaveSlot = (slot: number): SaveSlotData | null => {
     if (savedChats) {
       try {
         const chats = JSON.parse(savedChats) as Partial<Record<CharacterId, SmsMessage[]>>
-        if (Array.isArray(chats.wen)) {
-          const wenMessages = removeDuplicateWenMovieInviteLine(chats.wen)
-          if (wenMessages !== chats.wen) {
-            const migrated: SaveSlotData = {
-              ...validated,
-              data: { ...validated.data, 'mayday-chat-messages': JSON.stringify({ ...chats, wen: wenMessages }) },
-            }
-            localStorage.setItem(SAVE_SLOT_PREFIX + slot, JSON.stringify(migrated))
-            return migrated
+        const wenMessages = Array.isArray(chats.wen) ? removeDuplicateWenMovieInviteLine(chats.wen) : null
+        const masaMessages = Array.isArray(chats.masa) ? removeDuplicateMasaErrandLine(chats.masa) : null
+        if ((wenMessages && wenMessages !== chats.wen) || (masaMessages && masaMessages !== chats.masa)) {
+          const migratedChats = {
+            ...chats,
+            ...(wenMessages ? { wen: wenMessages } : {}),
+            ...(masaMessages ? { masa: masaMessages } : {}),
           }
+          const migrated: SaveSlotData = {
+            ...validated,
+            data: { ...validated.data, 'mayday-chat-messages': JSON.stringify(migratedChats) },
+          }
+          localStorage.setItem(SAVE_SLOT_PREFIX + slot, JSON.stringify(migrated))
+          return migrated
         }
       } catch {
         // Keep the save slot unchanged if its message history cannot be parsed.
@@ -1658,6 +1678,7 @@ function App() {
             ashin: parsed.ashin.map((message) => ['剛剛在樂器行碰到你們，感覺你們今天心情很好。我也順利買到吉他弦了。', '剛剛一起逛唱片行滿開心的，妳最後有沒有挑到喜歡的？我本來還想多介紹幾張，結果得趕回去練團。'].includes(message.text)
               ? { ...message, text: '剛剛一起逛唱片行滿開心的，妳最後有沒有挑到喜歡的？我本來還想多介紹幾張，不過後來也差不多該回家了。' }
               : message),
+            masa: removeDuplicateMasaErrandLine(parsed.masa),
           }
           if (JSON.stringify(migrated) !== JSON.stringify(parsed)) localStorage.setItem('mayday-chat-messages', JSON.stringify(migrated))
           return migrated
@@ -4252,7 +4273,7 @@ function App() {
                         <div className="month-visit-round-history" key={index}>
                           {round.scene && <StoryBlocks blocks={[{ kind: 'narration', text: round.scene }]} />}
                           <StoryBlocks blocks={[
-                            { kind: 'dialogue', speaker: currentNextMonthOpenDay.label, text: round.prompt },
+                            { kind: 'dialogue', speaker: round.promptSpeaker ?? currentNextMonthOpenDay.label, text: round.prompt },
                             { kind: 'dialogue', speaker: '你', text: selected.text },
                             ...selected.response.map((text) => ({ kind: 'dialogue' as const, speaker: currentNextMonthOpenDay.label, text })),
                           ]} />
@@ -4262,7 +4283,7 @@ function App() {
                     {currentNextMonthOpenDayRound ? (
                       <>
                         {currentNextMonthOpenDayRound.scene && <StoryBlocks blocks={[{ kind: 'narration', text: currentNextMonthOpenDayRound.scene }]} />}
-                        <StoryBlocks blocks={[{ kind: 'dialogue', speaker: currentNextMonthOpenDay.label, text: currentNextMonthOpenDayRound.prompt }]} />
+                        <StoryBlocks blocks={[{ kind: 'dialogue', speaker: currentNextMonthOpenDayRound.promptSpeaker ?? currentNextMonthOpenDay.label, text: currentNextMonthOpenDayRound.prompt }]} />
                         <div className="choice-area">
                           <div className="choice-heading">第 {nextMonthOpenDayReplies.length + 1}/5 輪・你想怎麼回應？</div>
                           {currentNextMonthOpenDayRound.choices.map((choice, index) => (
