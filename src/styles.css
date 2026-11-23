@@ -284,6 +284,12 @@ button { cursor: pointer; }
   color: #a39a8a;
   text-align: left;
 }
+.key-number-only strong {
+  flex: 0 0 auto;
+  width: auto;
+  text-align: center;
+}
+.key-number-only small { display: none; }
 .phone-bottom-label { color: #a79b89; }
 
 .page-footer { color: #8e877b; }
