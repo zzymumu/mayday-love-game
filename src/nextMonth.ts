@@ -134,7 +134,7 @@ export const nextMonthInviteRoutes: Record<NextMonthCharacterId, NextMonthInvite
         { text: '你幫我選一個啦，我真的選不出來。', response: ['真的是服了妳。', '這個好了，至少我覺得不錯。'], affection: 2 },
         { text: '不買了，我們去下一攤。', response: ['妳每次都這樣，害我站半天。', '走啦，下一攤再讓妳猶豫。'], affection: 1 },
       ] },
-      { scene: '夜市中間有個套圈圈的攤位，瑪莎看了一眼獎品，立刻說這種東西根本難不倒他。結果第一個圈就彈到地上。', prompt: '剛剛不是很有把握？要不要再來？', choices: [
+      { scene: '夜市中間有個套圈圈的攤位，瑪莎看了一眼獎品，立刻說這種東西根本難不倒他。結果第一個圈就彈到地上。', promptSpeaker: '你', prompt: '剛剛不是很有把握？要不要再來？', choices: [
         { text: '再一次！我覺得你這次會中。', response: ['妳現在是在安慰我還是在看笑話？', '拿來，我今天一定要套到。'], affection: 3 },
         { text: '換我啦，我可能比你厲害。', response: ['妳先不要講大話。', '來啊，輸的人請飲料。'], affection: 2 },
         { text: '哈哈哈哈，這就是你的技術？', response: ['笑夠了沒？妳來試試看啊。', '等一下中給妳看，不要太早得意。'], affection: 1 },
