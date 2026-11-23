@@ -469,11 +469,12 @@ export const winterBusStopRoutes: Record<WinterCharacterId, WinterBusStopRoute> 
     title: '和劉諺明走到公車站',
     blocks: [
       { kind: 'narration', text: '諺明哥站在酒吧外的騎樓下等你，手裡拿著一件多帶來的外套。看見你出來，他先把外套遞過來，確認你穿好後才陪你往公車站走。街上比店裡安靜很多，遠處偶爾有車燈從路口掠過。' },
+      { kind: 'narration', text: '他沒有急著問演出好不好看，而是先確認你有沒有帶齊東西。等你把包包背好，他才笑著說，剛才站在外面等的時候，隔著門都聽得出來裡面玩得很開心。' },
       { kind: 'dialogue', speaker: '劉諺明', text: '今天辛苦了。剛才看妳們收得差不多，我才傳訊息給妳。' },
     ],
     rounds: [
       {
-        scene: '你提起下午在練團室看他打鼓的事。諺明哥聽完笑了一下，像是還有點不好意思，卻沒有否認自己剛才確實玩得很開心。他把外套領口替你順好，才繼續往前走。',
+        scene: '你提起下午在練團室看他打鼓的事。諺明哥聽完笑了一下，像是還有點不好意思，卻沒有否認自己剛才確實玩得很開心。他把外套領口替你順好，才繼續往前走，還記得提醒你不要踩到騎樓邊緣翹起來的地磚。',
         promptSpeaker: '劉諺明',
         prompt: '下午我打鼓的時候，妳是不是一直看著？我還以為妳覺得太吵了。',
         choices: [
@@ -483,32 +484,37 @@ export const winterBusStopRoutes: Record<WinterCharacterId, WinterBusStopRoute> 
         ],
       },
       {
-        scene: '走到路口時，一台機車忽然從停車格旁竄出來，速度快得讓人來不及反應。諺明哥先聽見引擎聲，立刻握住你的手腕，把你帶到自己身側靠裡的位置，另一隻手護在你肩前。車子擦過路邊後很快騎遠，他沒有急著繼續走，而是低頭確認你有沒有被嚇到。\n\n他的手掌仍穩穩握著你的手腕，等你站好才慢慢放開，語氣比平常低了一點。',
+        sceneBlocks: [
+          { kind: 'narration', text: '走到路口時，一台機車忽然從停車格旁竄出來，速度快得讓人來不及反應。諺明哥先聽見引擎聲，立刻低聲提醒你「先站住」，手掌穩穩扶住你的上臂，把你帶到騎樓柱子後面。他自己往外側跨了一步，先擋住車子可能經過的方向，等機車完全騎遠才回頭。' },
+          { kind: 'narration', text: '他沒有急著拉著你繼續走，而是先看了一眼路口兩邊，確認沒有第二台車跟上來，才低頭檢查你剛才踩地的腳步。那份冷靜不是不緊張，而是他先把眼前的狀況處理好，才讓自己有空擔心你。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '先不要急著走，等車都過去再說。' },
+        ],
         promptSpeaker: '劉諺明',
-        prompt: '剛剛有沒有嚇到？我是不是拉得太急了？',
+        prompt: '腳有沒有踩穩？剛剛那一下有沒有扭到？',
         choices: [
-          { text: '沒有，還好你把我護住了。', response: [{ kind: 'dialogue', speaker: '劉諺明', text: '那就好。我不想妳受傷，接下來走裡面一點，我走外側。' }, { kind: 'narration', text: '他說完便自然地換到靠近車道的一側，沒有再多講什麼，卻一路留意著路口的車。' }], affection: { yanming: 3 } },
-          { text: '你手還握著我欸。', response: [{ kind: 'dialogue', speaker: '劉諺明', text: '啊，抱歉。剛剛太急了，一時沒注意到。' }, { kind: 'narration', text: '他慢慢鬆開手，卻在你往前走時仍伸手替你擋了一下路邊的車鏡，像是還沒完全放心。' }], affection: { yanming: 3 } },
-          { text: '你剛剛是不是比我還緊張？', response: [{ kind: 'dialogue', speaker: '劉諺明', text: '有一點。看到車子突然過來，還是會擔心妳來不及躲。' }, { kind: 'narration', text: '他回答得很坦白，接著確認你的手腕沒有被抓疼，才重新把手收回外套口袋。' }], affection: { yanming: 2 } },
+          { text: '沒有啦，你剛剛第一句居然是叫我先站住。', response: [{ kind: 'dialogue', speaker: '劉諺明', text: '因為那個路口視線不好，我怕後面還有車。' }, { kind: 'narration', text: '他說完又往路口看了一眼，等確定車流空下來，才帶你繼續走。' }, { kind: 'dialogue', speaker: '劉諺明', text: '現在可以走了，妳跟著我，不用趕。' }], affection: { yanming: 3 } },
+          { text: '你是不是早就注意到那台車了？', response: [{ kind: 'dialogue', speaker: '劉諺明', text: '有聽到引擎聲，不過它突然從停車格出來，還是很危險。' }, { kind: 'narration', text: '他把你帶到騎樓裡面，自己重新站回靠車道的一側，確認你走路沒有不舒服。' }, { kind: 'dialogue', speaker: '劉諺明', text: '接下來我走外面，妳走裡面就好。' }], affection: { yanming: 4 } },
+          { text: '我沒事，你怎麼一直盯著路口看？', response: [{ kind: 'dialogue', speaker: '劉諺明', text: '先把妳安全送到公車站，其他的等一下再說。' }, { kind: 'narration', text: '他回答得很平穩，卻一路等到下一個路口的車都停了，才示意你跟他一起走過去。' }], affection: { yanming: 3 } },
         ],
       },
       {
-        scene: '公車站的燈光落在路面上，下一班車還有幾分鐘。諺明哥陪你站在站牌旁，沒有一直看手錶，也沒有催你。他把你的講義袋接過去拿了一會兒，另一隻手替你把外套袖口往上折好，免得你一直踩到。',
+        scene: '公車站的燈光落在路面上，下一班車還有幾分鐘。諺明哥陪你站在站牌旁，從外套口袋拿出一張折得整整齊齊的紙，在背面畫了幾個簡單的拍點。他沒有把它寫得很複雜，只標出最基本的四拍，還在旁邊註記哪裡要停一下。',
         promptSpeaker: '劉諺明',
-        prompt: '如果妳以後還來練團室，我想把靠我旁邊那張椅子留給妳。可以嗎？',
+        prompt: '如果妳下次還來練團室，我可以先教妳最基本的節拍。妳想試試看嗎？',
         choices: [
-          { text: '那你要記得，不能讓別人坐走。', response: [{ kind: 'dialogue', speaker: '劉諺明', text: '好，我會記得。那個位置就先幫妳留著。' }, { kind: 'narration', text: '他答應得很認真，還問你下次大概什麼時候有空，像是已經開始替那張椅子安排主人。' }], affection: { yanming: 3 } },
-          { text: '如果我每次都坐你旁邊，大家不會笑你嗎？', response: [{ kind: 'dialogue', speaker: '劉諺明', text: '讓他們笑啊。妳坐得舒服比較重要。' }, { kind: 'narration', text: '他說得很自然，卻在你看向他時也笑了，沒有把這句話收回去。' }], affection: { yanming: 3 } },
-          { text: '那我下次可以連外套都跟你借嗎？', response: [{ kind: 'dialogue', speaker: '劉諺明', text: '可以啊。天氣冷的話先跟我說，我多帶一件就好。' }, { kind: 'narration', text: '他把講義袋還給你，又確認外套有沒有穿好，像是已經把這件事當成下次見面的約定。' }], affection: { yanming: 2 } },
+          { text: '好啊，但你要有耐心，不可以笑我。', response: [{ kind: 'dialogue', speaker: '劉諺明', text: '當然不會。第一次本來就要慢慢來。' }, { kind: 'narration', text: '他把那張紙交給你，還特地把容易弄混的地方圈起來，說下次可以照著這張先練。' }], affection: { yanming: 4 } },
+          { text: '那你要先幫我準備一副鼓棒。', response: [{ kind: 'dialogue', speaker: '劉諺明', text: '好，這件事我記下來。下次妳來之前，我先找一副適合妳的。' }, { kind: 'narration', text: '他把紙重新摺好，放進你的包包外層，還提醒你不要弄丟，像是真的已經在安排下一次見面。' }], affection: { yanming: 4 } },
+          { text: '我怕自己跟不上你們的速度欸。', response: [{ kind: 'dialogue', speaker: '劉諺明', text: '不用一開始就跟上大家，先把自己的拍子打穩就好。' }, { kind: 'narration', text: '他用指尖在站牌邊緣敲出很慢的四拍，等你跟著敲對了，才笑著點點頭。' }], affection: { yanming: 3 } },
         ],
       },
     ],
     endingBlocks: [
-      { kind: 'narration', text: '公車轉進街口時，諺明哥先把講義袋交回你手上，還替你確認外套有沒有穿好。他站在車門旁，等你上車找到位置，才往後退了一步。' },
+      { kind: 'narration', text: '公車轉進街口時，諺明哥先把你的包包遞回來，又確認外套有沒有穿好。他陪你走到車門旁，等你站穩才把手收回去。' },
       { kind: 'dialogue', speaker: '劉諺明', text: '到家傳個訊息。今天很晚了，回去就早點休息。' },
-      { kind: 'narration', text: '你隔著車窗朝他揮手，他也抬起手回應。車子開遠後，他仍站在路燈下，直到看不見你才轉身離開。' },
+      { kind: 'dialogue', speaker: '你', text: '知道啦，今天謝謝你特地過來。' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '不客氣。下次來練團室，記得先跟我說，我把鼓棒準備好。' },
     ],
-    diarySummary: '諺明哥真的來酒吧外面接我，還特地多帶了一件外套。路上他問我下午看他打鼓的感想，聽見我說他坐上鼓椅時很帥，難得有點不好意思。機車突然竄出來時，他一把握住我的手腕，把我帶到安全的地方，確認我沒事才放手。到了公車站，他說要把靠自己旁邊的椅子留給我。那種不急不徐的照顧，讓人很安心。',
+    diarySummary: '諺明哥真的來酒吧外面接我，還特地多帶了一件外套。路上他問我下午看他打鼓的感想，聽見我說他坐上鼓椅時很帥，難得有點不好意思。機車突然竄出來時，他先叫我站住，再確認路口安全、把我帶到騎樓裡，沒有慌張地拉著我亂跑。到了公車站，他還拿紙畫了幾個基本拍點，說下次要慢慢教我。那種不急不徐、先把事情安排好的照顧，讓人很安心。',
   },
 
 }
