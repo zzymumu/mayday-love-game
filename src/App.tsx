@@ -2174,7 +2174,30 @@ function App() {
       if (key && key.startsWith('mayday-') && !key.startsWith(SAVE_SLOT_PREFIX)) keysToRemove.push(key)
     }
     keysToRemove.forEach((key) => localStorage.removeItem(key))
-    Object.entries(saved.data).forEach(([key, value]) => {
+
+    // Restore the year-end invitation checkpoint from the selected timeline.
+    // A save made before the December 31 checkpoint must be allowed to evaluate
+    // affection again when the player reaches it, even if a later timeline had
+    // already consumed the invitation checkpoint.
+    const restoredData = { ...saved.data }
+    const beforeYearEndInviteCheckpoint =
+      saved.gameDate < '1996.12.31' ||
+      (saved.gameDate === '1996.12.31' && saved.stage === 'year-end-intro')
+    if (beforeYearEndInviteCheckpoint) {
+      ;[
+        'mayday-year-end-invite-check-done',
+        'mayday-year-end-invite-candidates',
+        'mayday-year-end-invite-target',
+        'mayday-year-end-shopping-reply-choice',
+        'mayday-year-end-shopping-replies',
+        'mayday-year-end-shopping-complete',
+      ].forEach((key) => delete restoredData[key])
+      ;(['wen', 'masa', 'ashin', 'stone', 'yanming'] as YearEndRouteCharacterId[]).forEach((character) => {
+        delete restoredData['mayday-year-end-shopping-invite-sent-' + character]
+      })
+    }
+
+    Object.entries(restoredData).forEach(([key, value]) => {
       if (key.startsWith('mayday-') && !key.startsWith(SAVE_SLOT_PREFIX)) localStorage.setItem(key, value)
     })
     window.location.reload()
