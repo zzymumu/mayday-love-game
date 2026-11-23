@@ -1583,7 +1583,7 @@ function App() {
     if (activeApp === 'messages' && selectedSmsThread && messageScrollRef.current) {
       messageScrollRef.current.scrollTop = messageScrollRef.current.scrollHeight
     }
-  }, [activeApp, selectedSmsThread, smsMessages, chatMessages, greetingRound, freeChatRound])
+  }, [activeApp, selectedSmsThread, smsMessages, chatMessages, greetingRound, freeChatRound, monthFreeChatRound])
 
   useEffect(() => {
     if (activeCallCharacter && callTranscriptRef.current) {
@@ -2879,10 +2879,41 @@ function App() {
                       { kind: 'narration', text: '回家的路上，你想起今天和' + (currentMonthVisit?.label ?? '他') + '相處的片段。明明只是很普通的一天，卻因為特地去見了他，變得格外值得記住。' },
                       { kind: 'narration', text: '一個月裡慢慢累積的熟悉感，好像又往前走了一點。你把這一天收進心裡，想著下次見面時，或許還有新的話題可以聊。' },
                     ]} />
-                    <div className="reunion-pause-note">一個月後的自由活動已完成。你的選擇與好感度都已保存。</div>
+                    <div className="reunion-pause-note">見面後還有一些話想說。回到家後，你決定主動傳訊息給{currentMonthVisit?.label ?? '他'}。</div>
                   </div>
                   <div className="story-action-bar">
-                    <button className="story-primary-button" onClick={finishMonthChapter}>回到手機桌面 <ChevronRight size={15} /></button>
+                    <button className="story-primary-button" onClick={startMonthFreeChat}>回家後，主動傳訊息 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'month-diary' && monthVisitTarget && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">一個月後</div>
+                    <div className="story-contact-title">
+                      <strong>私人日記</strong>
+                      <small>1996 年 11 月 16 日・星期六</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">十一月十六日・晚上回到家</div>
+                    <h2 className="story-scene-title">把今天留在日記裡</h2>
+                    <StoryBlocks blocks={[
+                      { kind: 'narration', text: '回到家後，你把包放到椅子上，換下鞋子，才發現今天從早上到現在，竟然已經過了這麼久。手機裡還留著剛才的對話，你坐到書桌前，翻開那本寫了一個多月的日記。' },
+                    ]} />
+                    <div className="diary-paper story-diary-paper">
+                      <span className="diary-date">1996 年 11 月 16 日・星期六</span>
+                      <h2>{monthDiaryEntries[monthVisitTarget].title}</h2>
+                      <p>{monthDiaryEntries[monthVisitTarget].visit}</p>
+                      <p>{monthDiaryEntries[monthVisitTarget].chat}</p>
+                      <p>一個月前，很多事情還只是剛剛開始。今天再回頭看，才發現我們已經有了不少只有彼此才懂的小事。也許日子就是這樣慢慢往前走的吧，不一定每天都有什麼大事發生，但總會有一些瞬間，讓人想好好記下來。</p>
+                    </div>
+                    <div className="reunion-pause-note">今天的見面和訊息都已經收進日記。寫完這一頁，今天就到這裡了。</div>
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={finishMonthChapter}>合上日記，結束今天 <ChevronRight size={15} /></button>
                   </div>
                 </div>
               )}
@@ -2982,6 +3013,17 @@ function App() {
                     <strong>{characterNames[freeChatTarget]}</strong>
                     <span>{chatMessages[freeChatTarget]?.[chatMessages[freeChatTarget].length - 1]?.text ?? '有新訊息'}</span>
                     <span>自由活動・第 {freeChatRound + 1}/5 輪</span>
+                  </span>
+                  <span className="notification-time">剛剛</span>
+                </button>
+              )}
+              {storyStage === 'month-free-chat' && monthVisitTarget && monthFreeChatStarted && activeApp === null && (
+                <button className="sms-notification" onClick={() => openMessagesApp(monthVisitTarget)}>
+                  <span className="notification-icon"><MessageSquare size={19} /></span>
+                  <span className="notification-copy">
+                    <strong>{characterNames[monthVisitTarget]}</strong>
+                    <span>{chatMessages[monthVisitTarget]?.[chatMessages[monthVisitTarget].length - 1]?.text ?? '查看剛才的訊息'}</span>
+                    <span>一個月後・自由對話・第 {monthFreeChatRound + 1}/5 輪</span>
                   </span>
                   <span className="notification-time">剛剛</span>
                 </button>
@@ -3234,6 +3276,17 @@ function App() {
                                   <small>每輪都有三種回法，會影響對方反應與好感；也可能一不小心扣分。</small>
                                 </div>
                               )}
+                              {storyStage === 'month-free-chat' && monthVisitTarget && selectedSmsThread === monthVisitTarget && !monthFreeChatReplied && (
+                                <div className="choice-area">
+                                  <div className="choice-heading">一個月後・自由對話・第 {monthFreeChatRound + 1}/5 輪</div>
+                                  {monthFreeChatScripts[monthVisitTarget][monthFreeChatRound].choices.map((choice, index) => (
+                                    <button className="reply-choice" key={index} onClick={() => chooseMonthFreeChatReply(index)}>
+                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                    </button>
+                                  ))}
+                                  <small>這次由你先傳訊息。每輪有三個回覆選項，會影響對方的反應與好感度。</small>
+                                </div>
+                              )}
                             </div>
                             {storyStage === 'reply' && selectedSmsThread === 'wen' && selectedReply && (
                               <div className="sms-thread-actions">
@@ -3276,6 +3329,12 @@ function App() {
                               <div className="sms-thread-actions">
                                 <div className="reply-note">五輪對話已完成。這段訊息會保留在收件匣裡，你之後可以隨時回看。</div>
                                 <button className="story-primary-button" onClick={finishFreeChat}>結束自由活動 <ChevronRight size={15} /></button>
+                              </div>
+                            )}
+                            {storyStage === 'month-free-chat' && monthVisitTarget && selectedSmsThread === monthVisitTarget && monthFreeChatReplied && monthFreeChatRound === 4 && (
+                              <div className="sms-thread-actions">
+                                <div className="reply-note">五輪對話已經聊完。你把手機裡的訊息收好，準備把今天記進日記。</div>
+                                <button className="story-primary-button" onClick={finishMonthFreeChat}>收起手機，寫下今天的日記 <ChevronRight size={15} /></button>
                               </div>
                             )}
                           </div>
