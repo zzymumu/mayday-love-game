@@ -37,7 +37,7 @@ import {
 type AppKey = 'messages' | 'contacts' | 'calls' | 'diary' | 'calendar' | 'photos' | 'music' | 'notes' | 'settings'
 type CharacterId = 'wen' | 'masa' | 'ashin' | 'stone' | 'yanming' | 'youda'
 type RouteCharacterId = Exclude<CharacterId, 'youda'>
-type StoryStage = 'notification' | 'messages' | 'reply' | 'walk' | 'studio' | 'reunion' | 'reunion-chat' | 'nickname' | 'rehearsal' | 'dinner' | 'after-dinner' | 'ending' | 'completed' | 'greetings' | 'classroom' | 'masa-checkin' | 'stone-checkin' | 'ice-date' | 'stroll' | 'day2-diary' | 'free-time' | 'free-chat' | 'day2-complete' | 'month-free-time' | 'month-visit' | 'month-visit-complete' | 'month-free-chat' | 'month-diary' | 'next-month-intro' | 'next-month-invite-notification' | 'next-month-invite-picker' | 'next-month-invite' | 'next-month-invite-date' | 'next-month-open-day' | 'next-month-open-day-picker' | 'next-month-open-day-visit' | 'next-month-open-day-visit-complete' | 'next-month-free-chat' | 'next-month-diary' | 'paused'
+type StoryStage = 'notification' | 'messages' | 'reply' | 'walk' | 'studio' | 'reunion' | 'reunion-chat' | 'nickname' | 'rehearsal' | 'dinner' | 'after-dinner' | 'ending' | 'completed' | 'greetings' | 'classroom' | 'masa-checkin' | 'stone-checkin' | 'ice-date' | 'stroll' | 'day2-diary' | 'free-time' | 'free-chat' | 'day2-complete' | 'month-free-time' | 'month-visit' | 'month-visit-complete' | 'month-free-chat' | 'month-diary' | 'next-month-intro' | 'next-month-invite-notification' | 'next-month-invite-picker' | 'next-month-invite' | 'next-month-invite-chat' | 'next-month-invite-date' | 'next-month-open-day' | 'next-month-open-day-picker' | 'next-month-open-day-visit' | 'next-month-open-day-visit-complete' | 'next-month-free-chat' | 'next-month-diary' | 'paused'
 type ReplyKey = 'a' | 'b' | 'c'
 type ReunionReplyKey = 'a' | 'b' | 'c'
 type NicknameQuestionKey = 'a' | 'b' | 'c'
@@ -75,7 +75,7 @@ const storyStageLabels: Record<StoryStage, string> = {
   'masa-checkin': '關心瑪莎', 'stone-checkin': '關心石頭', 'ice-date': '下課吃冰', stroll: '傍晚散步',
   'day2-diary': '寫下第二篇日記', 'free-time': '自由活動', 'free-chat': '自由聊天',
   'day2-complete': '第二天結束', 'month-free-time': '一個月後・自由活動', 'month-visit': '一個月後・外出見面', 'month-visit-complete': '一個月後・見面結束', 'month-free-chat': '一個月後・自由對話', 'month-diary': '一個月後・私人日記',
-  'next-month-intro': '又一個月後・校園開放日', 'next-month-invite-notification': '有人想約你', 'next-month-invite-picker': '看看是誰想約你', 'next-month-invite': '回覆邀約', 'next-month-invite-date': '赴約', 'next-month-open-day': '椰風搖滾社・校園開放日', 'next-month-open-day-picker': '一起逛校園', 'next-month-open-day-visit': '校園散步', 'next-month-open-day-visit-complete': '校園開放日・見面結束', 'next-month-free-chat': '十二月・自由對話', 'next-month-diary': '十二月・私人日記', paused: '故事暫停',
+  'next-month-intro': '又一個月後・校園開放日', 'next-month-invite-notification': '有人想約你', 'next-month-invite-picker': '看看是誰想約你', 'next-month-invite': '回覆邀約', 'next-month-invite-chat': '邀約簡訊', 'next-month-invite-date': '赴約', 'next-month-open-day': '椰風搖滾社・校園開放日', 'next-month-open-day-picker': '一起逛校園', 'next-month-open-day-visit': '校園散步', 'next-month-open-day-visit-complete': '校園開放日・見面結束', 'next-month-free-chat': '十二月・自由對話', 'next-month-diary': '十二月・私人日記', paused: '故事暫停',
 }
 const readSaveSlot = (slot: number): SaveSlotData | null => {
   try {
@@ -1498,7 +1498,7 @@ function App() {
     const day2PlanChosen = localStorage.getItem('mayday-day2-after-ice-choice') === 'accept' || localStorage.getItem('mayday-day2-after-ice-choice') === 'decline'
     if (['free-time', 'free-chat', 'day2-complete'].includes(saved ?? '') && !day2PlanChosen) return 'ice-date'
     if (saved === 'free-time' && savedTarget && freeTimeOrder.includes(savedTarget as RouteCharacterId) && localStorage.getItem('mayday-free-chat-complete') !== 'true') return 'free-chat'
-    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete', 'month-free-time', 'month-visit', 'month-visit-complete', 'month-free-chat', 'month-diary', 'next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete', 'next-month-free-chat', 'next-month-diary', 'paused']
+    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete', 'month-free-time', 'month-visit', 'month-visit-complete', 'month-free-chat', 'month-diary', 'next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-chat', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete', 'next-month-free-chat', 'next-month-diary', 'paused']
     return saved && valid.includes(saved as StoryStage) ? saved as StoryStage : 'notification'
   })
   const [studioStep, setStudioStep] = useState(() => Number(localStorage.getItem('mayday-studio-step') ?? '0'))
@@ -1608,6 +1608,10 @@ function App() {
     const saved = Number(localStorage.getItem('mayday-next-month-invite-tease-choice') ?? '-1')
     return Number.isInteger(saved) && saved >= 0 && saved <= 2 ? saved : null
   })
+  const [nextMonthInviteReplyChoice, setNextMonthInviteReplyChoice] = useState<number | null>(() => {
+    const saved = Number(localStorage.getItem('mayday-next-month-invite-reply-choice') ?? '-1')
+    return Number.isInteger(saved) && saved >= 0 && saved <= 2 ? saved : null
+  })
   const [nextMonthOpenDayTarget, setNextMonthOpenDayTarget] = useState<RouteCharacterId | null>(() => {
     const saved = localStorage.getItem('mayday-next-month-open-day-target')
     return saved && monthVisitOrder.includes(saved as RouteCharacterId) ? saved as RouteCharacterId : null
@@ -1698,7 +1702,7 @@ function App() {
   const [selectedProfile, setSelectedProfile] = useState<string | null>(null)
   const [resumeStage, setResumeStage] = useState<StoryStage>(() => {
     const saved = localStorage.getItem('mayday-resume-stage')
-    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete', 'month-free-time', 'month-visit', 'month-visit-complete', 'month-free-chat', 'month-diary', 'next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete', 'next-month-free-chat', 'next-month-diary']
+    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete', 'month-free-time', 'month-visit', 'month-visit-complete', 'month-free-chat', 'month-diary', 'next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-chat', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete', 'next-month-free-chat', 'next-month-diary']
     return saved && valid.includes(saved as StoryStage) ? saved as StoryStage : 'reunion'
   })
   const messageScrollRef = useRef<HTMLDivElement>(null)
@@ -1718,11 +1722,11 @@ function App() {
                           : storyStage === 'month-visit-complete' || storyStage === 'month-free-chat' ? '18:10'
                             : storyStage === 'month-diary' || storyStage === 'next-month-diary' ? '20:45'
                           : storyStage === 'next-month-free-chat' ? '20:10'
-                            : ['next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete'].includes(storyStage) ? '10:30'
+                            : ['next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-chat', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete'].includes(storyStage) ? '10:30'
                              : '17:20'
   const effectiveDateStage = storyStage === 'paused' ? resumeStage : storyStage
   const isSecondDay = ['classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete'].includes(effectiveDateStage)
-  const isNextMonth = ['next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete', 'next-month-free-chat', 'next-month-diary'].includes(effectiveDateStage) || localStorage.getItem('mayday-next-month-day-complete') === 'true'
+  const isNextMonth = ['next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-chat', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete', 'next-month-free-chat', 'next-month-diary'].includes(effectiveDateStage) || localStorage.getItem('mayday-next-month-day-complete') === 'true'
   const isMonthLater = ['month-free-time', 'month-visit', 'month-visit-complete', 'month-free-chat', 'month-diary'].includes(effectiveDateStage) || localStorage.getItem('mayday-month-visit-complete') === 'true'
   const saveGameDate = isNextMonth ? '1996.12.14' : isMonthLater ? '1996.11.16' : isSecondDay ? '1996.10.16' : '1996.10.15'
   const [calendarYear, calendarMonth, calendarDay] = saveGameDate.split('.')
