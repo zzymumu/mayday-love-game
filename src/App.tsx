@@ -50,6 +50,7 @@ type CharacterExperienceRecord = {
 type SaveSlotData = { version: 1; savedAt: string; gameDate: string; gameTime: string; stage: StoryStage; stageLabel: string; data: Record<string, string> }
 type MonthVisitChoice = { text: string; response: string[]; affection: number }
 type MonthVisitRound = { scene?: string; prompt: string; choices: MonthVisitChoice[] }
+type MonthFreeChatOpening = { text: string; response: string }
 type MonthVisitRoute = { label: string; subtitle: string; location: string; title: string; kicker: string; blocks: StoryBlock[]; rounds: MonthVisitRound[]; ending: StoryBlock[] }
 
 const SAVE_SLOT_IDS = [1, 2, 3] as const
@@ -934,12 +935,32 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
 }
 
 
-const monthFreeChatOpeners: Record<RouteCharacterId, string> = {
-  wen: '我回到家啦～今天看你打球真的很帥，謝謝你後來請我吃東西！',
-  ashin: '我到家了～今天謝謝你帶我逛校園，還陪我走到公車站。',
-  masa: '我回到家啦！今天午飯吃得好飽，阿姨還叫我們帶水果走。',
-  stone: '我到家了，便當袋有好好收著。你後來有趕上上課嗎？',
-  yanming: '我回家啦～今天整理器材還滿有趣的，謝謝你教我怎麼收線。',
+const monthFreeChatOpeners: Record<RouteCharacterId, MonthFreeChatOpening[]> = {
+  wen: [
+    { text: '今天謝謝你請我吃東西～我回到家了！', response: '到家就好啦，剛剛走回去有沒有太熱？' },
+    { text: '你最後那球真的很帥欸！', response: '妳真的有認真看喔？我還以為妳都在看旁邊的人。' },
+    { text: '今天看你打球很開心，下次有比賽再叫我。', response: '好啊，有打球我再跟妳說。' },
+  ],
+  ashin: [
+    { text: '今天謝謝你帶我逛校園，我已經到家了。', response: '到家就好，今天走了那麼久，妳回去先休息一下。' },
+    { text: '我今天才注意到你左邊眉毛上面有一顆小痣。', response: '欸，妳真的有注意到喔？那顆痣很小，我自己有時候都會忘記。' },
+    { text: '今天走到那麼晚，跟你聊天很開心。', response: '我也是啊，今天很多話都還沒聊完，下次再慢慢說。' },
+  ],
+  masa: [
+    { text: '今天謝謝你陪我回家，我到家啦。', response: '安全到家就好。妳媽今天真的很熱情，我差點吃不下了。' },
+    { text: '我媽是不是又翻出你小時候的照片了？', response: '妳還敢問！那幾張照片到底為什麼還留著啦。' },
+    { text: '今天午飯好好吃，下次再來我家吧。', response: '欸，妳這麼快就安排下次了喔？我會記得啦。' },
+  ],
+  stone: [
+    { text: '今天便當吃完了嗎？我回到家了。', response: '吃完了，謝謝妳特地送過來。妳也記得吃點東西。' },
+    { text: '你今天又把好吃的菜推給我了。', response: '因為看妳一直沒夾，想說妳應該也會喜歡。' },
+    { text: '你後來有趕上課嗎？', response: '有，時間剛好。妳不用擔心，今天沒有耽誤到。' },
+  ],
+  yanming: [
+    { text: '我到家啦，今天整理器材很有趣。', response: '那就好，第一次整理能覺得有趣很不錯。' },
+    { text: '你教我的收線方法我記住了。', response: '很好，記得不要急著拉緊，順著線的弧度慢慢收就好。' },
+    { text: '今天謝謝你照顧我，下次再去找你。', response: '不客氣，妳下次有空再過來就好。' },
+  ],
 }
 
 const monthFreeChatScripts: Record<RouteCharacterId, ChatRound[]> = {
@@ -1307,6 +1328,7 @@ function App() {
   const [monthFreeChatRound, setMonthFreeChatRound] = useState(() => Number(localStorage.getItem('mayday-month-free-chat-round') ?? '0'))
   const [monthFreeChatReplied, setMonthFreeChatReplied] = useState(() => localStorage.getItem('mayday-month-free-chat-replied') === 'true')
   const [monthFreeChatStarted, setMonthFreeChatStarted] = useState(() => localStorage.getItem('mayday-month-free-chat-started') === 'true')
+  const [monthFreeChatOpeningSent, setMonthFreeChatOpeningSent] = useState(() => localStorage.getItem('mayday-month-free-chat-opening-sent') === 'true')
   const [monthFreeChatReplies, setMonthFreeChatReplies] = useState<number[]>(() => {
     try {
       const saved = JSON.parse(localStorage.getItem('mayday-month-free-chat-replies') ?? '[]')
