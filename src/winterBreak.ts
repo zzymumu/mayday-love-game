@@ -43,6 +43,21 @@ export const winterExamChatChoices = [
   },
 ]
 
+export const winterExamChatClosingChoices = [
+  {
+    text: '好！那我明天把講義跟題目都帶去。謝啦，溫老師～',
+    response: '溫老師？不要亂叫。快去把題目圈好，別又熬夜到半夜。明天見。',
+  },
+  {
+    text: '那就說定了，明天下午兩點見！我會把卡住的題目都圈起來。',
+    response: '好啦，記得帶筆跟講義。不要又熬夜，明天見。',
+  },
+  {
+    text: '收到！明天就拜託滿分家教了，我會帶著問題大軍去報到。',
+    response: '哈哈，帶幾題就好，不用把整本書扛來。明天見。',
+  },
+]
+
 export const winterExamTutoringIntroBlocks: WinterStoryBlock[] = [
   { kind: 'narration', text: '隔天下午，你抱著課本和一疊講義走進圖書館。窗邊的陽光落在桌面上，溫尚翊已經坐在那裡，面前攤著自己的筆記，旁邊還放了兩杯飲料。你才剛走近，他就抬起頭，朝你勾了勾手指。' },
   { kind: 'dialogue', speaker: '溫尚翊', text: '妳終於來啦，我還以為妳會抱著整個書架過來欸。' },
