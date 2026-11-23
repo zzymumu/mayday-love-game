@@ -2037,14 +2037,19 @@ function App() {
                         : ['month-free-time', 'month-visit'].includes(storyStage) ? '10:30'
                           : storyStage === 'month-visit-complete' || storyStage === 'month-free-chat' ? '18:10'
                             : storyStage === 'month-diary' || storyStage === 'next-month-diary' ? '20:45'
-                          : storyStage === 'next-month-free-chat' ? '20:10'
-                            : ['next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-chat', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete'].includes(storyStage) ? '10:30'
-                             : '17:20'
+                              : storyStage === 'next-month-free-chat' ? '20:10'
+                                : ['next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-chat', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete'].includes(storyStage) ? '10:30'
+                                  : ['year-end-intro', 'year-end-invite-notification', 'year-end-invite-picker', 'year-end-shopping-notification', 'year-end-shopping-chat', 'year-end-shopping'].includes(storyStage) ? '14:30'
+                                    : storyStage === 'year-end-fireworks' ? '23:40'
+                                      : ['year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker'].includes(storyStage) ? '00:15'
+                                        : storyStage === 'year-end-diary' || (storyStage === 'completed' && localStorage.getItem('mayday-year-end-day-complete') === 'true') ? '00:40'
+                                          : '17:20'
   const effectiveDateStage = storyStage === 'paused' ? resumeStage : storyStage
   const isSecondDay = ['classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete'].includes(effectiveDateStage)
   const isNextMonth = ['next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-chat', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete', 'next-month-free-chat', 'next-month-diary'].includes(effectiveDateStage) || localStorage.getItem('mayday-next-month-day-complete') === 'true'
   const isMonthLater = ['month-free-time', 'month-visit', 'month-visit-complete', 'month-free-chat', 'month-diary'].includes(effectiveDateStage) || localStorage.getItem('mayday-month-visit-complete') === 'true'
-  const saveGameDate = isNextMonth ? '1996.12.14' : isMonthLater ? '1996.11.16' : isSecondDay ? '1996.10.16' : '1996.10.15'
+  const isYearEnd = ['year-end-intro', 'year-end-invite-notification', 'year-end-invite-picker', 'year-end-shopping-notification', 'year-end-shopping-chat', 'year-end-shopping', 'year-end-fireworks', 'year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary'].includes(effectiveDateStage) || localStorage.getItem('mayday-year-end-day-complete') === 'true'
+  const saveGameDate = isYearEnd ? '1996.12.31' : isNextMonth ? '1996.12.14' : isMonthLater ? '1996.11.16' : isSecondDay ? '1996.10.16' : '1996.10.15'
   const [calendarYear, calendarMonth, calendarDay] = saveGameDate.split('.')
   const calendarDate = new Date(Number(calendarYear), Number(calendarMonth) - 1, Number(calendarDay))
   const calendarWeekday = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'][calendarDate.getDay()]
@@ -2102,6 +2107,24 @@ function App() {
     put('mayday-month-free-chat-replies', JSON.stringify(monthFreeChatReplies))
     put('mayday-month-free-chat-complete', localStorage.getItem('mayday-month-free-chat-complete'))
     put('mayday-month-day-complete', localStorage.getItem('mayday-month-day-complete'))
+    put('mayday-year-end-started', localStorage.getItem('mayday-year-end-started'))
+    put('mayday-year-end-invite-candidates', JSON.stringify(yearEndInviteCandidates))
+    put('mayday-year-end-invite-target', yearEndInviteTarget)
+    put('mayday-year-end-shopping-reply-choice', yearEndShoppingReplyChoice === null ? null : String(yearEndShoppingReplyChoice))
+    put('mayday-year-end-shopping-replies', JSON.stringify(yearEndShoppingReplies))
+    put('mayday-year-end-fireworks-replies', JSON.stringify(yearEndFireworksReplies))
+    put('mayday-year-end-greeting-queue', JSON.stringify(yearEndGreetingQueue))
+    put('mayday-year-end-greeting-index', String(yearEndGreetingIndex))
+    put('mayday-year-end-greeting-target', yearEndGreetingTarget)
+    put('mayday-year-end-chat-mode', yearEndChatMode)
+    put('mayday-year-end-first-reply-sent', String(yearEndFirstReplySent))
+    put('mayday-year-end-free-chat-round', String(yearEndFreeChatRound))
+    put('mayday-year-end-free-chat-replied', String(yearEndFreeChatReplied))
+    put('mayday-year-end-free-chat-replies', JSON.stringify(yearEndFreeChatReplies))
+    put('mayday-year-end-proactive-sent', JSON.stringify(yearEndProactiveSent))
+    put('mayday-year-end-extended-chat-characters', JSON.stringify(yearEndExtendedChatCharacters))
+    put('mayday-year-end-diary-unlocked', String(yearEndDiaryUnlocked))
+    put('mayday-year-end-diary-data', yearEndDiaryData ? JSON.stringify(yearEndDiaryData) : null)
     put('mayday-route-affection', JSON.stringify(routeAffection))
     put('mayday-shared-experience-log', JSON.stringify(sharedExperienceLog))
     put('mayday-call-experience-context', callExperienceContext ? JSON.stringify(callExperienceContext) : null)
@@ -2159,6 +2182,30 @@ function App() {
   useEffect(() => {
     localStorage.setItem('mayday-route-affection', JSON.stringify(routeAffection))
   }, [routeAffection])
+
+  useEffect(() => {
+    localStorage.setItem('mayday-year-end-invite-candidates', JSON.stringify(yearEndInviteCandidates))
+    if (yearEndInviteTarget) localStorage.setItem('mayday-year-end-invite-target', yearEndInviteTarget)
+    else localStorage.removeItem('mayday-year-end-invite-target')
+    if (yearEndShoppingReplyChoice === null) localStorage.removeItem('mayday-year-end-shopping-reply-choice')
+    else localStorage.setItem('mayday-year-end-shopping-reply-choice', String(yearEndShoppingReplyChoice))
+    localStorage.setItem('mayday-year-end-shopping-replies', JSON.stringify(yearEndShoppingReplies))
+    localStorage.setItem('mayday-year-end-fireworks-replies', JSON.stringify(yearEndFireworksReplies))
+    localStorage.setItem('mayday-year-end-greeting-queue', JSON.stringify(yearEndGreetingQueue))
+    localStorage.setItem('mayday-year-end-greeting-index', String(yearEndGreetingIndex))
+    if (yearEndGreetingTarget) localStorage.setItem('mayday-year-end-greeting-target', yearEndGreetingTarget)
+    else localStorage.removeItem('mayday-year-end-greeting-target')
+    localStorage.setItem('mayday-year-end-chat-mode', yearEndChatMode)
+    localStorage.setItem('mayday-year-end-first-reply-sent', String(yearEndFirstReplySent))
+    localStorage.setItem('mayday-year-end-free-chat-round', String(yearEndFreeChatRound))
+    localStorage.setItem('mayday-year-end-free-chat-replied', String(yearEndFreeChatReplied))
+    localStorage.setItem('mayday-year-end-free-chat-replies', JSON.stringify(yearEndFreeChatReplies))
+    localStorage.setItem('mayday-year-end-proactive-sent', JSON.stringify(yearEndProactiveSent))
+    localStorage.setItem('mayday-year-end-extended-chat-characters', JSON.stringify(yearEndExtendedChatCharacters))
+    localStorage.setItem('mayday-year-end-diary-unlocked', String(yearEndDiaryUnlocked))
+    if (yearEndDiaryData) localStorage.setItem('mayday-year-end-diary-data', JSON.stringify(yearEndDiaryData))
+    else localStorage.removeItem('mayday-year-end-diary-data')
+  }, [yearEndInviteCandidates, yearEndInviteTarget, yearEndShoppingReplyChoice, yearEndShoppingReplies, yearEndFireworksReplies, yearEndGreetingQueue, yearEndGreetingIndex, yearEndGreetingTarget, yearEndChatMode, yearEndFirstReplySent, yearEndFreeChatRound, yearEndFreeChatReplied, yearEndFreeChatReplies, yearEndProactiveSent, yearEndExtendedChatCharacters, yearEndDiaryUnlocked, yearEndDiaryData])
 
   useEffect(() => {
     localStorage.setItem('mayday-shared-experience-log', JSON.stringify(sharedExperienceLog))
@@ -3305,8 +3352,332 @@ function App() {
   const finishNextMonthChapter = () => {
     if (!nextMonthDiaryData) return
     localStorage.setItem('mayday-next-month-day-complete', 'true')
+    localStorage.setItem('mayday-year-end-started', 'true')
     setSelectedSmsThread(null)
     setActiveApp(null)
+    changeStage('year-end-intro')
+  }
+
+  const beginYearEndFireworks = () => {
+    setActiveApp(null)
+    setSelectedSmsThread(null)
+    setYearEndFireworksReplies([])
+    localStorage.setItem('mayday-year-end-fireworks-replies', '[]')
+    changeStage('year-end-fireworks')
+  }
+
+  const sendYearEndShoppingInvite = (character: YearEndRouteCharacterId) => {
+    const sentKey = 'mayday-year-end-shopping-invite-sent-' + character
+    if (localStorage.getItem(sentKey) !== 'true') {
+      appendChatMessages(
+        character,
+        yearEndShoppingRoutes[character].invitation.map((text, index) => ({
+          from: character,
+          text,
+          time: '14:' + String(8 + index).padStart(2, '0'),
+        })),
+        '12月31日・下午',
+      )
+      localStorage.setItem(sentKey, 'true')
+    }
+    setYearEndInviteTarget(character)
+    localStorage.setItem('mayday-year-end-invite-target', character)
+    setYearEndShoppingReplyChoice(null)
+    setYearEndShoppingReplies([])
+    setActiveApp(null)
+    setSelectedSmsThread(null)
+    changeStage('year-end-shopping-notification')
+  }
+
+  const startYearEndFlow = () => {
+    localStorage.setItem('mayday-year-end-started', 'true')
+    const candidates = monthVisitOrder.filter((character) => routeAffection[character] >= YEAR_END_INVITE_THRESHOLD)
+    setYearEndInviteCandidates(candidates)
+    localStorage.setItem('mayday-year-end-invite-candidates', JSON.stringify(candidates))
+    if (candidates.length === 1) {
+      sendYearEndShoppingInvite(candidates[0])
+    } else if (candidates.length > 1) {
+      changeStage('year-end-invite-notification')
+    } else {
+      beginYearEndFireworks()
+    }
+  }
+
+  const chooseYearEndInviteTarget = (character: YearEndRouteCharacterId) => {
+    if (!yearEndInviteCandidates.includes(character)) return
+    sendYearEndShoppingInvite(character)
+  }
+
+  const openYearEndShoppingMessages = () => {
+    if (!yearEndInviteTarget) return
+    setSelectedSmsThread(yearEndInviteTarget)
+    setActiveApp('messages')
+    changeStage('year-end-shopping-chat')
+  }
+
+  const chooseYearEndShoppingReply = (index: number) => {
+    if (!yearEndInviteTarget || yearEndShoppingReplyChoice !== null) return
+    const choice = yearEndShoppingReplyChoices[yearEndInviteTarget][index]
+    if (!choice) return
+    appendChatMessages(yearEndInviteTarget, [
+      { from: 'me', text: choice.text, time: '14:15' },
+      ...choice.response.map((text, responseIndex) => ({ from: yearEndInviteTarget, text, time: responseIndex === 0 ? '14:16' : '14:17' })),
+    ], '12月31日・下午')
+    setYearEndShoppingReplyChoice(index)
+    addRouteAffection(yearEndInviteTarget, choice.affection)
+  }
+
+  const continueYearEndShoppingInvite = () => {
+    if (!yearEndInviteTarget || yearEndShoppingReplyChoice === null) return
+    const accepted = yearEndShoppingReplyChoices[yearEndInviteTarget][yearEndShoppingReplyChoice]?.accepted
+    setActiveApp(null)
+    setSelectedSmsThread(null)
+    if (accepted) {
+      setYearEndShoppingReplies([])
+      changeStage('year-end-shopping')
+    } else {
+      beginYearEndFireworks()
+    }
+  }
+
+  const chooseYearEndShoppingReplyRound = (index: number) => {
+    if (!yearEndInviteTarget) return
+    const route = yearEndShoppingRoutes[yearEndInviteTarget]
+    const round = route.rounds[yearEndShoppingReplies.length]
+    const choice = round?.choices[index]
+    if (!choice) return
+    setYearEndShoppingReplies((current) => [...current, index])
+    Object.entries(choice.affection).forEach(([character, amount]) => {
+      if (amount) addRouteAffection(character as YearEndRouteCharacterId, amount)
+    })
+  }
+
+  const finishYearEndShopping = () => {
+    if (yearEndShoppingReplies.length !== 5) return
+    localStorage.setItem('mayday-year-end-shopping-complete', 'true')
+    beginYearEndFireworks()
+  }
+
+  const chooseYearEndFireworksReply = (index: number) => {
+    const round = yearEndFireworksRounds[yearEndFireworksReplies.length]
+    const choice = round?.choices[index]
+    if (!choice) return
+    setYearEndFireworksReplies((current) => [...current, index])
+    Object.entries(choice.affection).forEach(([character, amount]) => {
+      if (amount) addRouteAffection(character as YearEndRouteCharacterId, amount)
+    })
+  }
+
+  const startYearEndNewYearMessages = () => {
+    const candidates = monthVisitOrder.filter((character) => routeAffection[character] >= YEAR_END_INVITE_THRESHOLD)
+    setYearEndGreetingQueue(candidates)
+    setYearEndGreetingIndex(0)
+    setYearEndProactiveSent([])
+    setYearEndExtendedChatCharacters([])
+    setYearEndFirstReplySent(false)
+    localStorage.setItem('mayday-year-end-greeting-queue', JSON.stringify(candidates))
+    localStorage.setItem('mayday-year-end-greeting-index', '0')
+    localStorage.setItem('mayday-year-end-proactive-sent', '[]')
+    localStorage.setItem('mayday-year-end-extended-chat-characters', '[]')
+    if (candidates.length) {
+      const character = candidates[0]
+      setYearEndGreetingTarget(character)
+      setYearEndChatMode('incoming')
+      appendChatMessages(character, [{ from: character, text: yearEndNewYearMessages[character], time: '00:05' }], '1997年1月1日・凌晨')
+      setActiveApp(null)
+      setSelectedSmsThread(null)
+      changeStage('year-end-new-year-notification')
+    } else {
+      setYearEndGreetingTarget(null)
+      setActiveApp(null)
+      setSelectedSmsThread(null)
+      changeStage('year-end-free-chat-picker')
+    }
+  }
+
+  const advanceYearEndGreetingQueue = () => {
+    const nextIndex = yearEndGreetingIndex + 1
+    if (nextIndex < yearEndGreetingQueue.length) {
+      const character = yearEndGreetingQueue[nextIndex]
+      setYearEndGreetingIndex(nextIndex)
+      setYearEndGreetingTarget(character)
+      setYearEndChatMode('incoming')
+      setYearEndFirstReplySent(false)
+      appendChatMessages(character, [{ from: character, text: yearEndNewYearMessages[character], time: '00:' + String(5 + nextIndex * 2).padStart(2, '0') }], '1997年1月1日・凌晨')
+      setActiveApp(null)
+      setSelectedSmsThread(null)
+      changeStage('year-end-new-year-notification')
+    } else {
+      setYearEndGreetingTarget(null)
+      setActiveApp(null)
+      setSelectedSmsThread(null)
+      changeStage('year-end-free-chat-picker')
+    }
+  }
+
+  const finishYearEndFireworks = () => {
+    if (yearEndFireworksReplies.length !== 5) return
+    localStorage.setItem('mayday-year-end-fireworks-complete', 'true')
+    startYearEndNewYearMessages()
+  }
+
+  const openYearEndNewYearMessages = () => {
+    if (!yearEndGreetingTarget) return
+    setSelectedSmsThread(yearEndGreetingTarget)
+    setActiveApp('messages')
+    changeStage('year-end-new-year-chat')
+  }
+
+  const chooseYearEndIncomingGreetingReply = (index: number) => {
+    if (!yearEndGreetingTarget || yearEndChatMode !== 'incoming' || yearEndGreetingTarget === 'youda' || yearEndFirstReplySent) return
+    const choice = yearEndNewYearReplies[yearEndGreetingTarget][index]
+    if (!choice) return
+    appendChatMessages(yearEndGreetingTarget, [
+      { from: 'me', text: choice.text, time: '00:07' },
+      ...choice.response.map((text, responseIndex) => ({ from: yearEndGreetingTarget, text, time: responseIndex === 0 ? '00:08' : '00:09' })),
+    ], '1997年1月1日・凌晨')
+    addRouteAffection(yearEndGreetingTarget, choice.affection)
+    setYearEndFirstReplySent(true)
+  }
+
+  const chooseYearEndProactiveGreeting = (index: number) => {
+    if (!yearEndGreetingTarget || yearEndChatMode !== 'outgoing' || yearEndFirstReplySent) return
+    const choice = yearEndProactiveOpeners[yearEndGreetingTarget][index]
+    if (!choice) return
+    appendChatMessages(yearEndGreetingTarget, [
+      { from: 'me', text: choice.text, time: '00:15' },
+      ...choice.response.map((text, responseIndex) => ({ from: yearEndGreetingTarget, text, time: responseIndex === 0 ? '00:16' : '00:17' })),
+    ], '1997年1月1日・凌晨')
+    addRouteAffection(yearEndGreetingTarget, choice.affection)
+    setYearEndProactiveSent((current) => current.includes(yearEndGreetingTarget) ? current : [...current, yearEndGreetingTarget])
+    setYearEndFirstReplySent(true)
+  }
+
+  const continueYearEndGreetingChat = () => {
+    if (!yearEndGreetingTarget || !yearEndFirstReplySent) return
+    setYearEndFreeChatRound(0)
+    setYearEndFreeChatReplied(false)
+    setYearEndFreeChatReplies([])
+    appendChatMessages(yearEndGreetingTarget, [{ from: yearEndGreetingTarget, text: yearEndFreeChatScripts[yearEndGreetingTarget][0].incoming, time: '00:20' }], '1997年1月1日・凌晨')
+    setSelectedSmsThread(yearEndGreetingTarget)
+    setActiveApp('messages')
+    changeStage('year-end-free-chat')
+  }
+
+  const finishYearEndGreetingWithoutChat = () => {
+    if (!yearEndGreetingTarget || !yearEndFirstReplySent) return
+    setActiveApp(null)
+    setSelectedSmsThread(null)
+    if (yearEndChatMode === 'incoming') {
+      advanceYearEndGreetingQueue()
+    } else {
+      changeStage('year-end-free-chat-picker')
+    }
+  }
+
+  const chooseYearEndFreeChatTarget = (character: YearEndCharacterId) => {
+    if (yearEndGreetingQueue.includes(character as YearEndRouteCharacterId) || yearEndProactiveSent.includes(character)) return
+    setYearEndGreetingTarget(character)
+    setYearEndChatMode('outgoing')
+    setYearEndFirstReplySent(false)
+    setSelectedSmsThread(character)
+    setActiveApp('messages')
+    changeStage('year-end-new-year-chat')
+  }
+
+  const openYearEndFreeChatMessages = () => {
+    if (!yearEndGreetingTarget) return
+    setSelectedSmsThread(yearEndGreetingTarget)
+    setActiveApp('messages')
+  }
+
+  const chooseYearEndFreeChatReply = (index: number) => {
+    if (!yearEndGreetingTarget || yearEndFreeChatReplied) return
+    const rounds = yearEndFreeChatScripts[yearEndGreetingTarget]
+    const round = rounds[yearEndFreeChatRound]
+    const choice = round?.choices[index]
+    if (!choice) return
+    const minute = 20 + yearEndFreeChatRound * 5
+    appendChatMessages(yearEndGreetingTarget, [
+      { from: 'me', text: choice.text, time: '00:' + String(minute).padStart(2, '0') },
+      ...choice.response.map((text, responseIndex) => ({ from: yearEndGreetingTarget, text, time: '00:' + String(minute + responseIndex + 1).padStart(2, '0') })),
+    ], '1997年1月1日・凌晨')
+    addRouteAffection(yearEndGreetingTarget, choice.affection)
+    const nextRound = yearEndFreeChatRound + 1
+    setYearEndFreeChatReplies((current) => [...current, index])
+    if (nextRound < 5) {
+      setYearEndFreeChatRound(nextRound)
+      setYearEndFreeChatReplied(false)
+      appendChatMessages(yearEndGreetingTarget, [{ from: yearEndGreetingTarget, text: rounds[nextRound].incoming, time: '00:' + String(minute + 3).padStart(2, '0') }], '1997年1月1日・凌晨')
+    } else {
+      setYearEndFreeChatReplied(true)
+    }
+  }
+
+  const finishYearEndFreeChat = () => {
+    if (!yearEndGreetingTarget || yearEndFreeChatRound !== 4 || !yearEndFreeChatReplied) return
+    setYearEndExtendedChatCharacters((current) => current.includes(yearEndGreetingTarget) ? current : [...current, yearEndGreetingTarget])
+    setActiveApp(null)
+    setSelectedSmsThread(null)
+    if (yearEndChatMode === 'incoming') {
+      advanceYearEndGreetingQueue()
+    } else {
+      changeStage('year-end-free-chat-picker')
+    }
+  }
+
+  const startYearEndDiary = () => {
+    const shoppingAccepted = yearEndInviteTarget !== null
+      && yearEndShoppingReplyChoice !== null
+      && yearEndShoppingReplyChoices[yearEndInviteTarget][yearEndShoppingReplyChoice]?.accepted === true
+    const shoppingSummary = shoppingAccepted && yearEndInviteTarget
+      ? ({
+          wen: '下午跟溫尚翊去了市場和雜貨店。他拿著清單一路提醒我不要亂買，自己卻也多挑了好幾包糖果。最後兩個人提著滿滿的袋子往回走，還約好晚上不要遲到。',
+          masa: '下午跟瑪莎去了老街市場。他一路嫌清單太長，卻又忍不住往袋子裡加零食，最後還把背面漏看的項目補齊。兩個人一路鬥嘴，倒也把事情買得差不多了。',
+          ashin: '下午跟阿信去了年貨店和文具店。他挑了糖果，也買了幾張準備送給大家的小卡片，還認真挑了掛在晚上集合地點的裝飾。整個下午走得很慢，卻很舒服。',
+          stone: '下午跟石頭去了市場旁的雜貨店。他仔細挑了餅乾和飲料，還替大家把東西分好，最後把一張街景明信片送給我。明明只是出來採買，卻被他照顧得很周到。',
+          yanming: '下午跟諺明哥去市場和雜貨行。他把清單分門別類，連數量和收納都先想好了，還提醒我一起確認用品。東西買得很有效率，晚上要用的也都準備齊全。',
+        } as Record<YearEndRouteCharacterId, string>)[yearEndInviteTarget]
+      : yearEndInviteTarget && yearEndShoppingReplyChoice !== null
+        ? '下午收到' + characterNames[yearEndInviteTarget] + '的邀約，不過我婉拒了。雖然沒有一起出門買年貨，還是約好晚上見面跨年。'
+        : '下午留在家裡整理東西，沒有另外出門採買。'
+    const activeNames = yearEndGreetingQueue.map((character) => characterNames[character])
+    const proactiveNames = yearEndProactiveSent.map((character) => characterNames[character])
+    const extendedNames = yearEndExtendedChatCharacters.map((character) => characterNames[character])
+    const greetingSummary = activeNames.length
+      ? '跨過十二點後，' + activeNames.join('、') + '都主動傳來新年快樂，我也一一回覆了。'
+      : '跨過十二點後，沒有收到達到好感度門檻的主動新年訊息。'
+    const proactiveSummary = proactiveNames.length
+      ? '後來我又主動向' + proactiveNames.join('、') + '說了新年快樂。'
+      : '其他人的新年祝福，我沒有特別再一一傳訊息。'
+    const extendedSummary = extendedNames.length
+      ? '我還和' + extendedNames.join('、') + '多聊了幾輪，聊到新的一年才慢慢收起手機。'
+      : '回覆完祝福後，我沒有再把聊天延長，讓大家都早點回去休息。'
+    const data: YearEndDiaryData = {
+      title: '把一九九六年的最後一頁留給今晚',
+      sections: [
+        { label: 'CHRISTMAS · 聖誕節的餘韻', text: '聖誕節那幾天，校園和街道都掛起了燈飾。交換禮物、期末報告和偶爾收到的訊息，讓十二月過得比想像中快。等桌曆翻到最後一天，才發現一九九六年真的要結束了。' },
+        { label: 'AFTERNOON · 年貨採買', text: shoppingSummary },
+        { label: 'MIDNIGHT · 六個人的煙火', text: '晚上我和溫尚翊、陳信宏、瑪莎、石錦航、諺明哥、佑達一起到河堤放煙火。大家分零食、整理仙女棒、互相鬧來鬧去，最後一起倒數迎接一九九七年。煙火升起來的時候，六個人的聲音全混在一起，吵得不得了，卻也讓人捨不得那麼快散場。' },
+        { label: 'NEW YEAR · 凌晨的訊息', text: [greetingSummary, proactiveSummary, extendedSummary].join('\n\n') },
+        { label: 'BEFORE SLEEP · 睡前補記', text: '今天真的很熱鬧。從聖誕節一路走到跨年，身邊的人、收到的訊息，還有夜空裡最後一朵煙火，都像是替這一年好好畫下了句點。希望一九九七年也能有很多值得記住的日子。' },
+      ],
+    }
+    setYearEndDiaryData(data)
+    setYearEndDiaryUnlocked(true)
+    localStorage.setItem('mayday-year-end-diary-data', JSON.stringify(data))
+    localStorage.setItem('mayday-year-end-diary-unlocked', 'true')
+    setActiveApp(null)
+    setSelectedSmsThread(null)
+    changeStage('year-end-diary')
+  }
+
+  const finishYearEndDiary = () => {
+    if (!yearEndDiaryData) return
+    localStorage.setItem('mayday-year-end-day-complete', 'true')
+    setYearEndDiaryUnlocked(true)
+    setActiveApp(null)
+    setSelectedSmsThread(null)
     changeStage('completed')
   }
 
@@ -3408,7 +3779,7 @@ function App() {
   }
 
   const resetLocalData = () => {
-    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-month-visit-target', 'mayday-month-visit-choice', 'mayday-month-visit-replies', 'mayday-month-visit-complete', 'mayday-month-free-chat-target', 'mayday-month-free-chat-choice-pending', 'mayday-month-free-chat-round', 'mayday-month-free-chat-replied', 'mayday-month-free-chat-started', 'mayday-month-free-chat-opening-sent', 'mayday-month-free-chat-replies', 'mayday-month-free-chat-complete', 'mayday-month-day-complete', 'mayday-next-month-started', 'mayday-next-month-invite-candidates', 'mayday-next-month-invite-target', 'mayday-next-month-invite-tease-choice', 'mayday-next-month-invite-reply-choice', 'mayday-next-month-invite-date-replies', 'mayday-next-month-invite-thread-started', 'mayday-next-month-event-kind', 'mayday-next-month-event-character', 'mayday-next-month-open-day-target', 'mayday-next-month-open-day-replies', 'mayday-next-month-free-chat-target', 'mayday-next-month-free-chat-round', 'mayday-next-month-free-chat-replied', 'mayday-next-month-free-chat-opening-sent', 'mayday-next-month-free-chat-replies', 'mayday-next-month-diary-unlocked', 'mayday-next-month-diary-data', 'mayday-wen-open-day-guitar-praise-v1', 'mayday-next-month-day-complete', 'mayday-route-affection', 'mayday-shared-experience-log', 'mayday-call-experience-context', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-month-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming', 'mayday-active-call-character', 'mayday-call-round-index', 'mayday-call-replied', 'mayday-call-transcript'].forEach((key) => localStorage.removeItem(key))
+    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-month-visit-target', 'mayday-month-visit-choice', 'mayday-month-visit-replies', 'mayday-month-visit-complete', 'mayday-month-free-chat-target', 'mayday-month-free-chat-choice-pending', 'mayday-month-free-chat-round', 'mayday-month-free-chat-replied', 'mayday-month-free-chat-started', 'mayday-month-free-chat-opening-sent', 'mayday-month-free-chat-replies', 'mayday-month-free-chat-complete', 'mayday-month-day-complete', 'mayday-next-month-started', 'mayday-next-month-invite-candidates', 'mayday-next-month-invite-target', 'mayday-next-month-invite-tease-choice', 'mayday-next-month-invite-reply-choice', 'mayday-next-month-invite-date-replies', 'mayday-next-month-invite-thread-started', 'mayday-next-month-event-kind', 'mayday-next-month-event-character', 'mayday-next-month-open-day-target', 'mayday-next-month-open-day-replies', 'mayday-next-month-free-chat-target', 'mayday-next-month-free-chat-round', 'mayday-next-month-free-chat-replied', 'mayday-next-month-free-chat-opening-sent', 'mayday-next-month-free-chat-replies', 'mayday-next-month-diary-unlocked', 'mayday-next-month-diary-data', 'mayday-wen-open-day-guitar-praise-v1', 'mayday-next-month-day-complete', 'mayday-route-affection', 'mayday-shared-experience-log', 'mayday-call-experience-context', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-month-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming', 'mayday-active-call-character', 'mayday-call-round-index', 'mayday-call-replied', 'mayday-call-transcript', 'mayday-year-end-started', 'mayday-year-end-invite-candidates', 'mayday-year-end-invite-target', 'mayday-year-end-shopping-reply-choice', 'mayday-year-end-shopping-replies', 'mayday-year-end-shopping-complete', 'mayday-year-end-fireworks-replies', 'mayday-year-end-fireworks-complete', 'mayday-year-end-greeting-queue', 'mayday-year-end-greeting-index', 'mayday-year-end-greeting-target', 'mayday-year-end-chat-mode', 'mayday-year-end-first-reply-sent', 'mayday-year-end-free-chat-round', 'mayday-year-end-free-chat-replied', 'mayday-year-end-free-chat-replies', 'mayday-year-end-proactive-sent', 'mayday-year-end-extended-chat-characters', 'mayday-year-end-diary-unlocked', 'mayday-year-end-diary-data', 'mayday-year-end-day-complete', 'mayday-year-end-shopping-invite-sent-wen', 'mayday-year-end-shopping-invite-sent-masa', 'mayday-year-end-shopping-invite-sent-ashin', 'mayday-year-end-shopping-invite-sent-stone', 'mayday-year-end-shopping-invite-sent-yanming'].forEach((key) => localStorage.removeItem(key))
     SAVE_SLOT_IDS.forEach((slot) => localStorage.removeItem(SAVE_SLOT_PREFIX + slot))
     setPlayerName('')
     setNameDraft('')
@@ -3458,6 +3829,23 @@ function App() {
     setNextMonthFreeChatReplies([])
     setNextMonthDiaryUnlocked(false)
     setNextMonthDiaryData(null)
+    setYearEndInviteCandidates([])
+    setYearEndInviteTarget(null)
+    setYearEndShoppingReplyChoice(null)
+    setYearEndShoppingReplies([])
+    setYearEndFireworksReplies([])
+    setYearEndGreetingQueue([])
+    setYearEndGreetingIndex(0)
+    setYearEndGreetingTarget(null)
+    setYearEndChatMode('incoming')
+    setYearEndFirstReplySent(false)
+    setYearEndFreeChatRound(0)
+    setYearEndFreeChatReplied(false)
+    setYearEndFreeChatReplies([])
+    setYearEndProactiveSent([])
+    setYearEndExtendedChatCharacters([])
+    setYearEndDiaryUnlocked(false)
+    setYearEndDiaryData(null)
     setRouteAffection({ wen: 0, masa: 0, ashin: 0, stone: 0, yanming: 0 })
     setSharedExperienceLog({})
     setCallExperienceContext(null)
