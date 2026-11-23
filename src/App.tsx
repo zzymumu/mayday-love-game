@@ -50,7 +50,7 @@ type SmsMessage = { id: string; date: string; time?: string; from: CharacterId |
 type NewChatEntry = { from: CharacterId | 'me'; text: string; time?: string }
 
 const splitDiaryParagraphs = (value: string): string[] =>
-  value.split(/(?:\\r?\\n)+|\\\\n+/).map((paragraph) => paragraph.trim()).filter(Boolean)
+  value.split(/(?:\r?\n)+|\\n+/).map((paragraph) => paragraph.trim()).filter(Boolean)
 
 const removeDuplicateWenMovieInviteLine = (messages: SmsMessage[]): SmsMessage[] => {
   let removed = false
