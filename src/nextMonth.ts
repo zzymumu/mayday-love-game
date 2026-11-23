@@ -63,7 +63,7 @@ export const nextMonthInviteRoutes: Record<NextMonthCharacterId, NextMonthInvite
     ],
     teaseChoices: [
       { text: '買多了？你原本是約誰啊？', response: ['蛤？沒有約誰啦！', '就剛好買多了，妳問題很多欸。'], affection: 3 },
-      { text: '兩張？那你怎麼不找別人去？', response: ['我就問妳啊，不然咧？', '妳到底要不要去啦！'], affection: 2 },
+      { text: '兩張？那你怎麼不找別人去？', response: ['我就問妳啊，不然咧？'], affection: 2 },
       { text: '你該不會是特地買給我的吧？', response: ['……妳不要自己亂想。', '我只是看到場次不錯，順手買的啦。'], affection: 3 },
     ],
     rounds: [
