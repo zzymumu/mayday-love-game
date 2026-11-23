@@ -669,6 +669,37 @@ const nextMonthLaterCallScripts: Record<RouteCharacterId, ChatRound[]> = {
   ],
 }
 
+const thresholdCallScripts: Record<RouteCharacterId, ChatRound[]> = {
+  masa: [
+    makeChatRound('欸，妳到家了沒？我剛剛才想到，今天在店裡那幾張照片妳有沒有看到最後一張？', '有啊，你那張閉著眼睛的最好笑。', '那張不算啦，是我媽拍太快。', '我看你根本是不想讓大家看到。', '誰小時候沒有幾張很蠢的照片？', '下次我也要帶照片去，換我笑你。', '妳敢帶來我就敢看，誰怕誰。', 3),
+    makeChatRound('剛剛回家我媽還問，妳是不是又要跟我吵到忘記吃飯。', '阿姨很了解我們嘛。', '她說妳以前也是這樣，講到一半就忘記自己要幹嘛。', '你不要把自己講得很無辜。', '我哪有？我明明都記得。', '那你記不記得以前欠我的冰？', '……妳怎麼又想到這個啦。', 3),
+    makeChatRound('我剛剛把今天的事情跟佑達講，他第一句就問我是不是又被妳欺負。', '你就說是啊，讓他同情你一下。', '妳還真的承認喔？', '不然呢，你今天明明一直拿我開玩笑。', '那叫久別重逢的正常交流。', '你這個說法我不接受。', '好啦，下次讓妳先講，我不插嘴。', 2),
+    makeChatRound('對了，之前那家冰店不知道還在不在。我剛剛經過附近，突然想到。', '你不是說要帶我去嗎？', '我有說啊，妳不要一直催。', '我沒有催，我是在提醒你履行承諾。', '妳真的很會記這種事。', '那當然，吃的事情不能忘。', '好啦，有經過我再看一下。', 3),
+    makeChatRound('好了，我先去洗澡，不然等一下又被我媽叫去做事。', '快去吧，今天你已經跑很多趟了。', '妳這句聽起來很像在趕我。', '我是在關心你，蔡昇晏。', '好啦，知道了。妳也早點休息。', '晚安，明天再找你算帳。', '蛤？又要算什麼啦！', 3),
+  ],
+  ashin: [
+    makeChatRound('喂？是我，阿信。剛剛回家把今天聽到的歌又找出來放了一次馁。', '你真的一回家就開始聽喔？', '哈哈，因為剛剛聊到一半，我還有幾首想讓妳聽。', '那你先把歌名寫給我，我怕我記不住。', '好啊，我等一下整理好傳給妳。', '不准一次傳十首，我會選擇困難。', '那我先挑三首，這樣可以嗎？', 3),
+    makeChatRound('我剛剛翻了一下唱片封套，發現裡面有一張小小的介紹卡，之前一直沒注意到。', '你是不是連包裝都會研究？', '有時候會啊，裡面偶爾會寫一些有趣的東西。', '那你下次拿給我看，我也想知道。', '好啊，我先收好，不會弄丟。', '你每次都把東西收得很仔細欸。', '哈哈，喜歡的東西就會想留著。', 3),
+    makeChatRound('妳剛剛說那首歌的副歌很容易記，我後來又聽了一次，真的滿像會一直留在腦袋裡的。', '對吧！我剛剛回家路上還在哼。', '哈哈，那代表妳真的有記住。', '你是不是也在哼？', '有一點，剛剛差點在家裡唱出來。', '那下次我們一起唱啊。', '好啊，不過妳不要笑我唱錯馁。', 3),
+    makeChatRound('我把剛剛想推薦的幾首歌寫在紙上了，怕打字的時候又漏掉。', '你這樣好像在交作業。', '哈哈，真的有一點。', '那我也要寫一張給你，交換歌單。', '好啊，我很期待妳會選什麼。', '如果你不喜歡不准嫌棄。', '怎麼會啦，妳喜歡的我都想聽聽看。', 3),
+    makeChatRound('那我先不吵妳了。今天聊得很開心，改天再把剩下的歌慢慢介紹給妳馁。', '好啊，我等你下次推薦。', '那就說好了，妳也可以隨時傳歌給我。', '你不要只說改天，要記得喔。', '哈哈，好，我會記得。', '晚安，阿信。', '晚安喔，回去早點休息。', 3),
+  ],
+  stone: [
+    makeChatRound('喂，妳回去以後有沒有把包包裡的東西整理好？我剛剛想到，今天椅子旁邊那幾條線差點勾到妳的袋子。', '有啊，還好你那時候先提醒我。', '那就好，我後來又把那一段重新收了一下。', '你是不是每次離開前都要檢查好幾遍？', '差不多，器材多，少一樣就會很麻煩。', '那下次我去可以幫你一起檢查。', '好啊，不過妳不用把自己當工作人員。', 3),
+    makeChatRound('我剛剛整理器材時，看到那張椅子還放在原來的位置，突然想到妳坐在那裡聽歌的樣子。', '你記得這麼清楚喔？', '嗯，因為那個位置剛好不會擋到大家走動。', '我還以為你只是隨便找一張給我。', '沒有啦，當時有看過旁邊的線，才讓妳坐那裡。', '那我下次還要坐同一張。', '可以啊，我幫妳留意。', 3),
+    makeChatRound('剛剛有一段副歌，我回去又想了一下，覺得如果鼓再收一點，整體會更乾淨。', '你們練團真的會一直想這些細節欸。', '會啊，有時候差一點點，聽起來就不一樣。', '我坐旁邊其實有聽出來那段比較不一樣。', '真的嗎？那妳耳朵滿敏銳的。', '下次我再去聽，你要告訴我有沒有改好。', '好啊，到時候再讓妳聽一次。', 3),
+    makeChatRound('瑪莎剛剛把一條導線繞成一團，還說這樣收比較快。', '哈哈哈，他是不是被你念了？', '有啊，我叫他重收一次。', '他一定在旁邊碎碎念。', '妳猜對了，他還說我很像器材管理員。', '那我下次幫你一起念他。', '哈哈，不用啦，他自己知道怎麼收。', 2),
+    makeChatRound('那我先去把剩下的器材放好。妳今天也走了一段路，回去記得休息。', '好，你也不要忙到太晚。', '我會把事情弄完再回去。', '下次見面的時候再跟我說那段歌有沒有改好。', '好，我記著。', '晚安，石頭。', '晚安，妳也早點睡。', 3),
+  ],
+  yanming: [
+    makeChatRound('喂，妳回去以後有沒有想到今天那個轉接頭？我後來把它放回工具盒固定的位置了。', '有啊，還好最後有找到，不然你們試音會很麻煩。', '是啊，器材少一個就會卡住。', '你是不是每次都要把清單核對完才肯走？', '差不多，這樣下次才不會臨時找不到。', '那下次我去可以幫你看清單。', '好啊，有人一起確認會更快。', 3),
+    makeChatRound('我把今天用過的導線重新整理了一次，發現有一條外皮有點磨損，明天要拿去換。', '你連這種小地方都會注意到。', '這個不能忽略，繼續用可能會有雜音。', '你們平常真的很忙欸。', '習慣了，東西整理好，後面就比較順。', '那你記得不要什麼都自己做。', '我知道，大家有空也會一起幫忙。', 3),
+    makeChatRound('剛剛溫尚翊問我，今天送來的那袋轉接頭有沒有收好。', '他是不是怕又有人把東西放錯地方？', '哈哈，他比較怕明天要用的時候找不到。', '那你有沒有跟他說我也有幫忙？', '有啊，我有說妳眼睛很利，一下就找到。', '那他有沒有稱讚我？', '他說下次要記得把東西放回原位。', 2),
+    makeChatRound('瑪莎今天把束線帶拿去綁水壺，說這樣比較不會掉。', '他真的很會亂用東西欸。', '我有叫他拆掉，束線帶還要留著收器材。', '他有乖乖拆嗎？', '沒有，還說他會自己負責。', '那你下次把束線帶藏起來。', '這個方法我可以考慮。', 3),
+    makeChatRound('我先去把明天要用的清單整理好。今天謝謝妳幫忙，讓我少翻了好幾個袋子。', '不客氣啦，你下次不要再把轉接頭藏那麼深。', '哈哈，好，我會放在固定的位置。', '晚安，諺明哥。', '晚安，妳也早點休息。', '好，掰掰。', '掰掰。', 3),
+  ],
+}
+
 const freeChatCallOpeners: Record<RouteCharacterId, ChatRound> = {
   wen: makeChatRound('喂，剛剛跟妳聊完，我才想到還有件事想問妳。', '你怎麼不在訊息裡問？', '有些話用電話講比較快啦。', '你又想到什麼了？', '沒什麼大事，就是突然想到。', '你是不是還有話沒跟我說？', '妳很會猜欸……等一下再慢慢講。', 2),
   masa: makeChatRound('欸，剛剛聊完我才發現，有些話打字真的講不清楚。', '那你現在可以講清楚啊。', '妳很急欸，我又沒有要跑掉。', '你最好不要又講一半就不說了。', '我哪有，妳不要先把我想得那麼差。', '好啦，我現在有空，慢慢講。', '這還差不多。', 2),
@@ -1718,7 +1749,7 @@ function App() {
   const [callExperienceContext, setCallExperienceContext] = useState<CharacterExperienceRecord | null>(() => {
     try {
       const saved = JSON.parse(localStorage.getItem('mayday-call-experience-context') ?? 'null') as CharacterExperienceRecord | null
-      return saved && freeTimeOrder.includes(saved.character) && ['first-chapter', 'day2', 'free-chat', 'month-visit', 'month-free-chat'].includes(saved.source) && typeof saved.date === 'string' ? saved : null
+      return saved && freeTimeOrder.includes(saved.character) && ['first-chapter', 'day2', 'free-chat', 'month-visit', 'month-free-chat', 'next-month-invite', 'next-month-open-day', 'next-month-free-chat'].includes(saved.source) && typeof saved.date === 'string' ? saved : null
     } catch { return null }
   })
   const [pendingCallCharacter, setPendingCallCharacter] = useState<RouteCharacterId | null>(() => {
@@ -2338,14 +2369,15 @@ function App() {
     const followsNextMonthOpenDay = context.source === 'next-month-open-day'
       || (context.source === 'next-month-free-chat' && context.eventKey.includes('open-day:' + character))
     const followsNextMonthFollowUp = context.source === 'next-month-invite' || context.source === 'next-month-free-chat'
+    const earlierChapterIsStale = ['first-chapter', 'day2', 'free-chat'].includes(context.source) && context.date !== saveGameDate
     const selectedRounds = followsMonthVisit
       ? monthVisitCallScripts[character]
       : followsNextMonthOpenDay
         ? nextMonthOpenDayCallScripts[character]
-        : context.source === 'free-chat'
-          ? [freeChatCallOpeners[character], ...earlierRouteRounds.slice(1)]
-          : followsNextMonthFollowUp
-            ? nextMonthLaterCallScripts[character]
+        : followsNextMonthFollowUp || earlierChapterIsStale
+          ? nextMonthLaterCallScripts[character]
+          : context.source === 'free-chat'
+            ? [freeChatCallOpeners[character], ...earlierRouteRounds.slice(1)]
             : earlierRouteRounds
 
     if (context.date === saveGameDate) return selectedRounds
