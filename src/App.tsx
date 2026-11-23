@@ -3779,10 +3779,10 @@ function App() {
                 </div>
               )}
 
-              {storyStage === 'next-month-invite' && currentNextMonthInvite && nextMonthInviteTarget && (
+              {storyStage === 'next-month-invite' && nextMonthInviteTarget && activeApp === null && (
                 <div className="story-screen-overlay">
                   <div className="story-screen-head">
-                    <div className="chapter-mark">收到邀請</div>
+                    <div className="chapter-mark">邀約簡訊</div>
                     <div className="story-contact-title">
                       <strong>{characterNames[nextMonthInviteTarget]}</strong>
                       <small>1996 年 12 月 14 日・上午</small>
@@ -3790,32 +3790,34 @@ function App() {
                     <span className="story-head-spacer" />
                   </div>
                   <div className="story-narrative-scroll">
-                    <div className="story-kicker">訊息裡有一個邀請</div>
-                    <h2 className="story-scene-title">{currentNextMonthInvite.title}</h2>
-                    <StoryBlocks blocks={currentNextMonthInvite.invitation} />
-                    {currentNextMonthInvite.teasePrompt && nextMonthInviteTeaseChoice === null && (
-                      <div className="choice-area">
-                        <div className="choice-heading">{currentNextMonthInvite.teasePrompt}</div>
-                        {currentNextMonthInvite.teaseChoices?.map((choice, index) => (
-                          <button className="reply-choice" key={index} onClick={() => chooseNextMonthInviteTease(index)}>
-                            <span>{choice.text}</span><ChevronRight size={15} />
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                    {currentNextMonthInvite.teasePrompt && nextMonthInviteTeaseChoice !== null && currentNextMonthInvite.teaseChoices?.[nextMonthInviteTeaseChoice] && (
-                      <StoryBlocks blocks={[
-                        { kind: 'dialogue', speaker: '你', text: currentNextMonthInvite.teaseChoices[nextMonthInviteTeaseChoice].text },
-                        ...currentNextMonthInvite.teaseChoices[nextMonthInviteTeaseChoice].response.map((text) => ({ kind: 'dialogue' as const, speaker: characterNames[nextMonthInviteTarget], text })),
-                      ]} />
-                    )}
+                    <div className="story-kicker">邀約已經在訊息裡等你</div>
+                    <h2 className="story-scene-title">打開簡訊，看看他說了什麼</h2>
+                    <p className="narrative-paragraph">這次的邀約會直接在你們的簡訊對話裡進行。</p>
                   </div>
-                  {(!currentNextMonthInvite.teaseChoices || nextMonthInviteTeaseChoice !== null) && (
-                    <div className="story-action-bar">
-                      <button className="story-primary-button" onClick={() => respondNextMonthInvite(true)}>好啊，我去 <ChevronRight size={15} /></button>
-                      <button className="story-primary-button secondary-chat-action" onClick={() => respondNextMonthInvite(false)}>今天不太方便，先不去了 <ChevronRight size={15} /></button>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={() => openNextMonthInviteChat(nextMonthInviteTarget)}>打開簡訊 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'next-month-invite-chat' && nextMonthInviteTarget && activeApp === null && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">邀約還沒回覆</div>
+                    <div className="story-contact-title">
+                      <strong>{characterNames[nextMonthInviteTarget]}</strong>
+                      <small>1996 年 12 月 14 日・上午</small>
                     </div>
-                  )}
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">手機裡有一則還沒回覆的邀約</div>
+                    <h2 className="story-scene-title">要不要回覆{characterNames[nextMonthInviteTarget]}？</h2>
+                    <p className="narrative-paragraph">對話和你之前選過的回覆都會保留在簡訊裡。</p>
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={() => openMessagesApp(nextMonthInviteTarget)}>回到簡訊對話 <ChevronRight size={15} /></button>
+                  </div>
                 </div>
               )}
 
@@ -4475,6 +4477,40 @@ function App() {
                                 <button className="story-primary-button" onClick={finishMonthFreeChat}>收起手機，寫下今天的日記 <ChevronRight size={15} /></button>
                               </div>
                             )}
+                              {storyStage === 'next-month-invite-chat' && nextMonthInviteTarget && selectedSmsThread === nextMonthInviteTarget && currentNextMonthInvite?.teaseChoices && nextMonthInviteTeaseChoice === null && (
+                                <div className="choice-area">
+                                  <div className="choice-heading">{currentNextMonthInvite.teasePrompt ?? '你想怎麼回他？'}</div>
+                                  {currentNextMonthInvite.teaseChoices.map((choice, index) => (
+                                    <button className="reply-choice" key={index} onClick={() => chooseNextMonthInviteTease(index)}>
+                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                    </button>
+                                  ))}
+                                  <small>你選的回覆會直接傳送到這個簡訊對話裡，也會影響好感度。</small>
+                                </div>
+                              )}
+                              {storyStage === 'next-month-invite-chat' && nextMonthInviteTarget && selectedSmsThread === nextMonthInviteTarget && (!currentNextMonthInvite?.teaseChoices || nextMonthInviteTeaseChoice !== null) && nextMonthInviteReplyChoice === null && currentNextMonthInvite && (
+                                <div className="choice-area">
+                                  <div className="choice-heading">你想怎麼回覆{characterNames[nextMonthInviteTarget]}？</div>
+                                  {currentNextMonthInvite.replyChoices.map((choice, index) => (
+                                    <button className="reply-choice" key={index} onClick={() => chooseNextMonthInviteReply(index)}>
+                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                    </button>
+                                  ))}
+                                  <small>每個選項都有不同的回應與好感度；婉拒邀約不會扣好感。</small>
+                                </div>
+                              )}
+                              {storyStage === 'next-month-invite-chat' && nextMonthInviteTarget && selectedSmsThread === nextMonthInviteTarget && nextMonthInviteReplyChoice !== null && currentNextMonthInvite && (
+                                <div className="sms-thread-actions">
+                                  <div className="reply-note">
+                                    {currentNextMonthInvite.replyChoices[nextMonthInviteReplyChoice].accepted
+                                      ? '你們已經把時間約好了。收起手機，準備出門赴約吧。'
+                                      : '他表示沒關係，等下次有空再約。你今天還是可以回社團幫忙。'}
+                                  </div>
+                                  <button className="story-primary-button" onClick={continueNextMonthInvite}>
+                                    {currentNextMonthInvite.replyChoices[nextMonthInviteReplyChoice].accepted ? '收起手機，去赴約' : '收起手機，先去社團幫忙'} <ChevronRight size={15} />
+                                  </button>
+                                </div>
+                              )}
                               {storyStage === 'next-month-free-chat' && nextMonthFreeChatTarget && selectedSmsThread === nextMonthFreeChatTarget && !nextMonthFreeChatOpeningSent && (
                                 <div className="choice-area">
                                   <div className="choice-heading">先傳一則訊息給{characterNames[nextMonthFreeChatTarget]}</div>
