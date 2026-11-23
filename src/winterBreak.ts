@@ -146,7 +146,7 @@ export const winterExamTutoringEnding: WinterStoryBlock[] = [
 
 export const winterBreakPracticeBlocks: WinterStoryBlock[] = [
   { kind: 'narration', text: '一月二十二日，最後一科考試結束已經半個月。校園裡的學生少了很多，走廊安靜下來，寒假終於正式開始。你原本以為這幾天可以好好睡到自然醒，結果下午就收到訊息，說晚上要去酒吧看他們駐唱，出發前大家會先到諺明哥那邊練一下。' },
-  { kind: 'narration', text: '諺明哥那裡比你想像中熱鬧。客廳一角堆著音箱、導線和幾個裝器材的箱子，牆邊的鼓組擦得很乾淨，鼓棒整整齊齊地放在架上。你才剛進門，就聽見瑪莎在嫌佑達把導線繞得像一團麵線。' },
+  { kind: 'narration', text: '下午的練團室比平常熱鬧。音箱、導線和器材箱靠著牆邊排開，鼓組已經架好，鼓棒整整齊齊地放在架上。你才剛走進門，就聽見瑪莎在嫌佑達把導線繞得像一團麵線。' },
   { kind: 'dialogue', speaker: '錢佑達', text: '欸，我這樣哪裡不對？明明就有收好啊！' },
   { kind: 'dialogue', speaker: '蔡昇晏', text: '你自己看啦，這個結打得比我耳機線還誇張。等一下誰要拆？你是不是想留給老闆當紀念品？' },
   { kind: 'dialogue', speaker: '劉諺明', text: '先放著，我等一下整理。你們先把要用的東西拿出來，不要全部擠在門口。' },
