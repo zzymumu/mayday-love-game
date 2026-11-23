@@ -6358,7 +6358,7 @@ function App() {
                             {!selectedDiaryDate ? (
                               <>
                                 <div className="diary-index-intro">
-                                  <span className="profile-eyebrow">PRIVATE JOURNAL · 1996</span>
+                                  <span className="profile-eyebrow">PRIVATE JOURNAL · 1996—1997</span>
                                   <strong>寫下來的日子</strong>
                                   <small>點選日期，可以重新讀一遍當時的心情。</small>
                                 </div>
@@ -6366,6 +6366,13 @@ function App() {
                                   <button className="diary-entry-row" onClick={() => setSelectedDiaryDate('1996-12-14')}>
                                     <span className="diary-entry-date">14<br/><small>DEC</small></span>
                                     <span className="diary-entry-copy"><strong>{nextMonthDiaryData.title}</strong><small>{nextMonthDiaryData.eventSummary.slice(0, 44)}…</small></span>
+                                    <ChevronRight size={16} />
+                                  </button>
+                                )}
+                                {winterDiaryUnlocked && winterDiaryData && (
+                                  <button className="diary-entry-row" onClick={() => setSelectedDiaryDate('1997-01-22')}>
+                                    <span className="diary-entry-date">22<br/><small>JAN</small></span>
+                                    <span className="diary-entry-copy"><strong>{winterDiaryData.title}</strong><small>{winterDiaryData.sections[2]?.text.slice(0, 44)}…</small></span>
                                     <ChevronRight size={16} />
                                   </button>
                                 )}
@@ -6399,7 +6406,15 @@ function App() {
                             ) : (
                               <>
                                 <button className="diary-detail-back" onClick={() => setSelectedDiaryDate(null)}><ArrowLeft size={13}/> 返回日記列表</button>
-                                {selectedDiaryDate === '1996-12-31' && yearEndDiaryUnlocked && yearEndDiaryData ? (
+                                {selectedDiaryDate === '1997-01-22' && winterDiaryUnlocked && winterDiaryData ? (
+                                  <div className="diary-paper">
+                                    <span className="diary-date">1997 年 1 月 22 日・星期三</span>
+                                    <h2>{winterDiaryData.title}</h2>
+                                    {winterDiaryData.sections.map((section) => (
+                                      <DiarySection key={section.label} label={section.label} text={section.text} />
+                                    ))}
+                                  </div>
+                                ) :                                 {selectedDiaryDate === '1996-12-31' && yearEndDiaryUnlocked && yearEndDiaryData ? (
                                   <div className="diary-paper">
                                     <span className="diary-date">1996 年 12 月 31 日・星期二</span>
                                     <h2>{yearEndDiaryData.title}</h2>
