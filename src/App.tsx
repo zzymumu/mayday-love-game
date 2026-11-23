@@ -4131,6 +4131,10 @@ function App() {
   const currentYearEndShoppingRoute = yearEndInviteTarget ? yearEndShoppingRoutes[yearEndInviteTarget] : null
   const currentYearEndShoppingRound = currentYearEndShoppingRoute?.rounds[yearEndShoppingReplies.length] ?? null
   const currentYearEndFireworksRound = yearEndFireworksRounds[yearEndFireworksReplies.length] ?? null
+  const currentWinterExamRound = winterExamTutoringRounds[winterExamReplies.length] ?? null
+  const currentWinterPracticeRound = winterBreakPracticeRounds[winterPracticeReplies.length] ?? null
+  const winterFocusOrder: WinterCharacterId[] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
+  const winterGigFocusCharacter = winterFocusOrder.reduce((best, character) => routeAffection[character] > routeAffection[best] ? character : best, winterFocusOrder[0])
   const currentGreetingRound = greetingChats[currentGreetingId][Math.min(greetingRound, greetingChats[currentGreetingId].length - 1)]
   const currentThreadMessages: SmsMessage[] = selectedSmsThread === 'wen'
     ? [...smsMessages, ...(chatMessages.wen ?? [])]
