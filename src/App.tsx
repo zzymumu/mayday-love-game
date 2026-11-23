@@ -3959,7 +3959,7 @@ function App() {
   }
 
   const chooseWinterExamChatReply = (choiceIndex: number) => {
-    if (winterExamChatReplyChoice !== null || localStorage.getItem('mayday-winter-exam-chat-choice-confirmed-v2') === 'true') return
+    if (winterExamChatReplyChoice !== null) return
     const choice = winterExamChatChoices[choiceIndex]
     if (!choice) return
     appendChatMessages('wen', [
