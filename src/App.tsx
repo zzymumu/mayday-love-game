@@ -1350,6 +1350,8 @@ function App() {
     put('mayday-month-visit-choice', null)
     put('mayday-month-visit-complete', localStorage.getItem('mayday-month-visit-complete'))
     put('mayday-route-affection', JSON.stringify(routeAffection))
+    put('mayday-shared-experience-log', JSON.stringify(sharedExperienceLog))
+    put('mayday-call-experience-context', callExperienceContext ? JSON.stringify(callExperienceContext) : null)
     put('mayday-call-history', JSON.stringify(callHistory))
     put('mayday-pending-call', pendingCallCharacter)
     put('mayday-incoming-call', incomingCallCharacter)
@@ -1406,6 +1408,15 @@ function App() {
   }, [routeAffection])
 
   useEffect(() => {
+    localStorage.setItem('mayday-shared-experience-log', JSON.stringify(sharedExperienceLog))
+  }, [sharedExperienceLog])
+
+  useEffect(() => {
+    if (callExperienceContext) localStorage.setItem('mayday-call-experience-context', JSON.stringify(callExperienceContext))
+    else localStorage.removeItem('mayday-call-experience-context')
+  }, [callExperienceContext])
+
+  useEffect(() => {
     localStorage.setItem('mayday-call-history', JSON.stringify(callHistory))
   }, [callHistory])
 
@@ -1433,12 +1444,31 @@ function App() {
       }
       return
     }
+
+    const latestExperience = storyStage === 'month-visit-complete' && monthVisitTarget === pendingCallCharacter
+      ? {
+          character: pendingCallCharacter,
+          source: 'month-visit' as const,
+          date: saveGameDate,
+          eventKey: monthVisitRoutes[pendingCallCharacter].title,
+          day2StrollAccepted,
+          choices: [...monthVisitReplies],
+        }
+      : sharedExperienceLog[pendingCallCharacter] ?? {
+          character: pendingCallCharacter,
+          source: 'day2' as const,
+          date: saveGameDate,
+          eventKey: day2StrollAccepted ? 'day2-stroll' : 'day2-after-ice',
+          day2StrollAccepted,
+        }
+    setCallExperienceContext(latestExperience)
+    localStorage.setItem('mayday-call-experience-context', JSON.stringify(latestExperience))
     setIncomingCallCharacter(pendingCallCharacter)
     localStorage.setItem('mayday-incoming-call', pendingCallCharacter)
     localStorage.setItem('mayday-call-v2-triggered-' + pendingCallCharacter, 'true')
     localStorage.removeItem('mayday-pending-call')
     setPendingCallCharacter(null)
-  }, [storyStage, activeApp, pendingCallCharacter, incomingCallCharacter, activeCallCharacter, routeAffection])
+  }, [storyStage, activeApp, pendingCallCharacter, incomingCallCharacter, activeCallCharacter, routeAffection, sharedExperienceLog, monthVisitTarget, monthVisitReplies, saveGameDate, day2StrollAccepted])
 
   useEffect(() => {
     if (activeApp === 'messages' && selectedSmsThread && messageScrollRef.current) {
