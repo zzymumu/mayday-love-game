@@ -36,8 +36,17 @@ type SmsMessage = { id: string; date: string; time?: string; from: CharacterId |
 type NewChatEntry = { from: CharacterId | 'me'; text: string; time?: string }
 type ChatChoice = { text: string; response: string[]; affection: number }
 type ChatRound = { incoming: string; choices: ChatChoice[] }
-type CallLogEntry = { id: string; character: RouteCharacterId; status: 'answered' | 'missed'; time: string }
+type CallLogEntry = { id: string; character: RouteCharacterId; status: 'answered' | 'missed'; time: string; date?: string }
 type CallTranscriptLine = { speaker: RouteCharacterId | 'me'; text: string }
+type CallExperienceSource = 'first-chapter' | 'day2' | 'free-chat' | 'month-visit'
+type CharacterExperienceRecord = {
+  character: RouteCharacterId
+  source: CallExperienceSource
+  date: string
+  eventKey: string
+  day2StrollAccepted: boolean
+  choices?: number[]
+}
 type SaveSlotData = { version: 1; savedAt: string; gameDate: string; gameTime: string; stage: StoryStage; stageLabel: string; data: Record<string, string> }
 type MonthVisitChoice = { text: string; response: string[]; affection: number }
 type MonthVisitRound = { scene?: string; prompt: string; choices: MonthVisitChoice[] }
@@ -1229,6 +1238,18 @@ function App() {
       stone: Number(saved.stone ?? 0),
       yanming: Number(saved.yanming ?? 0),
     }
+  })
+  const [sharedExperienceLog, setSharedExperienceLog] = useState<Partial<Record<RouteCharacterId, CharacterExperienceRecord>>>(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('mayday-shared-experience-log') ?? '{}') as Partial<Record<RouteCharacterId, CharacterExperienceRecord>>
+      return saved && typeof saved === 'object' && !Array.isArray(saved) ? saved : {}
+    } catch { return {} }
+  })
+  const [callExperienceContext, setCallExperienceContext] = useState<CharacterExperienceRecord | null>(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('mayday-call-experience-context') ?? 'null') as CharacterExperienceRecord | null
+      return saved && freeTimeOrder.includes(saved.character) && ['first-chapter', 'day2', 'free-chat', 'month-visit'].includes(saved.source) && typeof saved.date === 'string' ? saved : null
+    } catch { return null }
   })
   const [pendingCallCharacter, setPendingCallCharacter] = useState<RouteCharacterId | null>(() => {
     const saved = localStorage.getItem('mayday-pending-call')
