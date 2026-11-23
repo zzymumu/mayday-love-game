@@ -2184,6 +2184,13 @@ function App() {
     put('mayday-year-end-extended-chat-characters', JSON.stringify(yearEndExtendedChatCharacters))
     put('mayday-year-end-diary-unlocked', String(yearEndDiaryUnlocked))
     put('mayday-year-end-diary-data', yearEndDiaryData ? JSON.stringify(yearEndDiaryData) : null)
+    put('mayday-winter-exam-tutoring-unlocked', String(winterExamTutoringUnlocked))
+    put('mayday-winter-exam-replies', JSON.stringify(winterExamReplies))
+    put('mayday-winter-practice-replies', JSON.stringify(winterPracticeReplies))
+    put('mayday-winter-yanming-pickup-available', String(winterYanmingPickupAvailable))
+    put('mayday-winter-bus-stop-character', winterBusStopCharacter)
+    put('mayday-winter-diary-unlocked', String(winterDiaryUnlocked))
+    put('mayday-winter-diary-data', winterDiaryData ? JSON.stringify(winterDiaryData) : null)
     put('mayday-route-affection', JSON.stringify(routeAffection))
     put('mayday-shared-experience-log', JSON.stringify(sharedExperienceLog))
     put('mayday-call-experience-context', callExperienceContext ? JSON.stringify(callExperienceContext) : null)
@@ -2264,6 +2271,18 @@ function App() {
   useEffect(() => {
     localStorage.setItem('mayday-route-affection', JSON.stringify(routeAffection))
   }, [routeAffection])
+
+  useEffect(() => {
+    localStorage.setItem('mayday-winter-exam-tutoring-unlocked', String(winterExamTutoringUnlocked))
+    localStorage.setItem('mayday-winter-exam-replies', JSON.stringify(winterExamReplies))
+    localStorage.setItem('mayday-winter-practice-replies', JSON.stringify(winterPracticeReplies))
+    localStorage.setItem('mayday-winter-yanming-pickup-available', String(winterYanmingPickupAvailable))
+    if (winterBusStopCharacter) localStorage.setItem('mayday-winter-bus-stop-character', winterBusStopCharacter)
+    else localStorage.removeItem('mayday-winter-bus-stop-character')
+    localStorage.setItem('mayday-winter-diary-unlocked', String(winterDiaryUnlocked))
+    if (winterDiaryData) localStorage.setItem('mayday-winter-diary-data', JSON.stringify(winterDiaryData))
+    else localStorage.removeItem('mayday-winter-diary-data')
+  }, [winterExamTutoringUnlocked, winterExamReplies, winterPracticeReplies, winterYanmingPickupAvailable, winterBusStopCharacter, winterDiaryUnlocked, winterDiaryData])
 
   useEffect(() => {
     localStorage.setItem('mayday-year-end-invite-candidates', JSON.stringify(yearEndInviteCandidates))
