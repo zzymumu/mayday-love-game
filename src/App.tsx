@@ -4206,7 +4206,7 @@ function App() {
                     <div className="app-window-head">
                       <button
                         className="back-button"
-                        onClick={() => activeApp === 'messages' && selectedSmsThread ? setSelectedSmsThread(null) : activeApp === 'diary' && selectedDiaryDate ? setSelectedDiaryDate(null) : setActiveApp(null)}
+                        onClick={() => activeApp === 'messages' && selectedSmsThread ? (storyStage === 'next-month-free-chat' ? (setSelectedSmsThread(null), setActiveApp(null)) : setSelectedSmsThread(null)) : activeApp === 'diary' && selectedDiaryDate ? setSelectedDiaryDate(null) : setActiveApp(null)}
                         aria-label={activeApp === 'messages' && selectedSmsThread ? '返回訊息列表' : '返回主選單'}
                       ><ArrowLeft size={17} /></button>
                       <div className="app-window-title">
@@ -4430,6 +4430,34 @@ function App() {
                                 <button className="story-primary-button" onClick={finishMonthFreeChat}>收起手機，寫下今天的日記 <ChevronRight size={15} /></button>
                               </div>
                             )}
+                              {storyStage === 'next-month-free-chat' && nextMonthFreeChatTarget && selectedSmsThread === nextMonthFreeChatTarget && !nextMonthFreeChatOpeningSent && (
+                                <div className="choice-area">
+                                  <div className="choice-heading">先傳一則訊息給{characterNames[nextMonthFreeChatTarget]}</div>
+                                  {nextMonthFreeChatOpeners[nextMonthFreeChatTarget].map((choice, index) => (
+                                    <button className="reply-choice" key={index} onClick={() => chooseNextMonthFreeChatOpening(index)}>
+                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                    </button>
+                                  ))}
+                                  <small>由你主動開啟對話，先聊聊今天的小事。</small>
+                                </div>
+                              )}
+                              {storyStage === 'next-month-free-chat' && nextMonthFreeChatTarget && selectedSmsThread === nextMonthFreeChatTarget && nextMonthFreeChatOpeningSent && !nextMonthFreeChatReplied && (
+                                <div className="choice-area">
+                                  <div className="choice-heading">十二月・自由對話・第 {nextMonthFreeChatRound + 1}/5 輪</div>
+                                  {nextMonthFreeChatScripts[nextMonthFreeChatTarget][nextMonthFreeChatRound].choices.map((choice, index) => (
+                                    <button className="reply-choice" key={index} onClick={() => chooseNextMonthFreeChatReply(index)}>
+                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                    </button>
+                                  ))}
+                                  <small>每輪都有三個回覆選項，會影響對方的反應與好感。</small>
+                                </div>
+                              )}
+                              {storyStage === 'next-month-free-chat' && nextMonthFreeChatTarget && selectedSmsThread === nextMonthFreeChatTarget && nextMonthFreeChatReplied && nextMonthFreeChatRound === 4 && (
+                                <div className="sms-thread-actions">
+                                  <div className="reply-note">五輪對話已經聊完。把手機收好，準備寫下今天的日記。</div>
+                                  <button className="story-primary-button" onClick={finishNextMonthFreeChat}>收起手機，寫下今天的日記 <ChevronRight size={15} /></button>
+                                </div>
+                              )}
                           </div>
                         )
                       ) : activeApp === 'contacts' ? (
@@ -4494,6 +4522,13 @@ function App() {
                                   <strong>寫下來的日子</strong>
                                   <small>點選日期，可以重新讀一遍當時的心情。</small>
                                 </div>
+                                {nextMonthDiaryUnlocked && nextMonthDiaryData && (
+                                  <button className="diary-entry-row" onClick={() => setSelectedDiaryDate('1996-12-14')}>
+                                    <span className="diary-entry-date">14<br/><small>DEC</small></span>
+                                    <span className="diary-entry-copy"><strong>{nextMonthDiaryData.title}</strong><small>{nextMonthDiaryData.eventSummary.slice(0, 44)}…</small></span>
+                                    <ChevronRight size={16} />
+                                  </button>
+                                )}
                                 {monthDiaryUnlocked && monthVisitTarget && (
                                   <button className="diary-entry-row" onClick={() => setSelectedDiaryDate('1996-11-16')}>
                                     <span className="diary-entry-date">16<br/><small>NOV</small></span>
@@ -4517,7 +4552,15 @@ function App() {
                             ) : (
                               <>
                                 <button className="diary-detail-back" onClick={() => setSelectedDiaryDate(null)}><ArrowLeft size={13}/> 返回日記列表</button>
-                                {selectedDiaryDate === '1996-11-16' && monthDiaryUnlocked && monthVisitTarget ? (
+                                {selectedDiaryDate === '1996-12-14' && nextMonthDiaryUnlocked && nextMonthDiaryData ? (
+                                  <div className="diary-paper">
+                                    <span className="diary-date">1996 年 12 月 14 日・星期六</span>
+                                    <h2>{nextMonthDiaryData.title}</h2>
+                                    <p>{nextMonthDiaryData.eventSummary}</p>
+                                    <p>{nextMonthDiaryData.chatSummary}</p>
+                                    <p>{nextMonthDiaryData.ending}</p>
+                                  </div>
+                                ) : selectedDiaryDate === '1996-11-16' && monthDiaryUnlocked && monthVisitTarget ? (
                                   <div className="diary-paper">
                                     <span className="diary-date">1996 年 11 月 16 日・星期六</span>
                                     <h2>{monthDiaryEntries[monthVisitTarget].title}</h2>
