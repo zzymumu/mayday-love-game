@@ -3876,216 +3876,38 @@ function App() {
       yanming: '大家忙著倒數時，諺明哥還在確認仙女棒和煙火都放在安全的位置。第一朵煙火升上去，他才終於抬頭，笑著跟大家說新年快樂。明明連跨年都還在照顧所有人，卻讓人覺得有他在就很安心。',
     }
 
+    const yearEndDiaryMoment: Record<YearEndRouteCharacterId, string> = {
+      wen: '本來大家都在忙著倒數，我也跟著佑達他們喊，根本沒空想別的。結果第一朵煙火升上去，溫尚翊卻先走到我旁邊，低頭確認我手裡的仙女棒有沒有拿穩。明明旁邊吵得要命，他那句「新年快樂啦，今天有來就好」我卻聽得清清楚楚。煙火還在放，我已經開始擔心自己是不是笑得太明顯。這個人真的很會，平常講話沒兩句好聽的，偏偏偶爾一句就讓人記很久。',
+      ashin: '倒數的時候大家喊得亂七八糟，阿信還在旁邊笑著幫忙把飲料分完。第一朵煙火升起來，他轉過來跟我碰了一下手裡的飲料，說希望新的一年大家都能順順利利。其實只是很普通的一句祝福，可是他說得很認真，眼睛被煙火照得亮亮的。我突然覺得，阿信好像總有辦法讓熱鬧的場面裡，也留下一個很安靜、很溫柔的瞬間。',
+      masa: '佑達負責倒數，瑪莎偏偏故意慢半拍，還堅持自己才沒有跟錯。煙火一升上去，他又湊過來問我剛才那段鼓花到底算誰的，像是連跨年都不能放過這場勝負。我笑他幼稚，他立刻回我「妳到底會不會欣賞」，講完自己先笑了。明明周圍全是煙火聲，我卻記得最清楚的是他那副等著被稱讚、又怕我真的稱讚他的表情。真的很煩，但也真的很好笑。',
+      stone: '煙火升起來時，大家都在抬頭看，石頭卻先把相機舉起來，替我們把那一刻留住。拍完他沒有急著加入大家的吵鬧，只把相機放下，轉過來跟我說洗出來會給我一份。那句話說得很自然，好像替我留一張照片本來就是理所當然的事。我看著他把相機收好，忽然很想知道，照片裡的我是不是也正好在看他。',
+      yanming: '倒數前大家忙成一團，諺明哥還在確認煙火放的位置、提醒我們不要站太近。第一朵煙火升上去，他才終於停下手邊的事，抬頭跟大家一起喊新年快樂。明明他也站在這裡跨年，卻總像習慣先照顧好所有人。那一瞬間我突然覺得，有他在真的很安心。希望新的一年，他也能偶爾不用忙著照顧別人，單純玩得開心就好。',
+    }
+
     return {
-      title: '把一九九六年的最後一頁留給今晚',
+      title: '一九九六年的最後一個瞬間',
       sections: [
-        { label: 'DECEMBER · 年末的台北', text: '聖誕節那幾天，台北街上到處都是燈，系上交換禮物還害我抽到兩雙厚襪子。西藍花笑了我好幾天，我嘴上嫌棄，回家卻馬上穿上。今天早上翻到桌曆最後一頁，才真的有「啊，一九九六年要結束了」的感覺。明明只是普通的一天，想到晚上要跟那群人一起跨年，心情就有點坐不住。' },
-        { label: 'AFTERNOON · 年貨和一點小插曲', text: shoppingSummary },
-        { label: 'MIDNIGHT · 河堤邊的七個人', text: '九點多到河堤時，佑達已經把零食袋放在地上，瑪莎的手才伸過去就被他拍開，兩個人為了一包餅乾又吵起來。阿信忙著把熱飲分好，石頭蹲著檢查相機和底片，諺明哥把水和煙火用品排整齊，還一直提醒大家不要站得太靠近。溫尚翊在旁邊拆仙女棒，看見我來就朝我招手。明明才剛到，耳邊已經全是笑聲，根本沒有人打算安靜等十二點。\n\n倒數前幾分鐘，佑達搶著當指揮，瑪莎偏偏故意唱反調，阿信笑到差點接不上數字。大家吵成一團，直到第一朵煙火真的升上去，才一起仰起頭。光落在每個人的臉上，河堤一下子亮了又暗，旁邊有人尖叫，有人拍手，還有人忙著提醒別把仙女棒拿反。那一刻我突然覺得，這一年好像真的有好好收尾。\n\n' + midnightFocus[yearEndFocus] },
-        { label: 'NEW YEAR · 凌晨還亮著的手機', text: [greetingSummary, proactiveSummary, extendedSummary].join('\n\n') },
-        { label: 'BEFORE SLEEP · 留給一九九七年', text: '回到家時，外套上好像還沾著河邊的冷風，耳朵裡卻全是大家倒數的聲音。我把手機放在枕頭旁邊，螢幕亮了又暗，幾句新年快樂還留在對話裡。今天最好的地方，大概不是煙火有多漂亮，而是抬頭時身邊真的站著一群熟悉的人。希望一九九七年也能常常這樣，大家都好好的，還能一起笑得這麼大聲。' },
+        { label: '日記', text: yearEndDiaryMoment[yearEndFocus] },
       ],
     }
-  }
-
-  const startYearEndDiary = () => {
-    const data = buildYearEndDiaryData()
-    setYearEndDiaryData(data)
-    setYearEndDiaryUnlocked(true)
-    localStorage.setItem('mayday-year-end-diary-data', JSON.stringify(data))
-    localStorage.setItem('mayday-year-end-diary-unlocked', 'true')
-    setActiveApp(null)
-    setSelectedSmsThread(null)
-    changeStage('year-end-diary')
-  }
-
-  const finishYearEndDiary = () => {
-    if (!yearEndDiaryData) return
-    localStorage.setItem('mayday-year-end-day-complete', 'true')
-    setYearEndDiaryUnlocked(true)
-    localStorage.removeItem('mayday-winter-exam-chat-started')
-    localStorage.removeItem('mayday-winter-exam-chat-reply-choice')
-    localStorage.removeItem('mayday-winter-exam-chat-choice-confirmed-v2')
-    localStorage.removeItem('mayday-winter-exam-chat-closing-choice')
-    setWinterExamChatReplyChoice(null)
-    setWinterExamChatClosingChoice(null)
-    const tutoringUnlocked = routeAffection.wen > 40
-    setWinterExamTutoringUnlocked(tutoringUnlocked)
-    localStorage.setItem('mayday-winter-exam-tutoring-unlocked', String(tutoringUnlocked))
-    setWinterExamReplies([])
-    setWinterPracticeReplies([])
-    setWinterYanmingPickupAvailable(false)
-    setWinterBusStopCharacter(null)
-    setWinterBusStopReplies([])
-    setWinterDiaryUnlocked(false)
-    setWinterDiaryData(null)
-    setActiveApp(null)
-    setSelectedSmsThread(null)
-    changeStage('winter-exam-intro')
-  }
-
-  const startWinterExamChat = () => {
-    const openingMessages: NewChatEntry[] = [
-      { from: 'me', text: '溫尚翊！！你明天下午有空嗎？', time: '19:32' },
-      { from: 'wen', text: '怎樣啦？突然找我。', time: '19:33' },
-      { from: 'me', text: '我跟機率統計快吵起來了……尤其貝氏定理，我每次都把條件放反。', time: '19:34' },
-      { from: 'wen', text: '哈哈哈哈哈，妳前幾天不是還說快弄懂了？', time: '19:35' },
-      { from: 'me', text: '我那時候太有自信了……現在看題目又開始懷疑人生。', time: '19:36' },
-      { from: 'wen', text: '好啦好啦，先不要跟課本吵架。妳要我幫妳看喔？明天下午我有空，妳幾點方便？', time: '19:37' },
-    ]
-    const oldOpeningText = '溫尚翊，你這幾天有空嗎？我統計學有幾個地方真的搞不太懂，想問你能不能幫我補習一下？'
-    const oldChoiceTexts = [
-      '我有幾題機率真的卡住了，尤其是條件機率跟貝氏定理……明天下午去圖書館可以嗎？',
-      '我快被二項分配、卜瓦松分配搞混了啦！你明天下午能不能救救我？',
-      '如果你方便的話，明天下午可以陪我整理一下機率分配嗎？我想弄懂題目到底該怎麼判斷。',
-    ]
-    const migrationKey = 'mayday-winter-exam-chat-copy-v2'
-    if (localStorage.getItem(migrationKey) !== 'true') {
-      const oldIndex = (chatMessages.wen ?? []).findIndex((message) => message.text === oldOpeningText)
-      if (oldIndex >= 0) {
-        setChatMessages((current) => {
-          const thread = current.wen ?? []
-          const index = thread.findIndex((message) => message.text === oldOpeningText)
-          if (index < 0) return current
-          let endIndex = index + 3
-          if (thread[endIndex]?.from === 'me' && oldChoiceTexts.includes(thread[endIndex].text)) endIndex += 4
-          const stamp = Date.now()
-          const replacement = openingMessages.map((entry, messageIndex) => ({
-            id: 'wen-winter-exam-v2-' + stamp + '-' + messageIndex,
-            date: '1月7日・晚上',
-            time: entry.time,
-            from: entry.from,
-            text: entry.text,
-          }))
-          return { ...current, wen: [...thread.slice(0, index), ...replacement, ...thread.slice(endIndex)] }
-        })
-        setWinterExamChatReplyChoice(null)
-        localStorage.removeItem('mayday-winter-exam-chat-reply-choice')
-      }
-      localStorage.setItem(migrationKey, 'true')
-    }
-    if (localStorage.getItem('mayday-winter-exam-chat-started') !== 'true') {
-      appendChatMessages('wen', openingMessages, '1月7日・晚上')
-      localStorage.setItem('mayday-winter-exam-chat-started', 'true')
-      setWinterExamChatReplyChoice(null)
-    }
-    setSelectedSmsThread('wen')
-    setActiveApp('messages')
-    changeStage('winter-exam-chat')
-  }
-
-  const chooseWinterExamChatReply = (choiceIndex: number) => {
-    if (winterExamChatReplyChoice !== null) return
-    const choice = winterExamChatChoices[choiceIndex]
-    if (!choice) return
-    appendChatMessages('wen', [
-      { from: 'me', text: choice.text, time: '19:39' },
-      { from: 'wen', text: choice.response, time: '19:40' },
-    ], '1月7日・晚上')
-    setWinterExamChatReplyChoice(choiceIndex)
-    localStorage.setItem('mayday-winter-exam-chat-choice-confirmed-v2', 'true')
-    localStorage.setItem('mayday-winter-exam-chat-reply-choice', String(choiceIndex))
-  }
-
-  const chooseWinterExamChatClosingReply = (choiceIndex: number) => {
-    if (winterExamChatReplyChoice === null || winterExamChatClosingChoice !== null) return
-    const choice = winterExamChatClosingChoices[choiceIndex]
-    if (!choice) return
-    appendChatMessages('wen', [
-      { from: 'me', text: choice.text, time: '19:41' },
-      { from: 'wen', text: choice.response, time: '19:42' },
-    ], '1月7日・晚上')
-    setWinterExamChatClosingChoice(choiceIndex)
-    localStorage.setItem('mayday-winter-exam-chat-closing-choice', String(choiceIndex))
-  }
-
-  const continueWinterExamTutoring = () => {
-    if (winterExamChatReplyChoice === null || winterExamChatClosingChoice === null) return
-    setActiveApp(null)
-    setSelectedSmsThread(null)
-    changeStage('winter-exam-tutoring')
-  }
-
-  const chooseWinterExamReply = (choiceIndex: number) => {
-    if (winterExamReplies.length >= winterExamTutoringRounds.length) return
-    const choice = winterExamTutoringRounds[winterExamReplies.length]?.choices[choiceIndex]
-    if (!choice) return
-    Object.entries(choice.affection).forEach(([character, amount]) => {
-      if (amount) addRouteAffection(character as WinterCharacterId, amount)
-    })
-    setWinterExamReplies((current) => [...current, choiceIndex])
-  }
-
-  const chooseWinterPracticeReply = (choiceIndex: number) => {
-    if (winterPracticeReplies.length >= winterBreakPracticeRounds.length) return
-    const choice = winterBreakPracticeRounds[winterPracticeReplies.length]?.choices[choiceIndex]
-    if (!choice) return
-    Object.entries(choice.affection).forEach(([character, amount]) => {
-      if (amount) addRouteAffection(character as WinterCharacterId, amount)
-    })
-    setWinterPracticeReplies((current) => [...current, choiceIndex])
-  }
-
-  const finishWinterPractice = () => {
-    if (winterPracticeReplies.length !== winterBreakPracticeRounds.length) return
-    changeStage('winter-break-gig')
-  }
-
-  const finishWinterGig = () => {
-    const pickupAvailable = routeAffection.yanming > 40
-    setWinterYanmingPickupAvailable(pickupAvailable)
-    localStorage.setItem('mayday-winter-yanming-pickup-available', String(pickupAvailable))
-    changeStage(pickupAvailable ? 'winter-break-pickup' : 'winter-break-bus-choice')
-  }
-
-  const chooseWinterBusStopCharacter = (character: WinterCharacterId) => {
-    if (character === 'yanming' && !winterYanmingPickupAvailable) return
-    setWinterBusStopCharacter(character)
-    setWinterBusStopReplies([])
-    localStorage.setItem('mayday-winter-bus-stop-character', character)
-    localStorage.setItem('mayday-winter-bus-stop-replies', '[]')
-    changeStage('winter-break-bus')
-  }
-
-  const chooseWinterBusStopReply = (choiceIndex: number) => {
-    if (!winterBusStopCharacter || winterBusStopReplies.length >= 3) return
-    const round = winterBusStopRoutes[winterBusStopCharacter].rounds[winterBusStopReplies.length]
-    const choice = round?.choices[choiceIndex]
-    if (!choice) return
-    const nextReplies = [...winterBusStopReplies, choiceIndex]
-    setWinterBusStopReplies(nextReplies)
-    localStorage.setItem('mayday-winter-bus-stop-replies', JSON.stringify(nextReplies))
-    const affection = choice.affection[winterBusStopCharacter] ?? 0
-    if (affection) addRouteAffection(winterBusStopCharacter, affection)
   }
 
   const buildWinterDiaryData = (): WinterDiaryData => {
     if (!winterBusStopCharacter) throw new Error('Missing bus-stop character')
     const diaryFocusOrder: WinterCharacterId[] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
     const focusCharacter = diaryFocusOrder.reduce((best, character) => routeAffection[character] > routeAffection[best] ? character : best, diaryFocusOrder[0])
-    const routeMemory = winterBusStopRoutes[winterBusStopCharacter].diarySummary
-
-    const practiceRoomMemory = '下午走進練團室，音箱還帶著一點剛通電的嗡聲，地上幾條導線被踩得歪歪扭扭。瑪莎蹲在地上嫌佑達把線繞成一碗麵，佑達一邊把線圈拿起來辯解，一邊又被他抓到另一條沒收好。阿信拿著歌序笑到念不下去，石頭低頭調背帶，溫尚翊則蹲在音箱旁邊，頭也不抬地叫他們兩個「先把那個嘴巴收一下」。我坐在旁邊，明明只是來看他們練幾首歌，卻覺得自己像誤闖進一個每天都在上演、而且永遠不會有結論的鬥嘴現場。直到諺明哥被瑪莎一句「你不是很會嗎」激得拿起鼓棒。起初他還笑著推說很久沒打，真的坐下去後卻連表情都變了。第一下落得很穩，接著整個節奏像被他一把抓住，低音鼓沉沉地踩住底，軍鼓和鈸乾淨地往前推。佑達原本還想插話，後來乾脆站在旁邊看；最後一拍停下來，瑪莎先吹了聲口哨，大家才像突然想起要鼓掌。我那時候才發現，自己不知不覺把手裡的茶握得好緊。'
-    const stageIntro = '晚上那間小酒吧沒有什麼華麗的舞台，燈光甚至有點暗，台下的人講話聲、杯子碰桌面的聲音混在一起。可是他們一站上去，整個空間就像被重新整理過。阿信試了麥克風，石頭和溫尚翊各自低頭調弦，瑪莎抱著 Bass 還不忘隔空跟佑達鬥嘴。第一個鼓點落下時，原本沒注意的人也慢慢轉過頭來。'
-    const stageFocus: Record<WinterCharacterId, string> = {
-      wen: '我本來還在跟著節拍敲桌沿，直到溫尚翊把外套拉鍊一扯，隨手搭上音箱，才發現自己一直在等他那一段。他低頭踩下效果器，手指沿著琴頸跑過去，間奏一進便往台前踏了半步。那不是故意擺姿勢的帥，是他整個人真的沉進音樂裡，連眉眼都像比平常更銳利。燈光掃過來時，他忽然抬頭，視線越過前面的人，準準落到我這裡。我心裡咯噔一下，明明只是隔著幾張桌子的距離，卻像被當場抓包。更可惡的是，他眉梢一挑，嘴角還有一點笑，下一秒就若無其事地轉回去彈完那段。誰准他這樣的？我到現在還是很想抗議。',
-      ashin: '阿信唱進副歌時，店裡原本零零碎碎的聊天聲竟然真的慢慢停了。他沒有急著把歌往前趕，尾音穩穩地留在空氣裡，接著把麥克風往台下遞，讓大家一起唱下一句。我跟著唱得太投入，抬頭時正好撞見他看過來。他彎起眼睛笑了一下，像是知道我剛才有多認真。那一瞬間我突然懂了，為什麼有人會說一首歌可以把陌生人暫時變成同一群人。平常那個講話輕輕的阿信，站在台上卻有辦法讓整間店都跟著他呼吸。',
-      masa: '瑪莎整晚最欠揍的時候，大概就是他明明把 Bass 彈得漂亮得不得了，還偏要在每一段結束後看佑達一眼，像在等人頒獎。低音一進來，整首歌忽然有了骨架；他跟溫尚翊接得又快又準，手指一動，台下的節奏也跟著往前跑。最後那記重拍收住，他看見我比了個大拇指，立刻露出「我就知道妳有眼光」的表情。我差點笑出聲。這個人真的很會破壞自己剛剛累積起來的帥氣，但偏偏又讓人沒辦法不看他。',
-      stone: '石頭沒有像溫尚翊那樣往台前走，也沒有刻意讓誰注意他，可是我一直知道他在哪裡。兩把吉他交錯的時候，他先側耳聽清楚另一邊的旋律，再把自己的音穩穩地接上去；有幾次他抬眼看向溫尚翊，兩個人甚至不用說話，就知道下一拍要怎麼走。最後一個和弦落下，他才像從音樂裡回過神，剛好看見我還望著他，於是很輕地笑了一下。那個笑沒有持續多久，我卻莫名覺得整晚最安靜的地方就在那裡。',
-      yanming: '今晚坐在鼓椅上的是佑達。他打得很有勁，尤其尾奏那一串鼓花，連台下都有人跟著拍手。可是我聽著聽著，腦袋裡總會閃回下午諺明哥握住鼓棒的樣子。那不是同一種力道：佑達像一陣停不下來的風，諺明哥卻是每一下都落在該落的位置，穩得讓人安心。下午那幾秒鐘明明沒有燈光，也沒有觀眾起鬨，卻比今晚任何一個舞台效果都更讓我記得住。',
-    }
-    const ending: Record<WinterCharacterId, string> = {
-      wen: '走出酒吧時，我還在想剛才那個眼神。偏偏他本人可能早就忘了，說不定現在只記得哪一段要重練、哪條線又是佑達沒收好。只有我這個沒出息的人，把那半秒鐘帶回家反覆播放。最糟糕的是，明天如果真的見到他，我大概還是會假裝什麼都沒發生。',
-      ashin: '回家的路上我一直哼著剛才那句副歌，哼到自己都覺得有點吵。阿信在台上看過來的那個笑，讓我突然很想把今晚記下來，不然明天醒來，可能只剩旋律還記得，連自己當時為什麼那麼開心都說不清楚。',
-      masa: '散場後瑪莎還是一副什麼都能拿來吐槽的樣子，害我想認真稱讚他都找不到空檔。可是我知道自己有看到他認真的那一面，而且他也知道我看到了。想到他那個得意到不行的表情，我現在還是忍不住笑。下次一定要當面提醒他，帥歸帥，不要太囂張。',
-      stone: '石頭沒有把今晚說成什麼特別的事，只是很自然地陪我走、聽我說話。可我反而記得那些沒被刻意放大的細節：他等我跟上時放慢的腳步、說話前那一點停頓，還有提起那段旋律時認真的眼神。有些溫柔真的很輕，輕到當下不覺得，回家後才慢慢浮上來。',
-      yanming: '諺明哥大概不知道，我回家後還在想下午那一段鼓聲。平常他總是先照顧大家，提醒這個、收拾那個，好像永遠有事情要操心；可當他坐下來拿起鼓棒，整個人就安靜得只剩節奏。後來他還把拍點寫給我，說下次可以慢慢教。那張紙明明只是幾個簡單的記號，我卻很想好好收著。'
+    const diaryMoment: Record<WinterCharacterId, string> = {
+      wen: '今天最讓我分心的不是哪首歌，而是溫尚翊站到台前的那一小段。間奏一進，他低頭踩下效果器，手指沿著琴頸跑過去，整個人像突然把周圍的聲音都關掉了。燈光掃過來時，他剛好抬頭看見我，還挑了一下眉，像是知道我一直在看。就那一下，我居然忘了跟著拍子打節奏。最好笑的是，他彈完又若無其事地轉回去，好像什麼都沒發生；只有我到現在還在想，他是不是故意的。',
+      ashin: '今天我一直記得阿信唱副歌時看過來的那個笑。店裡原本很吵，他卻沒有急著把歌唱完，只把麥克風遞向台下，讓大家一起接下一句。我跟著唱得太投入，抬頭時正好撞見他的眼睛。他彎起眼睛笑了一下，短短的，卻讓我後面幾句都唱得特別大聲。明明平常聊天時他那麼溫柔，站上台卻能讓整間店安靜下來。回家路上我還在哼那句副歌，可能今晚會一直哼到睡著。',
+      masa: '瑪莎今天最帥的時候，偏偏也是最欠揍的時候。Bass 一進來，整首歌的節奏像被他穩穩托住，他跟溫尚翊接得又快又準，手指動得我差點忘記眨眼。最後一記重拍收住，他一抬頭看見我比大拇指，立刻露出那副「我就知道妳有眼光」的表情。剛才累積的帥氣瞬間被他自己弄得很好笑，可是我還是忍不住一直看。這個人真的很會破壞氣氛，也很會讓人記住他。',
+      stone: '我今天一直記得石頭最後抬眼的那個瞬間。兩把吉他交錯時，他沒有急著搶拍，只是先聽清楚溫尚翊的旋律，再把自己的音穩穩接上去。整段他都很專注，直到最後一個和弦落下，才像終於從音樂裡回過神，剛好發現我還望著他。他沒有做什麼誇張的反應，只很輕地笑了一下。奇怪，明明台上那麼多聲音，我回家後卻只記得那個笑。',
+      yanming: '今天最想記下來的，是諺明哥拿起鼓棒的那一刻。大家原本只是鬧著要他試幾下，他還笑著說很久沒打了，結果一坐上鼓椅，整個人就安靜下來。第一個節拍落下去，我就知道他不是隨便敲敲而已：低音鼓踩得穩，軍鼓和鈸接得乾淨，連佑達都不自覺停下來看。最後一拍收住，瑪莎先吹了聲口哨。我那時才發現自己一直盯著他，手裡的茶都忘了喝。原來諺明哥認真起來，可以這麼帥。',
     }
 
     return {
-      title: '一月二十二日，耳朵裡還留著鼓聲',
+      title: '一月二十二日，今天最忘不掉的那一幕',
       sections: [
-        { label: '私人日記', text: '今天有件事我一定要記下來，不然明天醒來，我怕自己又會假裝沒那麼在意。\n\n' + practiceRoomMemory + '\n\n' + stageIntro + '\n\n' + stageFocus[focusCharacter] + '\n\n' + routeMemory + '\n\n' + ending[focusCharacter] }
+        { label: '日記', text: diaryMoment[focusCharacter] },
       ],
     }
   }
@@ -4111,7 +3933,7 @@ function App() {
   }
 
   useEffect(() => {
-    const rewriteKey = 'mayday-diary-narrative-rewrite-v6'
+    const rewriteKey = 'mayday-diary-narrative-rewrite-v7'
     if (localStorage.getItem(rewriteKey) === 'true') return
 
     if (yearEndDiaryData) {
