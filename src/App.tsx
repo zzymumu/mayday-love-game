@@ -1893,7 +1893,7 @@ function App() {
   }, [activeCallCharacter, callRoundIndex, callReplied, callTranscript])
 
   useEffect(() => {
-    if ((storyStage !== 'day2-complete' && storyStage !== 'month-visit-complete') || activeApp !== null || incomingCallCharacter || activeCallCharacter) return
+    if (!['day2-complete', 'month-visit-complete', 'next-month-invite-date', 'next-month-open-day-visit-complete', 'next-month-free-chat', 'next-month-diary'].includes(storyStage) || activeApp !== null || incomingCallCharacter || activeCallCharacter) return
     if (!pendingCallCharacter) {
       const eligible = freeTimeOrder.find((id) => routeAffection[id] >= AFFECTION_CALL_THRESHOLD && localStorage.getItem('mayday-call-v2-triggered-' + id) !== 'true')
       if (eligible) {
@@ -1932,7 +1932,7 @@ function App() {
     if (activeApp === 'messages' && selectedSmsThread && messageScrollRef.current) {
       messageScrollRef.current.scrollTop = messageScrollRef.current.scrollHeight
     }
-  }, [activeApp, selectedSmsThread, smsMessages, chatMessages, greetingRound, freeChatRound, monthFreeChatRound])
+  }, [activeApp, selectedSmsThread, smsMessages, chatMessages, greetingRound, freeChatRound, monthFreeChatRound, nextMonthFreeChatRound])
 
   useEffect(() => {
     if (activeCallCharacter && callTranscriptRef.current) {
@@ -2561,6 +2561,236 @@ function App() {
     setMonthDiaryUnlocked(true)
     localStorage.setItem('mayday-month-diary-unlocked', 'true')
     localStorage.setItem('mayday-month-day-complete', 'true')
+    changeStage('next-month-intro')
+  }
+
+
+  const startNextMonthFlow = () => {
+    const candidates = monthVisitOrder.filter((id) => routeAffection[id] >= NEXT_MONTH_INVITE_THRESHOLD)
+    setNextMonthInviteCandidates(candidates)
+    localStorage.setItem('mayday-next-month-started', 'true')
+    localStorage.setItem('mayday-next-month-invite-candidates', JSON.stringify(candidates))
+    setNextMonthInviteTeaseChoice(null)
+    localStorage.removeItem('mayday-next-month-invite-tease-choice')
+    setNextMonthOpenDayReplies([])
+    localStorage.setItem('mayday-next-month-open-day-replies', '[]')
+    setNextMonthFreeChatTarget(null)
+    localStorage.removeItem('mayday-next-month-free-chat-target')
+    if (candidates.length === 1) {
+      setNextMonthInviteTarget(candidates[0])
+      localStorage.setItem('mayday-next-month-invite-target', candidates[0])
+      changeStage('next-month-invite')
+    } else if (candidates.length > 1) {
+      setNextMonthInviteTarget(null)
+      localStorage.removeItem('mayday-next-month-invite-target')
+      changeStage('next-month-invite-notification')
+    } else {
+      setNextMonthInviteTarget(null)
+      localStorage.removeItem('mayday-next-month-invite-target')
+      startNextMonthOpenDay()
+    }
+  }
+
+  const chooseNextMonthInviteTarget = (character: RouteCharacterId) => {
+    if (!nextMonthInviteCandidates.includes(character)) return
+    setNextMonthInviteTarget(character)
+    localStorage.setItem('mayday-next-month-invite-target', character)
+    setNextMonthInviteTeaseChoice(null)
+    localStorage.removeItem('mayday-next-month-invite-tease-choice')
+    changeStage('next-month-invite')
+  }
+
+  const chooseNextMonthInviteTease = (choiceIndex: number) => {
+    if (!nextMonthInviteTarget) return
+    const choice = nextMonthInviteRoutes[nextMonthInviteTarget].teaseChoices?.[choiceIndex]
+    if (!choice || nextMonthInviteTeaseChoice !== null) return
+    setNextMonthInviteTeaseChoice(choiceIndex)
+    localStorage.setItem('mayday-next-month-invite-tease-choice', String(choiceIndex))
+    addRouteAffection(nextMonthInviteTarget, choice.affection)
+  }
+
+  const startNextMonthOpenDay = () => {
+    setNextMonthEventKind('open-day')
+    setNextMonthEventCharacter(null)
+    localStorage.setItem('mayday-next-month-event-kind', 'open-day')
+    localStorage.removeItem('mayday-next-month-event-character')
+    setNextMonthOpenDayTarget(null)
+    setNextMonthOpenDayReplies([])
+    localStorage.removeItem('mayday-next-month-open-day-target')
+    localStorage.setItem('mayday-next-month-open-day-replies', '[]')
+    setActiveApp(null)
+    setSelectedSmsThread(null)
+    changeStage('next-month-open-day')
+  }
+
+  const respondNextMonthInvite = (accept: boolean) => {
+    if (!nextMonthInviteTarget) return
+    if (!accept) {
+      startNextMonthOpenDay()
+      return
+    }
+    setNextMonthEventKind('invite')
+    setNextMonthEventCharacter(nextMonthInviteTarget)
+    localStorage.setItem('mayday-next-month-event-kind', 'invite')
+    localStorage.setItem('mayday-next-month-event-character', nextMonthInviteTarget)
+    changeStage('next-month-invite-date')
+  }
+
+  const chooseNextMonthOpenDayTarget = (character: RouteCharacterId) => {
+    if (nextMonthOpenDayTarget) return
+    setNextMonthOpenDayTarget(character)
+    setNextMonthEventKind('open-day')
+    setNextMonthEventCharacter(character)
+    setNextMonthOpenDayReplies([])
+    localStorage.setItem('mayday-next-month-open-day-target', character)
+    localStorage.setItem('mayday-next-month-event-kind', 'open-day')
+    localStorage.setItem('mayday-next-month-event-character', character)
+    localStorage.setItem('mayday-next-month-open-day-replies', '[]')
+    changeStage('next-month-open-day-visit')
+  }
+
+  const chooseNextMonthOpenDayReply = (choiceIndex: number) => {
+    if (!nextMonthOpenDayTarget || nextMonthOpenDayReplies.length >= 5) return
+    const route = nextMonthOpenDayRoutes[nextMonthOpenDayTarget]
+    const choice = route.rounds[nextMonthOpenDayReplies.length]?.choices[choiceIndex]
+    if (!choice) return
+    const nextReplies = [...nextMonthOpenDayReplies, choiceIndex]
+    setNextMonthOpenDayReplies(nextReplies)
+    localStorage.setItem('mayday-next-month-open-day-replies', JSON.stringify(nextReplies))
+    addRouteAffection(nextMonthOpenDayTarget, choice.affection)
+  }
+
+  const finishNextMonthOpenDayVisit = () => {
+    if (!nextMonthOpenDayTarget || nextMonthOpenDayReplies.length !== 5) return
+    const experience: CharacterExperienceRecord = {
+      character: nextMonthOpenDayTarget,
+      source: 'month-free-chat',
+      date: saveGameDate,
+      eventKey: 'next-month-open-day:' + nextMonthOpenDayRoutes[nextMonthOpenDayTarget].title,
+      day2StrollAccepted,
+      choices: [...nextMonthOpenDayReplies],
+    }
+    const nextExperienceLog = { ...sharedExperienceLog, [nextMonthOpenDayTarget]: experience }
+    setSharedExperienceLog(nextExperienceLog)
+    localStorage.setItem('mayday-shared-experience-log', JSON.stringify(nextExperienceLog))
+    changeStage('next-month-open-day-visit-complete')
+  }
+
+  const startNextMonthFreeChat = () => {
+    setNextMonthFreeChatTarget(null)
+    setNextMonthFreeChatRound(0)
+    setNextMonthFreeChatReplied(false)
+    setNextMonthFreeChatOpeningSent(false)
+    setNextMonthFreeChatReplies([])
+    localStorage.removeItem('mayday-next-month-free-chat-target')
+    localStorage.setItem('mayday-next-month-free-chat-round', '0')
+    localStorage.setItem('mayday-next-month-free-chat-replied', 'false')
+    localStorage.setItem('mayday-next-month-free-chat-opening-sent', 'false')
+    localStorage.setItem('mayday-next-month-free-chat-replies', '[]')
+    setSelectedSmsThread(null)
+    setActiveApp(null)
+    changeStage('next-month-free-chat')
+  }
+
+  const chooseNextMonthFreeChatTarget = (character: RouteCharacterId) => {
+    if (nextMonthFreeChatTarget) return
+    setNextMonthFreeChatTarget(character)
+    setNextMonthFreeChatRound(0)
+    setNextMonthFreeChatReplied(false)
+    setNextMonthFreeChatOpeningSent(false)
+    setNextMonthFreeChatReplies([])
+    localStorage.setItem('mayday-next-month-free-chat-target', character)
+    localStorage.setItem('mayday-next-month-free-chat-round', '0')
+    localStorage.setItem('mayday-next-month-free-chat-replied', 'false')
+    localStorage.setItem('mayday-next-month-free-chat-opening-sent', 'false')
+    localStorage.setItem('mayday-next-month-free-chat-replies', '[]')
+    setSelectedSmsThread(character)
+    setActiveApp('messages')
+  }
+
+  const chooseNextMonthFreeChatOpening = (choiceIndex: number) => {
+    if (!nextMonthFreeChatTarget || nextMonthFreeChatOpeningSent) return
+    const character = nextMonthFreeChatTarget
+    const opening = nextMonthFreeChatOpeners[character][choiceIndex]
+    const firstRound = nextMonthFreeChatScripts[character][0]
+    if (!opening || !firstRound) return
+    appendChatMessages(character, [
+      { from: 'me', text: opening.text, time: '20:10' },
+      { from: character, text: opening.response, time: '20:11' },
+      { from: character, text: firstRound.incoming, time: '20:12' },
+    ], '12月14日・晚上')
+    addRouteAffection(character, opening.affection)
+    setNextMonthFreeChatOpeningSent(true)
+    localStorage.setItem('mayday-next-month-free-chat-opening-sent', 'true')
+  }
+
+  const chooseNextMonthFreeChatReply = (choiceIndex: number) => {
+    if (!nextMonthFreeChatTarget || !nextMonthFreeChatOpeningSent || nextMonthFreeChatReplied) return
+    const character = nextMonthFreeChatTarget
+    const round = nextMonthFreeChatScripts[character][nextMonthFreeChatRound]
+    const choice = round?.choices[choiceIndex]
+    if (!choice) return
+    const minute = 13 + nextMonthFreeChatRound * 2
+    const time = '20:' + String(minute).padStart(2, '0')
+    appendChatMessages(character, [
+      { from: 'me', text: choice.text, time },
+      ...choice.response.map((text) => ({ from: character, text, time })),
+    ], '12月14日・晚上')
+    const nextReplies = [...nextMonthFreeChatReplies, choiceIndex]
+    setNextMonthFreeChatReplies(nextReplies)
+    localStorage.setItem('mayday-next-month-free-chat-replies', JSON.stringify(nextReplies))
+    addRouteAffection(character, choice.affection)
+    if (nextMonthFreeChatRound < 4) {
+      const nextRound = nextMonthFreeChatRound + 1
+      setNextMonthFreeChatRound(nextRound)
+      localStorage.setItem('mayday-next-month-free-chat-round', String(nextRound))
+      appendChatMessages(character, [{ from: character, text: choice.nextIncoming ?? nextMonthFreeChatScripts[character][nextRound].incoming, time: '20:' + String(minute + 1).padStart(2, '0') }], '12月14日・晚上')
+      setNextMonthFreeChatReplied(false)
+      localStorage.setItem('mayday-next-month-free-chat-replied', 'false')
+    } else {
+      setNextMonthFreeChatReplied(true)
+      localStorage.setItem('mayday-next-month-free-chat-replied', 'true')
+    }
+  }
+
+  const finishNextMonthFreeChat = () => {
+    if (!nextMonthFreeChatTarget || !nextMonthFreeChatOpeningSent || !nextMonthFreeChatReplied || nextMonthFreeChatRound !== 4 || nextMonthFreeChatReplies.length !== 5) return
+    const eventCharacter = nextMonthEventCharacter ?? nextMonthInviteTarget ?? nextMonthOpenDayTarget ?? nextMonthFreeChatTarget
+    const eventKind = nextMonthEventKind ?? 'open-day'
+    const copy = nextMonthDiaryCopy[eventCharacter]
+    const diaryData: NextMonthDiaryData = {
+      title: eventKind === 'invite' ? copy.inviteTitle : copy.openDayTitle,
+      eventSummary: eventKind === 'invite' ? copy.inviteSummary : copy.openDaySummary,
+      chatSummary: nextMonthChatDiary[nextMonthFreeChatTarget],
+      ending: copy.ending,
+      eventCharacter,
+      chatCharacter: nextMonthFreeChatTarget,
+    }
+    setNextMonthDiaryData(diaryData)
+    setNextMonthDiaryUnlocked(true)
+    localStorage.setItem('mayday-next-month-diary-data', JSON.stringify(diaryData))
+    localStorage.setItem('mayday-next-month-diary-unlocked', 'true')
+    const experience: CharacterExperienceRecord = {
+      character: nextMonthFreeChatTarget,
+      source: 'month-free-chat',
+      date: saveGameDate,
+      eventKey: 'next-month-free-chat:' + eventKind + ':' + eventCharacter,
+      day2StrollAccepted,
+      choices: [...nextMonthFreeChatReplies],
+    }
+    const nextExperienceLog = { ...sharedExperienceLog, [nextMonthFreeChatTarget]: experience }
+    setSharedExperienceLog(nextExperienceLog)
+    localStorage.setItem('mayday-shared-experience-log', JSON.stringify(nextExperienceLog))
+    setSelectedSmsThread(null)
+    setActiveApp(null)
+    changeStage('next-month-diary')
+  }
+
+  const finishNextMonthChapter = () => {
+    if (!nextMonthDiaryData) return
+    localStorage.setItem('mayday-next-month-day-complete', 'true')
+    setSelectedSmsThread(null)
+    setActiveApp(null)
     changeStage('completed')
   }
 
@@ -2662,7 +2892,7 @@ function App() {
   }
 
   const resetLocalData = () => {
-    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-month-visit-target', 'mayday-month-visit-choice', 'mayday-month-visit-replies', 'mayday-month-visit-complete', 'mayday-month-free-chat-target', 'mayday-month-free-chat-choice-pending', 'mayday-month-free-chat-round', 'mayday-month-free-chat-replied', 'mayday-month-free-chat-started', 'mayday-month-free-chat-opening-sent', 'mayday-month-free-chat-replies', 'mayday-month-free-chat-complete', 'mayday-month-day-complete', 'mayday-route-affection', 'mayday-shared-experience-log', 'mayday-call-experience-context', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-month-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming', 'mayday-active-call-character', 'mayday-call-round-index', 'mayday-call-replied', 'mayday-call-transcript'].forEach((key) => localStorage.removeItem(key))
+    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-month-visit-target', 'mayday-month-visit-choice', 'mayday-month-visit-replies', 'mayday-month-visit-complete', 'mayday-month-free-chat-target', 'mayday-month-free-chat-choice-pending', 'mayday-month-free-chat-round', 'mayday-month-free-chat-replied', 'mayday-month-free-chat-started', 'mayday-month-free-chat-opening-sent', 'mayday-month-free-chat-replies', 'mayday-month-free-chat-complete', 'mayday-month-day-complete', 'mayday-next-month-started', 'mayday-next-month-invite-candidates', 'mayday-next-month-invite-target', 'mayday-next-month-invite-tease-choice', 'mayday-next-month-event-kind', 'mayday-next-month-event-character', 'mayday-next-month-open-day-target', 'mayday-next-month-open-day-replies', 'mayday-next-month-free-chat-target', 'mayday-next-month-free-chat-round', 'mayday-next-month-free-chat-replied', 'mayday-next-month-free-chat-opening-sent', 'mayday-next-month-free-chat-replies', 'mayday-next-month-diary-unlocked', 'mayday-next-month-diary-data', 'mayday-next-month-day-complete', 'mayday-route-affection', 'mayday-shared-experience-log', 'mayday-call-experience-context', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-month-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming', 'mayday-active-call-character', 'mayday-call-round-index', 'mayday-call-replied', 'mayday-call-transcript'].forEach((key) => localStorage.removeItem(key))
     SAVE_SLOT_IDS.forEach((slot) => localStorage.removeItem(SAVE_SLOT_PREFIX + slot))
     setPlayerName('')
     setNameDraft('')
@@ -2698,6 +2928,20 @@ function App() {
     setMonthFreeChatStarted(false)
     setMonthFreeChatOpeningSent(false)
     setMonthFreeChatReplies([])
+    setNextMonthInviteCandidates([])
+    setNextMonthInviteTarget(null)
+    setNextMonthInviteTeaseChoice(null)
+    setNextMonthOpenDayTarget(null)
+    setNextMonthOpenDayReplies([])
+    setNextMonthEventKind(null)
+    setNextMonthEventCharacter(null)
+    setNextMonthFreeChatTarget(null)
+    setNextMonthFreeChatRound(0)
+    setNextMonthFreeChatReplied(false)
+    setNextMonthFreeChatOpeningSent(false)
+    setNextMonthFreeChatReplies([])
+    setNextMonthDiaryUnlocked(false)
+    setNextMonthDiaryData(null)
     setRouteAffection({ wen: 0, masa: 0, ashin: 0, stone: 0, yanming: 0 })
     setSharedExperienceLog({})
     setCallExperienceContext(null)
@@ -2756,6 +3000,9 @@ function App() {
   const currentGreetingId = greetingOrder[Math.min(greetingIndex, greetingOrder.length - 1)]
   const currentMonthVisit = monthVisitTarget ? monthVisitRoutes[monthVisitTarget] : null
   const currentMonthVisitRound = currentMonthVisit?.rounds[monthVisitReplies.length] ?? null
+  const currentNextMonthInvite = nextMonthInviteTarget ? nextMonthInviteRoutes[nextMonthInviteTarget] : null
+  const currentNextMonthOpenDay = nextMonthOpenDayTarget ? nextMonthOpenDayRoutes[nextMonthOpenDayTarget] : null
+  const currentNextMonthOpenDayRound = currentNextMonthOpenDay?.rounds[nextMonthOpenDayReplies.length] ?? null
   const currentGreetingRound = greetingChats[currentGreetingId][Math.min(greetingRound, greetingChats[currentGreetingId].length - 1)]
   const currentThreadMessages: SmsMessage[] = selectedSmsThread === 'wen'
     ? [...smsMessages, ...(chatMessages.wen ?? [])]
