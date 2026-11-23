@@ -49,6 +49,9 @@ type StoryScene = { kicker: string; title: string; blocks: StoryBlock[]; button:
 type SmsMessage = { id: string; date: string; time?: string; from: CharacterId | 'me'; text: string }
 type NewChatEntry = { from: CharacterId | 'me'; text: string; time?: string }
 
+const splitDiaryParagraphs = (value: string): string[] =>
+  value.split(/(?:\\r?\\n)+|\\\\n+/).map((paragraph) => paragraph.trim()).filter(Boolean)
+
 const removeDuplicateWenMovieInviteLine = (messages: SmsMessage[]): SmsMessage[] => {
   let removed = false
   const normalized = messages.filter((message, index) => {
@@ -1811,7 +1814,7 @@ function App() {
       const refreshed: NextMonthDiaryData = {
         ...saved,
         title: acceptedInviteCopy ? '今天也太充實了吧！' : eventCopy.openDayTitle,
-        eventSummary: [acceptedInviteCopy?.inviteSummary, eventCopy.openDaySummary].filter(Boolean).join('\\n\\n'),
+        eventSummary: [acceptedInviteCopy?.inviteSummary, eventCopy.openDaySummary].filter(Boolean).join('\n\n'),
         chatSummary: nextMonthChatDiary[chatCharacter],
         ending: eventCopy.ending,
         eventCharacter,
@@ -4992,9 +4995,24 @@ function App() {
                                   <div className="diary-paper">
                                     <span className="diary-date">1996 年 12 月 14 日・星期六</span>
                                     <h2>{nextMonthDiaryData.title}</h2>
-                                    <p>{nextMonthDiaryData.eventSummary}</p>
-                                    <p>{nextMonthDiaryData.chatSummary}</p>
-                                    <p>{nextMonthDiaryData.ending}</p>
+                                    <section className="diary-section">
+                                      <div className="diary-section-label">DAYTIME · 白天記事</div>
+                                      {splitDiaryParagraphs(nextMonthDiaryData.eventSummary).map((paragraph, index) => (
+                                        <p key={`event-${index}`}>{paragraph}</p>
+                                      ))}
+                                    </section>
+                                    <section className="diary-section">
+                                      <div className="diary-section-label">NIGHT · 晚上聊天</div>
+                                      {splitDiaryParagraphs(nextMonthDiaryData.chatSummary).map((paragraph, index) => (
+                                        <p key={`chat-${index}`}>{paragraph}</p>
+                                      ))}
+                                    </section>
+                                    <section className="diary-section">
+                                      <div className="diary-section-label">BEFORE SLEEP · 睡前補記</div>
+                                      {splitDiaryParagraphs(nextMonthDiaryData.ending).map((paragraph, index) => (
+                                        <p key={`ending-${index}`}>{paragraph}</p>
+                                      ))}
+                                    </section>
                                   </div>
                                 ) : selectedDiaryDate === '1996-11-16' && monthDiaryUnlocked && monthVisitTarget ? (
                                   <div className="diary-paper">
