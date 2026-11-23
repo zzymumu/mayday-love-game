@@ -3143,12 +3143,15 @@ function App() {
               <button onClick={() => setActiveApp('contacts')}>選擇</button>
             </div>
             <div className="keypad">
-              {['1','2','3','4','5','6','7','8','9','*','0','#'].map((key) => (
-                <button key={key} className="key" aria-label={'按鍵 ' + key}>
-                  <strong>{key}</strong>
-                  <small>{({ '2':'ABC', '3':'DEF', '4':'GHI', '5':'JKL', '6':'MNO', '7':'PQRS', '8':'TUV', '9':'WXYZ', '0':'+', '1':'', '*':'', '#':'' } as Record<string,string>)[key]}</small>
-                </button>
-              ))}
+              {['1','2','3','4','5','6','7','8','9','*','0','#'].map((key) => {
+                const label = ({ '2':'ABC', '3':'DEF', '4':'GHI', '5':'JKL', '6':'MNO', '7':'PQRS', '8':'TUV', '9':'WXYZ', '0':'+', '1':'', '*':'', '#':'' } as Record<string,string>)[key];
+                return (
+                  <button key={key} className={`key ${label ? 'key-with-label' : 'key-number-only'}`} aria-label={'按鍵 ' + key}>
+                    <strong>{key}</strong>
+                    {label && <small>{label}</small>}
+                  </button>
+                );
+              })}
             </div>
             <div className="phone-bottom-label">TAIPEI · 1996—1999</div>
           </div>
