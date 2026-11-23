@@ -2839,7 +2839,7 @@ function App() {
                       <div className="free-time-intro">
                         <span className="profile-eyebrow">A DAY OFF · 1996.11.16</span>
                         <strong>選一個人，去見見他吧。</strong>
-                        <p>今天難得沒有課，只能安排一個人的行程。選定之後，就會直接進入你們今天的見面。</p>
+                        <p>今天難得沒有課，只能安排一個人的行程。選定之後會進入你們今天的見面；回家後的自由對話也會接續同一個人，不會重新選角。</p>
                       </div>
                       {monthVisitOrder.map((id) => {
                         const person = characterInfo.find((item) => item.id === id)!
@@ -3330,7 +3330,7 @@ function App() {
                               )}
                               {storyStage === 'month-free-chat' && monthVisitTarget && selectedSmsThread === monthVisitTarget && !monthFreeChatOpeningSent && (
                                 <div className="choice-area">
-                                  <div className="choice-heading">先主動傳一則訊息給{characterNames[monthVisitTarget]}</div>
+                                  <div className="choice-heading">延續今天和{characterNames[monthVisitTarget]}的見面，先傳一則訊息</div>
                                   {monthFreeChatOpeners[monthVisitTarget].map((choice, index) => (
                                     <button className="reply-choice" key={index} onClick={() => chooseMonthFreeChatOpening(index)}>
                                       <span>{choice.text}</span><ChevronRight size={15} />
