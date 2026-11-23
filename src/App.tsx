@@ -1001,6 +1001,50 @@ const monthFreeChatScripts: Record<RouteCharacterId, ChatRound[]> = {
   ],
 }
 
+const monthPreviousFreeChatOpeners: Record<RouteCharacterId, MonthFreeChatOpening[]> = {
+  wen: [
+    { text: '最近在忙什麼？好像一陣子沒有好好聊天了。', response: '還可以啦，學校跟練團都差不多。妳呢？最近有沒有很忙？' },
+    { text: '上次一起走回去的時候，還有話沒聊完。', response: '妳是說那天喔？我記得啊，後來回去還想了一下。' },
+    { text: '我剛剛想到你，想說來吵你一下。', response: '蛤？妳很閒喔？……好啦，反正我現在有空。' },
+  ],
+  ashin: [
+    { text: '最近有沒有新的歌想推薦給我？', response: '有啊，我最近剛好記了幾首。妳想聽哪一種？' },
+    { text: '前陣子和你聊音樂，我回去又找了幾首來聽。', response: '真的喔？那有沒有哪一首特別喜歡？我有點好奇馁。' },
+    { text: '你最近練團還順利嗎？', response: '還不錯啊，大家最近都滿認真的。妳呢？學校還忙嗎？' },
+  ],
+  masa: [
+    { text: '欸，最近怎麼樣？上次碰面後好像又各忙各的了。', response: '妳現在才想到問喔？我還以為妳忙到忘記我了咧。' },
+    { text: '我突然想到以前的事，想問你還記不記得。', response: '妳先說是哪一件，我再決定要不要承認。' },
+    { text: '今天想找你講幾句，不會又嫌我煩吧？', response: '我有說妳煩嗎？妳不要自己先幫我下結論。' },
+  ],
+  stone: [
+    { text: '最近課業還好嗎？上次你提醒我的那些小地方，我後來真的有記住。', response: '那就好，有記得就好。最近事情多的話，也要記得休息。' },
+    { text: '想到上次在練團室，你總是先替大家注意好細節。', response: '只是習慣先確認一下，大家用起來比較安心。' },
+    { text: '你最近還好嗎？有沒有又忙到忘記吃飯？', response: '還好，最近有稍微注意了。妳也不要只顧著問我。' },
+  ],
+  yanming: [
+    { text: '諺明哥，最近練團室還忙嗎？', response: '還可以，最近時間排得比較滿，不過都安排得過來。妳呢？' },
+    { text: '上次去練團室時，你提醒我的那些器材小細節，我還記得。', response: '記得就好，那些事情慢慢熟悉就會了，不用一次記完。' },
+    { text: '今天突然想起你說的，事情慢慢整理就好。', response: '哈哈，能記得這句話很好。很多事情急也沒有用，照順序處理就好。' },
+  ],
+}
+
+const monthPastAshinChatScripts: ChatRound[] = [
+  makeChatRound('最近有沒有聽到什麼喜歡的歌？前陣子和妳聊音樂，我回去又想到幾首想推薦給妳馁。', '有啊，最近一直在聽一首歌，已經重播好多次了。', '那一定是很喜歡才會一直重播吧。是哪一首？我也想聽聽看馁。', '你先推薦給我啊，我想知道你最近在聽什麼。', '好啊，那我得認真挑一下，不能隨便交差馁。', '你是不是每次想到歌，就會想找人分享？', '哈哈，有時候是啊。喜歡的東西如果有人可以一起聊，會更開心馁。', 3),
+  makeChatRound('我有時候覺得，聽歌很像替一段時間做記號。隔一陣子再聽，連那時候的心情都會一起回來馁。', '真的耶，有些歌一放出來就會想到以前的事。', '對啊，所以我一直覺得音樂很奇妙。明明旋律沒有變，聽的人卻已經不一樣了馁。', '那你有沒有一首歌，是每次聽都會想到某個人的？', '有啊，不過這個答案好像不能隨便講出來欸。', '你這樣講得很神祕耶，害我更想知道了。', '哈哈，先保留一點秘密嘛。下次有機會再告訴妳馁。', 3),
+  makeChatRound('妳最近上課忙不忙？我記得妳之前說過，報告和課堂常常會擠在一起。', '最近還好，至少沒有忙到每天都熬夜。', '那就好，還是要留一點時間給自己，不要每天都只顧著趕事情馁。', '有時候會忙，不過我會記得休息。', '嗯，這樣就好。累的時候停一下，不代表事情做不完馁。', '你呢？練團和自己的事情也要安排吧。', '多少會啦，不過大家互相配合，時間就比較好抓。', 3),
+  makeChatRound('我把想推薦妳的幾首歌先記在紙上了，免得下次聊到一半又忘記歌名。', '你還特地記下來喔？', '不然每次都說等一下再想，最後一定會忘記啊。', '那我要先預約你的歌單。', '哈哈，好啊。不過要先聽過再跟我說感想，不能只收不聽馁。', '如果我不喜歡，你會不會失望？', '不會啊，喜歡不喜歡本來就很主觀，妳照自己的感覺聽就好。', 3),
+  makeChatRound('跟妳聊天滿舒服的，不一定要有什麼特別的事。有時候只是交換一下最近聽的歌，也覺得很開心馁。', '我也是啊，跟你聊天不太需要想話題。', '那很好啊，想到什麼就說什麼，不用每次都準備得很正式馁。', '那下次換我推薦歌給你。', '好啊，我很期待。也想知道妳最近喜歡什麼樣的旋律。', '說好了喔，下次不能嫌我推薦得太冷門。', '哈哈，不會啦。妳願意聽，我就很高興了馁。', 3),
+]
+
+const monthPastChatDiary: Record<RouteCharacterId, string> = {
+  wen: '晚上我沒有再把話題放在今天的行程，而是主動找溫尚翊聊了聊。從上次一起走過的路和那些沒說完的話開始，聊著聊著又回到我們平常熟悉的鬥嘴節奏。他還是嘴硬，卻沒有真的把我的話晾在一邊。',
+  ashin: '晚上我主動找阿信聊天，接著前陣子聊過的音樂話題往下說。他分享最近想到的歌，也問我最近的課業和心情。和他聊天不用急著找話題，總能很自然地把一句話接下去。',
+  masa: '晚上我主動找瑪莎聊天，話題又繞回以前重逢後那些熟悉的玩笑。他嘴上還是很會吐槽，卻記得我們以前的小事，也會認真問我最近過得怎麼樣。',
+  stone: '晚上我主動找石頭聊天，從上次在練團室的相處和他提醒我的小細節聊起。他還是那麼細心，總會把話說得剛剛好，也不忘提醒我照顧好自己。',
+  yanming: '晚上我主動找諺明哥聊天，提起上次在練團室看到的器材和他做事的方式。他依舊沉穩，說話不急不徐，讓人覺得很多事情都可以照著順序慢慢處理。',
+}
+
 const monthDiaryEntries: Record<RouteCharacterId, { title: string; visit: string; chat: string }> = {
   wen: {
     title: '今天去了球場，還帶了兩瓶水。',
@@ -1325,6 +1369,15 @@ function App() {
     } catch { /* Restore the previous one-choice save format below. */ }
     return []
   })
+  const [monthFreeChatTarget, setMonthFreeChatTarget] = useState<RouteCharacterId | null>(() => {
+    const saved = localStorage.getItem('mayday-month-free-chat-target')
+    if (saved && monthVisitOrder.includes(saved as RouteCharacterId)) return saved as RouteCharacterId
+    if (localStorage.getItem('mayday-month-free-chat-started') === 'true') {
+      const legacyTarget = localStorage.getItem('mayday-month-visit-target')
+      if (legacyTarget && monthVisitOrder.includes(legacyTarget as RouteCharacterId)) return legacyTarget as RouteCharacterId
+    }
+    return null
+  })
   const [monthFreeChatRound, setMonthFreeChatRound] = useState(() => Number(localStorage.getItem('mayday-month-free-chat-round') ?? '0'))
   const [monthFreeChatReplied, setMonthFreeChatReplied] = useState(() => localStorage.getItem('mayday-month-free-chat-replied') === 'true')
   const [monthFreeChatStarted, setMonthFreeChatStarted] = useState(() => localStorage.getItem('mayday-month-free-chat-started') === 'true')
@@ -1455,6 +1508,7 @@ function App() {
     put('mayday-free-chat-round', String(freeChatRound))
     put('mayday-free-chat-replied', String(freeChatReplied))
     put('mayday-month-visit-target', monthVisitTarget)
+    put('mayday-month-free-chat-target', monthFreeChatTarget)
     put('mayday-month-visit-replies', JSON.stringify(monthVisitReplies))
     put('mayday-month-visit-choice', null)
     put('mayday-month-visit-complete', localStorage.getItem('mayday-month-visit-complete'))
@@ -1538,6 +1592,11 @@ function App() {
   useEffect(() => {
     localStorage.setItem('mayday-month-free-chat-started', String(monthFreeChatStarted))
   }, [monthFreeChatStarted])
+
+  useEffect(() => {
+    if (monthFreeChatTarget) localStorage.setItem('mayday-month-free-chat-target', monthFreeChatTarget)
+    else localStorage.removeItem('mayday-month-free-chat-target')
+  }, [monthFreeChatTarget])
 
   useEffect(() => {
     localStorage.setItem('mayday-month-free-chat-opening-sent', String(monthFreeChatOpeningSent))
@@ -1899,7 +1958,8 @@ function App() {
     const earlierRouteRounds = character === 'wen'
       ? (context.day2StrollAccepted ? wenStrollCallScript : wenHomeCallScript)
       : thresholdCallScripts[character]
-    const selectedRounds = context.source === 'month-visit' || context.source === 'month-free-chat'
+    const followsMonthVisit = context.source === 'month-visit' || (context.source === 'month-free-chat' && context.eventKey.startsWith('month-visit-follow-up:'))
+    const selectedRounds = followsMonthVisit
       ? monthVisitCallScripts[character]
       : context.source === 'free-chat'
         ? [freeChatCallOpeners[character], ...earlierRouteRounds.slice(1)]
@@ -2028,6 +2088,7 @@ function App() {
   const startMonthFreeTime = () => {
     setMonthVisitTarget(null)
     setMonthVisitReplies([])
+    setMonthFreeChatTarget(null)
     setMonthFreeChatRound(0)
     setMonthFreeChatReplied(false)
     setMonthFreeChatStarted(false)
@@ -2037,6 +2098,7 @@ function App() {
     localStorage.removeItem('mayday-month-visit-choice')
     localStorage.removeItem('mayday-month-visit-replies')
     localStorage.removeItem('mayday-month-visit-complete')
+    localStorage.removeItem('mayday-month-free-chat-target')
     localStorage.removeItem('mayday-month-free-chat-round')
     localStorage.removeItem('mayday-month-free-chat-replied')
     localStorage.removeItem('mayday-month-free-chat-started')
@@ -2088,17 +2150,47 @@ function App() {
     changeStage('month-visit-complete')
   }
 
+  const getMonthFreeChatRounds = (character: RouteCharacterId): ChatRound[] => {
+    if (character === monthVisitTarget) return monthFreeChatScripts[character]
+    if (character === 'ashin') return monthPastAshinChatScripts
+    const previousRounds = character === 'wen' ? getFreeTimeRounds('wen') : freeTimeChats[character]
+    const adjustPastReference = (value: string) => value
+      .replace(/妳回到家了喔？/g, '最近過得怎麼樣？')
+      .replace(/妳回到家了嗎？/g, '最近還好嗎？')
+      .replace(/妳今天有沒有/g, '妳最近有沒有')
+      .replace(/昨天第一次來練團室/g, '上次來練團室')
+      .replace(/昨天/g, '上次')
+      .replace(/今天/g, '那天')
+      .replace(/剛剛/g, '上次')
+    return previousRounds.map((round) => ({
+      ...round,
+      incoming: adjustPastReference(round.incoming),
+      choices: round.choices.map((choice) => ({
+        ...choice,
+        text: adjustPastReference(choice.text),
+        response: choice.response.map(adjustPastReference),
+      })),
+    }))
+  }
+
+  const getMonthFreeChatOpeningChoices = (character: RouteCharacterId): MonthFreeChatOpening[] =>
+    character === monthVisitTarget ? monthFreeChatOpeners[character] : monthPreviousFreeChatOpeners[character]
+
+  const getMonthFreeChatDiaryText = (character: RouteCharacterId): string =>
+    character === monthVisitTarget ? monthDiaryEntries[character].chat : monthPastChatDiary[character]
+
   const startMonthFreeChat = () => {
     if (!monthVisitTarget) return
-    const character = monthVisitTarget
-    if (localStorage.getItem('mayday-month-free-chat-started') === 'true') {
-      setSelectedSmsThread(character)
-      setActiveApp('messages')
+    if (monthFreeChatStarted) {
+      setSelectedSmsThread(monthFreeChatTarget)
+      setActiveApp(monthFreeChatTarget ? 'messages' : null)
       changeStage('month-free-chat')
       return
     }
     setMonthFreeChatStarted(true)
     localStorage.setItem('mayday-month-free-chat-started', 'true')
+    setMonthFreeChatTarget(null)
+    localStorage.removeItem('mayday-month-free-chat-target')
     setMonthFreeChatOpeningSent(false)
     localStorage.setItem('mayday-month-free-chat-opening-sent', 'false')
     setMonthFreeChatRound(0)
@@ -2107,29 +2199,47 @@ function App() {
     localStorage.setItem('mayday-month-free-chat-replied', 'false')
     setMonthFreeChatReplies([])
     localStorage.setItem('mayday-month-free-chat-replies', '[]')
-    setSelectedSmsThread(character)
-    setActiveApp('messages')
+    setSelectedSmsThread(null)
+    setActiveApp(null)
     changeStage('month-free-chat')
   }
 
+  const chooseMonthFreeChatTarget = (character: RouteCharacterId) => {
+    if (!monthFreeChatStarted || monthFreeChatTarget) return
+    setMonthFreeChatTarget(character)
+    localStorage.setItem('mayday-month-free-chat-target', character)
+    setMonthFreeChatRound(0)
+    localStorage.setItem('mayday-month-free-chat-round', '0')
+    setMonthFreeChatReplied(false)
+    localStorage.setItem('mayday-month-free-chat-replied', 'false')
+    setMonthFreeChatOpeningSent(false)
+    localStorage.setItem('mayday-month-free-chat-opening-sent', 'false')
+    setMonthFreeChatReplies([])
+    localStorage.setItem('mayday-month-free-chat-replies', '[]')
+    setSelectedSmsThread(character)
+    setActiveApp('messages')
+  }
+
   const chooseMonthFreeChatOpening = (choiceIndex: number) => {
-    if (!monthVisitTarget || !monthFreeChatStarted || monthFreeChatOpeningSent) return
-    const character = monthVisitTarget
-    const opening = monthFreeChatOpeners[character][choiceIndex]
-    if (!opening) return
+    if (!monthFreeChatTarget || !monthFreeChatStarted || monthFreeChatOpeningSent) return
+    const character = monthFreeChatTarget
+    const opening = getMonthFreeChatOpeningChoices(character)[choiceIndex]
+    const rounds = getMonthFreeChatRounds(character)
+    if (!opening || !rounds[0]) return
     appendChatMessages(character, [
       { from: 'me', text: opening.text, time: '18:10' },
       { from: character, text: opening.response, time: '18:11' },
-      { from: character, text: monthFreeChatScripts[character][0].incoming, time: '18:12' },
+      { from: character, text: rounds[0].incoming, time: '18:12' },
     ], '11月16日・晚上')
     setMonthFreeChatOpeningSent(true)
     localStorage.setItem('mayday-month-free-chat-opening-sent', 'true')
   }
 
   const chooseMonthFreeChatReply = (choiceIndex: number) => {
-    if (!monthVisitTarget || !monthFreeChatOpeningSent || monthFreeChatReplied) return
-    const character = monthVisitTarget
-    const round = monthFreeChatScripts[character][monthFreeChatRound]
+    if (!monthFreeChatTarget || !monthFreeChatOpeningSent || monthFreeChatReplied) return
+    const character = monthFreeChatTarget
+    const rounds = getMonthFreeChatRounds(character)
+    const round = rounds[monthFreeChatRound]
     const choice = round?.choices[choiceIndex]
     if (!choice) return
     const minute = 13 + monthFreeChatRound * 2
@@ -2142,11 +2252,11 @@ function App() {
     setMonthFreeChatReplies(nextReplies)
     localStorage.setItem('mayday-month-free-chat-replies', JSON.stringify(nextReplies))
     addRouteAffection(character, choice.affection)
-    if (monthFreeChatRound < monthFreeChatScripts[character].length - 1) {
+    if (monthFreeChatRound < rounds.length - 1) {
       const nextRound = monthFreeChatRound + 1
       setMonthFreeChatRound(nextRound)
       localStorage.setItem('mayday-month-free-chat-round', String(nextRound))
-      appendChatMessages(character, [{ from: character, text: monthFreeChatScripts[character][nextRound].incoming, time: '18:' + String(minute + 1).padStart(2, '0') }], '11月16日・晚上')
+      appendChatMessages(character, [{ from: character, text: rounds[nextRound].incoming, time: '18:' + String(minute + 1).padStart(2, '0') }], '11月16日・晚上')
       setMonthFreeChatReplied(false)
       localStorage.setItem('mayday-month-free-chat-replied', 'false')
     } else {
@@ -2156,16 +2266,20 @@ function App() {
   }
 
   const finishMonthFreeChat = () => {
-    if (!monthVisitTarget || !monthFreeChatStarted || !monthFreeChatOpeningSent || !monthFreeChatReplied || monthFreeChatRound !== 4 || monthFreeChatReplies.length !== 5) return
+    if (!monthFreeChatTarget || !monthFreeChatStarted || !monthFreeChatOpeningSent || !monthFreeChatReplied || monthFreeChatRound !== 4 || monthFreeChatReplies.length !== 5) return
+    const isVisitFollowUp = monthFreeChatTarget === monthVisitTarget
+    const previousExperience = sharedExperienceLog[monthFreeChatTarget]
     const experience: CharacterExperienceRecord = {
-      character: monthVisitTarget,
+      character: monthFreeChatTarget,
       source: 'month-free-chat',
       date: saveGameDate,
-      eventKey: monthVisitRoutes[monthVisitTarget].title + '・晚間自由對話',
+      eventKey: isVisitFollowUp
+        ? 'month-visit-follow-up:' + monthVisitRoutes[monthFreeChatTarget].title
+        : 'month-free-chat-after:' + (previousExperience?.source ?? 'first-chapter') + ':' + (previousExperience?.eventKey ?? 'first-rehearsal-room-meeting'),
       day2StrollAccepted,
       choices: [...monthFreeChatReplies],
     }
-    const nextExperienceLog = { ...sharedExperienceLog, [monthVisitTarget]: experience }
+    const nextExperienceLog = { ...sharedExperienceLog, [monthFreeChatTarget]: experience }
     setSharedExperienceLog(nextExperienceLog)
     localStorage.setItem('mayday-shared-experience-log', JSON.stringify(nextExperienceLog))
     localStorage.setItem('mayday-month-free-chat-complete', 'true')
@@ -2279,7 +2393,7 @@ function App() {
   }
 
   const resetLocalData = () => {
-    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-month-visit-target', 'mayday-month-visit-choice', 'mayday-month-visit-replies', 'mayday-month-visit-complete', 'mayday-month-free-chat-round', 'mayday-month-free-chat-replied', 'mayday-month-free-chat-started', 'mayday-month-free-chat-opening-sent', 'mayday-month-free-chat-replies', 'mayday-month-free-chat-complete', 'mayday-month-day-complete', 'mayday-route-affection', 'mayday-shared-experience-log', 'mayday-call-experience-context', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming', 'mayday-active-call-character', 'mayday-call-round-index', 'mayday-call-replied', 'mayday-call-transcript'].forEach((key) => localStorage.removeItem(key))
+    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-month-visit-target', 'mayday-month-visit-choice', 'mayday-month-visit-replies', 'mayday-month-visit-complete', 'mayday-month-free-chat-target', 'mayday-month-free-chat-round', 'mayday-month-free-chat-replied', 'mayday-month-free-chat-started', 'mayday-month-free-chat-opening-sent', 'mayday-month-free-chat-replies', 'mayday-month-free-chat-complete', 'mayday-month-day-complete', 'mayday-route-affection', 'mayday-shared-experience-log', 'mayday-call-experience-context', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming', 'mayday-active-call-character', 'mayday-call-round-index', 'mayday-call-replied', 'mayday-call-transcript'].forEach((key) => localStorage.removeItem(key))
     SAVE_SLOT_IDS.forEach((slot) => localStorage.removeItem(SAVE_SLOT_PREFIX + slot))
     setPlayerName('')
     setNameDraft('')
@@ -2309,6 +2423,7 @@ function App() {
     setFreeChatReplied(false)
     setMonthVisitTarget(null)
     setMonthVisitReplies([])
+    setMonthFreeChatTarget(null)
     setMonthFreeChatRound(0)
     setMonthFreeChatReplied(false)
     setMonthFreeChatStarted(false)
@@ -2931,14 +3046,67 @@ function App() {
                       { kind: 'narration', text: '回家的路上，你想起今天和' + (currentMonthVisit?.label ?? '他') + '相處的片段。明明只是很普通的一天，卻因為特地去見了他，變得格外值得記住。' },
                       { kind: 'narration', text: '一個月裡慢慢累積的熟悉感，好像又往前走了一點。你把這一天收進心裡，想著下次見面時，或許還有新的話題可以聊。' },
                     ]} />
-                    <div className="reunion-pause-note">見面後還有一些話想說。回到家後，你決定主動傳訊息給{currentMonthVisit?.label ?? '他'}。</div>
+                    <div className="reunion-pause-note">回到家後，你還想主動找一個人聊聊。白天見誰、晚上找誰，可以分開選。</div>
                   </div>
                   <div className="story-action-bar">
-                    <button className="story-primary-button" onClick={startMonthFreeChat}>回家後，主動傳訊息 <ChevronRight size={15} /></button>
+                    <button className="story-primary-button" onClick={startMonthFreeChat}>回家後，選擇今晚聊天對象 <ChevronRight size={15} /></button>
                   </div>
                 </div>
               )}
 
+              {storyStage === 'month-free-chat' && monthFreeChatStarted && monthFreeChatTarget === null && activeApp === null && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">一個月後・晚上</div>
+                    <div className="story-contact-title">
+                      <strong>自由對話</strong>
+                      <small>1996 年 11 月 16 日・晚上</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">回到家，手機就在手邊</div>
+                    <h2 className="story-scene-title">今晚想主動找誰聊聊？</h2>
+                    <StoryBlocks blocks={[
+                      { kind: 'narration', text: '白天見了誰，和晚上想找誰聊天，是兩個可以分開做的選擇。你想起誰，就可以主動傳訊息給誰；對方回應的話題，會接續你們真正發生過的事情。' },
+                    ]} />
+                    <div className="month-visit-picker">
+                      {monthVisitOrder.map((id) => {
+                        const person = characterInfo.find((item) => item.id === id)!
+                        return (
+                          <button className="free-time-person" key={id} onClick={() => chooseMonthFreeChatTarget(id)}>
+                            <span className="sms-avatar">{person.avatar}</span>
+                            <span><strong>{person.name}</strong><small>{id === monthVisitTarget ? '延續今天的見面' : '接續你們上次的相處'}</small></span>
+                            <ChevronRight size={15} />
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                </div>
+              )}
+              {storyStage === 'month-free-chat' && monthFreeChatStarted && monthFreeChatTarget !== null && activeApp === null && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">一個月後・晚上</div>
+                    <div className="story-contact-title">
+                      <strong>{characterNames[monthFreeChatTarget]}</strong>
+                      <small>自由對話・1996 年 11 月 16 日</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">訊息還停留在剛才的地方</div>
+                    <h2 className="story-scene-title">要繼續和他聊天嗎？</h2>
+                    <StoryBlocks blocks={[
+                      { kind: 'narration', text: '你已經選好了今晚想找的人。打開訊息，就能接著剛才的對話繼續聊。' },
+                    ]} />
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={() => openMessagesApp(monthFreeChatTarget)}>打開訊息 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
               {storyStage === 'month-diary' && monthVisitTarget && (
                 <div className="story-screen-overlay">
                   <div className="story-screen-head">
@@ -2959,10 +3127,10 @@ function App() {
                       <span className="diary-date">1996 年 11 月 16 日・星期六</span>
                       <h2>{monthDiaryEntries[monthVisitTarget].title}</h2>
                       <p>{monthDiaryEntries[monthVisitTarget].visit}</p>
-                      <p>{monthDiaryEntries[monthVisitTarget].chat}</p>
+                      <p>{getMonthFreeChatDiaryText(monthFreeChatTarget ?? monthVisitTarget)}</p>
                       <p>一個月前，很多事情還只是剛剛開始。今天再回頭看，才發現我們已經有了不少只有彼此才懂的小事。也許日子就是這樣慢慢往前走的吧，不一定每天都有什麼大事發生，但總會有一些瞬間，讓人想好好記下來。</p>
                     </div>
-                    <div className="reunion-pause-note">今天的見面和訊息都已經收進日記。寫完這一頁，今天就到這裡了。</div>
+                    <div className="reunion-pause-note">今天白天的行程和晚上的對話都已經收進日記。寫完這一頁，今天就到這裡了。</div>
                   </div>
                   <div className="story-action-bar">
                     <button className="story-primary-button" onClick={finishMonthChapter}>合上日記，結束今天 <ChevronRight size={15} /></button>
@@ -3069,18 +3237,6 @@ function App() {
                   <span className="notification-time">剛剛</span>
                 </button>
               )}
-              {storyStage === 'month-free-chat' && monthVisitTarget && monthFreeChatStarted && activeApp === null && (
-                <button className="sms-notification" onClick={() => openMessagesApp(monthVisitTarget)}>
-                  <span className="notification-icon"><MessageSquare size={19} /></span>
-                  <span className="notification-copy">
-                    <strong>{characterNames[monthVisitTarget]}</strong>
-                    <span>{monthFreeChatOpeningSent ? (chatMessages[monthVisitTarget]?.[chatMessages[monthVisitTarget].length - 1]?.text ?? '查看剛才的訊息') : '選擇要傳出的第一句訊息'}</span>
-                    <span>一個月後・自由對話・{monthFreeChatOpeningSent ? '第 ' + (monthFreeChatRound + 1) + '/5 輪' : '準備傳送'}</span>
-                  </span>
-                  <span className="notification-time">剛剛</span>
-                </button>
-              )}
-
                             {storyStage === 'walk' && (
                 <div className="story-screen-overlay">
                   <div className="story-screen-head">
@@ -3328,21 +3484,21 @@ function App() {
                                   <small>每輪都有三種回法，會影響對方反應與好感；也可能一不小心扣分。</small>
                                 </div>
                               )}
-                              {storyStage === 'month-free-chat' && monthVisitTarget && selectedSmsThread === monthVisitTarget && !monthFreeChatOpeningSent && (
+                              {storyStage === 'month-free-chat' && monthFreeChatTarget && selectedSmsThread === monthFreeChatTarget && !monthFreeChatOpeningSent && (
                                 <div className="choice-area">
-                                  <div className="choice-heading">延續今天和{characterNames[monthVisitTarget]}的見面，先傳一則訊息</div>
-                                  {monthFreeChatOpeners[monthVisitTarget].map((choice, index) => (
+                                  <div className="choice-heading">{monthFreeChatTarget === monthVisitTarget ? '延續今天和' + characterNames[monthFreeChatTarget] + '的見面，先傳一則訊息' : '接續你和' + characterNames[monthFreeChatTarget] + '上次的話題，先傳一則訊息'}</div>
+                                  {getMonthFreeChatOpeningChoices(monthFreeChatTarget).map((choice, index) => (
                                     <button className="reply-choice" key={index} onClick={() => chooseMonthFreeChatOpening(index)}>
                                       <span>{choice.text}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
-                                  <small>由你決定怎麼開啟今晚的聊天。</small>
+                                  <small>由你主動開啟對話；話題會依照你們實際發生過的劇情延續。</small>
                                 </div>
                               )}
-                              {storyStage === 'month-free-chat' && monthVisitTarget && selectedSmsThread === monthVisitTarget && monthFreeChatOpeningSent && !monthFreeChatReplied && (
+                              {storyStage === 'month-free-chat' && monthFreeChatTarget && selectedSmsThread === monthFreeChatTarget && monthFreeChatOpeningSent && !monthFreeChatReplied && (
                                 <div className="choice-area">
                                   <div className="choice-heading">一個月後・自由對話・第 {monthFreeChatRound + 1}/5 輪</div>
-                                  {monthFreeChatScripts[monthVisitTarget][monthFreeChatRound].choices.map((choice, index) => (
+                                  {getMonthFreeChatRounds(monthFreeChatTarget)[monthFreeChatRound].choices.map((choice, index) => (
                                     <button className="reply-choice" key={index} onClick={() => chooseMonthFreeChatReply(index)}>
                                       <span>{choice.text}</span><ChevronRight size={15} />
                                     </button>
@@ -3394,7 +3550,7 @@ function App() {
                                 <button className="story-primary-button" onClick={finishFreeChat}>結束自由活動 <ChevronRight size={15} /></button>
                               </div>
                             )}
-                            {storyStage === 'month-free-chat' && monthVisitTarget && selectedSmsThread === monthVisitTarget && monthFreeChatReplied && monthFreeChatRound === 4 && (
+                            {storyStage === 'month-free-chat' && monthFreeChatTarget && selectedSmsThread === monthFreeChatTarget && monthFreeChatReplied && monthFreeChatRound === 4 && (
                               <div className="sms-thread-actions">
                                 <div className="reply-note">五輪對話已經聊完。你把手機裡的訊息收好，準備把今天記進日記。</div>
                                 <button className="story-primary-button" onClick={finishMonthFreeChat}>收起手機，寫下今天的日記 <ChevronRight size={15} /></button>
