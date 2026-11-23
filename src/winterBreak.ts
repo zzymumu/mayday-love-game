@@ -255,7 +255,7 @@ export const winterBusStopRoutes: Record<WinterCharacterId, WinterBusStopRoute> 
     title: '和溫尚翊走到公車站',
     blocks: [
       { kind: 'narration', text: '酒吧門口還有人在收最後幾條導線，佑達被老闆叫住確認器材，你和溫尚翊先沿著騎樓往公車站的方向走。夜裡的風帶著一點涼意，巷口招牌的燈一閃一閃，剛才舞台上的鼓聲好像還留在耳朵裡。' },
-      { kind: 'narration', text: '溫尚翊把效果器袋換到另一隻手，走到靠近馬路的那側。剛下台時他還跟瑪莎吵得很大聲，現在只剩你們兩個，反而安靜了幾秒。他低頭踢開路邊一顆小石子，像是在等你先開口，走了幾步又忍不住問你剛才看演出看得開不開心。' },
+      { kind: 'narration', text: '溫尚翊把效果器袋換到另一隻手，走到靠近馬路的那側。明明剛下台還在跟瑪莎鬥嘴，現在只剩你們兩個，他反而安靜了幾秒，像是在等你先開口。' },
     ],
     rounds: [
       {
@@ -284,13 +284,13 @@ export const winterBusStopRoutes: Record<WinterCharacterId, WinterBusStopRoute> 
         ],
       },
       {
-        scene: '他把剛才被你撞歪的效果器袋重新背好，接下來一路都走在靠近車道的那側。你往裡面走，他也跟著放慢腳步；偶爾有機車從旁邊經過，他的手就會很自然地抬一下，像是隨時準備再把你往安全的地方帶。走到公車站前，他才終於把那股緊張藏回平常的語氣裡。',
+        scene: '走過剛才那段路後，他沒有再跟你隔著半步，而是自然地走在你旁邊。公車站的燈箱已經看得見了，你們卻都走得比剛才慢。溫尚翊把效果器袋放到腳邊，抬頭看了一眼時刻表，說下一班還要等幾分鐘。你們便站在站牌旁，聽著遠處車聲，繼續聊剛才那首歌。',
         promptSpeaker: '溫尚翊',
-        prompt: '剛剛那一下真的嚇到我了。妳下次晚上走路不要走外側，聽到沒有？',
+        prompt: '下次我把那段重新彈給妳聽啦。妳還要坐第一排喔？',
         choices: [
-          { text: '你是在關心我喔？', response: [{ kind: 'dialogue', speaker: '溫尚翊', text: '不然咧？看到妳差點被撞，我還要拍手喔？' }, { kind: 'narration', text: '他瞪你一眼，卻又把步子放慢，等你跟上來才繼續走。' }, { kind: 'dialogue', speaker: '溫尚翊', text: '下次要走外面就先跟我講，我走那邊。' }], affection: { wen: 4 } },
-          { text: '那你下次要陪我走啊，不然我怎麼知道要走哪邊。', response: [{ kind: 'dialogue', speaker: '溫尚翊', text: '妳很會欸，現在連走路都要指定人陪喔？' }, { kind: 'narration', text: '他嘴上吐槽，卻沒有說不，反而先替你看了一眼公車站的方向。' }, { kind: 'dialogue', speaker: '溫尚翊', text: '好啦，有遇到就一起走，不要自己亂跑。' }], affection: { wen: 4 } },
-          { text: '你剛剛反應真的很快，謝謝你。', response: [{ kind: 'dialogue', speaker: '溫尚翊', text: '這有什麼好謝的，妳沒事就好。' }, { kind: 'narration', text: '他說完安靜了幾步，才像是怕氣氛太認真似的，又補上一句。' }, { kind: 'dialogue', speaker: '溫尚翊', text: '不過妳今天看演出倒是很認真，第一排的觀眾有及格啦。' }], affection: { wen: 3 } },
+          { text: '當然！而且你要記得一抬頭就看到我。', response: [{ kind: 'dialogue', speaker: '溫尚翊', text: '要求很多欸……好啦，我會留意。' }, { kind: 'narration', text: '他說完低頭踢了踢站牌旁的小石子，過一會兒又問你下次哪天有空，像是怕你沒聽清楚似的。' }], affection: { wen: 3 } },
+          { text: '那要看你表現，今天先給你九十分。', response: [{ kind: 'dialogue', speaker: '溫尚翊', text: '九十分？我今天至少九十九吧！' }, { kind: 'narration', text: '他不服氣地跟你爭了起來，連下一班公車亮起車頭燈都沒注意，直到你提醒，他才趕緊把袋子拎起來。' }], affection: { wen: 2 } },
+          { text: '如果你願意教我彈那段，我就再來。', response: [{ kind: 'dialogue', speaker: '溫尚翊', text: '可以啊，這有什麼難的。妳不要學兩下就說手痠喔。' }, { kind: 'narration', text: '他笑著替你指了指琴弦的位置，說下次慢慢教。公車進站時，他還不忘提醒你上車小心，別又踩到奇怪的地方。' }], affection: { wen: 3 } },
         ],
       },
     ],
