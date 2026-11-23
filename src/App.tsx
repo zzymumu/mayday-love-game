@@ -5822,7 +5822,7 @@ function App() {
                     <div className="story-kicker">AFTER SHOW · WHO GOES WITH YOU?</div>
                     <h2 className="story-scene-title">今晚想和誰多走一段路？</h2>
                     <StoryBlocks blocks={winterYanmingPickupAvailable ? winterYanmingPickupBlocks : [
-                      { kind: 'narration', text: '你走到酒吧門口，夜風一下子吹散了舞台上的熱度。剛才還在台下拍手的客人陸續回到自己的座位，幾個人經過你們身邊時，還笑著說今晚的表演很精彩，卻沒有人認出他們是誰。' },
+                      { kind: 'narration', text: '你走到酒吧門口，夜風一下子吹散了舞台上的熱度。店裡最後幾桌客人還在聊天，舞台邊的燈一盞盞暗下來；佑達蹲在鼓組旁，把鼓棒和小配件一件件收進袋子，老闆拿著清單過來跟他核對。' },
                       { kind: 'dialogue', speaker: '錢佑達', text: '你們先去公車站啦，我跟老闆對一下器材清單，很快就追上！' },
                       { kind: 'dialogue', speaker: '蔡昇晏', text: '你最好快一點，剛剛不是還喊著要再唱一首？現在收東西倒是慢吞吞。' },
                       { kind: 'narration', text: '阿信把外套搭在手臂上，還在輕聲哼著最後一首歌的旋律；石頭確認琴袋拉鍊都拉好了，才把背帶往肩上調整；溫尚翊和瑪莎仍在爭論剛才那個小節，誰也不肯先認輸。你站在他們旁邊聽著，忽然覺得剛才舞台上的熱鬧還沒有散去。' },
