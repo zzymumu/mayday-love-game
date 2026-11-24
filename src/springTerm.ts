@@ -1328,7 +1328,7 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
   },
   yanming: {
     openings: [
-      springDailySmsRound("「怎麼不回去問老闆？」", [
+      springDailySmsRound("「怎麼不回去問老闆。」", [
         { text: "「我就是覺得回去很丟臉嘛……」", response: "「不會啦，店家一天要遇到幾十個忘東忘西的人。\n妳又不是第一個。」" },
         { text: "「我怕老闆覺得我怎麼連筷子都忘記。」", response: "「不會啦，店家每天都會遇到這種事，妳不用想那麼多。」" },
         { text: "「我真的差點想直接用手吃了。」", response: "「先不要啦，便當是無辜的，還是回去拿一下比較好。」" },
@@ -1346,17 +1346,17 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
     ],
     tracks: [
       [
-                springDailySmsRound("「我以前也有過類似的事，買完便當走到一半才發現少拿東西。」", [
+                springDailySmsRound(""), [
         { text: "「你講得好像很有經驗。」", response: "「有啊，我以前拿著便當走到一半，才發現自己根本沒拿湯匙。\n回去拿的時候，老闆還問我是不是又來補考。」" },
         { text: "「你到底去補考幾次啦？」", response: "「沒有很多次啦，只是老闆記性太好，看到我就知道我要幹嘛。」" },
         { text: "「所以你也是站在店門口發呆的人？」", response: "「我沒有站那麼久啦，至少有走回去拿。」" },
       ]),
-        springDailySmsRound("「後來我就學乖了，包包裡都會放備用筷子。」", [
+        springDailySmsRound(""), [
         { text: "「哈哈哈哈哈哈哈！」", response: "「所以我包包才放兩雙備用筷子。\n一雙給自己，一雙拿來救人。」" },
         { text: "「你這是有備而來欸。」", response: "「不然每次都要回去補考，很麻煩欸。」" },
         { text: "「那你包包裡還有什麼？」", response: "「一些有的沒的啦，真的要用的時候就會出現。」" },
       ]),
-        springDailySmsRound("「妳要不要也放一雙？不然下次又要站在店門口想半天。」", [
+        springDailySmsRound(""), [
         { text: "「那我要不要先預約？」", response: "「可以，借一次記一個便當，利息不用算。」" },
         { text: "「我可以直接登記成長期會員嗎？」", response: "「可以啊，會員卡先欠著，便當照算。」" },
         { text: "「那我是不是還要付押金？」", response: "「不用押金啦，記得還我一雙就好。」" },
@@ -1368,17 +1368,17 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
       ]),
       ],
       [
-                springDailySmsRound("「我那時候拿出來還看了半天，想說這雙襪子是哪來的。」", [
+                springDailySmsRound(""), [
         { text: "「？？？？你怎麼會連這個都搞錯啦！」", response: "「因為那雙襪子本來就長得很普通。\n放在那邊完全沒有存在感。」" },
         { text: "「你是不是找太久，已經不認識自己的襪子了？」", response: "「有可能欸，看久了真的會覺得每一雙都很陌生。」" },
         { text: "「所以你還以為自己多買了一雙喔？」", response: "「對啊，還想說什麼時候買的，後來才發現是失蹤人口。」" },
       ]),
-        springDailySmsRound("「那雙襪子後來總算回到原本的位置了。」", [
+        springDailySmsRound(""), [
         { text: "「那你後來怎麼辦？」", response: "「找到就繼續穿啊。\n不然還要幫它辦個失而復得的儀式嗎？」" },
         { text: "「你有沒有考慮幫它拍張紀念照？」", response: "「沒有欸，牠只是襪子，不用搞得這麼隆重吧。」" },
         { text: "「我覺得它值得一個獎狀。」", response: "「可以，獎狀上寫：成功從褲管逃脫。」" },
       ]),
-        springDailySmsRound("「妳那隻要是還找不到，也先別急著丟。」", [
+        springDailySmsRound(""), [
         { text: "「哈哈哈哈哈哈哈哈！」", response: "「妳那隻先留著吧。\n搞不好哪天它自己回來了。」" },
         { text: "「我已經不抱希望了，可能真的離家出走了。」", response: "「那先把另一隻收好，等它哪天想通了再回來。」" },
         { text: "「我要不要貼個尋襪啟事？」", response: "「可以啊，酬勞寫一包洋芋片，應該有人願意幫忙。」" },
@@ -1390,17 +1390,17 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
       ]),
       ],
       [
-                springDailySmsRound("「妳本來想拿雞蛋回去做什麼？」", [
+                springDailySmsRound(""), [
         { text: "「我本來想回家煎蛋的，現在計畫全亂了。」", response: "「我上次也差不多。\n買了醬油跟蔥，回家才發現忘記買麵。」" },
         { text: "「想做蛋餅啦，現在只能改天了。」", response: "「那就改天再做，材料沒買齊真的很難煮。」" },
         { text: "「本來想煮個簡單的晚餐，結果最重要的東西沒買。」", response: "「這種最麻煩，其他東西都準備好了，就差那一樣。」" },
       ]),
-        springDailySmsRound("「我那天回家才發現，晚餐根本不知道要吃什麼。」", [
+        springDailySmsRound(""), [
         { text: "「那你最後吃什麼？」", response: "「一碗蔥花醬油湯。\n差點以為自己在做什麼料理實驗。」" },
         { text: "「你沒有再出去買麵喔？」", response: "「懶得出門了，就先拿家裡有的東西湊一湊。」" },
         { text: "「聽起來好像很有創意，但我不太敢吃。」", response: "「我自己也沒有很想回憶那個味道。」" },
       ]),
-        springDailySmsRound("「那碗湯最後還是吃完了，只是味道有點難形容。」", [
+        springDailySmsRound(""), [
         { text: "「救命哈哈哈哈哈哈！」", response: "「所以妳不要笑我。\n我們兩個應該差不多。」" },
         { text: "「我覺得你應該把食譜記下來。」", response: "「不用了，這種實驗一次就夠了。」" },
         { text: "「你下次煮之前先傳訊息問我好了。」", response: "「好啊，至少有人可以阻止我再做一次。」" },
