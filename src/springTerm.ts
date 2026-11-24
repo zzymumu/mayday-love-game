@@ -1919,9 +1919,9 @@ export const getSpringSmsOpeners = (character: SpringCharacterId, context: Sprin
   }
 
   const ownerOnly: { text: string; response: string; affection: number }[] = [
-    { text: '「諺明哥，今天店裡還順利嗎？」', response: '「還算順利，最後一組客人剛走，我才有空坐下來。」', affection: 2 },
-    { text: '「你今天是不是又在對預約簿？」', response: '「剛對完，今天有人臨時換時間，我重新排過了。」', affection: 2 },
-    { text: '「你有沒有記得休息一下？」', response: '「有，趁空檔喝了杯茶，沒有一直忙到現在。」', affection: 3 },
+    { text: '「你今天應該又忙到忘記喝茶了吧，我都能想像你把杯子放在櫃檯邊上。」', response: '「……妳怎麼連這個都猜得到，剛才真的放涼了才想起來。」', affection: 3 },
+    { text: '「店裡是不是又有人忘東忘西？你上次說都快變失物招領處了。」', response: '「剛才才追回一件外套，差點就真的變成失物招領處。」', affection: 2 },
+    { text: '「你每次都先把店裡的事情安排好，自己的事反而常常排在最後。」', response: '「習慣先把店裡顧好，自己的事反而容易忘。」', affection: 3 },
   ]
 
   const dinnerOnly: { text: string; response: string; affection: number }[] = [
