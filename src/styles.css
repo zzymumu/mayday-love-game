@@ -650,6 +650,28 @@ button { cursor: pointer; }
 }
 .reply-choice:hover { border-color: #d2aa96; background: #fff8f1; transform: translateY(-1px); }
 .reply-choice svg { flex: 0 0 auto; color: #b58a76; }
+.spring-invite-person-choice {
+  min-height: 48px;
+  padding: 10px 12px;
+}
+.spring-invite-person-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+.spring-invite-person-copy strong {
+  display: block;
+  font-size: 10px;
+  line-height: 1.4;
+}
+.spring-invite-person-copy small {
+  display: block;
+  color: #a18d7b;
+  font-size: 8px;
+  line-height: 1.4;
+}
 .choice-area > small {
   display: block;
   margin-top: 9px;
