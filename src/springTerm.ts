@@ -1495,10 +1495,10 @@ export const getSpringSmsRounds = (character: SpringCharacterId, context: Spring
         springSmsChoice('「我現在腦袋裡還是你坐在旁邊示範的樣子。」', ['「妳不是在記和弦喔？」'], 3),
         springSmsChoice('「下次可以教我下一個和弦嗎？」', ['「可以啊，等妳手指休息好了再說。」'], 4),
       ])
-      rounds[3] = springSmsRound(springStoreFollowUpLine(character, context), [
-        springSmsChoice('「我有聽出差別啦，踩下去之後聲音一下子變厚了。」', ['「對啊，那顆就是這個效果，妳有聽出來就好。」'], 2),
-        springSmsChoice('「你當時研究得那麼認真，我都不敢打擾你。」', ['「有這麼誇張喔？我只是想看清楚啦。」'], 1),
-        springSmsChoice('「下次再帶我去，我還想多試幾顆效果器。」', ['「好啊，妳不要到時候又說只是逛逛喔。」'], 3),
+      rounds[3] = springSmsRound('對了，今天在樂器行試的那幾顆效果器，妳最喜歡哪個音色？', [
+        springSmsChoice('「我最喜歡踩下去之後，聲音突然變厚的那個。」', ['「那顆我也滿喜歡的，吉他一接上去差很多。」'], 2),
+        springSmsChoice('「其實我比較喜歡你剛剛彈給我聽的那段。」', ['「妳到底是在選效果器，還是在選我啦？」'], 3),
+        springSmsChoice('「下次換我自己踩開關，我想再試一次。」', ['「好啊，下次讓妳自己玩，這次不要踩太早喔。」'], 1),
       ])
       rounds[4] = springSmsRound('好啦，今天先這樣，妳的手指快去休息。', [
         springSmsChoice('「你也不要練到太晚，晚安。」', ['「知道啦，晚安。」'], 1),
@@ -1525,10 +1525,10 @@ export const getSpringSmsRounds = (character: SpringCharacterId, context: Spring
         springSmsChoice('「我比較記得你一直說不用急，害我真的沒那麼緊張了。」', ['「那就好，我不想讓妳覺得學琴有壓力。」'], 3),
         springSmsChoice('「下次還想學你今天彈的那一段。」', ['「好啊，我可以再彈慢一點給妳聽。」'], 4),
       ])
-      rounds[3] = springSmsRound(springStoreFollowUpLine(character, context), [
-        springSmsChoice('「你後來幫我調好琴身，抱起來真的舒服很多。」', ['「那就好，尺寸合適，練起來才不會一直卡住。」'], 2),
-        springSmsChoice('「你那時候明明很想笑，還一直忍著。」', ['「哈哈，有一點啦，但怕妳更不好意思。」'], 1),
-        springSmsChoice('「下次再彈那兩把給我聽，我還想比較一次。」', ['「好啊，下次我再慢慢彈給妳聽。」'], 3),
+      rounds[3] = springSmsRound('今天在木吉他區試的兩把琴，妳比較喜歡哪一把的聲音？', [
+        springSmsChoice('「我比較喜歡音色溫暖的那一把。」', ['「我也覺得那把比較耐聽，抱起來也滿舒服。」'], 2),
+        springSmsChoice('「其實你兩把都彈得很好聽，我有點選不出來。」', ['「那下次再慢慢比較，不用急著選。」'], 3),
+        springSmsChoice('「我還想再抱一次，剛剛那把真的比想像中大。」', ['「哈哈，可以啊，下次我幫妳把琴身調好再試。」'], 1),
       ])
       rounds[4] = springSmsRound('好啦，今天先聊到這裡，妳早點休息，手指也要休息喔。', [
         springSmsChoice('「晚安，今天謝謝你慢慢教我。」', ['「晚安～今天陪妳練琴我也很開心。」'], 3),
@@ -1555,10 +1555,10 @@ export const getSpringSmsRounds = (character: SpringCharacterId, context: Spring
         springSmsChoice('「我現在還記得你在旁邊一直數拍子。」', ['「不然咧？不數妳又要跑掉了。」'], 3),
         springSmsChoice('「下次我要把整段練到不出錯。」', ['「好啊，我等著看妳有沒有這個本事。」'], 4),
       ])
-      rounds[3] = springSmsRound(springStoreFollowUpLine(character, context), [
-        springSmsChoice('「我只是幫忙看一下，沒想到你真的聽進去了。」', ['「有啊，妳的意見還滿有用的。」'], 2),
-        springSmsChoice('「你明明自己就研究得很清楚了，還要考我。」', ['「不然怎麼知道妳有沒有認真看？」'], 1),
-        springSmsChoice('「下次還可以找我當顧問，我很專業的。」', ['「好啦，下次再看看妳的專業。」'], 3),
+      rounds[3] = springSmsRound('今天幫我看琴弦的時候，妳有沒有搞懂那兩包差在哪裡？', [
+        springSmsChoice('「大概懂了，原來不是只看價格就好。」', ['「至少有聽進去，買錯才麻煩。」'], 2),
+        springSmsChoice('「我只記得你一直在比價，真的很會精打細算。」', ['「不然咧，錢又不是撿來的。」'], 1),
+        springSmsChoice('「下次再教我怎麼挑琴弦，我不想只看價格。」', ['「好啊，下次不要只顧著看標價。」'], 3),
       ])
       rounds[4] = springSmsRound('好了，今天先放過妳，早點睡，明天手指不要再來抗議。', [
         springSmsChoice('「晚安啦，Bass 老師。」', ['「欸，還算有禮貌嘛。晚安。」'], 2),
@@ -1585,9 +1585,9 @@ export const getSpringSmsRounds = (character: SpringCharacterId, context: Spring
         springSmsChoice('「你剛剛一直等我，真的沒有催我。」', ['「學東西本來就不用趕，妳照自己的速度就好。」'], 3),
         springSmsChoice('「下次想再跟你練另一組和弦。」', ['「好啊，下次我們再慢慢試。」'], 4),
       ])
-      rounds[3] = springSmsRound(springStoreFollowUpLine(character, context), [
-        springSmsChoice('「我還是覺得那條背帶比較適合你，背起來也舒服。」', ['「我也覺得，實用跟舒服都很重要。」'], 2),
-        springSmsChoice('「你挑東西真的很仔細，連保養用品都會講得這麼清楚。」', ['「習慣了，平常多注意一點，琴才可以陪很久。」'], 1),
+      rounds[3] = springSmsRound('今天在店裡看了那麼多背帶和保養用品，妳最喜歡哪一樣？', [
+        springSmsChoice('「我還是覺得你最後挑的那條背帶最適合你。」', ['「我也覺得，實用跟舒服都重要。」'], 2),
+        springSmsChoice('「我其實比較喜歡另一條，顏色很特別。」', ['「那條也不錯，之後可以再看看。」'], 1),
         springSmsChoice('「下次可以再教我怎麼保養吉他嗎？」', ['「可以啊，妳想學的話我再慢慢教妳。」'], 3),
       ])
       rounds[4] = springSmsRound('時間不早了，妳先休息，手指明天應該會舒服一點。', [
