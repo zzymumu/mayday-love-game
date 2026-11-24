@@ -3995,7 +3995,7 @@ function App() {
   }
 
   const finishWinterGig = () => {
-    const pickupAvailable = routeAffection.yanming > 40
+    const pickupAvailable = routeAffection.yanming >= 40
     setWinterYanmingPickupAvailable(pickupAvailable)
     localStorage.setItem('mayday-winter-yanming-pickup-available', String(pickupAvailable))
     changeStage(pickupAvailable ? 'winter-break-pickup' : 'winter-break-bus-choice')
@@ -5849,9 +5849,9 @@ function App() {
                       <span><strong>劉諺明</strong><small>1 月 22 日・深夜</small></span>
                     </div>
                     <h2>諺明哥到酒吧外面了。</h2>
-                    <p>演出剛結束，手機就震了一下。諺明哥傳來訊息，說他已經在外面等你，還特地帶了外套，想陪你走到公車站。</p>
+                    <p>演出剛結束，手機就震了一下。諺明哥傳來訊息，說他已經在酒吧外面，手上還多帶了一件外套。</p>
                     <div className="invite-notification-actions">
-                      <button className="story-primary-button" onClick={() => changeStage('winter-break-bus-choice')}>出去找諺明哥 <ChevronRight size={15} /></button>
+                      <button className="story-primary-button" onClick={() => changeStage('winter-break-bus-choice')}>去門口看看 <ChevronRight size={15} /></button>
                     </div>
                   </div>
                 </div>
@@ -5903,6 +5903,14 @@ function App() {
                   <div className="story-narrative-scroll">
                     <div className="story-kicker">THE WAY TO THE BUS STOP</div>
                     <h2 className="story-scene-title">{winterBusStopRoutes[winterBusStopCharacter].title}</h2>
+                    {winterYanmingPickupAvailable && winterBusStopCharacter !== 'yanming' && (
+                      <StoryBlocks blocks={[
+                        { kind: 'narration', text: '你回頭看向還站在騎樓下的諺明哥，先走過去跟他說一聲。' },
+                        { kind: 'dialogue', speaker: '你', text: `諺明哥，我今晚想跟${winterBusStopRoutes[winterBusStopCharacter].label.replace(/^跟/, '').replace(/一起走$/, '')}一起走。謝謝你特地跑一趟。` },
+                        { kind: 'dialogue', speaker: '劉諺明', text: '好啊，沒關係。妳跟朋友一起走也好，回去路上小心，到家記得傳個訊息。' },
+                        { kind: 'narration', text: '他朝你點點頭，沒有多留你，轉身沿著騎樓往另一頭走去。你這才回到選好的同行人身邊，和對方一起往公車站的方向走。' },
+                      ]} />
+                    )}
                     <StoryBlocks blocks={winterBusStopRoutes[winterBusStopCharacter].blocks} />
                     {winterBusStopRoutes[winterBusStopCharacter].rounds.slice(0, winterBusStopReplies.length).map((round, index) => {
                       const selected = round.choices[winterBusStopReplies[index]]
