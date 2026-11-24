@@ -197,9 +197,9 @@ export const springStoreRoutes: Record<SpringCharacterId, SpringRoute> = {
 }
 
 export const springRehearsalBlocks: SpringBlock[] = [
-  { kind: 'narration', text: '佑達正坐在鼓組旁邊轉著鼓棒，瑪莎抱著 Bass，兩個人還沒開始練就已經為了今天要練哪一段鬥起嘴來。' },
-  { kind: 'dialogue', speaker: '錢佑達', text: '我剛剛那個鼓點明明很帥！' },
-  { kind: 'dialogue', speaker: '瑪莎', text: '帥在哪？我只聽到有人差點把歌帶去隔壁棚。' },
+  { kind: 'narration', text: '瑪莎抱著 Bass，正和佑達為了今天要練哪一段鬥起嘴來。' },
+  { kind: 'dialogue', speaker: '陳信宏', text: '那我今天要認真打！' },
+  { kind: 'dialogue', speaker: '瑪莎', text: '你哪一天不認真？認真把大家帶跑。' },
   { kind: 'dialogue', speaker: '溫尚翊', text: '好了啦，今天先把《轧車》練順，不要還沒開始就先吵到沒力。' },
   { kind: 'dialogue', speaker: '陳信宏', text: '我剛剛還沒唱就先笑場了馁。' },
   { kind: 'narration', text: '佑達坐回鼓椅，還特地轉頭看了瑪莎一眼，像是在警告他等一下不准再吐槽。瑪莎直接回了一個白眼。' },
@@ -222,7 +222,7 @@ export const springRehearsalBlocks: SpringBlock[] = [
   { kind: 'narration', text: '你笑到肩膀都在抖。佑達聽見了，還特地轉過來抗議，說今天明明是他最穩的一天。' },
   { kind: 'dialogue', speaker: '錢佑達', text: '妳不要笑！我今天真的很穩好不好！' },
   { kind: 'dialogue', speaker: '瑪莎', text: '穩到差點把歌帶去隔壁棚。' },
-  { kind: 'narration', text: '大家又笑成一團。收拾器材時，佑達忽然想起和朋友約好要去拿東西，匆匆抓起包包先走了，還不忘隔著門喊：「明天不要說我今天沒打好！」瑪莎立刻回他：「誰有空記得你啦！」' },
+  { kind: 'narration', text: '大家又笑成一團。收拾器材時，佑達忽然想起朋友幫他留在店裡的東西還沒拿，得趕快去拿，便匆匆抓起包包先走了，還不忘隔著門喊：「明天不要說我今天沒打好！」瑪莎立刻回他：「誰有空記得你啦！」' },
   { kind: 'narration', text: '佑達離開後，練團室終於安靜了幾秒。溫尚翊把吉他放回架上，阿信揉了揉肩膀，石頭把導線捲好，瑪莎則蹲下來收 Bass。' },
 ]
 
