@@ -8,7 +8,7 @@ export type SpringLessonRoute = { title: string; blocks: SpringBlock[]; rounds: 
 export type SpringInviteChoice = { text: string; response: string[]; affection: number; accepted?: boolean }
 export type SpringInviteRound = { incoming: string[]; choices: SpringInviteChoice[] }
 export type SpringSmsChoice = { text: string; response: string[]; affection: number; nextIncoming?: string }
-export type SpringSmsRound = { incoming: string; choices: SpringSmsChoice[] }
+export type SpringSmsRound = { incoming: string; choices: SpringSmsChoice[]; outgoing?: string; incomingMessages?: string[] }
 export type SpringDayContext = {
   storeCharacter: SpringCharacterId | null
   afterChoice: 'yanming-dinner' | 'lesson' | 'home' | null
@@ -936,15 +936,21 @@ type SpringDailySmsChoiceData = {
   response: string | string[]
   affection?: number
 }
-type SpringDailySmsTrack = [SpringSmsRound, SpringSmsRound, SpringSmsRound, SpringSmsRound]
+type SpringDailySmsTrack = SpringSmsRound[]
 type SpringDailySmsChat = {
-  openings: [SpringSmsRound, SpringSmsRound, SpringSmsRound]
-  tracks: [SpringDailySmsTrack, SpringDailySmsTrack, SpringDailySmsTrack]
+  openings: SpringSmsRound[]
+  tracks: SpringDailySmsTrack[]
 }
-const springDailySmsRound = (incoming: string, choices: SpringDailySmsChoiceData[]): SpringSmsRound =>
-  springSmsRound(incoming, choices.map(({ text, response, affection = 2 }) =>
+const springDailySmsRound = (
+  incoming: string,
+  choices: SpringDailySmsChoiceData[],
+  options: Pick<SpringSmsRound, 'outgoing' | 'incomingMessages'> = {},
+): SpringSmsRound => ({
+  ...springSmsRound(incoming, choices.map(({ text, response, affection = 2 }) =>
     springSmsChoice(text, Array.isArray(response) ? response : [response], affection),
-  ))
+  )),
+  ...options,
+})
 
 // Five people, five genuinely different ways of chatting.
 // The first reply selects one everyday topic; every later prompt stays on that topic,
@@ -952,8 +958,6 @@ const springDailySmsRound = (incoming: string, choices: SpringDailySmsChoiceData
 const springDailySmsOpeners: Record<SpringCharacterId, { text: string; response: string; affection: number }[]> = {
   wen: [
     { text: '「欸溫尚翊，我剛剛泡了一杯熱可可，結果第一口喝太急，差點把舌頭燙到……現在講話都有點不利索了哈哈哈哈。」', response: '「妳是有多急啦？熱的東西也不知道先吹一下喔。」', affection: 2 },
-    { text: '「我剛剛看到一隻貓坐在店門口，胖得像老闆，真的太有氣勢了。」', response: '「哈哈，妳一定又停在那邊看很久，看到貓就走不動。」', affection: 2 },
-    { text: '「我今天上課差點睡著，老師一轉頭我整個彈起來，差點撞到桌子。」', response: '「妳差點撞到桌子也太糗了啦，今天真的累壞了喔。」', affection: 3 },
   ],
   ashin: [
     { text: "「阿信！！我今天買早餐差點遲到！\n前面那個人點東西點超久，我站在後面都快急死了。」", response: "「欸，真的喔？\n妳是不是已經看了好幾次手錶了啦。\n這種時候真的會很想說，老闆，我可以先點嗎……」", affection: 2 },
@@ -985,83 +989,43 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
         { text: '「那你下次要記得提醒我。」', response: '「蛤？喝個東西還要我提醒喔？……好啦，下次我盯著妳。」', affection: 3 },
         { text: '「你不要講我，你自己肯定也會這樣！」', response: '「我才不會咧，至少我知道燙的東西要先放一下。」' },
       ]),
-      springDailySmsRound('「我上次在巷口也看到一隻貓，坐在門口像在顧店，連路過的人都要先看牠一眼。」', [
-        { text: '「是不是！牠們真的很會挑位置，坐著就有氣勢。」', response: '「對啊，根本不用做事，大家就知道牠是老闆。」' },
-        { text: '「我差點想問牠有沒有缺員工，哈哈哈。」', response: '「妳先不要去應徵，牠搞不好真的會叫妳上班。」' },
-        { text: '「我覺得牠應該每天都在等人帶罐頭來孝敬牠。」', response: '「那妳下次帶一罐去，看看牠會不會給妳員工折扣。」' },
-      ]),
-      springDailySmsRound('「我今天在練團室也有點恍神，瑪莎一個 Bass 音下來，我差點把手上的東西丟出去。」', [
-        { text: '「你們練團室到底有多吵啦，哈哈哈。」', response: ['「很吵啊，尤其瑪莎突然來一下，誰都會嚇到。」', '「佑達還在旁邊笑，我差點拿鼓棒丟他。」'] },
-        { text: '「我在課堂上可不敢這樣，被老師看到就完蛋了。」', response: '「妳那個老師看起來就很會突然點人。」' },
-        { text: '「你是不是又熬夜練琴了？活該啦。」', response: '「欸，講得好像妳昨天很早睡一樣。」', affection: 3 },
-      ]),
     ],
     tracks: [
       [
-        springDailySmsRound('「妳平常是不是也很喜歡喝甜的？我記得妳好像滿常買飲料。」', [
-          { text: '「超喜歡啊！甜的東西真的會讓心情變好欸。」', response: '「這麼容易滿足喔？那妳心情不好，是不是請妳喝一杯就好了？」', affection: 3 },
-          { text: '「看心情啦，太甜的我不行。」', response: '「喔，還有標準喔。那妳下次點之前先想清楚，不要又被新品騙走。」' },
-          { text: '「你呢？你喜歡喝什麼？」', response: '「我喔，咖啡吧。有時候練團前喝一杯，不然腦袋還沒醒。」' },
+        springDailySmsRound('「你平常是不是也很喜歡吃甜的？」', [
+          { text: '「想看看你有沒有什麼私藏的好吃店。」', response: '「喔，原來是想找我當美食地圖喔？可以啊，我知道幾家不錯的。」', affection: 3 },
+          { text: '「因為我發現你還挺懂吃的嘛。」', response: '「我哪有很懂，吃得多而已啦。」', affection: 2 },
+          { text: '「沒什麼，我只是想找個人陪我吃東西。」', response: '「妳這個理由倒是很直接欸。想吃就講啊，又不會不陪妳去。」', affection: 4 },
         ]),
-        springDailySmsRound('「我有時候練團到一半也會突然很想吃東西，忙起來才發現都過飯點了。」', [
-          { text: '「那你要記得吃飯啦，不要每次忙起來就忘記。」', response: '「知道啦，妳講得好像我媽。」' },
-          { text: '「那你應該隨身帶點零食啊！」', response: '「妳以為我是小學生喔？不過餅乾倒是可以考慮。」' },
-          { text: '「下次看到好吃的我推薦給你！」', response: '「好啊，先說好不要拿奇怪的東西來敷衍我。」', affection: 3 },
-        ]),
-        springDailySmsRound('「妳真的很會把生活裡的小事講得很有趣欸，一杯熱可可可以講這麼久。」', [
-          { text: '「我明明是在跟你分享生活欸！」', response: '「好啦，我有在聽啊。妳繼續講，我又沒說不准。」' },
-          { text: '「你嫌我煩喔？」', response: '「我哪有，妳不要自己亂想。只是覺得妳講起來很好笑。」', affection: 3 },
-          { text: '「那我以後不跟你講了。」', response: '「蛤？我又沒說不想聽，妳不要亂下結論啦。」' },
-        ]),
-        springDailySmsRound('「好啦，妳那杯應該也喝完了吧？等一下還要忙嗎？」', [
-          { text: '「我要去洗澡啦！今天先放過你。」', response: '「誰放過誰啦。快去啦，浴室地板小心一點。」' },
-          { text: '「還不想睡欸，跟你聊天還蠻好玩的。」', response: ['「……妳突然講這個幹嘛啦。」', '「好啦，我也覺得還不錯。」'], affection: 4 },
-          { text: '「你也早點休息啦，不要又熬夜。」', response: '「知道啦。妳也是，晚安。」' },
-        ]),
-      ],
-      [
-        springDailySmsRound('「我覺得那種貓最厲害的是，明明什麼都沒做，整條街的人卻都認得牠。」', [
-          { text: '「有啦！牠坐得超像真的在顧店，旁邊還擺一個小碗，太像老闆了吧。」', response: ['「哈哈哈哈，配備都齊了，根本正式上班。」', '「妳不要哪天真的跑去問牠有沒有缺人喔。」'] },
-          { text: '「我才剛蹲下來想跟牠打招呼欸，牠就把臉轉走，根本故意的吧！」', response: '「牠很有明星架子欸，還挑人理喔。」' },
-          { text: '「牠根本不理我啦，我跟牠對看對到忘記自己本來要跟牠打招呼……」', response: '「妳是去看貓，不是去採訪貓啦。」' },
-        ]),
-        springDailySmsRound('「店貓通常都很有個性，想理人的時候才理。」', [
-          { text: '「我蹲下去牠還真的走過來蹭我。」', response: '「喔，牠眼光不錯，知道妳是好人。」' },
-          { text: '「完全不理我，還打了個哈欠。」', response: '「哈哈哈，這個比不理人還傷欸。」' },
-          { text: '「牠一直盯著我手上的袋子，可能以為有吃的。」', response: '「很現實喔，妳沒有帶罐頭還敢跟牠交朋友。」' },
-        ]),
-        springDailySmsRound('「妳看到貓就會停下來，這個我已經不意外了。」', [
-          { text: '「因為牠們很可愛啊，我真的忍不住。」', response: '「知道啦，妳看到貓眼睛就會亮起來。」' },
-          { text: '「我只是想確認牠是不是店裡養的。」', response: '「嗯，調查得很仔細，差點要幫牠查戶口了。」' },
-          { text: '「牠看起來比我還悠閒，我有點羨慕。」', response: '「那妳也去旁邊坐著，說不定老闆會給妳發薪水。」' },
-        ]),
-        springDailySmsRound('「下次再遇到牠，記得跟牠打聲招呼。我想看看那個店長到底多跩。」', [
-          { text: '「好啊，牠要是還在我就去跟牠打聲招呼。」', response: '「妳不要真的蹲在那邊跟牠聊半天喔。」' },
-          { text: '「你這麼想看，乾脆自己來找牠啊。」', response: '「蛤？妳是在邀我還是在叫我去看貓？……好啦，有機會再去。」', affection: 4 },
-          { text: '「我怕牠下次不認得我了。」', response: '「妳想太多啦，牠搞不好每天都在那邊等客人。」' },
-        ]),
-      ],
-      [
-        springDailySmsRound('「妳昨天到底幾點睡？不要跟我說又躲在被窩裡看小說看到很晚。」', [
-          { text: '「一點多啦……本來真的只想看一章，結果下一章又看下去了欸。」', response: '「本來只想看一章，結果又翻下一章喔？妳真的很會騙自己。」' },
-          { text: '「我在趕報告啦，弄完一看時間，直接傻眼。」', response: ['「那就沒辦法啦，不過今天回去早點睡。」', '「我以前也常常想說再看一頁，結果一抬頭天都亮了。」'] },
-          { text: '「才十二點！是你們早八太不人道，跟我有什麼關係！」', response: '「好喔，十二點還嫌早八太早，理由很多欸。」' },
-        ]),
-        springDailySmsRound('「老師最愛在大家快睡著的時候突然點名，我以前也中過招。」', [
-          { text: '「沒有！但他從我旁邊走過去，我差點把筆捏斷。」', response: '「哈哈，妳也太緊張了吧，演得像在躲警察。」' },
-          { text: '「有，他問我上一頁在講什麼，我差點原地消失。」', response: '「蛤？這也太突然了吧，還好老師沒有繼續追問妳。」' },
-          { text: '「沒有啦，我後來有認真聽，還記了兩頁筆記。」', response: '「喔？難得欸，今天值得鼓掌一下。」' },
-        ]),
-        springDailySmsRound('「明天要是還有早課，今晚真的不要再拖了。」', [
-          { text: '「有啊，第一節。想到就想請假。」', response: '「不准。鬧鐘記得調好，別明天又睡過頭。」' },
-          { text: '「沒有！明天可以睡到自然醒！」', response: '「那妳今晚可以放心睡，不要又自己找事做。」' },
-          { text: '「有，但我打算坐最後一排補眠。」', response: '「妳最好真的只是打算，別被老師抓到。」' },
-        ]),
-        springDailySmsRound('「好啦，今天先放過妳。回去把鬧鐘調好，別明天又跟床難分難捨。」', [
-          { text: '「知道啦！你很像我媽欸。」', response: '「誰要當妳媽啦，快去睡。」' },
-          { text: '「那你明天要負責叫我起床嗎？我想聽你親口叫我起床欸。」', response: ['「蛤？妳自己不會調鬧鐘喔！」', '「……欸，妳不要突然講這種話啦。」', '「誰、誰說不行了……」', '「……好啦，明天我打給妳。妳最好真的接，聽到沒有？」'], affection: 4 },
-          { text: '「我保證看完這一章就睡！」', response: '「這句我先保留，不太相信妳。妳每次都說最後一章。」' },
-        ]),
+        springDailySmsRound('「會啊，練到一半肚子叫很正常吧。」', [
+          { text: '「那你是不是經常餓著肚子練團？」', response: '「也沒有那麼誇張啦，有空還是會吃。」' },
+          { text: '「我覺得你應該隨身帶一包零食。」', response: '「妳以為我是小學生喔，還要帶零食。」' },
+          { text: '「下次我給你帶吃的好了。」', response: '「真的喔？那我先說好，不可以拿不好吃的東西來敷衍我。」', affection: 4 },
+        ], {
+          outgoing: '「對了，你平常練團的時候會不會突然很想吃東西？」',
+          incomingMessages: [
+            '「會啊，練到一半肚子叫很正常吧。」',
+            '「有時候一忙起來，根本忘記時間。」',
+          ],
+        }),
+        springDailySmsRound('「妳現在是在說我喔？」', [
+          { text: '「有啊！剛剛還叫我吃慢一點。」', response: '「那是因為妳吃太快，正常人都會提醒吧。」' },
+          { text: '「那你幹嘛一直記得我頭痛？」', response: '「……我只是剛好記得而已，有什麼好奇怪的。」', affection: 4 },
+          { text: '「好啦好啦，你最沒有管我了。」', response: '「知道就好，不要一天到晚給我亂扣帽子。」' },
+        ], {
+          outgoing: '「你講話真的很像那種嘴上嫌棄別人，實際上又什麼都會管的人。」',
+          incomingMessages: [
+            '「妳現在是在說我喔？」',
+            '「我哪有管妳，妳不要亂講。」',
+          ],
+        }),
+        springDailySmsRound('「快去啦，手機不要拿進浴室。」', [
+          { text: '「知道啦！溫老師晚安。」', response: '「誰是老師啦。晚安，手機放下去。」' },
+          { text: '「你怎麼突然這麼像我媽？」', response: '「蛤？我有那麼囉嗦喔？妳才是要早點睡的那個。」' },
+          { text: '「那你也早點睡，不要又熬夜。」', response: '「知道啦，妳也是。晚安。」' },
+        ], {
+          outgoing: '「好啦，不鬧你了，我要去洗澡了。」',
+        }),
       ],
     ],
   },
@@ -1433,7 +1397,7 @@ export const getSpringSmsRounds = (
   // stays with that thread, but each person can share, tease, or change the angle.
   void context
   const chat = springDailySmsChats[character]
-  const selectedTrack = Math.max(0, Math.min(2, openingChoice ?? smsReplies[0] ?? 0)) as 0 | 1 | 2
+  const selectedTrack = Math.max(0, Math.min(chat.tracks.length - 1, openingChoice ?? smsReplies[0] ?? 0))
   return [chat.openings[selectedTrack], ...chat.tracks[selectedTrack]]
 }
 
