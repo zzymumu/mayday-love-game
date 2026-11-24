@@ -4514,7 +4514,6 @@ function App() {
   const currentFebruaryAfterDinnerRound = currentFebruaryAfterDinnerRoute?.rounds[februaryAfterDinnerReplies.length] ?? null
   const winterFocusOrder: WinterCharacterId[] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
   const winterGigFocusCharacter = winterFocusOrder.reduce((best, character) => routeAffection[character] > routeAffection[best] ? character : best, winterFocusOrder[0])
-  const februaryFocusOrder: FebruaryCharacterId[] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
   const currentGreetingRound = greetingChats[currentGreetingId][Math.min(greetingRound, greetingChats[currentGreetingId].length - 1)]
   const currentThreadMessages: SmsMessage[] = selectedSmsThread === 'wen'
     ? [...smsMessages, ...(chatMessages.wen ?? [])]
