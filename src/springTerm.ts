@@ -1375,8 +1375,6 @@ const springYanmingStoreSmsRounds = (replies: number[]): SpringSmsRound[] => {
 const springYanmingSharedSmsRounds = (context: SpringDayContext, replies: number[], openingChoice: number | null = null): SpringSmsRound[] => {
   const wentStore = context.storeCharacter === 'yanming'
   const ateDinner = context.afterChoice === 'yanming-dinner'
-  const dessert = context.dinnerReplies?.[5]
-  const r1 = replies[1] ?? 0
 
   if (ateDinner) return springYanmingDinnerSmsRounds(context, replies)
 
