@@ -2179,6 +2179,14 @@ function App() {
     const saved = Number(localStorage.getItem('mayday-spring-store-reply') ?? '-1')
     return Number.isInteger(saved) && saved >= 0 && saved < 3 ? saved : null
   })
+  const [springStoreSecondReply, setSpringStoreSecondReply] = useState<number | null>(() => {
+    const saved = Number(localStorage.getItem('mayday-spring-store-second-reply') ?? '-1')
+    return Number.isInteger(saved) && saved >= 0 && saved < 3 ? saved : null
+  })
+  const [springStoreThirdReply, setSpringStoreThirdReply] = useState<number | null>(() => {
+    const saved = Number(localStorage.getItem('mayday-spring-store-third-reply') ?? '-1')
+    return Number.isInteger(saved) && saved >= 0 && saved < 3 ? saved : null
+  })
   const [springAfterChoice, setSpringAfterChoice] = useState<'yanming-dinner' | 'lesson' | null>(() => {
     const saved = localStorage.getItem('mayday-spring-after-choice')
     return saved === 'yanming-dinner' || saved === 'lesson' ? saved : null
@@ -4460,6 +4468,10 @@ function App() {
       addRouteAffection(character, 1)
       setSpringStoreReply(null)
       localStorage.removeItem('mayday-spring-store-reply')
+      setSpringStoreSecondReply(null)
+      localStorage.removeItem('mayday-spring-store-second-reply')
+      setSpringStoreThirdReply(null)
+      localStorage.removeItem('mayday-spring-store-third-reply')
       setSpringInviteTarget(null)
       localStorage.removeItem('mayday-spring-invite-target')
       setSpringInviteReplies([])
@@ -4479,10 +4491,28 @@ function App() {
 
   const chooseSpringStoreReply = (choiceIndex: number) => {
     if (!springStoreCharacter || springStoreReply !== null) return
-    const choice = springStoreRoutes[springStoreCharacter].choices[choiceIndex]
+    const choice = springStoreRoutes[springStoreCharacter].rounds[0].choices[choiceIndex]
     if (!choice) return
     setSpringStoreReply(choiceIndex)
     localStorage.setItem('mayday-spring-store-reply', String(choiceIndex))
+    addRouteAffection(springStoreCharacter, choice.affection)
+  }
+
+  const chooseSpringStoreSecondReply = (choiceIndex: number) => {
+    if (!springStoreCharacter || springStoreReply === null || springStoreSecondReply !== null) return
+    const choice = springStoreRoutes[springStoreCharacter].rounds[1].choices[choiceIndex]
+    if (!choice) return
+    setSpringStoreSecondReply(choiceIndex)
+    localStorage.setItem('mayday-spring-store-second-reply', String(choiceIndex))
+    addRouteAffection(springStoreCharacter, choice.affection)
+  }
+
+  const chooseSpringStoreThirdReply = (choiceIndex: number) => {
+    if (!springStoreCharacter || springStoreSecondReply === null || springStoreThirdReply !== null) return
+    const choice = springStoreRoutes[springStoreCharacter].rounds[2].choices[choiceIndex]
+    if (!choice) return
+    setSpringStoreThirdReply(choiceIndex)
+    localStorage.setItem('mayday-spring-store-third-reply', String(choiceIndex))
     addRouteAffection(springStoreCharacter, choice.affection)
   }
 
@@ -4624,8 +4654,13 @@ function App() {
           yanming: '諺明哥陪我看鼓棒和器材，還示範不同重量拿起來的差別。',
         } as Record<SpringCharacterId, string>)[springStoreCharacter]
       : '下午沒有收到超過門檻的邀約，我自己去了練團室。'
-    const storeChoiceNote = springStoreCharacter && springStoreReply !== null
-      ? '我回他：「' + springStoreRoutes[springStoreCharacter].choices[springStoreReply].text.replace(/^「|」$/g, '') + '」' + springStoreRoutes[springStoreCharacter].choices[springStoreReply].response
+    const storeChoiceNote = springStoreCharacter
+      ? [springStoreReply, springStoreSecondReply, springStoreThirdReply]
+          .map((selected, index) => selected === null
+            ? ''
+            : '我在店裡回他：「' + stripCornerQuotes(springStoreRoutes[springStoreCharacter].rounds[index].choices[selected].text) + '」' + springStoreRoutes[springStoreCharacter].rounds[index].choices[selected].response)
+          .filter(Boolean)
+          .join(' ')
       : ''
     const afterNote = springAfterChoice === 'yanming-dinner'
       ? '練團結束後，我跟諺明哥去吃飯。' + (springDinnerReply === null ? '' : '我回答：「' + springYanmingDinnerChoices[springDinnerReply].text.replace(/^「|」$/g, '') + '」' + springYanmingDinnerChoices[springDinnerReply].response)
@@ -5542,7 +5577,7 @@ function App() {
                           <div className="choice-heading">第 {monthVisitReplies.length + 1} 輪・你想怎麼回應？</div>
                           {currentMonthVisitRound.choices.map((choice, index) => (
                             <button className="reply-choice" key={index} onClick={() => chooseMonthVisitReply(index)}>
-                              <span>{choice.text}</span><ChevronRight size={15} />
+                              <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                             </button>
                           ))}
                           <small>選擇你的回應，繼續今天的聊天。</small>
@@ -5823,7 +5858,7 @@ function App() {
                           <div className="choice-heading">第 {nextMonthInviteDateReplies.length + 1}/5 輪・你想怎麼回應？</div>
                           {currentNextMonthInviteRound.choices.map((choice, index) => (
                             <button className="reply-choice" key={index} onClick={() => chooseNextMonthInviteDateReply(index)}>
-                              <span>{choice.text}</span><ChevronRight size={15} />
+                              <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                             </button>
                           ))}
                           <small>每個選擇都會影響對方的感受與好感度。</small>
@@ -5934,7 +5969,7 @@ function App() {
                           <div className="choice-heading">第 {nextMonthOpenDayReplies.length + 1}/5 輪・你想怎麼回應？</div>
                           {currentNextMonthOpenDayRound.choices.map((choice, index) => (
                             <button className="reply-choice" key={index} onClick={() => chooseNextMonthOpenDayReply(index)}>
-                              <span>{choice.text}</span><ChevronRight size={15} />
+                              <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                             </button>
                           ))}
                           <small>每個選擇都會影響對方的感受。</small>
@@ -6169,7 +6204,7 @@ function App() {
                           <div className="choice-heading">第 {yearEndShoppingReplies.length + 1}/5 輪・你想怎麼回應？</div>
                           {currentYearEndShoppingRound.choices.map((choice, index) => (
                             <button className="reply-choice" key={index} onClick={() => chooseYearEndShoppingReplyRound(index)}>
-                              <span>{choice.text}</span><ChevronRight size={15} />
+                              <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                             </button>
                           ))}
                           <small>每個選擇都會影響對方的感受。</small>
@@ -6226,7 +6261,7 @@ function App() {
                           <div className="choice-heading">跨年夜・第 {yearEndFireworksReplies.length + 1}/5 輪</div>
                           {currentYearEndFireworksRound.choices.map((choice, index) => (
                             <button className="reply-choice" key={index} onClick={() => chooseYearEndFireworksReply(index)}>
-                              <span>{choice.text}</span><ChevronRight size={15} />
+                              <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                             </button>
                           ))}
                           <small>大家都在等你的反應，選一個最想做的事吧。</small>
@@ -6450,7 +6485,7 @@ function App() {
                           <div className="choice-heading">第 {winterExamReplies.length + 1}/5 輪・你想怎麼回答？</div>
                           {currentWinterExamRound.choices.map((choice, index) => (
                             <button className="reply-choice" key={index} onClick={() => chooseWinterExamReply(index)}>
-                              <span>{choice.text}</span><ChevronRight size={15} />
+                              <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                             </button>
                           ))}
                           <small>每個選擇都會影響溫尚翊對你的感受。</small>
@@ -6507,7 +6542,7 @@ function App() {
                           <div className="choice-heading">練團室裡・你想怎麼接話？</div>
                           {currentWinterPracticeRound.choices.map((choice, index) => (
                             <button className="reply-choice" key={index} onClick={() => chooseWinterPracticeReply(index)}>
-                              <span>{choice.text}</span><ChevronRight size={15} />
+                              <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                             </button>
                           ))}
                           <small>大家的反應和好感度會隨你的回答改變。</small>
@@ -6647,7 +6682,7 @@ function App() {
                           <div className="choice-heading">第 {winterBusStopReplies.length + 1}/3 輪・你想怎麼回答？</div>
                           {currentWinterBusStopRound.choices.map((choice, index) => (
                             <button className="reply-choice" key={index} onClick={() => chooseWinterBusStopReply(index)}>
-                              <span>{choice.text}</span><ChevronRight size={15} />
+                              <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                             </button>
                           ))}
                           <small>每一輪都會影響你和對方之間的好感度。</small>
@@ -6754,7 +6789,7 @@ function App() {
                             <div className="choice-heading">被發現了！你要怎麼回應？</div>
                             {februarySecretReplyChoices.map((choice, index) => (
                               <button className="reply-choice" key={index} onClick={() => chooseFebruarySecretReply(index)}>
-                                <span>{choice.text}</span><ChevronRight size={15} />
+                                <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                               </button>
                             ))}
                           </div>
@@ -6794,7 +6829,7 @@ function App() {
                         <div className="choice-heading">瑪莎問你會不會去看他們演出，你想怎麼回答？</div>
                         {februaryDinnerChoices.map((choice, index) => (
                           <button className="reply-choice" key={index} onClick={() => chooseFebruaryDinnerReply(index)}>
-                            <span>{choice.text}</span><ChevronRight size={15} />
+                            <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                           </button>
                         ))}
                       </div>
@@ -6910,7 +6945,7 @@ function App() {
                           <div className="choice-heading">第 {februaryAfterDinnerReplies.length + 1}/3 輪・你想怎麼回答？</div>
                           {currentFebruaryAfterDinnerRound.choices.map((choice, index) => (
                             <button className="reply-choice" key={index} onClick={() => chooseFebruaryAfterDinnerReply(index)}>
-                              <span>{choice.text}</span><ChevronRight size={15} />
+                              <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                             </button>
                           ))}
                           <small>每一輪的回覆都會影響你和對方之間的好感度。</small>
@@ -7005,21 +7040,61 @@ function App() {
                     <div className="story-kicker">MUSIC STORE</div><h2 className="story-scene-title">逛一間熟悉的店</h2>
                     <StoryBlocks blocks={springStoreRoutes[springStoreCharacter].blocks} />
                     {springStoreReply === null ? (
-                      <div className="choice-area"><div className="choice-heading">{springStoreRoutes[springStoreCharacter].prompt}</div>
-                        {springStoreRoutes[springStoreCharacter].choices.map((choice, index) => (
+                      <div className="choice-area">
+                        <div className="choice-heading">第 1/3 輪・{springStoreRoutes[springStoreCharacter].rounds[0].prompt}</div>
+                        {springStoreRoutes[springStoreCharacter].rounds[0].choices.map((choice, index) => (
                           <button className="reply-choice" key={index} onClick={() => chooseSpringStoreReply(index)}><span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} /></button>
                         ))}
                       </div>
                     ) : (
                       <>
                         <StoryBlocks blocks={[
-                          { kind: 'dialogue', speaker: '你', text: stripCornerQuotes(springStoreRoutes[springStoreCharacter].choices[springStoreReply].text) },
+                          { kind: 'dialogue', speaker: '你', text: stripCornerQuotes(springStoreRoutes[springStoreCharacter].rounds[0].choices[springStoreReply].text) },
                           ...springResponseBlocks(
                             springStoreCharacter === 'wen' ? '溫尚翊' : springStoreCharacter === 'ashin' ? '陳信宏' : springStoreCharacter === 'masa' ? '瑪莎' : springStoreCharacter === 'stone' ? '石錦航' : '劉諺明',
-                            springStoreRoutes[springStoreCharacter].choices[springStoreReply].response,
+                            springStoreRoutes[springStoreCharacter].rounds[0].choices[springStoreReply].response,
                           ),
                         ]} />
-                        <div className="story-action-bar"><button className="story-primary-button" onClick={() => changeStage('spring-rehearsal')}>一起去練團室 <ChevronRight size={15} /></button></div>
+                        <StoryBlocks blocks={springStoreRoutes[springStoreCharacter].rounds[1].scene} />
+                        {springStoreSecondReply === null ? (
+                          <div className="choice-area">
+                            <div className="choice-heading">第 2/3 輪・{springStoreRoutes[springStoreCharacter].rounds[1].prompt}</div>
+                            {springStoreRoutes[springStoreCharacter].rounds[1].choices.map((choice, index) => (
+                              <button className="reply-choice" key={index} onClick={() => chooseSpringStoreSecondReply(index)}><span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} /></button>
+                            ))}
+                          </div>
+                        ) : (
+                          <>
+                            <StoryBlocks blocks={[
+                              { kind: 'dialogue', speaker: '你', text: stripCornerQuotes(springStoreRoutes[springStoreCharacter].rounds[1].choices[springStoreSecondReply].text) },
+                              ...springResponseBlocks(
+                                springStoreCharacter === 'wen' ? '溫尚翊' : springStoreCharacter === 'ashin' ? '陳信宏' : springStoreCharacter === 'masa' ? '瑪莎' : springStoreCharacter === 'stone' ? '石錦航' : '劉諺明',
+                                springStoreRoutes[springStoreCharacter].rounds[1].choices[springStoreSecondReply].response,
+                              ),
+                            ]} />
+                            <StoryBlocks blocks={springStoreRoutes[springStoreCharacter].rounds[2].scene} />
+                            {springStoreThirdReply === null ? (
+                              <div className="choice-area">
+                                <div className="choice-heading">第 3/3 輪・{springStoreRoutes[springStoreCharacter].rounds[2].prompt}</div>
+                                {springStoreRoutes[springStoreCharacter].rounds[2].choices.map((choice, index) => (
+                                  <button className="reply-choice" key={index} onClick={() => chooseSpringStoreThirdReply(index)}><span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} /></button>
+                                ))}
+                              </div>
+                            ) : (
+                              <>
+                                <StoryBlocks blocks={[
+                                  { kind: 'dialogue', speaker: '你', text: stripCornerQuotes(springStoreRoutes[springStoreCharacter].rounds[2].choices[springStoreThirdReply].text) },
+                                  ...springResponseBlocks(
+                                    springStoreCharacter === 'wen' ? '溫尚翊' : springStoreCharacter === 'ashin' ? '陳信宏' : springStoreCharacter === 'masa' ? '瑪莎' : springStoreCharacter === 'stone' ? '石錦航' : '劉諺明',
+                                    springStoreRoutes[springStoreCharacter].rounds[2].choices[springStoreThirdReply].response,
+                                  ),
+                                ]} />
+                                <StoryBlocks blocks={springStoreRoutes[springStoreCharacter].endingBlocks} />
+                                <div className="story-action-bar"><button className="story-primary-button" onClick={() => changeStage('spring-rehearsal')}>一起去練團室 <ChevronRight size={15} /></button></div>
+                              </>
+                            )}
+                          </>
+                        )}
                       </>
                     )}
                   </div>
@@ -7499,7 +7574,7 @@ function App() {
                                   <div className="choice-heading">溫尚翊問你什麼時候方便，你想怎麼回？</div>
                                   {winterExamChatChoices.map((choice, index) => (
                                     <button className="reply-choice" key={index} onClick={() => chooseWinterExamChatReply(index)}>
-                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                      <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
                                   <small>選擇後只會送出這一則回覆；後續訊息仍要由你親自選擇。</small>
@@ -7510,7 +7585,7 @@ function App() {
                                   <div className="choice-heading">時間約好了，你還想怎麼回他？</div>
                                   {winterExamChatClosingChoices.map((choice, index) => (
                                     <button className="reply-choice" key={index} onClick={() => chooseWinterExamChatClosingReply(index)}>
-                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                      <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
                                   <small>這一輪也要由你親自選擇，不會自動替你補發訊息。</small>
@@ -7521,7 +7596,7 @@ function App() {
                                   <div className="choice-heading">{characterNames[currentGreetingId]}的回覆</div>
                                   {currentGreetingRound.choices.map((choice, index) => (
                                     <button className="reply-choice" key={index} onClick={() => chooseGreetingReply(index)}>
-                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                      <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
                                   <small>不同回覆會帶來不同反應，也會影響好感；有些話可能會惹對方不高興。</small>
@@ -7532,7 +7607,7 @@ function App() {
                                   <div className="choice-heading">你想怎麼問這位大忙人？</div>
                                   {classroomIntroChoices.map((choice, index) => (
                                     <button className="reply-choice" key={index} onClick={() => chooseClassroomIntro(index)}>
-                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                      <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
                                   <small>平常忙著練團的人今天突然有空，先問問他為什麼吧。</small>
@@ -7543,7 +7618,7 @@ function App() {
                                   <div className="choice-heading">原來今天練團取消了……</div>
                                   {classroomChoices.map((choice, index) => (
                                     <button className="reply-choice" key={index} onClick={() => chooseClassroomReply(index)}>
-                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                      <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
                                   <small>他提到瑪莎和石頭今天翹課被抓了，你想怎麼接話？</small>
@@ -7554,7 +7629,7 @@ function App() {
                                   <div className="choice-heading">{masaCheckInRound === 0 ? '你想怎麼問瑪莎？' : masaCheckInRound === 1 ? '你還想追問什麼？' : '最後再問他一件事'}</div>
                                   {masaCheckinRounds[masaCheckInRound].map((choice, index) => (
                                     <button className="reply-choice" key={index} onClick={() => chooseMasaCheckIn(index)}>
-                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                      <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
                                   <small>不同問法會讓瑪莎有不同反應，也可能影響好感度。</small>
@@ -7571,7 +7646,7 @@ function App() {
                                   <div className="choice-heading">你想怎麼關心石頭？</div>
                                   {stoneCheckinChoices.map((choice, index) => (
                                     <button className="reply-choice" key={index} onClick={() => chooseStoneCheckIn(index)}>
-                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                      <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
                                   <small>太冷淡、太好奇或真心關心，得到的反應都不一樣。</small>
@@ -7582,7 +7657,7 @@ function App() {
                                   <div className="choice-heading">自由活動・第 {freeChatRound + 1}/5 輪</div>
                                   {getFreeTimeRounds(freeChatTarget)[freeChatRound].choices.map((choice, index) => (
                                     <button className="reply-choice" key={index} onClick={() => chooseFreeChatReply(index)}>
-                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                      <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
                                   <small>每輪都有三種回法，會影響對方反應與好感；也可能一不小心扣分。</small>
@@ -7593,7 +7668,7 @@ function App() {
                                   <div className="choice-heading">{monthFreeChatTarget === monthVisitTarget ? '延續今天和' + characterNames[monthFreeChatTarget] + '的見面，先傳一則訊息' : '今天想找' + characterNames[monthFreeChatTarget] + '聊聊，先傳一則訊息'}</div>
                                   {getMonthFreeChatOpeningChoices(monthFreeChatTarget).map((choice, index) => (
                                     <button className="reply-choice" key={index} onClick={() => chooseMonthFreeChatOpening(index)}>
-                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                      <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
                                   <small>由你主動開啟對話。沒見面的朋友不會知道白天的見面細節，除非你自己告訴他。</small>
@@ -7604,7 +7679,7 @@ function App() {
                                   <div className="choice-heading">一個月後・自由對話・第 {monthFreeChatRound + 1}/5 輪</div>
                                   {getMonthFreeChatRounds(monthFreeChatTarget)[monthFreeChatRound].choices.map((choice, index) => (
                                     <button className="reply-choice" key={index} onClick={() => chooseMonthFreeChatReply(index)}>
-                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                      <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
                                   <small>每輪都有三個回覆選項，會影響對方的反應與好感度。</small>
@@ -7673,7 +7748,7 @@ function App() {
                                   <div className="choice-heading">{currentNextMonthInvite.teasePrompt ?? '你想怎麼回他？'}</div>
                                   {currentNextMonthInvite.teaseChoices.map((choice, index) => (
                                     <button className="reply-choice" key={index} onClick={() => chooseNextMonthInviteTease(index)}>
-                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                      <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
                                   <small>你選的回覆會直接傳送到這個簡訊對話裡，也會影響好感度。</small>
@@ -7684,7 +7759,7 @@ function App() {
                                   <div className="choice-heading">你想怎麼回覆{characterNames[nextMonthInviteTarget]}？</div>
                                   {currentNextMonthInvite.replyChoices.map((choice, index) => (
                                     <button className="reply-choice" key={index} onClick={() => chooseNextMonthInviteReply(index)}>
-                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                      <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
                                   <small>每個選項都有不同的回應與好感度；婉拒邀約不會扣好感。</small>
@@ -7707,7 +7782,7 @@ function App() {
                                   <div className="choice-heading">先傳一則訊息給{characterNames[nextMonthFreeChatTarget]}</div>
                                   {nextMonthFreeChatOpeners[nextMonthFreeChatTarget].map((choice, index) => (
                                     <button className="reply-choice" key={index} onClick={() => chooseNextMonthFreeChatOpening(index)}>
-                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                      <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
                                   <small>由你主動開啟對話，先聊聊今天的小事。</small>
@@ -7718,7 +7793,7 @@ function App() {
                                   <div className="choice-heading">十二月・自由對話・第 {nextMonthFreeChatRound + 1}/5 輪</div>
                                   {getNextMonthFreeChatRounds(nextMonthFreeChatTarget)[nextMonthFreeChatRound].choices.map((choice, index) => (
                                     <button className="reply-choice" key={index} onClick={() => chooseNextMonthFreeChatReply(index)}>
-                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                      <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
                                   <small>每輪都有三個回覆選項，會影響對方的反應與好感。</small>
@@ -7755,7 +7830,7 @@ function App() {
                                   <div className="choice-heading">先傳一則訊息給{characterNames[springSmsTarget]}</div>
                                   {currentSpringSmsOpeners.map((choice, index) => (
                                     <button className="reply-choice" key={index} onClick={() => chooseSpringSmsOpening(index)}>
-                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                      <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
                                   <small>先由你開啟對話。</small>
@@ -7766,7 +7841,7 @@ function App() {
                                   <div className="choice-heading">{springSmsMode === 'free' ? '自由聊天' : '回家後的簡訊'}・第 {springSmsRound + 1}/5 輪</div>
                                   {currentSpringSmsRounds[springSmsRound]?.choices.map((choice, index) => (
                                     <button className="reply-choice" key={index} onClick={() => chooseSpringSmsReply(index)}>
-                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                      <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
                                   <small>每一輪都由你親自回覆，對話會依照今天的真實經歷延續。</small>
@@ -7810,7 +7885,7 @@ function App() {
                                   <div className="choice-heading">你想怎麼回覆{characterNames[yearEndInviteTarget]}？</div>
                                   {yearEndShoppingReplyChoices[yearEndInviteTarget].map((choice, index) => (
                                     <button className="reply-choice" key={index} onClick={() => chooseYearEndShoppingReply(index)}>
-                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                      <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
                                   <small>接受就一起去買年貨；婉拒也不影響晚上的跨年主線。</small>
@@ -7824,7 +7899,7 @@ function App() {
                                     : yearEndProactiveOpeners[yearEndGreetingTarget]
                                   ).map((choice, index) => (
                                     <button className="reply-choice" key={index} onClick={() => yearEndChatMode === 'incoming' ? chooseYearEndIncomingGreetingReply(index) : chooseYearEndProactiveGreeting(index)}>
-                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                      <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
                                   <small>{yearEndChatMode === 'incoming' ? '這則新年祝福需要先回覆；回覆後再決定要不要繼續聊。' : '由你主動傳送新年祝福，對方會依照你選的說法回覆。'}</small>
@@ -7835,7 +7910,7 @@ function App() {
                                   <div className="choice-heading">新年自由對話・第 {yearEndFreeChatRound + 1}/5 輪</div>
                                   {yearEndFreeChatScripts[yearEndGreetingTarget][yearEndFreeChatRound].choices.map((choice, index) => (
                                     <button className="reply-choice" key={index} onClick={() => chooseYearEndFreeChatReply(index)}>
-                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                      <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
                                   <small>每輪三個回覆選項；繼續聊天會完成五輪，不想聊也可以在祝福後直接停下來。</small>
@@ -8166,7 +8241,7 @@ function App() {
                         <div className="call-choice-heading">你想怎麼回應？ <span>第 {callRoundIndex + 1}/{getCallRounds(activeCallCharacter).length} 輪</span></div>
                         {getCallRounds(activeCallCharacter)[callRoundIndex].choices.map((choice, index) => (
                           <button className="call-choice-button" key={index} onClick={() => chooseCallReply(index)}>
-                            <span>{choice.text}</span><ChevronRight size={14}/>
+                            <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={14}/>
                           </button>
                         ))}
                       </div>
