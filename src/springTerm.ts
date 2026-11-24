@@ -1386,7 +1386,7 @@ const springNaturalLessonSmsRounds = (
             springSmsChoice('「其實我還想再練一下，今天才剛有點感覺。」', ['「下次再接著練嘛，今天有抓到就很好了。」'], 3),
           ]),
     springSmsRound(
-      r2 === 0
+      r3 === 0
         ? '那今天就先把這個和弦留在記憶裡。下次再接著練，不用急著一次學很多。'
         : r2 === 1
           ? '我有記得妳說想再聽那把琴。下次如果時間剛好，我再彈給妳聽。'
@@ -1464,7 +1464,7 @@ const springNaturalLessonSmsRounds = (
             springSmsChoice('「你們每次都這樣吵嗎？」', ['「差不多啦，習慣了。安靜才奇怪。」'], 3),
           ]),
     springSmsRound(
-      r2 === 0
+      r3 === 0
         ? '好啦，顧問費我記著。不要每天傳訊息來催，會讓我覺得自己欠了高利貸。'
         : r2 === 1
           ? '妳剛剛替佑達講話那麼大聲，下次他真的亂來，我就把妳一起算進去。'
@@ -1530,7 +1530,7 @@ const springNaturalLessonSmsRounds = (
             springSmsChoice('「下次我想坐近一點聽。」', ['「好啊，我幫妳留個舒服的位置，不會被音箱震到。」'], 3),
           ]),
     springSmsRound(
-      r2 === 0
+      r3 === 0
         ? '我會記得妳說的。下次先把舒服不舒服確認好，再慢慢挑，不用急。'
         : r2 === 1
           ? '那就說好了，下次妳負責挑，我負責老實試，不先下結論。'
@@ -1609,7 +1609,7 @@ const springNaturalRehearsalSmsRounds = (
             springSmsChoice('「下次再練給我看，我要聽你們更整齊的一次。」', ['「好啊，下次讓妳驗收。」'], 3),
           ]),
     springSmsRound(
-      r2 === 0
+      r3 === 0
         ? '好啦，下次妳來我先讓妳試那顆效果器。不過不要一進門就把整排踩過去。'
         : r2 === 1
           ? '我承認今天有玩得滿開心的。只是不要跟其他人講，免得他們又拿這個笑我。'
@@ -1677,7 +1677,7 @@ const springNaturalRehearsalSmsRounds = (
             springSmsChoice('「下次再唱一次給我聽。」', ['「好，說好了。下次妳來，我再唱給妳聽。」'], 3),
           ]),
     springSmsRound(
-      r2 === 0
+      r3 === 0
         ? '那就記住今天最後那一下吧。不是每次都要完美，大家一起接住就很好了。'
         : r2 === 1
           ? '妳這樣誇我，我真的會偷偷開心很久。'
@@ -1745,7 +1745,7 @@ const springNaturalRehearsalSmsRounds = (
             springSmsChoice('「下次我想聽你們練別首歌。」', ['「好啊，先不要點太難的，免得妳又要笑我們。」'], 3),
           ]),
     springSmsRound(
-      r2 === 0
+      r3 === 0
         ? '好啦，顧問費我記著。不要每天傳訊息催款，會讓我覺得自己欠了高利貸。'
         : r2 === 1
           ? '下次妳再來，我就把清單交給妳檢查。到時候不要臨陣脫逃。'
@@ -1811,7 +1811,7 @@ const springNaturalRehearsalSmsRounds = (
             springSmsChoice('「下次我想坐近一點聽。」', ['「好啊，我幫妳留個舒服的位置，不會被音箱震到。」'], 3),
           ]),
     springSmsRound(
-      r2 === 0
+      r3 === 0
         ? '我會記得妳說的。下次先把舒服不舒服確認好，再慢慢挑，不用急。'
         : r2 === 1
           ? '那就說好了，下次妳負責挑，我負責老實試，不先下結論。'
