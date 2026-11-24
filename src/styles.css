@@ -1712,3 +1712,65 @@ button { cursor: pointer; }
   .invite-notification-overlay { padding: 16px; }
   .invite-notification-card { padding: 16px 14px 12px; }
 }
+
+
+/* A cleaner, more spacious layout for the two after-rehearsal choices. */
+.spring-after-choice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 22px;
+}
+.spring-after-choice-heading {
+  margin: 0 2px 2px;
+  color: #806a59;
+  font-family: 'Noto Serif TC', serif;
+  font-size: 12px;
+  font-weight: 700;
+}
+.spring-after-choice-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 62px;
+  margin: 0;
+  padding: 13px 14px;
+  border: 1px solid #ead8c9;
+  border-radius: 12px;
+  color: #68574b;
+  background: #fffdf8;
+  box-shadow: 0 3px 10px rgba(87, 66, 49, .055);
+  text-align: left;
+  transition: background .15s, border-color .15s, transform .15s;
+}
+.spring-after-choice-button:hover {
+  border-color: #d2aa96;
+  background: #fff8f1;
+  transform: translateY(-1px);
+}
+.spring-after-choice-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+.spring-after-choice-copy strong {
+  display: block;
+  color: #625044;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+.spring-after-choice-copy small {
+  display: block;
+  color: #a18d7b;
+  font-size: 9px;
+  line-height: 1.5;
+}
+.spring-after-choice-button svg {
+  flex: 0 0 auto;
+  color: #b58a76;
+}
