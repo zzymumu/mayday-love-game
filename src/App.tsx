@@ -6960,8 +6960,8 @@ function App() {
                         <StoryBlocks blocks={[{ kind: 'narration', text: '手機螢幕亮了幾次，幾個熟悉的名字旁邊都多了未讀訊息。你沒有急著看內容，打算先點開一個人的訊息再決定。' }]} />
                         <div className="choice-area"><div className="choice-heading">選擇一個邀約</div>
                           {springInvitePendingCandidates.map((character) => (
-                            <button className="reply-choice" key={character} onClick={() => chooseSpringInviteTarget(character)}>
-                              <span><strong>{characterNames[character]}</strong><small>未讀訊息・點開查看</small></span><ChevronRight size={15} />
+                            <button className="reply-choice spring-invite-person-choice" key={character} onClick={() => chooseSpringInviteTarget(character)}>
+                              <span className="spring-invite-person-copy"><strong>{characterNames[character]}</strong><small>未讀訊息・點開查看</small></span><ChevronRight size={15} />
                             </button>
                           ))}
                         </div>
@@ -7705,7 +7705,7 @@ function App() {
                                   <div className="choice-heading">第 {springInviteReplies.length + 1}/3 輪・你想怎麼回覆{characterNames[springInviteTarget]}？</div>
                                   {currentSpringInviteRound.choices.map((choice, index) => (
                                     <button className="reply-choice" key={index} onClick={() => chooseSpringInviteReply(index)}>
-                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                      <span>{choice.text.replace(/^「|」$/g, '')}</span><ChevronRight size={15} />
                                     </button>
                                   ))}
                                   <small>每一輪都由你親自回覆。最後再決定要不要接受邀約。</small>
