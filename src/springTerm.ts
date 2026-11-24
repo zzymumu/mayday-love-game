@@ -971,9 +971,9 @@ const springDailySmsOpeners: Record<SpringCharacterId, { text: string; response:
     { text: "「石頭，我剛剛整理書包，翻到上學期的筆記。\n我發現我以前上課居然會在旁邊畫小人，畫得還挺認真……」", response: "「妳畫了什麼？\n是那種上課聽到一半，手自己開始動的那種嗎？」", affection: 2 },
   ],
   yanming: [
-    { text: "「諺明哥，我買便當回來才發現沒拿筷子。」\n「站在店門口發呆，差點想直接用手吃。」", response: "「妳是在等筷子自己從天上掉下來喔？」", affection: 2 },
-    { text: "「我洗完衣服發現襪子只剩一隻。」\n「另一隻不知道跑去哪了，整個房間都找過了！」", response: "「洗衣機開始收租了喔。」", affection: 2 },
-    { text: "「諺明哥，我明明寫了購物清單。」\n「結果買了一堆東西，偏偏忘記雞蛋。」", response: "「妳那張清單今天有出勤嗎？」", affection: 3 },
+    { text: "「諺明哥，我買便當回來才發現沒拿筷子。\n站在店門口發呆，差點想直接用手吃。」", response: "「妳是在等筷子自己從天上掉下來喔？」", affection: 2 },
+    { text: "「我洗完衣服發現襪子只剩一隻。\n另一隻不知道跑去哪了，整個房間都找過了！」", response: "「洗衣機開始收租了喔。」", affection: 2 },
+    { text: "「諺明哥，我明明寫了購物清單。\n結果買了一堆東西，偏偏忘記雞蛋。」", response: "「妳那張清單今天有出勤嗎？」", affection: 3 },
   ],
 }
 
