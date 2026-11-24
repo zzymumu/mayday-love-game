@@ -937,7 +937,7 @@ const springYanmingOwnerSmsRounds = (replies: number[]): SpringSmsRound[] => {
   const r2 = replies[2] ?? 0
   const r3 = replies[3] ?? 0
   return [
-    springSmsRound('對了，妳下次要來店裡，先傳個訊息給我吧。有時候我在裡面忙，怕妳站在外面等。', [
+    springSmsRound('對了，妳下次要來練團室，先傳個訊息給我吧。有時候我在裡面忙，怕妳站在外面等。', [
       springSmsChoice('「我哪有等很久啦，我可以自己找地方坐。」', ['「妳是可以啊，不過妳每次都客氣地說沒關係，我還是怕妳白等。」'], 3),
       springSmsChoice('「那你要記得看手機，不要訊息放半天。」', ['「好，這個提醒合理。我把手機放在看得到的地方。」'], 3),
       springSmsChoice('「你這樣講得好像很期待我去欸。」', ['「……我是怕妳白跑一趟啦。妳要這樣想，我也沒辦法。」'], 4),
@@ -1008,7 +1008,7 @@ const springYanmingOwnerSmsRounds = (replies: number[]): SpringSmsRound[] => {
       [
       springSmsChoice('「晚安諺明哥，回去好好休息！」', ['「好，妳也是。明天見。」'], 3),
       springSmsChoice('「下次不准又把自己排得滿滿的喔。」', ['「知道了，我會留一點空檔。」'], 3),
-      springSmsChoice('「我下次去店裡再找你，記得不要裝忙。」', ['「好啦，妳來我就知道了。」'], 3),
+      springSmsChoice('「我下次去練團室再找你，記得不要裝忙。」', ['「好啦，妳來我就知道了。」'], 3),
     ]),
   ]
 }
