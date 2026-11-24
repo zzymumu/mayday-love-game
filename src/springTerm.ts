@@ -1369,11 +1369,12 @@ export const getSpringSmsRounds = (
   smsReplies: number[] = [],
   openingChoice: number | null = null,
 ): SpringSmsRound[] => {
-  // Every branch is now a self-contained everyday conversation. Story choices
-  // and the previously selected opener intentionally do not alter its topics.
+  // The first selected reply chooses one of three topics. All later rounds
+  // stay on that topic, with every option written for the incoming message.
   void context
-  void smsReplies
   void openingChoice
-  return springDailySmsRounds[character]
+  const chat = springDailySmsChats[character]
+  const selectedTrack = Math.max(0, Math.min(2, smsReplies[0] ?? 0)) as 0 | 1 | 2
+  return [chat.opening, ...chat.tracks[selectedTrack]]
 }
 
