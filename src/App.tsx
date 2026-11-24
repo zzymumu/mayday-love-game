@@ -7219,7 +7219,7 @@ function App() {
                           <div className="sms-inbox">
                             <div className="sms-inbox-heading">
                               <strong>訊息列表</strong>
-                              <span>收件匣 · 1997</span>
+                              <span>{isSpringTerm ? "收件匣 · 1997" : "收件匣 · 1996"}</span>
                             </div>
                             {localStorage.getItem('mayday-spring-day-complete') === 'true' && (
                               <button className="story-primary-button" onClick={startSpringFreeChat}>自由聊天 <ChevronRight size={15} /></button>
