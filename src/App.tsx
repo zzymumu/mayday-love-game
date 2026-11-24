@@ -4154,7 +4154,6 @@ function App() {
     setFebruarySecretReply(choiceIndex)
     localStorage.setItem('mayday-february-secret-reply', String(choiceIndex))
     if (choiceIndex !== 1) addRouteAffection(februarySecretTarget, 1)
-    changeStage('february-dinner')
   }
 
   const chooseFebruaryDinnerReply = (choiceIndex: number) => {
@@ -4174,7 +4173,6 @@ function App() {
     const best = focusOrder.reduce((current, character) => updatedAffection[character] > updatedAffection[current] ? character : current, focusOrder[0])
     setFebruaryTableCharacter(best)
     localStorage.setItem('mayday-february-table-character', best)
-    changeStage('february-table')
   }
 
   const chooseFebruaryAfterDinnerCharacter = (character: FebruaryCharacterId) => {
@@ -4358,7 +4356,7 @@ function App() {
   }
 
   const resetLocalData = () => {
-    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-month-visit-target', 'mayday-month-visit-choice', 'mayday-month-visit-replies', 'mayday-month-visit-complete', 'mayday-month-free-chat-target', 'mayday-month-free-chat-choice-pending', 'mayday-month-free-chat-round', 'mayday-month-free-chat-replied', 'mayday-month-free-chat-started', 'mayday-month-free-chat-opening-sent', 'mayday-month-free-chat-replies', 'mayday-month-free-chat-complete', 'mayday-month-day-complete', 'mayday-next-month-started', 'mayday-next-month-invite-candidates', 'mayday-next-month-invite-target', 'mayday-next-month-invite-tease-choice', 'mayday-next-month-invite-reply-choice', 'mayday-next-month-invite-date-replies', 'mayday-next-month-invite-thread-started', 'mayday-next-month-event-kind', 'mayday-next-month-event-character', 'mayday-next-month-open-day-target', 'mayday-next-month-open-day-replies', 'mayday-next-month-free-chat-target', 'mayday-next-month-free-chat-round', 'mayday-next-month-free-chat-replied', 'mayday-next-month-free-chat-opening-sent', 'mayday-next-month-free-chat-replies', 'mayday-next-month-diary-unlocked', 'mayday-next-month-diary-data', 'mayday-wen-open-day-guitar-praise-v1', 'mayday-next-month-day-complete', 'mayday-route-affection', 'mayday-shared-experience-log', 'mayday-call-experience-context', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-month-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming', 'mayday-active-call-character', 'mayday-call-round-index', 'mayday-call-replied', 'mayday-call-transcript', 'mayday-year-end-started', 'mayday-year-end-invite-check-done', 'mayday-year-end-invite-candidates', 'mayday-year-end-invite-target', 'mayday-year-end-shopping-reply-choice', 'mayday-year-end-shopping-replies', 'mayday-year-end-shopping-complete', 'mayday-year-end-fireworks-replies', 'mayday-year-end-fireworks-complete', 'mayday-year-end-greeting-queue', 'mayday-year-end-greeting-index', 'mayday-year-end-greeting-target', 'mayday-year-end-chat-mode', 'mayday-year-end-first-reply-sent', 'mayday-year-end-free-chat-round', 'mayday-year-end-free-chat-replied', 'mayday-year-end-free-chat-replies', 'mayday-year-end-proactive-sent', 'mayday-year-end-extended-chat-characters', 'mayday-year-end-diary-unlocked', 'mayday-year-end-diary-data', 'mayday-year-end-day-complete', 'mayday-year-end-shopping-invite-sent-wen', 'mayday-year-end-shopping-invite-sent-masa', 'mayday-year-end-shopping-invite-sent-ashin', 'mayday-year-end-shopping-invite-sent-stone', 'mayday-year-end-shopping-invite-sent-yanming', 'mayday-winter-exam-chat-started', 'mayday-winter-exam-chat-reply-choice', 'mayday-winter-exam-tutoring-unlocked', 'mayday-winter-exam-replies', 'mayday-winter-practice-replies', 'mayday-winter-yanming-pickup-available', 'mayday-winter-bus-stop-character', 'mayday-winter-diary-unlocked', 'mayday-winter-diary-data', 'mayday-winter-break-day-complete'].forEach((key) => localStorage.removeItem(key))
+    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-month-visit-target', 'mayday-month-visit-choice', 'mayday-month-visit-replies', 'mayday-month-visit-complete', 'mayday-month-free-chat-target', 'mayday-month-free-chat-choice-pending', 'mayday-month-free-chat-round', 'mayday-month-free-chat-replied', 'mayday-month-free-chat-started', 'mayday-month-free-chat-opening-sent', 'mayday-month-free-chat-replies', 'mayday-month-free-chat-complete', 'mayday-month-day-complete', 'mayday-next-month-started', 'mayday-next-month-invite-candidates', 'mayday-next-month-invite-target', 'mayday-next-month-invite-tease-choice', 'mayday-next-month-invite-reply-choice', 'mayday-next-month-invite-date-replies', 'mayday-next-month-invite-thread-started', 'mayday-next-month-event-kind', 'mayday-next-month-event-character', 'mayday-next-month-open-day-target', 'mayday-next-month-open-day-replies', 'mayday-next-month-free-chat-target', 'mayday-next-month-free-chat-round', 'mayday-next-month-free-chat-replied', 'mayday-next-month-free-chat-opening-sent', 'mayday-next-month-free-chat-replies', 'mayday-next-month-diary-unlocked', 'mayday-next-month-diary-data', 'mayday-wen-open-day-guitar-praise-v1', 'mayday-next-month-day-complete', 'mayday-route-affection', 'mayday-shared-experience-log', 'mayday-call-experience-context', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-month-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming', 'mayday-active-call-character', 'mayday-call-round-index', 'mayday-call-replied', 'mayday-call-transcript', 'mayday-year-end-started', 'mayday-year-end-invite-check-done', 'mayday-year-end-invite-candidates', 'mayday-year-end-invite-target', 'mayday-year-end-shopping-reply-choice', 'mayday-year-end-shopping-replies', 'mayday-year-end-shopping-complete', 'mayday-year-end-fireworks-replies', 'mayday-year-end-fireworks-complete', 'mayday-year-end-greeting-queue', 'mayday-year-end-greeting-index', 'mayday-year-end-greeting-target', 'mayday-year-end-chat-mode', 'mayday-year-end-first-reply-sent', 'mayday-year-end-free-chat-round', 'mayday-year-end-free-chat-replied', 'mayday-year-end-free-chat-replies', 'mayday-year-end-proactive-sent', 'mayday-year-end-extended-chat-characters', 'mayday-year-end-diary-unlocked', 'mayday-year-end-diary-data', 'mayday-year-end-day-complete', 'mayday-year-end-shopping-invite-sent-wen', 'mayday-year-end-shopping-invite-sent-masa', 'mayday-year-end-shopping-invite-sent-ashin', 'mayday-year-end-shopping-invite-sent-stone', 'mayday-year-end-shopping-invite-sent-yanming', 'mayday-winter-exam-chat-started', 'mayday-winter-exam-chat-reply-choice', 'mayday-winter-exam-tutoring-unlocked', 'mayday-winter-exam-replies', 'mayday-winter-practice-replies', 'mayday-winter-yanming-pickup-available', 'mayday-winter-bus-stop-character', 'mayday-winter-diary-unlocked', 'mayday-winter-diary-data', 'mayday-winter-break-day-complete', 'mayday-february-secret-target', 'mayday-february-secret-reply', 'mayday-february-dinner-reply', 'mayday-february-table-character', 'mayday-february-after-dinner-character', 'mayday-february-after-dinner-replies', 'mayday-february-diary-unlocked', 'mayday-february-diary-data', 'mayday-february-day-complete'].forEach((key) => localStorage.removeItem(key))
     SAVE_SLOT_IDS.forEach((slot) => localStorage.removeItem(SAVE_SLOT_PREFIX + slot))
     setPlayerName('')
     setNameDraft('')
@@ -6389,6 +6387,265 @@ function App() {
                 </div>
               )}
 
+              {storyStage === 'february-intro' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">寒假・二月初</div>
+                    <div className="story-contact-title">
+                      <strong>一個名字的誕生</strong>
+                      <small>1997 年 2 月初・台北</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">FEBRUARY · MAYDAY</div>
+                    <h2 className="story-scene-title">這次，換個名字吧。</h2>
+                    <StoryBlocks blocks={februaryIntroBlocks} />
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={() => changeStage('february-secret')}>趁大家忙著收東西，偷偷做點什麼 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'february-secret' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">練團室・小秘密</div>
+                    <div className="story-contact-title">
+                      <strong>趁大家沒注意的時候</strong>
+                      <small>1997 年 2 月初・下午</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">A LITTLE SECRET</div>
+                    <h2 className="story-scene-title">{februarySecretTarget ? februarySecretInteractions[februarySecretTarget].label : '你想偷偷找誰？'}</h2>
+                    {!februarySecretTarget ? (
+                      <div className="choice-area">
+                        <div className="choice-heading">選一個人，趁空檔說幾句悄悄話</div>
+                        {(Object.keys(februarySecretInteractions) as FebruaryCharacterId[]).map((character) => (
+                          <button className="reply-choice" key={character} onClick={() => chooseFebruarySecretTarget(character)}>
+                            <span>{februarySecretInteractions[character].label}</span><ChevronRight size={15} />
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <>
+                        <StoryBlocks blocks={februarySecretInteractions[februarySecretTarget].blocks} />
+                        <StoryBlocks blocks={[{
+                          kind: 'dialogue',
+                          speaker: februarySecretInteractions[februarySecretTarget].caughtBy,
+                          text: februarySecretInteractions[februarySecretTarget].caughtLine,
+                        }]} />
+                        {februarySecretReply === null ? (
+                          <div className="choice-area">
+                            <div className="choice-heading">被發現了！你要怎麼回應？</div>
+                            {februarySecretReplyChoices.map((choice, index) => (
+                              <button className="reply-choice" key={index} onClick={() => chooseFebruarySecretReply(index)}>
+                                <span>{choice.text}</span><ChevronRight size={15} />
+                              </button>
+                            ))}
+                          </div>
+                        ) : (
+                          <StoryBlocks blocks={[
+                            { kind: 'dialogue', speaker: '你', text: februarySecretReplyChoices[februarySecretReply].text.replace(/^「|」$/g, '') },
+                            { kind: 'dialogue', speaker: februarySecretInteractions[februarySecretTarget].caughtBy, text: februarySecretReplyChoices[februarySecretReply].response },
+                          ]} />
+                        )}
+                      </>
+                    )}
+                  </div>
+                  {februarySecretTarget && februarySecretReply !== null && (
+                    <div className="story-action-bar">
+                      <button className="story-primary-button" onClick={() => changeStage('february-dinner')}>收拾東西，一起去吃飯 <ChevronRight size={15} /></button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {storyStage === 'february-dinner' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">二月初・晚餐</div>
+                    <div className="story-contact-title">
+                      <strong>附近的小吃店</strong>
+                      <small>1997 年 2 月初・晚上</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">DINNER · ALL TOGETHER</div>
+                    <h2 className="story-scene-title">一桌人，七嘴八舌。</h2>
+                    <StoryBlocks blocks={februaryDinnerBlocks} />
+                    {februaryDinnerReply === null ? (
+                      <div className="choice-area">
+                        <div className="choice-heading">瑪莎問你會不會去看他們演出，你想怎麼回答？</div>
+                        {februaryDinnerChoices.map((choice, index) => (
+                          <button className="reply-choice" key={index} onClick={() => chooseFebruaryDinnerReply(index)}>
+                            <span>{choice.text}</span><ChevronRight size={15} />
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <>
+                        <StoryBlocks blocks={[
+                          { kind: 'dialogue', speaker: '你', text: februaryDinnerChoices[februaryDinnerReply].text },
+                          ...februaryDinnerChoices[februaryDinnerReply].response,
+                        ]} />
+                        <div className="reunion-pause-note">桌上的話題又繞到三月底的演出，大家一邊吃飯，一邊七嘴八舌地討論要練哪些歌。</div>
+                      </>
+                    )}
+                  </div>
+                  {februaryDinnerReply !== null && (
+                    <div className="story-action-bar">
+                      <button className="story-primary-button" onClick={() => changeStage('february-table')}>繼續吃飯 <ChevronRight size={15} /></button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {storyStage === 'february-table' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">晚餐・不經意的小動作</div>
+                    <div className="story-contact-title">
+                      <strong>有人悄悄注意著你</strong>
+                      <small>1997 年 2 月初・晚上</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">A SMALL GESTURE</div>
+                    <h2 className="story-scene-title">{februaryAfterDinnerRoutes[februaryTableCharacter ?? currentFebruaryHighestAffection].label} · 餐桌上的小動作</h2>
+                    <StoryBlocks blocks={februaryTableMoments[februaryTableCharacter ?? currentFebruaryHighestAffection]} />
+                    <div className="reunion-pause-note">這個小動作由目前好感度最高的角色觸發；飯後你仍然可以重新選擇同行的人。</div>
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={() => changeStage('february-after-dinner-picker')}>吃完了，想再和誰走一段路？ <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'february-after-dinner-picker' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">晚餐後・自由選擇</div>
+                    <div className="story-contact-title">
+                      <strong>今晚還不想這麼早結束</strong>
+                      <small>1997 年 2 月初・晚上</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">AFTER DINNER · WHO WITH YOU?</div>
+                    <h2 className="story-scene-title">你想和誰再走一段？</h2>
+                    <StoryBlocks blocks={[
+                      { kind: 'narration', text: '吃完飯，大家陸續從店裡出來。夜風從街口吹過，佑達還在跟瑪莎爭論到底是誰吃掉最後一塊炸物。其他人已經準備各自回家，你卻覺得今天還沒結束似的，想再找一個人走一小段路。' },
+                      { kind: 'dialogue', speaker: '錢佑達', text: '明明就是你！' },
+                      { kind: 'dialogue', speaker: '蔡昇晏', text: '你有證據嗎？' },
+                      { kind: 'dialogue', speaker: '溫尚翊', text: '好了啦，你們兩個回去繼續吵。' },
+                      { kind: 'dialogue', speaker: '陳信宏', text: '那大家明天見喔。' },
+                      { kind: 'dialogue', speaker: '石錦航', text: '路上小心。' },
+                    ]} />
+                    <div className="choice-area">
+                      <div className="choice-heading">選一個人，和他單獨走一段路</div>
+                      {(Object.keys(februaryAfterDinnerRoutes) as FebruaryCharacterId[]).map((character) => (
+                        <button className="reply-choice" key={character} onClick={() => chooseFebruaryAfterDinnerCharacter(character)}>
+                          <span>{februaryAfterDinnerRoutes[character].label}</span><ChevronRight size={15} />
+                        </button>
+                      ))}
+                      <small>這次選擇獨立於餐桌上的小動作，可以選不同的人。</small>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'february-after-dinner' && currentFebruaryAfterDinnerRoute && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">晚餐後・單獨相處</div>
+                    <div className="story-contact-title">
+                      <strong>{currentFebruaryAfterDinnerRoute.title}</strong>
+                      <small>1997 年 2 月初・晚上</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">AFTER DINNER · ONE ON ONE</div>
+                    <h2 className="story-scene-title">{currentFebruaryAfterDinnerRoute.title}</h2>
+                    <StoryBlocks blocks={currentFebruaryAfterDinnerRoute.blocks} />
+                    {currentFebruaryAfterDinnerRoute.rounds.slice(0, februaryAfterDinnerReplies.length).map((round, index) => {
+                      const selected = round.choices[februaryAfterDinnerReplies[index]]
+                      if (!selected) return null
+                      return (
+                        <div className="month-visit-round-history" key={index}>
+                          <StoryBlocks blocks={[
+                            { kind: 'narration', text: round.scene },
+                            { kind: 'dialogue', speaker: round.promptSpeaker, text: round.prompt },
+                            { kind: 'dialogue', speaker: '你', text: selected.text },
+                            ...selected.response,
+                          ]} />
+                        </div>
+                      )
+                    })}
+                    {currentFebruaryAfterDinnerRound ? (
+                      <>
+                        <StoryBlocks blocks={[
+                          { kind: 'narration', text: currentFebruaryAfterDinnerRound.scene },
+                          { kind: 'dialogue', speaker: currentFebruaryAfterDinnerRound.promptSpeaker, text: currentFebruaryAfterDinnerRound.prompt },
+                        ]} />
+                        <div className="choice-area">
+                          <div className="choice-heading">第 {februaryAfterDinnerReplies.length + 1}/3 輪・你想怎麼回答？</div>
+                          {currentFebruaryAfterDinnerRound.choices.map((choice, index) => (
+                            <button className="reply-choice" key={index} onClick={() => chooseFebruaryAfterDinnerReply(index)}>
+                              <span>{choice.text}</span><ChevronRight size={15} />
+                            </button>
+                          ))}
+                          <small>每一輪的回覆都會影響你和對方之間的好感度。</small>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <StoryBlocks blocks={currentFebruaryAfterDinnerRoute.endingBlocks} />
+                        <div className="reunion-pause-note">這段路也走到尾聲了。回家後，把今天想記住的事情寫下來吧。</div>
+                      </>
+                    )}
+                  </div>
+                  {februaryAfterDinnerReplies.length === 3 && (
+                    <div className="story-action-bar">
+                      <button className="story-primary-button" onClick={startFebruaryDiary}>回家，寫下今天的日記 <ChevronRight size={15} /></button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {storyStage === 'february-diary' && februaryDiaryData && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">二月初・私人日記</div>
+                    <div className="story-contact-title">
+                      <strong>寫給今天的自己</strong>
+                      <small>1997 年 2 月初・夜晚</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">1997 · FEBRUARY JOURNAL</div>
+                    <h2 className="story-scene-title">{februaryDiaryData.title}</h2>
+                    <div className="diary-paper story-diary-paper">
+                      <span className="diary-date">1997 年 2 月初</span>
+                      <h2>{februaryDiaryData.title}</h2>
+                      <DiarySection label="日記" text={februaryDiaryData.text} />
+                    </div>
+                    <div className="reunion-pause-note">這篇日記會保留在日記列表裡，之後也可以重新打開來看。</div>
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={finishFebruaryDiary}>合上日記，結束今天 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
               {storyStage === 'paused' && (
                 <div className="paused-story-banner">
                   <div>
@@ -7043,6 +7300,13 @@ function App() {
                                   <strong>寫下來的日子</strong>
                                   <small>點選日期，可以重新讀一遍當時的心情。</small>
                                 </div>
+                                {februaryDiaryUnlocked && februaryDiaryData && (
+                                  <button className="diary-entry-row" onClick={() => setSelectedDiaryDate('1997-02-03')}>
+                                    <span className="diary-entry-date">03<br/><small>FEB</small></span>
+                                    <span className="diary-entry-copy"><strong>{februaryDiaryData.title}</strong><small>{februaryDiaryData.text.slice(0, 48)}…</small></span>
+                                    <ChevronRight size={16} />
+                                  </button>
+                                )}
                                 {winterDiaryUnlocked && winterDiaryData && (
                                   <button className="diary-entry-row" onClick={() => setSelectedDiaryDate('1997-01-22')}>
                                     <span className="diary-entry-date">22<br/><small>JAN</small></span>
@@ -7087,7 +7351,13 @@ function App() {
                             ) : (
                               <>
                                 <button className="diary-detail-back" onClick={() => setSelectedDiaryDate(null)}><ArrowLeft size={13}/> 返回日記列表</button>
-                                {selectedDiaryDate === '1997-01-22' && winterDiaryUnlocked && winterDiaryData ? (
+                                {selectedDiaryDate === '1997-02-03' && februaryDiaryUnlocked && februaryDiaryData ? (
+                                  <div className="diary-paper">
+                                    <span className="diary-date">1997 年 2 月初</span>
+                                    <h2>{februaryDiaryData.title}</h2>
+                                    <DiarySection label="日記" text={februaryDiaryData.text} />
+                                  </div>
+                                ) : selectedDiaryDate === '1997-01-22' && winterDiaryUnlocked && winterDiaryData ? (
                                   <div className="diary-paper">
                                     <span className="diary-date">1997 年 1 月 22 日・星期三</span>
                                     <h2>{winterDiaryData.title}</h2>
