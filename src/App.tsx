@@ -1743,7 +1743,7 @@ function StoryBlocks({ blocks }: { blocks: StoryBlock[] }) {
           return (
             <div className="narrative-dialogue" key={index}>
               <span>{block.speaker}</span>
-              <p>{stripCornerQuotes(block.text)}</p>
+              <p>{`「${stripCornerQuotes(block.text)}」`}</p>
             </div>
           )
         }
