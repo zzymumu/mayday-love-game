@@ -6797,6 +6797,7 @@ function App() {
                           <StoryBlocks blocks={[
                             { kind: 'dialogue', speaker: '你', text: februarySecretReplyChoices[februarySecretReply].text.replace(/^「|」$/g, '') },
                             { kind: 'dialogue', speaker: februarySecretInteractions[februarySecretTarget].caughtBy, text: februarySecretReplyChoices[februarySecretReply].response },
+                            ...februarySecretInteractions[februarySecretTarget].afterReply,
                           ]} />
                         )}
                       </>
