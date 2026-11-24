@@ -932,7 +932,6 @@ const springSmsChoice = (text: string, response: string[], affection = 2): Sprin
 const springSmsRound = (incoming: string, choices: SpringSmsChoice[]): SpringSmsRound => ({ incoming, choices })
 
 const springYanmingOwnerSmsRounds = (replies: number[]): SpringSmsRound[] => {
-  const reply0 = replies[0] ?? 0
   const reply1 = replies[1] ?? 0
   const reply2 = replies[2] ?? 0
   const reply3 = replies[3] ?? 0
