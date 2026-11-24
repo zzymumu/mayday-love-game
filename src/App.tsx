@@ -4812,6 +4812,14 @@ function App() {
   const currentWinterBusStopRound = winterBusStopCharacter ? winterBusStopRoutes[winterBusStopCharacter].rounds[winterBusStopReplies.length] ?? null : null
   const currentFebruaryAfterDinnerRoute = februaryAfterDinnerCharacter ? februaryAfterDinnerRoutes[februaryAfterDinnerCharacter] : null
   const currentFebruaryAfterDinnerRound = currentFebruaryAfterDinnerRoute?.rounds[februaryAfterDinnerReplies.length] ?? null
+  const springDayContext: SpringDayContext = {
+    storeCharacter: springStoreCharacter,
+    afterChoice: springAfterChoice,
+    lessonCharacter: springLessonCharacter,
+    dinnerChoice: springDinnerReply,
+  }
+  const currentSpringSmsRounds = springSmsTarget ? getSpringSmsRounds(springSmsTarget, springDayContext) : []
+  const currentSpringSmsOpeners = springSmsTarget ? getSpringSmsOpeners(springSmsTarget, springDayContext) : []
   const currentFebruaryHighestAffection: FebruaryCharacterId = (['wen', 'ashin', 'masa', 'stone', 'yanming'] as FebruaryCharacterId[]).reduce((best, character) => routeAffection[character] > routeAffection[best] ? character : best, 'wen')
   const winterFocusOrder: WinterCharacterId[] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
   const winterGigFocusCharacter = winterFocusOrder.reduce((best, character) => routeAffection[character] > routeAffection[best] ? character : best, winterFocusOrder[0])
