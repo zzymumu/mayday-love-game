@@ -931,6 +931,94 @@ export const springYanmingDinnerEndingBlocks: SpringBlock[] = [
 const springSmsChoice = (text: string, response: string[], affection = 2): SpringSmsChoice => ({ text, response, affection })
 const springSmsRound = (incoming: string, choices: SpringSmsChoice[]): SpringSmsRound => ({ incoming, choices })
 
+const springYanmingOwnerSmsRounds = (replies: number[]): SpringSmsRound[] => {
+  const reply0 = replies[0] ?? 0
+  const reply1 = replies[1] ?? 0
+  const reply2 = replies[2] ?? 0
+  const reply3 = replies[3] ?? 0
+
+  const round1Incoming = [
+    '那件事處理完，我才發現櫃檯那杯茶已經涼了。今天好像一直在忙這些小事。',
+    '那件事處理完，我才發現櫃檯那杯茶已經涼了。今天好像一直在忙這些小事。',
+    '那件事處理完，我才發現櫃檯那杯茶已經涼了。今天好像一直在忙這些小事。',
+  ]
+
+  const round2Incoming = [
+    '我剛才重新泡了一杯，這次先喝完才回來整理。',
+    '櫃檯我重新收了一遍，東西放回原位之後，看起來舒服多了。',
+    '我差點真的把茶杯寫進清單，想想還是算了，桌上那麼明顯的東西都能忘記，講出去有點丟臉。',
+  ]
+
+  const round3Incoming = [
+    '照妳剛才說的，我把手邊幾件事先排好順序，現在看起來清楚多了。',
+    '我把最後幾樣東西歸位了，櫃檯總算空出來，明天開門也省事。',
+    '妳還真打算當檢查員，我先把桌面收乾淨，免得被妳扣分。',
+  ]
+
+  const round4Incoming = [
+    '最後一組客人已經走了，我把燈一盞一盞關掉，今天差不多可以收工。',
+    '明天要用的東西我都先放好了，這次應該不會臨時找不到。',
+    '我先把桌面收乾淨了，明天妳要是來，應該挑不出什麼毛病。',
+  ]
+
+  const round2Choices = [
+    [
+      springSmsChoice('「這樣就對了，事情不會因為你休息幾分鐘就跑掉。」', ['「嗯，緩一下反而比較有精神。」'], 3),
+      springSmsChoice('「你這次真的有乖乖喝完喔。」', ['「有啦，不然又要被妳記上一筆。」'], 3),
+      springSmsChoice('「那你現在總算能喝到熱茶了。」', ['「嗯，這杯還是熱的，算今天的小勝利。」'], 2),
+    ],
+    [
+      springSmsChoice('「東西有固定位置，真的省得一直找。」', ['「對，尤其忙的時候，伸手就拿得到。」'], 3),
+      springSmsChoice('「你這個人連櫃檯都要整理得這麼仔細。」', ['「習慣了，太亂反而會影響做事。」'], 2),
+      springSmsChoice('「下次我去要看看是不是還這麼整齊。」', ['「好啊，先讓妳當一次檢查員。」'], 3),
+    ],
+    [
+      springSmsChoice('「你還真的寫好了，效率很高欸。」', ['「趁還記得就先寫下來，不然明天又忘了。」'], 3),
+      springSmsChoice('「字醜沒關係，能讓人看到就有用。」', ['「那就好，我不想為了字體再拖一天。」'], 2),
+      springSmsChoice('「我可以幫你想標語，但不保證不會變搞笑版。」', ['「那我得先審稿，免得客人只記得笑。」'], 3),
+    ],
+  ]
+
+  const round4Choices = [
+    [
+      springSmsChoice('「那你今天辛苦了，早點回去休息。」', ['「好，晚安。妳也別熬太晚。」'], 3),
+      springSmsChoice('「終於收工啦，今天可以不用再惦記店裡了。」', ['「嗯，鎖好門就先不想工作了。晚安。」'], 2),
+      springSmsChoice('「下次不要又忙到這麼晚才回家。」', ['「我會記得，妳也早點休息。」'], 3),
+    ],
+    [
+      springSmsChoice('「這樣明天就不用一早手忙腳亂了。」', ['「對，先準備好，明天就能省點時間。」'], 3),
+      springSmsChoice('「你這個習慣真的很可靠欸。」', ['「習慣先想一步，大家用起來也方便。」'], 3),
+      springSmsChoice('「那我下次要抽查你有沒有照清單放好。」', ['「可以，不過標準要先講好喔。」'], 2),
+    ],
+    [
+      springSmsChoice('「我還沒去就先有驗收的感覺了。」', ['「那我得先確保不會被妳扣分。」'], 3),
+      springSmsChoice('「你這樣講我更想去看看了。」', ['「好啊，哪天有空再來坐坐。」'], 2),
+      springSmsChoice('「我下次真的會去檢查，不准臨時收拾。」', ['「知道了，檢查員。晚安。」'], 3),
+    ],
+  ]
+
+  return [
+    springSmsRound('剛才最後一組客人走得急，把外套忘在房間裡。我拿到門口才追上他，店裡有時候還真像失物招領處。', [
+      springSmsChoice('「你這裡還兼顧失物招領喔，什麼都得管。」', ['「店裡的東西總得有人顧，看到就順手處理了。」'], 2),
+      springSmsChoice('「他有沒有回頭跟你拿？」', ['「有，還特地跑回來說謝謝，倒讓我有點不好意思。」'], 2),
+      springSmsChoice('「下次乾脆在門口貼張『離開前檢查隨身物品』。」', ['「這個主意不錯，我可以真的貼一張。」'], 3),
+    ]),
+    springSmsRound(round1Incoming[reply0], [
+      springSmsChoice('「你自己也要記得照顧好，別只顧著店裡。」', ['「我會注意，事情忙完也得留點時間給自己。」'], 3),
+      springSmsChoice('「這些小事你都記得，難怪店裡不容易亂。」', ['「習慣了，東西放回原位，後面就不容易找不到。」'], 2),
+      springSmsChoice('「我下次去要看看你有沒有真的照做。」', ['「妳還真會記得這種事。好，讓妳檢查。」'], 3),
+    ]),
+    springSmsRound(round2Incoming[reply1], round2Choices[reply1]),
+    springSmsRound(round3Incoming[reply2], [
+      springSmsChoice('「你這樣安排，就不會一忙起來什麼都忘了。」', ['「對，先排好順序，事情就不會擠成一團。」'], 3),
+      springSmsChoice('「偶爾忙昏頭也沒什麼，別太跟自己過不去。」', ['「謝謝妳，這句我收下了。」'], 3),
+      springSmsChoice('「檢查員很嚴格的，你要小心喔。」', ['「那我得先把桌面整理好，不能讓妳抓到把柄。」'], 3),
+    ]),
+    springSmsRound(round4Incoming[reply3], round4Choices[reply3]),
+  ]
+}
+
+
 const springStoreFollowUpLine = (character: SpringCharacterId, context: SpringDayContext): string => {
   const storeReply = context.storeReplies?.[1] ?? null
   if (character === 'wen') {
@@ -1025,7 +1113,7 @@ const springContextLine = (character: SpringCharacterId, context: SpringDayConte
   if (character === 'ashin') return '今天《轧車》練到最後總算順了，佑達那幾下鼓花真的很有精神。'
   if (character === 'masa') return '今天《轧車》那幾遍妳也看到了吧？佑達差點把歌變成自己的獨奏會。'
   if (character === 'stone') return '今天最後一遍大家接得比前面順很多，妳有聽出來嗎？'
-  return '今天《轧車》練得很熱鬧，佑達第一遍就加了不少東西，妳應該也有被嚇到。'
+  return '剛把店裡的預約簿和櫃檯整理好，現在才有空坐下來。'
 }
 
 export const getSpringSmsOpeners = (character: SpringCharacterId, context: SpringDayContext) => {
@@ -1131,6 +1219,12 @@ export const getSpringSmsOpeners = (character: SpringCharacterId, context: Sprin
     ],
   }
 
+  const ownerOnly: { text: string; response: string; affection: number }[] = [
+    { text: '「諺明哥，今天店裡還順利嗎？」', response: '「還算順利，最後一組客人剛走，我才有空坐下來。」', affection: 2 },
+    { text: '「你今天是不是又在對預約簿？」', response: '「剛對完，今天有人臨時換時間，我重新排過了。」', affection: 2 },
+    { text: '「你有沒有記得休息一下？」', response: '「有，趁空檔喝了杯茶，沒有一直忙到現在。」', affection: 3 },
+  ]
+
   const dinnerOnly: { text: string; response: string; affection: number }[] = [
     { text: '「今天谢谢你陪我吃饭，真的很开心。」', response: '「不客氣，妳喜歡那家店就好。」', affection: 2 },
     { text: '「我回家还在想刚刚桌上的笑话。」', response: '「哈哈，今天大家練團的事又被我們講了一遍。」', affection: 2 },
@@ -1147,7 +1241,7 @@ export const getSpringSmsOpeners = (character: SpringCharacterId, context: Sprin
     }
     if (context.storeCharacter === 'yanming') return storeOnly.yanming
     if (context.afterChoice === 'yanming-dinner') return dinnerOnly
-    return rehearsal.yanming
+    return ownerOnly
   }
   if (context.storeCharacter === character && context.lessonCharacter === character) return storeAndLesson[character]
   if (context.storeCharacter === character) {
@@ -1283,7 +1377,8 @@ const springStoreSmsFirstRound = (character: SpringCharacterId, context: SpringD
   ])
 }
 
-export const getSpringSmsRounds = (character: SpringCharacterId, context: SpringDayContext): SpringSmsRound[] => {
+export const getSpringSmsRounds = (character: SpringCharacterId, context: SpringDayContext, openingChoice: number | null = null, smsReplies: number[] = []): SpringSmsRound[] => {
+  if (character === 'yanming' && context.storeCharacter !== 'yanming' && context.afterChoice !== 'yanming-dinner') return springYanmingOwnerSmsRounds(smsReplies)
   const rehearsal: Record<SpringCharacterId, SpringSmsRound[]> = {
     wen: [
       springSmsRound(springContextLine(character, context), [
