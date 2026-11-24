@@ -98,6 +98,7 @@ export const februarySecretInteractions: Record<FebruaryCharacterId, {
   blocks: FebruaryStoryBlock[]
   caughtBy: string
   caughtLine: string
+  afterReply: FebruaryStoryBlock[]
 }> = {
   wen: {
     label: '溫尚翊・偷偷湊過去說悄悄話',
@@ -111,6 +112,16 @@ export const februarySecretInteractions: Record<FebruaryCharacterId, {
     ],
     caughtBy: '蔡昇晏',
     caughtLine: '欸欸欸，你們兩個在旁邊講什麼？開小會喔？',
+    afterReply: [
+      { kind: 'narration', text: '瑪莎把椅子往桌邊一靠，嘴角還掛著那種明明在看熱鬧、卻偏要裝沒事的笑。' },
+      { kind: 'dialogue', speaker: '你', text: '你明明就是故意的！突然拉椅子，誰不會被你嚇到啦。' },
+      { kind: 'dialogue', speaker: '蔡昇晏', text: '欸，我只是問一下而已。妳跟溫尚翊反應這麼大，才讓人想多問吧？' },
+      { kind: 'dialogue', speaker: '溫尚翊', text: '好啦，你不要一直鬧她。你自己的資料弄好了沒？' },
+      { kind: 'dialogue', speaker: '蔡昇晏', text: '轉移話題喔？我剛剛明明是在關心團員感情交流。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '哈哈，你這個關心方式也太奇怪了吧。先把桌上的東西收一收啦，等一下不是要去吃飯？' },
+      { kind: 'dialogue', speaker: '錢佑達', text: '吃飯？要吃飯了喔？那我先把這個收起來！' },
+      { kind: 'narration', text: '瑪莎終於笑出聲，沒有再追問。溫尚翊把報名表疊好，石頭也伸手把散在桌邊的筆和紙收回盒子裡。剛才那點小小的尷尬，很快就被佑達對晚餐的期待沖散了。' },
+    ],
   },
   ashin: {
     label: '陳信宏・偷偷分享剛才的笑點',
@@ -124,6 +135,16 @@ export const februarySecretInteractions: Record<FebruaryCharacterId, {
     ],
     caughtBy: '錢佑達',
     caughtLine: '喂！你們兩個是不是已經私下決定了？',
+    afterReply: [
+      { kind: 'narration', text: '佑達把椅子拖近了一點，眼神在你和阿信之間來回，像是非得問出個答案不可。' },
+      { kind: 'dialogue', speaker: '錢佑達', text: '我就知道！你們一定有偷偷討論，不然怎麼笑得那麼開心？' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '真的沒有啦，我們只是在講剛剛那個團名。' },
+      { kind: 'dialogue', speaker: '蔡昇晏', text: '你不要什麼事情都先想到自己好不好。' },
+      { kind: 'dialogue', speaker: '錢佑達', text: '不然你們剛剛在笑什麼？' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '想到你剛剛那幾個名字啊，真的太有創意了。' },
+      { kind: 'dialogue', speaker: '錢佑達', text: '那是你們不懂欣賞！' },
+      { kind: 'narration', text: '阿信笑著把最後幾張資料疊整齊，佑達還想替自己的命名辯護，瑪莎已經把筆塞回盒子裡，催大家先把桌面清出來。' },
+    ],
   },
   masa: {
     label: '蔡昇晏・偷偷研究他的 BBS 帳號',
@@ -138,6 +159,16 @@ export const februarySecretInteractions: Record<FebruaryCharacterId, {
     ],
     caughtBy: '溫尚翊',
     caughtLine: '瑪莎，你又在講什麼有的沒的？',
+    afterReply: [
+      { kind: 'narration', text: '溫尚翊把手裡的報名表放低了一點，視線先落在瑪莎身上，又瞥了你一眼。' },
+      { kind: 'dialogue', speaker: '蔡昇晏', text: '我在回答她剛剛問我的事啊，這樣也不行喔？' },
+      { kind: 'dialogue', speaker: '溫尚翊', text: '你講話每次都先繞一圈，誰知道你又在挖什麼洞。' },
+      { kind: 'dialogue', speaker: '蔡昇晏', text: '我這叫有問有答，不然你以為大家都像你，想到什麼就直接講喔？' },
+      { kind: 'dialogue', speaker: '你', text: '你們兩個不要又吵起來啦，我真的只是問 BBS 帳號而已。' },
+      { kind: 'dialogue', speaker: '溫尚翊', text: '好啦，知道了。妳先坐著，桌上那些紙我來收。' },
+      { kind: 'dialogue', speaker: '蔡昇晏', text: '喔～有人突然變得很會照顧人喔。' },
+      { kind: 'narration', text: '溫尚翊抬眼瞪了瑪莎一下，瑪莎立刻低頭假裝整理紙張。石頭在旁邊忍著笑，把散開的資料重新排好，大家也陸續準備收東西。' },
+    ],
   },
   stone: {
     label: '石錦航・偷偷傳一張小紙條',
@@ -149,6 +180,16 @@ export const februarySecretInteractions: Record<FebruaryCharacterId, {
     ],
     caughtBy: '陳信宏',
     caughtLine: '欸，你們在傳什麼？',
+    afterReply: [
+      { kind: 'narration', text: '阿信把身子往前探了一點，視線落在石頭手邊那張小紙條上。' },
+      { kind: 'dialogue', speaker: '石錦航', text: '沒有啦，只是想到剛剛那個名字，隨手寫了一句。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '可以給我看一下嗎？我有點好奇耶。' },
+      { kind: 'narration', text: '石頭把紙條往他那邊推了一點。阿信看完，先是抿著嘴忍笑，最後還是忍不住笑出聲。' },
+      { kind: 'dialogue', speaker: '蔡昇晏', text: '怎樣？是不是又在寫佑達的名字？' },
+      { kind: 'dialogue', speaker: '石錦航', text: '這次真的不是啦。' },
+      { kind: 'dialogue', speaker: '錢佑達', text: '等一下，為什麼每次你們笑，我都覺得跟我有關？' },
+      { kind: 'narration', text: '大家又笑了一陣。石頭把紙條折好收進口袋，阿信則把報名資料放進資料夾，提醒大家別把剛整理好的東西又弄亂。' },
+    ],
   },
   yanming: {
     label: '劉諺明・趁他整理東西時偷偷說話',
@@ -162,6 +203,16 @@ export const februarySecretInteractions: Record<FebruaryCharacterId, {
     ],
     caughtBy: '錢佑達',
     caughtLine: '欸！你們兩個在說什麼？',
+    afterReply: [
+      { kind: 'narration', text: '佑達探過身來，先看了看你手裡的飲料，又看了看諺明哥，表情像是發現了什麼不得了的事。' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '剛好聊到飲料而已啦，袋子裡還有，你要喝自己拿。' },
+      { kind: 'dialogue', speaker: '錢佑達', text: '喔～原來是飲料。諺明哥，你怎麼知道她喜歡喝哪一瓶，我都不知道欸！' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '她平常拿哪一瓶，看幾次就記得了。你先拿一瓶就好，不要一次拿兩瓶。' },
+      { kind: 'dialogue', speaker: '蔡昇晏', text: '他哪是想喝飲料，他是看到有人有特別待遇就不平衡。' },
+      { kind: 'dialogue', speaker: '錢佑達', text: '我哪有！我只是也口渴了！' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '哈哈，袋子就在那邊啦，你自己挑一瓶嘛。' },
+      { kind: 'narration', text: '諺明哥把飲料袋往桌子中間挪，佑達立刻低頭翻找自己想喝的口味。你把手裡那瓶握好，大家也開始把桌上的資料和零食整理起來。' },
+    ],
   },
 }
 
