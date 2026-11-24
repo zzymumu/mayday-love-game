@@ -1377,7 +1377,7 @@ const springStoreSmsFirstRound = (character: SpringCharacterId, context: SpringD
   ])
 }
 
-export const getSpringSmsRounds = (character: SpringCharacterId, context: SpringDayContext, openingChoice: number | null = null, smsReplies: number[] = []): SpringSmsRound[] => {
+export const getSpringSmsRounds = (character: SpringCharacterId, context: SpringDayContext, smsReplies: number[] = []): SpringSmsRound[] => {
   if (character === 'yanming' && context.storeCharacter !== 'yanming' && context.afterChoice !== 'yanming-dinner') return springYanmingOwnerSmsRounds(smsReplies)
   const rehearsal: Record<SpringCharacterId, SpringSmsRound[]> = {
     wen: [
