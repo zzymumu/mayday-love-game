@@ -4661,11 +4661,15 @@ function App() {
     if (activeIncoming && existing.some((message) => message.date === '1997年2月17日・晚上' && message.from === character && message.text === legacyIncoming)) {
       const next: Record<CharacterId, SmsMessage[]> = {
         ...chatMessagesRef.current,
-        [character]: existing.map((message) =>
-          message.date === '1997年2月17日・晚上' && message.from === character && message.text === legacyIncoming
-            ? { ...message, text: activeIncoming }
-            : message
-        ),
+        [character]: sameActiveConversation
+          ? existing.map((message) =>
+              message.date === '1997年2月17日・晚上' && message.from === character && message.text === legacyIncoming
+                ? { ...message, text: activeIncoming }
+                : message
+            )
+          : existing.filter((message) =>
+              !(message.date === '1997年2月17日・晚上' && message.from === character && message.text === legacyIncoming)
+            ),
       }
       chatMessagesRef.current = next
       localStorage.setItem('mayday-chat-messages', JSON.stringify(next))
