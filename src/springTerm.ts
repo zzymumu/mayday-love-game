@@ -446,5 +446,51 @@ export const getSpringSmsRounds = (character: SpringCharacterId, context: Spring
       ] },
     ],
   }
-  return scripts[character].map((round, index) => index === 0 ? { ...round, incoming: firstIncoming } : round)
+  const rounds = scripts[character].map((round, index) => index === 0 ? { ...round, incoming: firstIncoming } : round)
+  const wentStore = context.storeCharacter === character
+  const learned = context.lessonCharacter === character
+  const dinner = character === 'yanming' && context.afterChoice === 'yanming-dinner'
+  if (character === 'yanming' && !dinner) {
+    rounds[0] = { ...rounds[0], choices: [
+      { text: '「今天看你們練團真的很有趣！」', response: ['「哈哈，大家練得投入的時候就是這樣。」'], affection: 1 },
+      rounds[0].choices[1],
+      rounds[0].choices[2],
+    ] }
+    rounds[1] = { ...rounds[1], incoming: '今天大家練得很投入，妳在旁邊有沒有聽得很過癮？', choices: [
+      { text: '「有啊！尤其最後一遍，超有氣勢。」', response: ['「那就好，他們聽到應該會很開心。」'], affection: 2 },
+      { text: '「我差點被佑達的鼓聲嚇到。」', response: ['「哈哈，他一投入就會這樣。」'], affection: 1 },
+      { text: '「你下次也要坐旁邊陪我聽喔。」', response: ['「好啊，有空我就陪妳。」'], affection: 2 },
+    ] }
+  }
+  if (character === 'masa' && !learned) {
+    rounds[1] = { ...rounds[1], incoming: '今天看妳在旁邊笑得那麼開心，我差點也忘記要彈 Bass 了。', choices: [
+      { text: '「還不是因為你一直吐槽佑達！」', response: ['「那是他真的很好吐槽。」'], affection: 1 },
+      { text: '「你們兩個根本是固定搭檔。」', response: ['「誰跟他固定搭檔啊？」'], affection: 2 },
+      { text: '「我覺得你們感情很好欸。」', response: ['「……妳不要亂下結論。」'], affection: 2 },
+    ] }
+  }
+  if (character === 'ashin' && !learned && !wentStore) {
+    rounds[0] = { ...rounds[0], choices: [
+      { text: '「你唱到一半差點笑場，我有看到！」', response: ['「哈哈，真的差點唱不下去馁。」'], affection: 2 },
+      { text: '「今天最後一次大家接得很順欸。」', response: ['「對啊，大家一起進去的時候很過癮。」'], affection: 2 },
+      { text: '「下次還想聽你們練團。」', response: ['「好啊，妳有空就來。」'], affection: 2 },
+    ] }
+    rounds[1] = { ...rounds[1], incoming: '妳剛剛有聽清楚最後那段嗎？我自己覺得這次接得滿順的。' }
+  }
+  if (character === 'stone' && !learned && !wentStore) {
+    rounds[0] = { ...rounds[0], choices: [
+      { text: '「今天最後一遍吉他接得很好欸。」', response: ['「真的喔？那下次再把那段練穩一點。」'], affection: 2 },
+      { text: '「你跟溫尚翊兩把吉他接起來很帥欸。」', response: ['「真的喔？那我下次再注意那個地方。」'], affection: 2 },
+      { text: '「下次還想聽你們練團。」', response: ['「好啊，妳有空就來。」'], affection: 2 },
+    ] }
+    rounds[1] = { ...rounds[1], incoming: '今天最後那遍真的比前面順很多，大家終於有接在一起。' }
+  }
+  if (character === 'wen' && !wentStore && !learned) {
+    rounds[0] = { ...rounds[0], choices: [
+      { text: '「我有記得你們今天練《轧車》最後那遍。」', response: ['「那就好，最後那遍總算順了。」'], affection: 1 },
+      { text: '「我現在還在笑佑達亂加鼓花那段。」', response: ['「哈哈哈哈，他真的很愛自己加戲。」'], affection: 1 },
+      rounds[0].choices[2],
+    ] }
+  }
+  return rounds
 }
