@@ -951,29 +951,29 @@ const springDailySmsRound = (incoming: string, choices: SpringDailySmsChoiceData
 // so the player's reply always answers the message immediately above it.
 const springDailySmsOpeners: Record<SpringCharacterId, { text: string; response: string; affection: number }[]> = {
   wen: [
-    { text: '「欸溫尚翊，我今天買到一杯超難喝的草莓奶茶，真的想拿去退錢。」', response: '「蛤？有這麼誇張喔？妳先講，難喝到什麼程度。」', affection: 2 },
-    { text: '「我剛剛看到一隻貓坐在店門口，胖得像老闆，真的太有氣勢了。」', response: '「哈哈，妳是不是站在那邊看牠看到忘記時間？」', affection: 2 },
-    { text: '「我今天上課差點睡著，老師一轉頭我整個彈起來，差點撞到桌子。」', response: '「妳也太驚險了吧，今天是沒睡飽喔？」', affection: 3 },
+    { text: '「欸溫尚翊，我今天買到一杯超難喝的草莓奶茶，真的想拿去退錢。」', response: '「蛤，草莓奶茶怎麼會喝起來像牙膏，這家很敢欸。」', affection: 2 },
+    { text: '「我剛剛看到一隻貓坐在店門口，胖得像老闆，真的太有氣勢了。」', response: '「哈哈，妳一定又停在那邊看很久，看到貓就走不動。」', affection: 2 },
+    { text: '「我今天上課差點睡著，老師一轉頭我整個彈起來，差點撞到桌子。」', response: '「妳差點撞到桌子也太糗了啦，今天真的累壞了喔。」', affection: 3 },
   ],
   ashin: [
-    { text: '「阿信，我剛經過麵包店，奶油餐包才剛出爐，香到我差點忘記要去上課。」', response: '「哈哈，妳最後還是買了吧？那個味道真的很難忍欸。」', affection: 2 },
-    { text: '「我剛剛看到一隻小狗叼著拖鞋走，拖鞋比牠的身體還大，超好笑。」', response: '「真的假的，牠走得動喔？我好想看那個畫面。」', affection: 3 },
-    { text: '「早餐店阿姨今天居然記得我點什麼，我突然覺得自己很像常客。」', response: '「欸，這樣不是很好嗎？妳是不是有點受寵若驚？」', affection: 2 },
+    { text: '「阿信，我剛經過麵包店，奶油餐包才剛出爐，香到我差點忘記要去上課。」', response: '「哈哈，那個味道真的很難忍，我自己經過也會停下來。」', affection: 2 },
+    { text: '「我剛剛看到一隻小狗叼著拖鞋走，拖鞋比牠的身體還大，超好笑。」', response: '「真的假的，光想就很好笑，牠一定走得超認真。」', affection: 3 },
+    { text: '「早餐店阿姨今天居然記得我點什麼，我突然覺得自己很像常客。」', response: '「欸，被記住還滿有熟客的感覺耶，店家記性很好。」', affection: 2 },
   ],
   masa: [
-    { text: '「瑪莎，我今天被販賣機吃掉十塊，飲料沒出來，氣死。」', response: '「哈哈，妳連機器都可以吵起來喔？」', affection: 2 },
-    { text: '「我在佈告欄看到有人找右腳拖鞋，真的有人會只丟一隻嗎？」', response: '「等一下，右腳？那左腳呢，先回家了？」', affection: 2 },
-    { text: '「我買了一包洋芋片，打開裡面空氣比薯片多，覺得被騙了。」', response: '「妳現在才知道喔，包裝業者的夢想就是賣空氣。」', affection: 2 },
+    { text: '「瑪莎，我今天被販賣機吃掉十塊，飲料沒出來，氣死。」', response: '「哈哈，販賣機又在偷懶，妳今天真的很衰。」', affection: 2 },
+    { text: '「我在佈告欄看到有人找右腳拖鞋，真的有人會只丟一隻嗎？」', response: '「右腳？那左腳可能早就先回家了吧。」', affection: 2 },
+    { text: '「我買了一包洋芋片，打開裡面空氣比薯片多，覺得被騙了。」', response: '「包裝業者又在賣空氣了，妳這次算是親身體驗。」', affection: 2 },
   ],
   stone: [
-    { text: '「石頭，我今天忘記帶傘，走到一半下雨，旁邊的阿姨居然把傘借我！」', response: '「幸好遇到好心人，妳有好好謝謝她吧？」', affection: 2 },
-    { text: '「我在二手書裡翻到一張小紙條，上面寫著『這一頁很好看』，好可愛。」', response: '「欸，像是前一個讀者留給下一個人的小秘密。」', affection: 3 },
-    { text: '「我搭公車看窗外看到坐過站，回神時已經多坐兩站了。」', response: '「哈哈，妳那時候應該有點傻眼吧。」', affection: 2 },
+    { text: '「石頭，我今天忘記帶傘，走到一半下雨，旁邊的阿姨居然把傘借我！」', response: '「幸好遇到好心人，這種小小的幫忙真的會讓人心情好一點。」', affection: 2 },
+    { text: '「我在二手書裡翻到一張小紙條，上面寫著『這一頁很好看』，好可愛。」', response: '「這張紙條很可愛，像前一個讀者偷偷留給下一個人的小秘密。」', affection: 3 },
+    { text: '「我搭公車看窗外看到坐過站，回神時已經多坐兩站了。」', response: '「哈哈，妳一定是看風景看到忘記下車，還好只多坐兩站。」', affection: 2 },
   ],
   yanming: [
-    { text: '「諺明哥，我買便當回來才發現沒拿筷子，站在店門口發呆五分鐘。」', response: '「妳後來怎麼吃？有回去拿嗎？」', affection: 2 },
-    { text: '「我洗完衣服發現襪子只剩一隻，另一隻不知道跑去哪了。」', response: '「洗衣機裡面有再找過嗎？有時候會卡在旁邊。」', affection: 2 },
-    { text: '「我明明寫了購物清單，結果買了一堆東西，偏偏忘記雞蛋。」', response: '「妳是把清單忘在家裡，還是帶著卻沒看？」', affection: 3 },
+    { text: '「諺明哥，我買便當回來才發現沒拿筷子，站在店門口發呆五分鐘。」', response: '「妳怎麼會站在門口發呆五分鐘啦，回去拿就好了嘛。」', affection: 2 },
+    { text: '「我洗完衣服發現襪子只剩一隻，另一隻不知道跑去哪了。」', response: '「這種事真的很常發生，洗衣機裡面要再仔細找一下。」', affection: 2 },
+    { text: '「我明明寫了購物清單，結果買了一堆東西，偏偏忘記雞蛋。」', response: '「清單上偏偏漏了最重要的雞蛋，這個有點好笑。」', affection: 3 },
   ],
 }
 
@@ -998,7 +998,7 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
     ],
     tracks: [
       [
-        springDailySmsRound('「我剛剛經過那家店，招牌弄得粉紅粉紅的，難怪妳會走進去。」', [
+        springDailySmsRound('「有些飲料店招牌真的很會弄，粉紅粉紅的，光看就很容易被騙進去。」', [
           { text: '「就巷口新開那家啊！裝潢弄得超漂亮，我一走進去就覺得不妙了，結果還是點了。」', response: '「妳是被店面騙進去，不是被飲料騙進去喔？欸，這家很會欸。」' },
           { text: '「我還很不死心地加了珍珠欸，結果珍珠也救不了它……」', response: '「連珍珠都救不了，這杯可以直接判出局了啦。」' },
           { text: '「我本來都要點熟的了，看到『新品』兩個字又鬼迷心竅，真的很欠。」', response: '「妳每次看到新品都這樣喔？下次先拍給我看，我幫妳踩煞車啦。」' },
@@ -1020,7 +1020,7 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
         ]),
       ],
       [
-        springDailySmsRound('「牠坐在店門口那個樣子，根本像在等人交租。」', [
+        springDailySmsRound('「我覺得那種貓最厲害的是，明明什麼都沒做，整條街的人卻都認得牠。」', [
           { text: '「有啦！牠坐得超像真的在顧店，旁邊還擺一個小碗，太像老闆了吧。」', response: ['「哈哈哈哈，配備都齊了，根本正式上班。」', '「妳不要哪天真的跑去問牠有沒有缺人喔。」'] },
           { text: '「我才剛拿出手機欸，牠就把臉轉走，根本故意的吧！」', response: '「牠很有明星架子欸，還挑攝影師喔。」' },
           { text: '「沒拍到啦，我跟牠對看對到忘記自己本來要拍照……」', response: '「妳是去看貓，不是去採訪貓啦。」' },
@@ -1085,7 +1085,7 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
     ],
     tracks: [
       [
-        springDailySmsRound('「剛出爐的餐包真的很犯規，光聞到味道就很難走掉。」', [
+        springDailySmsRound('「我上次也是聞到那個味道就走不動，最後差點拿著麵包遲到。」', [
           { text: '「買了啦！我走到轉角就拆開，燙到舌頭還是捨不得放。」', response: '「欸，妳也太急了吧，麵包又不會長腳跑掉。先吹一下啦。」' },
           { text: '「本來只拿一個，結果菠蘿麵包在旁邊看我，我就又拿了……」', response: '「哈哈，妳那個只買一個的決心，維持不到三十秒喔。」' },
           { text: '「排隊排到我快遲到，只好買豆漿走人，超不甘心。」', response: '「哎唷，聞得到吃不到，這個最折磨人了。」' },
@@ -1129,7 +1129,7 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
         ]),
       ],
       [
-        springDailySmsRound('「她連妳點的東西都記得，這已經不是普通熟客待遇了吧。」', [
+        springDailySmsRound('「被店家記住之後，下次走進去就會有點像回自己地盤。」', [
           { text: '「我都點蛋餅加豆漿，她連豆漿要少冰都記得，太神了吧！」', response: '「連少冰都記得喔？這已經不是普通熟客待遇了吧。」' },
           { text: '「她記得我不吃香菜，還沒等我開口就先問了。」', response: '「欸，這真的很細心耶，難怪妳會愣住。」' },
           { text: '「她一看到我就問今天還是老樣子嗎，我差點不知道怎麼回。」', response: '「哈哈，妳是不是突然覺得自己在那家店很有名？」' },
@@ -1194,7 +1194,7 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
         ]),
       ],
       [
-        springDailySmsRound('「這張公告光想就很有畫面，左腳可能還在家裡等。」', [
+        springDailySmsRound('「我覺得這種公告最妙的是，失主一定每天都會經過佈告欄看有沒有人回報。」', [
           { text: '「有，還寫著『急尋，左腳已經在家等很久』。」', response: '「哈哈哈哈，左腳還在等？這是拖鞋版苦情戲欸。」' },
           { text: '「下面還留了電話，我差點想打去問是不是認真的。」', response: '「妳打去問的話，對方可能真的會跟妳講拖鞋的身世。」' },
           { text: '「我最想知道的是，為什麼只丟一隻，不是整雙。」', response: ['「可能另一隻逃家成功了，剩下這隻在等救援。」', '「這公告要是貼久一點，可能會變成學校傳說。」'] },
@@ -1216,7 +1216,7 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
         ]),
       ],
       [
-        springDailySmsRound('「大包裝最會騙人，拿起來很有份量，打開才發現裡面在開空氣派對。」', [
+        springDailySmsRound('「我現在買零食都會先看重量，不然真的很容易被包裝騙。」', [
           { text: '「超誇張！我還以為自己買到家庭號，結果底下薄薄一層。」', response: '「包裝做得很有氣勢，內容物很有自知之明。」' },
           { text: '「我搖了半天，聽起來很滿，打開才知道是空氣在開派對。」', response: '「空氣派對還不收妳門票，算它有良心。」' },
           { text: '「我拿去跟同學比，大家的都差不多，原來不是我倒楣。」', response: '「很好，集體受害就有研究價值了。」' },
@@ -1259,7 +1259,7 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
     ],
     tracks: [
       [
-        springDailySmsRound('「那位阿姨願意把傘借妳，真的很暖心，這種小事會記很久。」', [
+        springDailySmsRound('「借傘這種事很妙，原本只是忘了帶傘，結果多了一個讓人記得的故事。」', [
           { text: '「有啊！她就在前面一站下車，我差點拿著傘追到站務員那邊去。」', response: '「還好有遇到她，不然妳可能會一路擔心傘的事。」' },
           { text: '「她說不用還啦，叫我下次也幫幫別人，怎麼突然變得好像在傳接力棒。」', response: '「這句話好溫柔喔。感覺她把一點善意傳給妳了。」', affection: 3 },
           { text: '「我有問她住哪，想說洗乾淨再送回去，結果她一直叫我不用啦。」', response: '「妳很仔細耶，對方應該也會覺得很暖心。」' },
@@ -1281,7 +1281,7 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
         ]),
       ],
       [
-        springDailySmsRound('「那張紙條像是前一個讀者留給下一個人的暗號。」', [
+        springDailySmsRound('「我很喜歡這種沒有署名的小紙條，不用知道是誰留的，看到的人就能收下那份心意。」', [
           { text: '「剛好翻到那頁欸，旁邊還畫了一顆小星星，太可愛了吧。」', response: '「那個人一定很喜歡那一段，才會特地留下記號。」' },
           { text: '「在書中間，字小小的，像怕被人發現一樣。」', response: '「像是留給下一個讀到的人一個小秘密。」' },
           { text: '「我本來想拿掉，後來又覺得算了，留給下一個人看到好了。」', response: '「我也會想留下來，說不定下一個人看到也會覺得開心。」' },
@@ -1303,7 +1303,7 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
         ]),
       ],
       [
-        springDailySmsRound('「坐過站那一下應該有點傻眼，不過還好不是趕時間。」', [
+        springDailySmsRound('「公車窗外有時候真的很容易看入迷，尤其路過不熟的街區。」', [
           { text: '「有啊，我下車跑去對面等下一班，還好沒等太久，不然我真的要哭。」', response: '「那還好，至少沒有耽誤太多時間。」' },
           { text: '「我想說都坐過頭了，乾脆坐到終點看看會到哪裡，哈哈。」', response: '「哈哈，這個處理方式滿隨性的，還好妳當時不趕時間。」' },
           { text: '「下車才發現我根本不知道自己在哪欸，只好先找站牌，再拿地圖救命。」', response: '「那一下應該有點慌，還好妳先停下來確認方向。」' },
@@ -1346,7 +1346,7 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
     ],
     tracks: [
       [
-        springDailySmsRound('「忘了拿筷子真的很常見，店門口通常也會有備用的。」', [
+        springDailySmsRound('「備用筷子放在包包裡其實不佔位置，臨時要用就方便很多。」', [
           { text: '「有啦，我又走回去拿，老闆看到我還笑，真的很丟臉欸。」', response: '「哈哈，至少老闆記得妳了。下次拿便當先確認一下。」' },
           { text: '「我跟隔壁同學借了一雙，差點以為今天要用手吃飯了。」', response: ['「那還好有同學在。」', '「妳以後可以在包包裡放一雙備用的，臨時要用比較方便。」'] },
           { text: '「我在門口糾結超久，最後還是默默走回去拿，根本白站五分鐘。」', response: '「這個決定是對的，不用為了省一步路讓自己吃得很辛苦。」' },
@@ -1368,7 +1368,7 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
         ]),
       ],
       [
-        springDailySmsRound('「襪子最容易在洗衣機裡失蹤，尤其是兩件衣服黏在一起的時候。」', [
+        springDailySmsRound('「衣服脫下來的時候，有時候會把襪子一起捲進褲管裡。」', [
           { text: '「找了啦！衣服整桶倒出來，真的只有一隻，我快懷疑人生了。」', response: '「那可能是卡在衣服裡了，再檢查一下褲管和袖子。」' },
           { text: '「洗衣籃也翻了，房間都快被我翻過來，還是沒有。」', response: '「那就先把這隻收好，等另一隻哪天自己出現。」' },
           { text: '「我看它是跟其他襪子私奔了，留下我一個人收拾爛攤子。」', response: '「哈哈，這個說法倒是很合理，襪子失蹤案又多一件。」' },
@@ -1390,7 +1390,7 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
         ]),
       ],
       [
-        springDailySmsRound('「買東西最怕清單帶了，卻只記得看自己想買的東西。」', [
+        springDailySmsRound('「我現在會把雞蛋這種容易忘的東西寫在清單最前面。」', [
           { text: '「有看啦！但我一看到別的東西就忘記自己在找雞蛋了。」', response: '「那就把最重要的寫在最上面，先拿完再逛其他的。」' },
           { text: '「我把清單塞口袋，逛完才想起來它根本沒出場過。」', response: '「那下次拿在手上，或者買一樣勾一樣。」' },
           { text: '「七樣都記得，偏偏漏掉雞蛋，我到底在幹嘛啦。」', response: '「這就是為什麼要寫下來，不要只靠記憶。」' },
