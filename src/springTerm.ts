@@ -1375,7 +1375,7 @@ const springYanmingSharedSmsRounds = (context: SpringDayContext, replies: number
     ]),
   ]
 
-  return springYanmingOwnerSmsRounds(replies, openingChoice)
+  return springYanmingOwnerSmsRounds(context, replies, openingChoice)
 }
 
 const springYanmingSmsOpeners = (context: SpringDayContext): { text: string; response: string; affection: number }[] => {
