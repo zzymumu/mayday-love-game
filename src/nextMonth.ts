@@ -333,7 +333,7 @@ export const nextMonthOpenDayIntroBlocks: NextMonthStoryBlock[] = [
   { kind: 'narration', text: '石頭把幾瓶飲料搬到桌子底下，順手將一張紙箱攤平墊在潮濕的桌腳旁。阿信抱著另一疊傳單走過來，把兩種不同顏色的紙分開放在你面前。' },
   { kind: 'dialogue', speaker: '陳信宏', text: '妳來得剛好～這兩疊不要混在一起喔，黃色是活動流程，白色才是社團報名。剛剛有人拿錯，差點把整疊帶走馁。' },
   { kind: 'dialogue', speaker: '你', text: '你們這裡事情也太多了吧，我才剛來就要考分類。' },
-  { kind: 'dialogue', speaker: '陳信宏', text: '哈哈，等一下人更多，可能還會有新的考題。先把這關過了就好馁。' },
+  { kind: 'dialogue', speaker: '陳信宏', text: '哈哈，等一下人更多，可能還會有新的考題。先把這關過了就好啦。' },
   { kind: 'narration', text: '你低頭整理紙張，旁邊不時傳來瑪莎和佑達互相指責的聲音。溫尚翊一邊試音，一邊伸手把快被風吹走的報名表壓住；石頭拿膠帶固定桌布。原本還有點空的廣場，沒多久就被學生和攤位填滿。' },
   { kind: 'dialogue', speaker: '溫尚翊', text: '這疊先放我右手邊。等一下有人來問社團，再把白色那張給他。妳忙完就去逛，不用一直站在這裡。' },
   { kind: 'dialogue', speaker: '你', text: '知道啦。你先把那條線弄好，不然等一下又要被瑪莎嫌。' },
