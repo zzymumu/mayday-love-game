@@ -4623,6 +4623,9 @@ function App() {
       afterChoice: springAfterChoice,
       lessonCharacter: springLessonCharacter,
       dinnerChoice: springDinnerReplies[0] ?? null,
+      storeReplies: [springStoreReply, springStoreSecondReply, springStoreThirdReply],
+      lessonReplies: springLessonReplies,
+      dinnerReplies: springDinnerReplies,
     }
     const opening = getSpringSmsOpeners(springSmsTarget, context)[choiceIndex]
     const firstRound = getSpringSmsRounds(springSmsTarget, context)[0]
@@ -4646,6 +4649,9 @@ function App() {
       afterChoice: springAfterChoice,
       lessonCharacter: springLessonCharacter,
       dinnerChoice: springDinnerReplies[0] ?? null,
+      storeReplies: [springStoreReply, springStoreSecondReply, springStoreThirdReply],
+      lessonReplies: springLessonReplies,
+      dinnerReplies: springDinnerReplies,
     }
     const rounds = getSpringSmsRounds(springSmsTarget, context)
     const round = rounds[springSmsRound]
@@ -5103,6 +5109,9 @@ function App() {
     afterChoice: springAfterChoice,
     lessonCharacter: springLessonCharacter,
     dinnerChoice: springDinnerReplies[0] ?? null,
+    storeReplies: [springStoreReply, springStoreSecondReply, springStoreThirdReply],
+    lessonReplies: springLessonReplies,
+    dinnerReplies: springDinnerReplies,
   }
   const currentSpringSmsRounds = springSmsTarget ? getSpringSmsRounds(springSmsTarget, springDayContext) : []
   const currentSpringSmsOpeners = springSmsTarget ? getSpringSmsOpeners(springSmsTarget, springDayContext) : []
