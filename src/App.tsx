@@ -6187,210 +6187,6 @@ function App() {
               {storyStage === 'february-intro' && (
                 <div className="story-screen-overlay">
                   <div className="story-screen-head">
-                    <div className="chapter-mark">寒假特別篇</div>
-                    <div className="story-contact-title"><strong>一個名字的誕生</strong><small>1997 年 2 月初・練團室</small></div>
-                    <span className="story-head-spacer" />
-                  </div>
-                  <div className="story-narrative-scroll">
-                    <div className="story-kicker">1997 · FEBRUARY</div>
-                    <h2 className="story-scene-title">MAYDAY</h2>
-                    <StoryBlocks blocks={februaryIntroBlocks} />
-                  </div>
-                  <div className="story-action-bar">
-                    <button className="story-primary-button" onClick={() => changeStage('february-secret')}>繼續 <ChevronRight size={15} /></button>
-                  </div>
-                </div>
-              )}
-
-              {storyStage === 'february-secret' && (
-                <div className="story-screen-overlay">
-                  <div className="story-screen-head">
-                    <div className="chapter-mark">寒假特別篇</div>
-                    <div className="story-contact-title"><strong>練團室的小秘密</strong><small>下午・MAYDAY 確定之後</small></div>
-                    <span className="story-head-spacer" />
-                  </div>
-                  <div className="story-narrative-scroll">
-                    <div className="story-kicker">A LITTLE SECRET</div>
-                    <h2 className="story-scene-title">你想找誰說悄悄話？</h2>
-                    {!februarySecretTarget ? (
-                      <>
-                        <StoryBlocks blocks={[{ kind: 'narration', text: '報名資料暫時整理好了，大家各自忙起來。溫尚翊和阿信還在核對資料，石頭把桌上的紙張疊好，瑪莎正研究佑達那張中二團名清單。諺明哥把飲料和零食放好後，回到櫃台附近。你看了看周圍，突然覺得現在正是偷偷做點小動作的好時候。' }]} />
-                        <div className="choice-area">
-                          <div className="choice-heading">偷偷找一個人</div>
-                          {(Object.keys(februarySecretInteractions) as FebruaryCharacterId[]).map((character) => (
-                            <button className="reply-choice" key={character} onClick={() => chooseFebruarySecretTarget(character)}>
-                              <span>{februarySecretInteractions[character].label}</span><ChevronRight size={15} />
-                            </button>
-                          ))}
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <StoryBlocks blocks={februarySecretInteractions[februarySecretTarget].blocks} />
-                        <StoryBlocks blocks={[{ kind: 'dialogue', speaker: februarySecretInteractions[februarySecretTarget].caughtBy, text: februarySecretInteractions[februarySecretTarget].caughtLine }]} />
-                        {februarySecretReply === null ? (
-                          <div className="choice-area">
-                            <div className="choice-heading">被發現了，你怎麼回應？</div>
-                            {februarySecretReplyChoices.map((choice, index) => (
-                              <button className="reply-choice" key={index} onClick={() => chooseFebruarySecretReply(index)}>
-                                <span>{choice.text}</span><ChevronRight size={15} />
-                              </button>
-                            ))}
-                          </div>
-                        ) : (
-                          <StoryBlocks blocks={[{ kind: 'dialogue', speaker: '你', text: februarySecretReplyChoices[februarySecretReply].text }, { kind: 'dialogue', speaker: februarySecretInteractions[februarySecretTarget].caughtBy, text: februarySecretReplyChoices[februarySecretReply].response }]} />
-                        )}
-                      </>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {storyStage === 'february-dinner' && (
-                <div className="story-screen-overlay">
-                  <div className="story-screen-head">
-                    <div className="chapter-mark">寒假特別篇</div>
-                    <div className="story-contact-title"><strong>晚餐時間</strong><small>1997 年 2 月初・晚上</small></div>
-                    <span className="story-head-spacer" />
-                  </div>
-                  <div className="story-narrative-scroll">
-                    <div className="story-kicker">DINNER TOGETHER</div>
-                    <h2 className="story-scene-title">吵吵鬧鬧的一桌人</h2>
-                    <StoryBlocks blocks={februaryDinnerBlocks} />
-                    {februaryDinnerReply === null ? (
-                      <div className="choice-area">
-                        <div className="choice-heading">瑪莎問你會不會來看演出，你想怎麼回答？</div>
-                        {februaryDinnerChoices.map((choice, index) => (
-                          <button className="reply-choice" key={index} onClick={() => chooseFebruaryDinnerReply(index)}>
-                            <span>{choice.text}</span><ChevronRight size={15} />
-                          </button>
-                        ))}
-                      </div>
-                    ) : (
-                      <>
-                        <StoryBlocks blocks={[
-                          { kind: 'dialogue', speaker: '你', text: februaryDinnerChoices[februaryDinnerReply].text },
-                          ...februaryDinnerChoices[februaryDinnerReply].response,
-                        ]} />
-                        <div className="story-action-bar">
-                          <button className="story-primary-button" onClick={() => changeStage('february-table')}>繼續吃飯 <ChevronRight size={15} /></button>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {storyStage === 'february-table' && februaryTableCharacter && (
-                <div className="story-screen-overlay">
-                  <div className="story-screen-head">
-                    <div className="chapter-mark">寒假特別篇</div>
-                    <div className="story-contact-title"><strong>餐桌上的小動作</strong><small>最高好感度角色・專屬互動</small></div>
-                    <span className="story-head-spacer" />
-                  </div>
-                  <div className="story-narrative-scroll">
-                    <div className="story-kicker">A LITTLE GESTURE</div>
-                    <h2 className="story-scene-title">有人悄悄注意著你</h2>
-                    <StoryBlocks blocks={februaryTableMoments[februaryTableCharacter]} />
-                  </div>
-                  <div className="story-action-bar">
-                    <button className="story-primary-button" onClick={() => changeStage('february-after-dinner-picker')}>飯後再走一段 <ChevronRight size={15} /></button>
-                  </div>
-                </div>
-              )}
-
-              {storyStage === 'february-after-dinner-picker' && (
-                <div className="story-screen-overlay">
-                  <div className="story-screen-head">
-                    <div className="chapter-mark">寒假特別篇</div>
-                    <div className="story-contact-title"><strong>飯後散步</strong><small>1997 年 2 月初・夜晚</small></div>
-                    <span className="story-head-spacer" />
-                  </div>
-                  <div className="story-narrative-scroll">
-                    <div className="story-kicker">AFTER DINNER</div>
-                    <h2 className="story-scene-title">今天還想和誰多待一會兒？</h2>
-                    <StoryBlocks blocks={[{ kind: 'narration', text: '吃完飯，大家陸續從店裡出來。夜風從街口吹過，佑達還在跟瑪莎爭論最後一塊炸物到底是誰吃掉的。阿信和石頭已經走到前面，溫尚翊站在店門口等人，諺明哥也準備回去。你忽然覺得今天還不想這麼早結束。' }]} />
-                    <div className="choice-area">
-                      <div className="choice-heading">選一個人，和他單獨走一段路</div>
-                      {(Object.keys(februaryAfterDinnerRoutes) as FebruaryCharacterId[]).map((character) => (
-                        <button className="reply-choice" key={character} onClick={() => chooseFebruaryAfterDinnerCharacter(character)}>
-                          <span>{februaryAfterDinnerRoutes[character].label}</span><ChevronRight size={15} />
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {storyStage === 'february-after-dinner' && currentFebruaryAfterDinnerRoute && (
-                <div className="story-screen-overlay">
-                  <div className="story-screen-head">
-                    <div className="chapter-mark">寒假特別篇</div>
-                    <div className="story-contact-title"><strong>{currentFebruaryAfterDinnerRoute.title}</strong><small>飯後・單獨相處</small></div>
-                    <span className="story-head-spacer" />
-                  </div>
-                  <div className="story-narrative-scroll">
-                    <div className="story-kicker">JUST THE TWO OF YOU</div>
-                    <h2 className="story-scene-title">{currentFebruaryAfterDinnerRoute.title}</h2>
-                    <StoryBlocks blocks={currentFebruaryAfterDinnerRoute.blocks} />
-                    {currentFebruaryAfterDinnerRoute.rounds.slice(0, februaryAfterDinnerReplies.length).map((round, index) => {
-                      const selected = round.choices[februaryAfterDinnerReplies[index]]
-                      if (!selected) return null
-                      return <div className="month-visit-round-history" key={index}>
-                        <StoryBlocks blocks={[{ kind: 'narration', text: round.scene }, { kind: 'dialogue', speaker: round.promptSpeaker, text: round.prompt }, { kind: 'dialogue', speaker: '你', text: selected.text }, ...selected.response]} />
-                      </div>
-                    })}
-                    {currentFebruaryAfterDinnerRound ? (
-                      <>
-                        <StoryBlocks blocks={[{ kind: 'narration', text: currentFebruaryAfterDinnerRound.scene }, { kind: 'dialogue', speaker: currentFebruaryAfterDinnerRound.promptSpeaker, text: currentFebruaryAfterDinnerRound.prompt }]} />
-                        <div className="choice-area">
-                          <div className="choice-heading">第 {februaryAfterDinnerReplies.length + 1}/3 輪・你想怎麼回答？</div>
-                          {currentFebruaryAfterDinnerRound.choices.map((choice, index) => (
-                            <button className="reply-choice" key={index} onClick={() => chooseFebruaryAfterDinnerReply(index)}>
-                              <span>{choice.text}</span><ChevronRight size={15} />
-                            </button>
-                          ))}
-                          <small>每一輪都由你親自選擇，不會自動替你發送。</small>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <StoryBlocks blocks={currentFebruaryAfterDinnerRoute.endingBlocks} />
-                        <div className="story-action-bar">
-                          <button className="story-primary-button" onClick={startFebruaryDiary}>回家，寫下今天的日記 <ChevronRight size={15} /></button>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {storyStage === 'february-diary' && februaryDiaryData && (
-                <div className="story-screen-overlay">
-                  <div className="story-screen-head">
-                    <div className="chapter-mark">寒假特別篇・私人日記</div>
-                    <div className="story-contact-title"><strong>二月初，MAYDAY</strong><small>1997 年 2 月初・晚上</small></div>
-                    <span className="story-head-spacer" />
-                  </div>
-                  <div className="story-narrative-scroll">
-                    <div className="story-kicker">1997 · FEBRUARY JOURNAL</div>
-                    <h2 className="story-scene-title">{februaryDiaryData.title}</h2>
-                    <div className="diary-paper story-diary-paper">
-                      <span className="diary-date">1997 年 2 月初</span>
-                      <h2>{februaryDiaryData.title}</h2>
-                      {splitDiaryParagraphs(februaryDiaryData.text).map((paragraph, index) => <p key={index}>{paragraph}</p>)}
-                    </div>
-                    <div className="reunion-pause-note">這篇日記會保留在日記列表裡，之後也可以重新打開來看。</div>
-                  </div>
-                  <div className="story-action-bar">
-                    <button className="story-primary-button" onClick={finishFebruaryDiary}>合上日記，繼續寒假生活 <ChevronRight size={15} /></button>
-                  </div>
-                </div>
-              )}
-
-              {storyStage === 'february-intro' && (
-                <div className="story-screen-overlay">
-                  <div className="story-screen-head">
                     <div className="chapter-mark">寒假・二月初</div>
                     <div className="story-contact-title">
                       <strong>一個名字的誕生</strong>
@@ -6423,14 +6219,17 @@ function App() {
                     <div className="story-kicker">A LITTLE SECRET</div>
                     <h2 className="story-scene-title">{februarySecretTarget ? februarySecretInteractions[februarySecretTarget].label : '你想偷偷找誰？'}</h2>
                     {!februarySecretTarget ? (
-                      <div className="choice-area">
-                        <div className="choice-heading">選一個人，趁空檔說幾句悄悄話</div>
+                      <>
+                        <StoryBlocks blocks={[{ kind: 'narration', text: '報名資料暫時整理好了，大家各自忙起來。溫尚翊和阿信還在核對資料，石頭把桌上的紙張疊好，瑪莎正研究佑達那張中二團名清單。諺明哥把飲料和零食放好後，回到櫃台附近。你看了看周圍，突然覺得現在正是偷偷做點小動作的好時候。' }]} />
+                        <div className="choice-area">
+                          <div className="choice-heading">選一個人，趁空檔說幾句悄悄話</div>
                         {(Object.keys(februarySecretInteractions) as FebruaryCharacterId[]).map((character) => (
                           <button className="reply-choice" key={character} onClick={() => chooseFebruarySecretTarget(character)}>
                             <span>{februarySecretInteractions[character].label}</span><ChevronRight size={15} />
                           </button>
                         ))}
-                      </div>
+                        </div>
+                      </>
                     ) : (
                       <>
                         <StoryBlocks blocks={februarySecretInteractions[februarySecretTarget].blocks} />
