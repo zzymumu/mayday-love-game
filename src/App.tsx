@@ -2187,9 +2187,9 @@ function App() {
     const saved = Number(localStorage.getItem('mayday-spring-store-third-reply') ?? '-1')
     return Number.isInteger(saved) && saved >= 0 && saved < 3 ? saved : null
   })
-  const [springAfterChoice, setSpringAfterChoice] = useState<'yanming-dinner' | 'lesson' | null>(() => {
+  const [springAfterChoice, setSpringAfterChoice] = useState<'yanming-dinner' | 'lesson' | 'home' | null>(() => {
     const saved = localStorage.getItem('mayday-spring-after-choice')
-    return saved === 'yanming-dinner' || saved === 'lesson' ? saved : null
+    return saved === 'yanming-dinner' || saved === 'lesson' || saved === 'home' ? saved : null
   })
   const [springLessonCharacter, setSpringLessonCharacter] = useState<Exclude<SpringCharacterId, 'yanming'> | null>(() => {
     const saved = localStorage.getItem('mayday-spring-lesson-character')
@@ -4516,7 +4516,7 @@ function App() {
     addRouteAffection(springStoreCharacter, choice.affection)
   }
 
-  const chooseSpringAfterChoice = (choice: 'yanming-dinner' | 'lesson') => {
+  const chooseSpringAfterChoice = (choice: 'yanming-dinner' | 'lesson' | 'home') => {
     setSpringAfterChoice(choice)
     localStorage.setItem('mayday-spring-after-choice', choice)
     if (choice === 'yanming-dinner') {
@@ -4527,8 +4527,20 @@ function App() {
       setSpringLessonReply(null)
       localStorage.removeItem('mayday-spring-lesson-reply')
       changeStage('spring-dinner')
-    } else {
+    } else if (choice === 'lesson') {
+      setSpringDinnerReply(null)
+      localStorage.removeItem('mayday-spring-dinner-reply')
       changeStage('spring-after-picker')
+    } else {
+      setSpringLessonCharacter(null)
+      localStorage.removeItem('mayday-spring-lesson-character')
+      setSpringLessonTouchChoice(null)
+      localStorage.removeItem('mayday-spring-lesson-touch-choice')
+      setSpringLessonReply(null)
+      localStorage.removeItem('mayday-spring-lesson-reply')
+      setSpringDinnerReply(null)
+      localStorage.removeItem('mayday-spring-dinner-reply')
+      changeStage('spring-sms-picker')
     }
   }
 
@@ -4657,9 +4669,11 @@ function App() {
       : ''
     const afterNote = springAfterChoice === 'yanming-dinner'
       ? '練團結束後，我跟諺明哥去吃飯。' + (springDinnerReply === null ? '' : '我回答：「' + springYanmingDinnerChoices[springDinnerReply].text.replace(/^「|」$/g, '') + '」' + springYanmingDinnerChoices[springDinnerReply].response)
-      : springLessonCharacter
-        ? '練團結束後，我留下來跟' + ({ wen: '溫尚翊', ashin: '阿信', masa: '瑪莎', stone: '石頭' } as Record<Exclude<SpringCharacterId, 'yanming'>, string>)[springLessonCharacter] + '學樂器。' + springLessonRoutes[springLessonCharacter].blocks.filter((block) => block.speaker === '你').map((block) => block.text).join(' ') + (springLessonTouchChoice === null ? '' : '我注意到他手上的茧子，便問：「' + springLessonRoutes[springLessonCharacter].touchChoices[springLessonTouchChoice].text.replace(/^「|」$/g, '') + '」' + springLessonRoutes[springLessonCharacter].touchChoices[springLessonTouchChoice].response + springLessonRoutes[springLessonCharacter].touchNarration) + (springLessonReply === null ? '' : '摸完之後我又說：「' + springLessonRoutes[springLessonCharacter].choices[springLessonReply].text.replace(/^「|」$/g, '') + '」' + springLessonRoutes[springLessonCharacter].choices[springLessonReply].response)
-        : ''
+      : springAfterChoice === 'home'
+        ? '練團結束後，我沒有再安排其他活動，收拾東西自己回家了。'
+        : springLessonCharacter
+          ? '練團結束後，我留下來跟' + ({ wen: '溫尚翊', ashin: '阿信', masa: '瑪莎', stone: '石頭' } as Record<Exclude<SpringCharacterId, 'yanming'>, string>)[springLessonCharacter] + '學樂器。' + springLessonRoutes[springLessonCharacter].blocks.filter((block) => block.speaker === '你').map((block) => block.text).join(' ') + (springLessonTouchChoice === null ? '' : '我注意到他手上的茧子，便問：「' + springLessonRoutes[springLessonCharacter].touchChoices[springLessonTouchChoice].text.replace(/^「|」$/g, '') + '」' + springLessonRoutes[springLessonCharacter].touchChoices[springLessonTouchChoice].response + springLessonRoutes[springLessonCharacter].touchNarration) + (springLessonReply === null ? '' : '摸完之後我又說：「' + springLessonRoutes[springLessonCharacter].choices[springLessonReply].text.replace(/^「|」$/g, '') + '」' + springLessonRoutes[springLessonCharacter].choices[springLessonReply].response)
+          : ''
     const rehearsalNote = springStoreCharacter
       ? '逛完樂器行後，我跟' + ({ wen: '溫尚翊', ashin: '阿信', masa: '瑪莎', stone: '石頭', yanming: '諺明哥' } as Record<SpringCharacterId, string>)[springStoreCharacter] + '一起進了練團室。'
       : '到了練團室，大家已經準備好要開始練習了。'
@@ -7116,7 +7130,7 @@ function App() {
                     <div className="story-kicker">AFTER REHEARSAL</div><h2 className="story-scene-title">{springAfterChoice === 'lesson' ? '想跟誰學一點東西？' : '晚上想做什麼？'}</h2>
                     <StoryBlocks blocks={springAfterChoice === 'lesson'
                       ? [{ kind: 'narration', text: '佑達已經先走了，其他人還在收拾器材。瑪莎把 Bass 放回琴袋，溫尚翊和石頭整理吉他，阿信把麥克風收好。你忽然想趁大家還在，多學一點。' }]
-                      : [{ kind: 'narration', text: '佑達已經先走了。大家還在收拾器材，諺明哥看了看時間，問你要不要一起去吃點東西。另一邊，幾個人也問你要不要留下來學樂器。' }]} />
+                      : [{ kind: 'narration', text: '佑達已經先走了。大家還在收拾器材，諺明哥看了看時間，問你要不要一起去吃點東西；另一邊，幾個人也問你要不要留下來學樂器。你看了看時間，今晚也可以不再安排行程，收拾東西直接回家。' }]} />
                     {springAfterChoice !== 'lesson' ? (
                       <div className="spring-after-choice-list">
                         <div className="spring-after-choice-heading">選擇今晚的安排</div>
@@ -7126,6 +7140,10 @@ function App() {
                         </button>
                         <button className="spring-after-choice-button" onClick={() => chooseSpringAfterChoice('lesson')}>
                           <span className="spring-after-choice-copy"><strong>留下來學樂器</strong><small>溫尚翊、阿信、瑪莎或石頭，看看今晚誰留下來陪你。</small></span>
+                          <ChevronRight size={17} />
+                        </button>
+                        <button className="spring-after-choice-button" onClick={() => chooseSpringAfterChoice('home')}>
+                          <span className="spring-after-choice-copy"><strong>收拾東西，自己回家</strong><small>今晚先不另外安排活動，回家休息，之後再和大家傳訊息。</small></span>
                           <ChevronRight size={17} />
                         </button>
                       </div>
