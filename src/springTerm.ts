@@ -247,8 +247,6 @@ const springContextLine = (character: SpringCharacterId, context: SpringDayConte
 }
 
 export const getSpringSmsOpeners = (character: SpringCharacterId, context: SpringDayContext) => {
-  const shared = context.storeCharacter === character || context.lessonCharacter === character || (character === 'yanming' && context.afterChoice === 'yanming-dinner')
-  const first = springContextLine(character, context)
   const base: Record<SpringCharacterId, { text: string; response: string; affection: number }[]> = {
     wen: [
       { text: '「哈哈，今天真的很好玩欸。」', response: '「是喔，妳今天笑得很大聲欸。」', affection: 2 },
@@ -276,11 +274,7 @@ export const getSpringSmsOpeners = (character: SpringCharacterId, context: Sprin
       { text: '「你回去也要記得休息喔。」', response: '「好，妳也是。今天辛苦了。」', affection: 2 },
     ],
   }
-  return base[character].map((choice, index) => ({
-    ...choice,
-    text: shared && index === 0 ? choice.text : choice.text,
-    response: index === 0 ? first : choice.response,
-  }))
+  return base[character]
 }
 
 export const getSpringSmsRounds = (character: SpringCharacterId, context: SpringDayContext): SpringSmsRound[] => {
