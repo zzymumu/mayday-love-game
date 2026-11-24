@@ -7121,14 +7121,14 @@ function App() {
                     {springDinnerReply === null ? (
                       <div className="choice-area"><div className="choice-heading">諺明哥把筷子遞給你，你怎麼回？</div>
                         {springYanmingDinnerChoices.map((choice, index) => (
-                          <button className="reply-choice" key={index} onClick={() => chooseSpringDinnerReply(index)}><span>{choice.text}</span><ChevronRight size={15} /></button>
+                          <button className="reply-choice" key={index} onClick={() => chooseSpringDinnerReply(index)}><span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} /></button>
                         ))}
                       </div>
                     ) : (
                       <>
                         <StoryBlocks blocks={[
-                          { kind: 'dialogue', speaker: '你', text: springYanmingDinnerChoices[springDinnerReply].text.replace(/^「|」$/g, '') },
-                          { kind: 'dialogue', speaker: '劉諺明', text: springYanmingDinnerChoices[springDinnerReply].response },
+                          { kind: 'dialogue', speaker: '你', text: stripCornerQuotes(springYanmingDinnerChoices[springDinnerReply].text) },
+                          ...springResponseBlocks('劉諺明', springYanmingDinnerChoices[springDinnerReply].response),
                         ]} />
                         <div className="story-action-bar"><button className="story-primary-button" onClick={() => changeStage('spring-sms-picker')}>吃完飯，回家 <ChevronRight size={15} /></button></div>
                       </>
