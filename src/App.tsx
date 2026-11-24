@@ -4313,6 +4313,233 @@ function App() {
     setFebruaryDiaryUnlocked(true)
     setActiveApp(null)
     setSelectedSmsThread(null)
+    changeStage('spring-term-intro')
+  }
+
+  const beginSpringInvites = () => {
+    if (localStorage.getItem('mayday-spring-invites-sent') === 'true') {
+      changeStage('spring-invite-picker')
+      return
+    }
+    const candidates = springCharacterOrder.filter((character) => routeAffection[character] > SPRING_INVITE_THRESHOLD)
+    setSpringInviteCandidates(candidates)
+    localStorage.setItem('mayday-spring-invite-candidates', JSON.stringify(candidates))
+    candidates.forEach((character) => {
+      appendChatMessages(character, springInvites[character].map((text, index) => ({
+        from: character,
+        text,
+        time: '14:' + String(5 + index).padStart(2, '0'),
+      })), '1997年2月17日・下午')
+    })
+    localStorage.setItem('mayday-spring-invites-sent', 'true')
+    changeStage('spring-invite-picker')
+  }
+
+  const chooseSpringStoreCharacter = (character: SpringCharacterId) => {
+    if (!springInviteCandidates.includes(character) || springStoreCharacter) return
+    setSpringStoreCharacter(character)
+    localStorage.setItem('mayday-spring-store-character', character)
+    addRouteAffection(character, 1)
+    setSpringStoreReply(null)
+    localStorage.removeItem('mayday-spring-store-reply')
+    changeStage('spring-store')
+  }
+
+  const chooseSpringStoreReply = (choiceIndex: number) => {
+    if (!springStoreCharacter || springStoreReply !== null) return
+    const choice = springStoreRoutes[springStoreCharacter].choices[choiceIndex]
+    if (!choice) return
+    setSpringStoreReply(choiceIndex)
+    localStorage.setItem('mayday-spring-store-reply', String(choiceIndex))
+    addRouteAffection(springStoreCharacter, choice.affection)
+  }
+
+  const chooseSpringAfterChoice = (choice: 'yanming-dinner' | 'lesson') => {
+    setSpringAfterChoice(choice)
+    localStorage.setItem('mayday-spring-after-choice', choice)
+    if (choice === 'yanming-dinner') {
+      setSpringLessonCharacter(null)
+      localStorage.removeItem('mayday-spring-lesson-character')
+      changeStage('spring-dinner')
+    } else {
+      changeStage('spring-after-picker')
+    }
+  }
+
+  const chooseSpringLessonCharacter = (character: Exclude<SpringCharacterId, 'yanming'>) => {
+    setSpringLessonCharacter(character)
+    localStorage.setItem('mayday-spring-lesson-character', character)
+    setSpringLessonReply(null)
+    localStorage.removeItem('mayday-spring-lesson-reply')
+    changeStage('spring-lesson')
+  }
+
+  const chooseSpringLessonReply = (choiceIndex: number) => {
+    if (!springLessonCharacter || springLessonReply !== null) return
+    const choice = springLessonRoutes[springLessonCharacter].choices[choiceIndex]
+    if (!choice) return
+    setSpringLessonReply(choiceIndex)
+    localStorage.setItem('mayday-spring-lesson-reply', String(choiceIndex))
+    addRouteAffection(springLessonCharacter, choice.affection)
+  }
+
+  const chooseSpringDinnerReply = (choiceIndex: number) => {
+    if (springDinnerReply !== null) return
+    const choice = springYanmingDinnerChoices[choiceIndex]
+    if (!choice) return
+    setSpringDinnerReply(choiceIndex)
+    localStorage.setItem('mayday-spring-dinner-reply', String(choiceIndex))
+    addRouteAffection('yanming', choice.affection)
+  }
+
+  const chooseSpringSmsTarget = (character: SpringCharacterId, mode: 'day' | 'free' = 'day') => {
+    setSpringSmsTarget(character)
+    setSpringSmsRound(0)
+    setSpringSmsReplied(false)
+    setSpringSmsOpeningSent(false)
+    setSpringSmsReplies([])
+    setSpringSmsMode(mode)
+    localStorage.setItem('mayday-spring-sms-target', character)
+    localStorage.setItem('mayday-spring-sms-round', '0')
+    localStorage.setItem('mayday-spring-sms-replied', 'false')
+    localStorage.setItem('mayday-spring-sms-opening-sent', 'false')
+    localStorage.setItem('mayday-spring-sms-replies', '[]')
+    localStorage.setItem('mayday-spring-sms-mode', mode)
+    setSelectedSmsThread(character)
+    setActiveApp('messages')
+    changeStage(mode === 'day' ? 'spring-sms-chat' : 'spring-free-chat')
+  }
+
+  const chooseSpringSmsOpening = (choiceIndex: number) => {
+    if (!springSmsTarget || springSmsOpeningSent) return
+    const context: SpringDayContext = {
+      storeCharacter: springStoreCharacter,
+      afterChoice: springAfterChoice,
+      lessonCharacter: springLessonCharacter,
+      dinnerChoice: springDinnerReply,
+    }
+    const opening = getSpringSmsOpeners(springSmsTarget, context)[choiceIndex]
+    const firstRound = getSpringSmsRounds(springSmsTarget, context)[0]
+    if (!opening || !firstRound) return
+    appendChatMessages(springSmsTarget, [
+      { from: 'me', text: opening.text, time: '21:08' },
+      { from: springSmsTarget, text: opening.response, time: '21:09' },
+      { from: springSmsTarget, text: firstRound.incoming, time: '21:10' },
+    ], '1997年2月17日・晚上')
+    addRouteAffection(springSmsTarget, opening.affection)
+    setSpringSmsOpeningSent(true)
+    localStorage.setItem('mayday-spring-sms-opening-sent', 'true')
+  }
+
+  const chooseSpringSmsReply = (choiceIndex: number) => {
+    if (!springSmsTarget || !springSmsOpeningSent || springSmsReplied) return
+    const context: SpringDayContext = {
+      storeCharacter: springStoreCharacter,
+      afterChoice: springAfterChoice,
+      lessonCharacter: springLessonCharacter,
+      dinnerChoice: springDinnerReply,
+    }
+    const rounds = getSpringSmsRounds(springSmsTarget, context)
+    const round = rounds[springSmsRound]
+    const choice = round?.choices[choiceIndex]
+    if (!choice) return
+    const minute = 11 + springSmsRound * 3
+    appendChatMessages(springSmsTarget, [
+      { from: 'me', text: choice.text, time: '21:' + String(minute).padStart(2, '0') },
+      ...choice.response.map((text, index) => ({ from: springSmsTarget, text, time: '21:' + String(minute + index + 1).padStart(2, '0') })),
+      ...(springSmsRound < 4 ? [{ from: springSmsTarget, text: rounds[springSmsRound + 1].incoming, time: '21:' + String(minute + choice.response.length + 1).padStart(2, '0') }] : []),
+    ], '1997年2月17日・晚上')
+    const nextReplies = [...springSmsReplies, choiceIndex]
+    setSpringSmsReplies(nextReplies)
+    localStorage.setItem('mayday-spring-sms-replies', JSON.stringify(nextReplies))
+    addRouteAffection(springSmsTarget, choice.affection)
+    if (springSmsRound < 4) {
+      const nextRound = springSmsRound + 1
+      setSpringSmsRound(nextRound)
+      localStorage.setItem('mayday-spring-sms-round', String(nextRound))
+    } else {
+      setSpringSmsReplied(true)
+      localStorage.setItem('mayday-spring-sms-replied', 'true')
+    }
+  }
+
+  const buildSpringDiaryData = () => {
+    const storeNote = springStoreCharacter
+      ? '下午是' + ({ wen: '溫尚翊', ashin: '阿信', masa: '瑪莎', stone: '石頭', yanming: '諺明哥' } as Record<SpringCharacterId, string>)[springStoreCharacter] + '約我去樂器行。' + ({
+          wen: '他本來說只是看效果器，結果自己先被一把電吉他吸引，還把撥片塞給我試。嘴上一直嫌我手勢不對，倒是很認真地幫我調好。',
+          ashin: '阿信帶我看木吉他，還讓我試著抱琴、撥弦。第一次彈出比較清楚的聲音時，他比我還開心。',
+          masa: '瑪莎一路研究 Bass 和配件的價格，嘴上嫌貴，卻每把都要試。最後還是忍不住問我哪把好看。',
+          stone: '石頭陪我慢慢看吉他配件，還讓我試背帶和木吉他，完全不催我。',
+          yanming: '諺明哥陪我看鼓棒和器材，還示範不同重量拿起來的差別。',
+        } as Record<SpringCharacterId, string>)[springStoreCharacter]
+      : '下午沒有收到超過門檻的邀約，我自己去了練團室。'
+    const afterNote = springAfterChoice === 'yanming-dinner'
+      ? '練團結束後，我跟諺明哥去吃飯。' + (springDinnerReply === null ? '' : springYanmingDinnerChoices[springDinnerReply].response)
+      : springLessonCharacter
+        ? '練團結束後，我留下來跟' + ({ wen: '溫尚翊', ashin: '阿信', masa: '瑪莎', stone: '石頭' } as Record<Exclude<SpringCharacterId, 'yanming'>, string>)[springLessonCharacter] + '學樂器。' + springLessonRoutes[springLessonCharacter].blocks.filter((block) => block.speaker === '你').map((block) => block.text).join(' ') + '我還提出想摸摸看他手上的茧子，真的摸到了。'
+        : ''
+    const opener = springSmsTarget ? getSpringSmsOpeners(springSmsTarget, {
+      storeCharacter: springStoreCharacter, afterChoice: springAfterChoice, lessonCharacter: springLessonCharacter, dinnerChoice: springDinnerReply,
+    })[0]?.text ?? '' : ''
+    const firstReply = springSmsTarget ? getSpringSmsRounds(springSmsTarget, {
+      storeCharacter: springStoreCharacter, afterChoice: springAfterChoice, lessonCharacter: springLessonCharacter, dinnerChoice: springDinnerReply,
+    })[0]?.choices[springSmsReplies[0] ?? 0]?.text ?? '' : ''
+    const text = [
+      '過年一下子就過去了，開學第一天居然還挺有意思的。',
+      storeNote,
+      '後來一起去了練團室。他們今天練《轧車》，真的吵到不行。佑達每次都想加自己的鼓花，瑪莎就一直吐槽他，溫尚翊也跟著起鬨。偏偏最後一遍又真的練得很順，害我笑到差點忘記自己原本只是去看熱鬧。',
+      afterNote,
+      springSmsTarget ? '回家後我傳訊息給' + ({ wen: '溫尚翊', ashin: '阿信', masa: '瑪莎', stone: '石頭', yanming: '諺明哥' } as Record<SpringCharacterId, string>)[springSmsTarget] + '。我先傳了：「' + opener.replace(/^「|」$/g, '') + '」' + (firstReply ? '，他接著問我：「' + firstReply.replace(/^「|」$/g, '') + '」' : '') : '',
+      '今天好像真的開始有點懂他們為什麼這麼喜歡音樂了。下次再去練團室，不知道又會聽到什麼新花樣。',
+    ].filter(Boolean).join('\n\n')
+    return { title: '開學後，還是忍不住往練團室跑', text }
+  }
+
+  const startSpringDiary = () => {
+    if (!springSmsTarget || !springSmsOpeningSent || !springSmsReplied || springSmsRound !== 4 || springSmsReplies.length !== 5) return
+    const data = buildSpringDiaryData()
+    setSpringDiaryData(data)
+    setSpringDiaryUnlocked(true)
+    localStorage.setItem('mayday-spring-diary-data', JSON.stringify(data))
+    localStorage.setItem('mayday-spring-diary-unlocked', 'true')
+    setActiveApp(null)
+    setSelectedSmsThread(null)
+    changeStage('spring-diary')
+  }
+
+  const finishSpringDiary = () => {
+    if (!springDiaryData) return
+    setSpringDiaryUnlocked(true)
+    localStorage.setItem('mayday-spring-day-complete', 'true')
+    setActiveApp(null)
+    setSelectedSmsThread(null)
+    changeStage('completed')
+  }
+
+  const startSpringFreeChat = () => {
+    if (localStorage.getItem('mayday-spring-day-complete') !== 'true') return
+    setSpringSmsTarget(null)
+    setSpringSmsRound(0)
+    setSpringSmsReplied(false)
+    setSpringSmsOpeningSent(false)
+    setSpringSmsReplies([])
+    setSpringSmsMode('free')
+    setSelectedSmsThread(null)
+    setActiveApp('messages')
+    changeStage('spring-free-chat-picker')
+  }
+
+  const chooseSpringFreeChatTarget = (character: SpringCharacterId) => {
+    if (springSmsTarget) return
+    chooseSpringSmsTarget(character, 'free')
+  }
+
+  const finishSpringFreeChat = () => {
+    if (!springSmsTarget || !springSmsOpeningSent || !springSmsReplied || springSmsRound !== 4) return
+    setActiveApp(null)
+    setSelectedSmsThread(null)
+    setSpringSmsTarget(null)
+    localStorage.removeItem('mayday-spring-sms-target')
     changeStage('completed')
   }
 
