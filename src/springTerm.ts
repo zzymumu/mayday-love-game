@@ -2405,9 +2405,192 @@ const springNaturalMemberSmsRounds = (
 
 
 
-export const getSpringSmsOpeners = (character: SpringCharacterId, context: SpringDayContext): { text: string; response: string; affection: number }[] => {
-  if (character === 'yanming') return springYanmingSmsOpeners(context)
-  return springNaturalMemberSmsOpeners(character as SpringMemberSmsId, context)
+const springDailySmsOpeners: Record<SpringCharacterId, { text: string; response: string; affection: number }[]> = {
+  wen: [
+    { text: '「欸，你現在有空嗎？我想跟你講一件超無聊的小事。」', response: '「有啦，講啊。妳又遇到什麼奇怪的事？」', affection: 2 },
+    { text: '「我剛剛突然想到你，想說來吵你一下。」', response: '「蛤？我又沒惹妳，怎麼突然要來吵我？說啦。」', affection: 2 },
+    { text: '「溫尚翊！借我一點注意力，我有話要講！」', response: '「欸欸，這麼大聲幹嘛？我在啦，妳說。」', affection: 3 },
+  ],
+  ashin: [
+    { text: '「你現在有空嗎？我想跟你分享一件小事。」', response: '「有啊，怎麼了？我在聽。」', affection: 2 },
+    { text: '「欸，我剛剛突然想到你，就傳訊息來了。」', response: '「哈哈，這麼突然。怎麼啦？」', affection: 3 },
+    { text: '「我今天有點無聊，可以跟你講幾句話嗎？」', response: '「當然可以啊，剛好我也在休息。」', affection: 2 },
+  ],
+  masa: [
+    { text: '「欸，借我三分鐘，我有廢話要講。」', response: '「三分鐘喔？妳先說，我看值不值得加時。」', affection: 2 },
+    { text: '「我今天遇到一件事，急需找人一起吐槽。」', response: '「很好，終於有人找我做正事。說來聽聽。」', affection: 2 },
+    { text: '「你現在忙嗎？不忙的話聽我講一下。」', response: '「看妳要講什麼，先說，太無聊我會打斷。」', affection: 2 },
+  ],
+  stone: [
+    { text: '「你現在方便嗎？我想跟你說件小事。」', response: '「方便啊，妳說，我在。」', affection: 2 },
+    { text: '「今天有點想找人聊天，就想到你了。」', response: '「那就聊一下吧。今天過得怎麼樣？」', affection: 3 },
+    { text: '「我來分享一件很無聊的事，你不要嫌我煩喔。」', response: '「不會啊，小事也可以分享，不用先道歉。」', affection: 2 },
+  ],
+  yanming: [
+    { text: '「諺明哥，你現在有空嗎？我想講點日常小事。」', response: '「有空，妳慢慢說，不用急。」', affection: 2 },
+    { text: '「我剛剛突然想到一件事，想找你聊一下。」', response: '「好啊，怎麼了？我剛好有空。」', affection: 2 },
+    { text: '「今天沒什麼大事，就是想找你講幾句話。」', response: '「可以啊，休息一下也好。妳今天還順利嗎？」', affection: 3 },
+  ],
+}
+
+const springDailySmsRounds: Record<SpringCharacterId, SpringSmsRound[]> = {
+  wen: [
+    springSmsRound('「所以咧，今天又有什麼事？快講，我有在聽。」', [
+      springSmsChoice('「我今天買飲料踩雷了，第一口差點直接吐掉。」', ['「妳到底買了什麼啦？每次看到新品都很敢欸。」', '「不好喝就不要硬喝，妳又不是在做實驗。」'], 2),
+      springSmsChoice('「我在路上看到一隻超胖的貓，牠坐在店門口像老闆。」', ['「哈哈哈哈，牠可能真的才是店長。妳有沒有跟牠打招呼？」'], 2),
+      springSmsChoice('「我上課差點睡著，還好老師沒有突然點我名。」', ['「欸，妳上課到底是去上課還是補眠？昨晚又幾點睡？」'], 2),
+    ]),
+    springSmsRound('「那妳現在在幹嘛？該不會又躺著滑手機了吧。」', [
+      springSmsChoice('「剛洗完澡，頭髮還濕濕的，懶得吹。」', ['「頭髮吹乾啦，感冒不要怪我沒提醒妳。」'], 2),
+      springSmsChoice('「在找宵夜，肚子又開始叫了。」', ['「妳不是才吃過？胃是無底洞喔。」'], 2),
+      springSmsChoice('「躺在床上，打算再滑五分鐘就睡（騙人的）。」', ['「五分鐘？妳這個單位通常要換算成兩小時。」'], 3),
+    ]),
+    springSmsRound('「妳真的很會把小事講得像大新聞欸。」', [
+      springSmsChoice('「我就是想到什麼講什麼啊，不然會憋壞。」', ['「看得出來，妳腦袋根本沒有靜音鍵。」'], 2),
+      springSmsChoice('「你是不是嫌我話太多？我可以閉嘴三秒。」', ['「三秒喔？妳現在已經講到第二秒了。」'], 3),
+      springSmsChoice('「那換你分享啊，你今天有沒有什麼事？」', ['「我今天差點被一條線絆倒，還好沒摔。這件事不准笑。」'], 2),
+    ]),
+    springSmsRound('「好啦，那我也問妳一個。週末有什麼打算？」', [
+      springSmsChoice('「想去夜市亂逛，看到什麼吃什麼。」', ['「夜市喔？妳不要每攤都買一份，最後又吃不完。」'], 2),
+      springSmsChoice('「想去書店晃晃，可能會買一堆本來不需要的書。」', ['「妳去書店是買書還是去吹冷氣？買之前先想一下啦。」'], 2),
+      springSmsChoice('「想在家睡到自然醒，誰都不要叫我。」', ['「好啦，這個計畫最適合妳。手機記得開靜音。」'], 3),
+    ]),
+    springSmsRound('「好啦，妳繼續忙妳的。不要一邊跟我聊天一邊忘記吹頭髮。」', [
+      springSmsChoice('「好啦好啦，晚點再找你，拜拜～」', ['「知道啦，拜啦。欸，明天想到什麼再來吵我。」'], 2),
+      springSmsChoice('「你也不要太晚睡喔，晚安！」', ['「我哪有那麼早睡，妳先管好自己啦。晚安。」'], 2),
+      springSmsChoice('「我還想再聊一下欸，不過怕你嫌我煩哈哈。」', ['「妳很煩欸……不過還可以再聊一下啦。」'], 4),
+    ]),
+  ],
+  ashin: [
+    springSmsRound('「哈哈，好啊。今天有沒有發生什麼讓妳印象深刻的小事？」', [
+      springSmsChoice('「我今天買飲料踩雷了，第一口差點直接吐掉。」', ['「真的假的，哪一家啊？先記下來，下次我也避開。」', '「妳後來有買別的嗎？不要為了一杯飲料心情不好。」'], 2),
+      springSmsChoice('「我在路上看到一隻超胖的貓，牠坐在店門口像老闆。」', ['「好可愛喔，妳有拍下來嗎？我有點想看牠那個老闆樣。」'], 3),
+      springSmsChoice('「我上課差點睡著，還好老師沒有突然點我名。」', ['「還好沒被點到。妳昨天是不是又睡很晚？不要一直熬夜啦。」'], 2),
+    ]),
+    springSmsRound('「那妳現在在做什麼？已經回家休息了嗎？」', [
+      springSmsChoice('「剛洗完澡，頭髮還濕濕的，懶得吹。」', ['「先把頭髮吹乾喔，濕著睡不太舒服。」'], 2),
+      springSmsChoice('「在找宵夜，肚子又開始叫了。」', ['「還沒吃飽嗎？找點熱的吃，不要只吃零食。」'], 2),
+      springSmsChoice('「躺在床上，打算再滑五分鐘就睡（騙人的）。」', ['「哈哈，這個五分鐘我懂，手機真的很容易讓人忘記時間。」'], 3),
+    ]),
+    springSmsRound('「聽妳講這些小事，感覺今天也變得有趣一點。」', [
+      springSmsChoice('「我就是想到什麼講什麼啊，不然會憋壞。」', ['「這樣很好啊，想到什麼就說，不用特別整理。」'], 2),
+      springSmsChoice('「你是不是嫌我話太多？我可以閉嘴三秒。」', ['「沒有啦，我覺得妳很有趣。三秒不用啦，繼續說也可以。」'], 3),
+      springSmsChoice('「那換你分享啊，你今天有沒有什麼事？」', ['「我今天早上買咖啡忘記拿吸管，走到半路才發現。」'], 2),
+    ]),
+    springSmsRound('「那週末有沒有想做的事？不一定要排滿，放鬆也很好。」', [
+      springSmsChoice('「想去夜市亂逛，看到什麼吃什麼。」', ['「聽起來不錯耶，夜市邊走邊吃很有氣氛。」'], 2),
+      springSmsChoice('「想去書店晃晃，可能會買一堆本來不需要的書。」', ['「我也喜歡逛書店，有時候不一定要買，慢慢看就很好。」'], 3),
+      springSmsChoice('「想在家睡到自然醒，誰都不要叫我。」', ['「那就好好睡吧。如果最近累了，就讓自己休息一下。」'], 2),
+    ]),
+    springSmsRound('「那我不佔妳太多時間了。等妳下次想到什麼，再傳訊息給我就好。」', [
+      springSmsChoice('「好啦好啦，晚點再找你，拜拜～」', ['「好呀，晚點聊。回去路上小心喔。」'], 2),
+      springSmsChoice('「你也不要太晚睡喔，晚安！」', ['「妳也是，晚安。今天聊得滿開心的。」'], 3),
+      springSmsChoice('「我還想再聊一下欸，不過怕你嫌我煩哈哈。」', ['「不會嫌妳啦，妳想聊就再說幾句。」'], 4),
+    ]),
+  ],
+  masa: [
+    springSmsRound('「好，開始吧。今天又有什麼值得寫進荒謬日誌的？」', [
+      springSmsChoice('「我今天買飲料踩雷了，第一口差點直接吐掉。」', ['「店名交出來，這種店要列黑名單。」', '「妳這個踩雷體質真的要列入研究。」'], 2),
+      springSmsChoice('「我在路上看到一隻超胖的貓，牠坐在店門口像老闆。」', ['「牠是店長，妳是客人。記得付罐罐費。」'], 2),
+      springSmsChoice('「我上課差點睡著，還好老師沒有突然點我名。」', ['「妳到底是去修課還是去跟睡意拔河？」'], 2),
+    ]),
+    springSmsRound('「報告完畢，那現在呢？準備當沙發馬鈴薯了？」', [
+      springSmsChoice('「剛洗完澡，頭髮還濕濕的，懶得吹。」', ['「妳頭髮要是自己長腳乾掉就不用吹了，快去。」'], 2),
+      springSmsChoice('「在找宵夜，肚子又開始叫了。」', ['「宵夜又來了？妳的胃是不是有自己的行程表。」'], 2),
+      springSmsChoice('「躺在床上，打算再滑五分鐘就睡（騙人的）。」', ['「五分鐘後見，兩小時後的妳。」'], 3),
+    ]),
+    springSmsRound('「妳一天到晚都有新鮮事，還是妳特別會找話題？」', [
+      springSmsChoice('「我就是想到什麼講什麼啊，不然會憋壞。」', ['「妳不講也會自己在腦袋裡演完一整齣吧。」'], 2),
+      springSmsChoice('「你是不是嫌我話太多？我可以閉嘴三秒。」', ['「三秒？我建議妳挑戰三分鐘，應該比較有難度。」'], 3),
+      springSmsChoice('「那換你分享啊，你今天有沒有什麼事？」', ['「我今天差點把手機放進冰箱，還好最後放回桌上。不要問原因。」'], 2),
+    ]),
+    springSmsRound('「講那麼多，週末總有計畫吧？還是準備跟床黏在一起？」', [
+      springSmsChoice('「想去夜市亂逛，看到什麼吃什麼。」', ['「妳這叫夜市巡迴賽吧，記得不要每攤都買。」'], 2),
+      springSmsChoice('「想去書店晃晃，可能會買一堆本來不需要的書。」', ['「買一堆不需要的書？妳至少有自知之明。」'], 2),
+      springSmsChoice('「想在家睡到自然醒，誰都不要叫我。」', ['「這個我支持，週末最重要的任務就是不要起床。」'], 3),
+    ]),
+    springSmsRound('「行啦，今天的廢話大會差不多可以散會了。」', [
+      springSmsChoice('「好啦好啦，晚點再找你，拜拜～」', ['「終於散會了。記得下次帶點有用的情報來。」'], 2),
+      springSmsChoice('「你也不要太晚睡喔，晚安！」', ['「知道啦，妳也不要熬夜。晚安。」'], 2),
+      springSmsChoice('「我還想再聊一下欸，不過怕你嫌我煩哈哈。」', ['「我有說嫌妳嗎？只是要記得讓我插話。」'], 3),
+    ]),
+  ],
+  stone: [
+    springSmsRound('「嗯，妳說。今天有什麼小事想跟我分享？」', [
+      springSmsChoice('「我今天買飲料踩雷了，第一口差點直接吐掉。」', ['「那真的會很失望欸。妳有換一杯嗎？不要勉強喝完。」'], 2),
+      springSmsChoice('「我在路上看到一隻超胖的貓，牠坐在店門口像老闆。」', ['「哈哈，聽起來牠很有自己的地盤。妳有拍照嗎？」'], 3),
+      springSmsChoice('「我上課差點睡著，還好老師沒有突然點我名。」', ['「還好沒被點到。妳最近是不是有點累？晚上早點休息吧。」'], 2),
+    ]),
+    springSmsRound('「那妳現在忙什麼？今天還有事情要做嗎？」', [
+      springSmsChoice('「剛洗完澡，頭髮還濕濕的，懶得吹。」', ['「吹一下再休息吧，濕頭髮睡覺會不舒服。」'], 2),
+      springSmsChoice('「在找宵夜，肚子又開始叫了。」', ['「找點簡單的吃就好，別餓著肚子。」'], 2),
+      springSmsChoice('「躺在床上，打算再滑五分鐘就睡（騙人的）。」', ['「哈哈，先把鬧鐘設好，不然真的會滑到很晚。」'], 2),
+    ]),
+    springSmsRound('「妳好像很會注意身邊的小事。」', [
+      springSmsChoice('「我就是想到什麼講什麼啊，不然會憋壞。」', ['「這樣很好啊，生活裡有很多小事值得記住。」'], 2),
+      springSmsChoice('「你是不是嫌我話太多？我可以閉嘴三秒。」', ['「沒有嫌妳。妳不用突然安靜，我反而會擔心妳是不是累了。」'], 3),
+      springSmsChoice('「那換你分享啊，你今天有沒有什麼事？」', ['「我今天把東西拿在手上找了半天，最後才發現一直拿著。」'], 2),
+    ]),
+    springSmsRound('「那週末呢？有沒有想去走走，或做一點一直想做的事？」', [
+      springSmsChoice('「想去夜市亂逛，看到什麼吃什麼。」', ['「夜市很適合慢慢走，記得帶水，別只顧著吃。」'], 2),
+      springSmsChoice('「想去書店晃晃，可能會買一堆本來不需要的書。」', ['「書店很舒服啊，逛一逛也能讓心情安靜下來。」'], 3),
+      springSmsChoice('「想在家睡到自然醒，誰都不要叫我。」', ['「偶爾睡晚一點很好，妳可以好好休息。」'], 2),
+    ]),
+    springSmsRound('「好，那妳先去做自己的事。晚一點也記得休息。」', [
+      springSmsChoice('「好啦好啦，晚點再找你，拜拜～」', ['「好啊，妳忙完再說。晚安，記得休息。」'], 2),
+      springSmsChoice('「你也不要太晚睡喔，晚安！」', ['「妳也是，今天聊得很開心。晚安。」'], 3),
+      springSmsChoice('「我還想再聊一下欸，不過怕你嫌我煩哈哈。」', ['「不會啊，妳想聊就聊，不用擔心打擾我。」'], 4),
+    ]),
+  ],
+  yanming: [
+    springSmsRound('「怎麼了？今天過得還順利嗎？有什麼想說的都可以。」', [
+      springSmsChoice('「我今天買飲料踩雷了，第一口差點直接吐掉。」', ['「那就別勉強喝完，換一杯吧。下次可以先看看評價。」'], 2),
+      springSmsChoice('「我在路上看到一隻超胖的貓，牠坐在店門口像老闆。」', ['「牠看起來很有自己的地盤。妳有拍下來嗎？」'], 2),
+      springSmsChoice('「我上課差點睡著，還好老師沒有突然點我名。」', ['「上課還是要睡飽比較好。妳今天晚上別太晚睡了。」'], 2),
+    ]),
+    springSmsRound('「那妳現在呢？今天的事情都忙完了嗎？」', [
+      springSmsChoice('「剛洗完澡，頭髮還濕濕的，懶得吹。」', ['「先把頭髮吹乾再躺著，這樣比較不容易著涼。」'], 2),
+      springSmsChoice('「在找宵夜，肚子又開始叫了。」', ['「如果真的餓了就吃一點，不用硬撐。記得別吃太油。」'], 2),
+      springSmsChoice('「躺在床上，打算再滑五分鐘就睡（騙人的）。」', ['「五分鐘很容易變很久，妳要不要先設個提醒？」'], 2),
+    ]),
+    springSmsRound('「聽妳講這些，倒覺得日常也挺有意思的。」', [
+      springSmsChoice('「我就是想到什麼講什麼啊，不然會憋壞。」', ['「沒關係，想說就說。偶爾分享些小事也很好。」'], 2),
+      springSmsChoice('「你是不是嫌我話太多？我可以閉嘴三秒。」', ['「不會，妳不用刻意安靜。想聊天就聊。」'], 3),
+      springSmsChoice('「那換你分享啊，你今天有沒有什麼事？」', ['「我今天把鑰匙放進口袋後，又在桌上找了十分鐘。後來才想起來。」'], 2),
+    ]),
+    springSmsRound('「這週末有安排嗎？如果沒有，也可以留點時間休息。」', [
+      springSmsChoice('「想去夜市亂逛，看到什麼吃什麼。」', ['「夜市可以啊，先想好想吃什麼，不然很容易買太多。」'], 2),
+      springSmsChoice('「想去書店晃晃，可能會買一堆本來不需要的書。」', ['「書店不錯，妳可以挑一本真的想看的，不用買太多。」'], 2),
+      springSmsChoice('「想在家睡到自然醒，誰都不要叫我。」', ['「那就睡飽一點。最近如果忙，週末也別排太滿。」'], 3),
+    ]),
+    springSmsRound('「好，那先聊到這裡。妳有事再傳訊息給我就好。」', [
+      springSmsChoice('「好啦好啦，晚點再找你，拜拜～」', ['「好，妳先忙。晚點有空再聊，路上小心。」'], 2),
+      springSmsChoice('「你也不要太晚睡喔，晚安！」', ['「妳也是，早點休息。晚安。」'], 2),
+      springSmsChoice('「我還想再聊一下欸，不過怕你嫌我煩哈哈。」', ['「不會嫌妳，妳有想說的就傳過來。」'], 3),
+    ]),
+  ],
+}
+
+export const getSpringSmsOpeners = (
+  character: SpringCharacterId,
+  context: SpringDayContext,
+): { text: string; response: string; affection: number }[] => {
+  void context
+  return springDailySmsOpeners[character]
+}
+
+export const getSpringSmsRounds = (
+  character: SpringCharacterId,
+  context: SpringDayContext,
+  smsReplies: number[] = [],
+  openingChoice: number | null = null,
+): SpringSmsRound[] => {
+  // Every branch is now a self-contained everyday conversation. Story choices
+  // and the previously selected opener intentionally do not alter its topics.
+  void context
+  void smsReplies
+  void openingChoice
+  return springDailySmsRounds[character]
 }
 
 
