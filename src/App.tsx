@@ -4679,7 +4679,7 @@ function App() {
         : springLessonCharacter
           ? lessonMemories[springLessonCharacter]
           : ''
-    const chatMemory = springSmsTarget
+    const chatMemory = springSmsTarget && springSmsOpeningChoice !== null
       ? '回家後又和' + characterNamesForDiary[springSmsTarget] + '聊了一會兒。其實也沒什麼驚天動地的大事，手機放下以後，心情卻還是好了一點。'
       : ''
     const title = springAfterChoice === 'yanming-dinner'
