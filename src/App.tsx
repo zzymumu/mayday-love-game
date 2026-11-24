@@ -4597,19 +4597,69 @@ function App() {
   }
 
   const chooseSpringSmsTarget = (character: SpringCharacterId, mode: 'day' | 'free' = 'day') => {
+    const sameActiveConversation =
+      localStorage.getItem('mayday-spring-sms-target') === character &&
+      localStorage.getItem('mayday-spring-sms-mode') === mode &&
+      localStorage.getItem('mayday-spring-sms-opening-sent') === 'true'
+
     setSpringSmsTarget(character)
-    setSpringSmsRound(0)
-    setSpringSmsReplied(false)
-    setSpringSmsOpeningSent(false)
-    setSpringSmsOpeningChoice(null)
-    setSpringSmsReplies([])
     setSpringSmsMode(mode)
+    if (!sameActiveConversation) {
+      setSpringSmsRound(0)
+      setSpringSmsReplied(false)
+      setSpringSmsOpeningSent(false)
+      setSpringSmsOpeningChoice(null)
+      setSpringSmsReplies([])
+      localStorage.setItem('mayday-spring-sms-target', character)
+      localStorage.setItem('mayday-spring-sms-round', '0')
+      localStorage.setItem('mayday-spring-sms-replied', 'false')
+      localStorage.setItem('mayday-spring-sms-opening-sent', 'false')
+      localStorage.removeItem('mayday-spring-sms-opening-choice')
+      localStorage.setItem('mayday-spring-sms-replies', '[]')
+      localStorage.setItem('mayday-spring-sms-mode', mode)
+    } else {
+      const savedRound = Number(localStorage.getItem('mayday-spring-sms-round') ?? '0')
+      const savedReplies = JSON.parse(localStorage.getItem('mayday-spring-sms-replies') ?? '[]') as number[]
+      const savedChoice = Number(localStorage.getItem('mayday-spring-sms-opening-choice') ?? '-1')
+      setSpringSmsRound(Number.isInteger(savedRound) ? Math.max(0, Math.min(4, savedRound)) : 0)
+      setSpringSmsReplied(localStorage.getItem('mayday-spring-sms-replied') === 'true')
+      setSpringSmsOpeningSent(true)
+      setSpringSmsOpeningChoice(Number.isInteger(savedChoice) && savedChoice >= 0 && savedChoice <= 2 ? savedChoice : null)
+      setSpringSmsReplies(Array.isArray(savedReplies) ? savedReplies.filter((value) => Number.isInteger(value) && value >= 0 && value <= 2).slice(0, 5) : [])
+    }
+
+    // Older test saves could keep the previous incoming bubble while resetting
+    // the choice panel to round one. Migrate that one legacy line to the active
+    // round's incoming text so the displayed message and choices stay paired.
+    const context: SpringDayContext = {
+      storeCharacter: springStoreCharacter,
+      afterChoice: springAfterChoice,
+      lessonCharacter: springLessonCharacter,
+      dinnerChoice: springDinnerReplies[0] ?? null,
+      storeReplies: [springStoreReply, springStoreSecondReply, springStoreThirdReply],
+      lessonReplies: springLessonReplies,
+      dinnerReplies: springDinnerReplies,
+    }
+    const activeReplies = sameActiveConversation ? springSmsReplies : []
+    const activeRoundIndex = sameActiveConversation ? springSmsRound : 0
+    const activeIncoming = getSpringSmsRounds(character, context, activeReplies)[activeRoundIndex]?.incoming
+    const existing = chatMessagesRef.current[character] ?? []
+    const legacyIncoming = '剛剛那個和弦最後有彈出來，現在還記得食指要怎麼放嗎？'
+    if (activeIncoming && existing.some((message) => message.date === '1997年2月17日・晚上' && message.from === character && message.text === legacyIncoming)) {
+      const next: Record<CharacterId, SmsMessage[]> = {
+        ...chatMessagesRef.current,
+        [character]: existing.map((message) =>
+          message.date === '1997年2月17日・晚上' && message.from === character && message.text === legacyIncoming
+            ? { ...message, text: activeIncoming }
+            : message
+        ),
+      }
+      chatMessagesRef.current = next
+      localStorage.setItem('mayday-chat-messages', JSON.stringify(next))
+      setChatMessages(next)
+    }
+
     localStorage.setItem('mayday-spring-sms-target', character)
-    localStorage.setItem('mayday-spring-sms-round', '0')
-    localStorage.setItem('mayday-spring-sms-replied', 'false')
-    localStorage.setItem('mayday-spring-sms-opening-sent', 'false')
-    localStorage.removeItem('mayday-spring-sms-opening-choice')
-    localStorage.setItem('mayday-spring-sms-replies', '[]')
     localStorage.setItem('mayday-spring-sms-mode', mode)
     setSelectedSmsThread(character)
     setActiveApp('messages')
