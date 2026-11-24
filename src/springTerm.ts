@@ -1141,7 +1141,7 @@ const springHomeMemberSmsRounds = (
       '我剛才想到一個地方，可以讓吉他和 Bass 接得更順。',
     ], r1), [
       springSmsChoice('「你是不是很喜歡一直研究怎麼變更好？」', ['「嗯，會想試試看有沒有更舒服的方式。」'], 3),
-      springSmsChoice('「你是不是很喜歡一直研究怎麼變更好？」', ['「嗯，會想試試看有沒有更舒服的方式。」'], 3),
+      springSmsChoice('「下次你再跟我說你試了什麼，我想聽。」', ['「好啊，到時候讓妳聽聽看。」'], 3),
       springSmsChoice('「你想到這些小地方，難怪彈起來那麼順。」', ['「謝謝，妳這樣說我會有點不好意思。」'], 3),
     ]),
     springSmsRound(springHomeBranchText([
