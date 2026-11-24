@@ -4481,10 +4481,13 @@ function App() {
           yanming: '諺明哥陪我看鼓棒和器材，還示範不同重量拿起來的差別。',
         } as Record<SpringCharacterId, string>)[springStoreCharacter]
       : '下午沒有收到超過門檻的邀約，我自己去了練團室。'
+    const storeChoiceNote = springStoreCharacter && springStoreReply !== null
+      ? '我回他：「' + springStoreRoutes[springStoreCharacter].choices[springStoreReply].text.replace(/^「|」$/g, '') + '」' + springStoreRoutes[springStoreCharacter].choices[springStoreReply].response
+      : ''
     const afterNote = springAfterChoice === 'yanming-dinner'
-      ? '練團結束後，我跟諺明哥去吃飯。' + (springDinnerReply === null ? '' : springYanmingDinnerChoices[springDinnerReply].response)
+      ? '練團結束後，我跟諺明哥去吃飯。' + (springDinnerReply === null ? '' : '我回答：「' + springYanmingDinnerChoices[springDinnerReply].text.replace(/^「|」$/g, '') + '」' + springYanmingDinnerChoices[springDinnerReply].response)
       : springLessonCharacter
-        ? '練團結束後，我留下來跟' + ({ wen: '溫尚翊', ashin: '阿信', masa: '瑪莎', stone: '石頭' } as Record<Exclude<SpringCharacterId, 'yanming'>, string>)[springLessonCharacter] + '學樂器。' + springLessonRoutes[springLessonCharacter].blocks.filter((block) => block.speaker === '你').map((block) => block.text).join(' ') + '我還提出想摸摸看他手上的茧子，真的摸到了。'
+        ? '練團結束後，我留下來跟' + ({ wen: '溫尚翊', ashin: '阿信', masa: '瑪莎', stone: '石頭' } as Record<Exclude<SpringCharacterId, 'yanming'>, string>)[springLessonCharacter] + '學樂器。' + springLessonRoutes[springLessonCharacter].blocks.filter((block) => block.speaker === '你').map((block) => block.text).join(' ') + '我還提出想摸摸看他手上的茧子，真的摸到了。' + (springLessonReply === null ? '' : '我後來說：「' + springLessonRoutes[springLessonCharacter].choices[springLessonReply].text.replace(/^「|」$/g, '') + '」' + springLessonRoutes[springLessonCharacter].choices[springLessonReply].response)
         : ''
     const opener = springSmsTarget ? getSpringSmsOpeners(springSmsTarget, {
       storeCharacter: springStoreCharacter, afterChoice: springAfterChoice, lessonCharacter: springLessonCharacter, dinnerChoice: springDinnerReply,
@@ -4494,7 +4497,7 @@ function App() {
     })[0]?.choices[springSmsReplies[0] ?? 0]?.text ?? '' : ''
     const text = [
       '過年一下子就過去了，開學第一天居然還挺有意思的。',
-      storeNote,
+      storeNote + (storeChoiceNote ? ' ' + storeChoiceNote : ''),
       '後來一起去了練團室。他們今天練《轧車》，真的吵到不行。佑達每次都想加自己的鼓花，瑪莎就一直吐槽他，溫尚翊也跟著起鬨。偏偏最後一遍又真的練得很順，害我笑到差點忘記自己原本只是去看熱鬧。',
       afterNote,
       springSmsTarget ? '回家後我傳訊息給' + ({ wen: '溫尚翊', ashin: '阿信', masa: '瑪莎', stone: '石頭', yanming: '諺明哥' } as Record<SpringCharacterId, string>)[springSmsTarget] + '。我先傳了：「' + opener.replace(/^「|」$/g, '') + '」' + (firstReply ? '，他接著問我：「' + firstReply.replace(/^「|」$/g, '') + '」' : '') : '',
