@@ -1779,7 +1779,7 @@ function App() {
   const [storyStage, setStoryStage] = useState<StoryStage>(() => {
     const saved = localStorage.getItem('mayday-story-stage')
     const savedSpringStage = saved === 'paused' ? localStorage.getItem('mayday-resume-stage') : saved
-    if (localStorage.getItem('mayday-spring-sms-content-version') !== 'daily-chat-v3') {
+    if (localStorage.getItem('mayday-spring-sms-content-version') !== 'daily-chat-v4') {
       if (savedSpringStage === 'spring-sms-chat') return 'spring-sms-picker'
       if (savedSpringStage === 'spring-free-chat') return 'spring-free-chat-picker'
     }
@@ -1824,11 +1824,11 @@ function App() {
   const [monthDiaryUnlocked, setMonthDiaryUnlocked] = useState(() => localStorage.getItem('mayday-month-diary-unlocked') === 'true' || localStorage.getItem('mayday-month-day-complete') === 'true')
   const [selectedDiaryDate, setSelectedDiaryDate] = useState<'1996-10-15' | '1996-10-16' | '1996-11-16' | '1996-12-14' | '1996-12-31' | '1997-01-22' | '1997-02-03' | '1997-02-17' | null>(null)
   const [chatMessages, setChatMessages] = useState<Record<CharacterId, SmsMessage[]>>(() => {
-    // The spring SMS content is being refreshed with coherent, character-specific everyday conversations.
+    // The spring SMS dialogue and player choices have been rewritten for more natural, character-specific voices.
     // Remove only the previous 17 February free-chat exchange; keep every other historical message.
-    const resetSpringSmsHistory = localStorage.getItem('mayday-spring-sms-content-version') !== 'daily-chat-v3'
+    const resetSpringSmsHistory = localStorage.getItem('mayday-spring-sms-content-version') !== 'daily-chat-v4'
     if (resetSpringSmsHistory) {
-      localStorage.setItem('mayday-spring-sms-content-version', 'daily-chat-v3')
+      localStorage.setItem('mayday-spring-sms-content-version', 'daily-chat-v4')
       localStorage.removeItem('mayday-spring-sms-target')
       localStorage.setItem('mayday-spring-sms-round', '0')
       localStorage.setItem('mayday-spring-sms-replied', 'false')
