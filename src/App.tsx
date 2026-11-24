@@ -3855,7 +3855,7 @@ function App() {
     }
     const shared = '剛回來，耳朵裡好像還有大家倒數的聲音。佑達喊得最大聲，瑪莎偏偏要跟他搶，石頭忙著拍照，阿信在分飲料，諺明哥確認煙火和大家站的位置。溫尚翊蹲在旁邊拆仙女棒，嘴上還叫大家不要亂來。煙火真的放起來時，我本來想好好許個願，結果旁邊有人笑到彎腰，我也跟著笑，根本沒空想。算了，願望先欠著。'
     const choiceNote = firstChoice ? `我還記得今天我說「${firstChoice}」的時候，他回我的那個反應。現在想起來還是覺得有點好笑。` : ''
-    const fireworksNote = lastChoice ? `後來大家問我「${lastChoice}」，我居然真的就那樣做了。現在想想，當時好像比我自己以為的還開心。` : ''
+    const fireworksNote = lastChoice ? `煙火那邊我居然選了「${lastChoice}」。現在想想，當時好像比我自己以為的還開心。` : ''
     const diaryText = focus
       ? `${openings[focus]} ${choiceNote} ${fireworksNote} ${shared}`
       : shared
