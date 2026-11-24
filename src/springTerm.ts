@@ -1170,6 +1170,120 @@ export const getSpringSmsOpeners = (character: SpringCharacterId, context: Sprin
   return rehearsal[character]
 }
 
+const springStoreSmsFirstRound = (character: SpringCharacterId, context: SpringDayContext): SpringSmsRound => {
+  const selected = context.storeReplies?.[0] ?? null
+  const incoming = springContextLine(character, context)
+  if (character === 'wen') {
+    const choices = selected === 0
+      ? [
+          springSmsChoice('「后面那个真的很有气势，我还是最喜欢那个。」', ['「我就知道妳會喜歡這個。」'], 2),
+          springSmsChoice('「你刚刚故意多弹那几个音，是不是在炫技？」', ['「有一點啦，效果器好用就要試給妳聽啊。」'], 2),
+          springSmsChoice('「拿去表演一定很适合。」', ['「對啊，這個音色在台上很有存在感。」'], 2),
+        ]
+      : selected === 1
+        ? [
+            springSmsChoice('「我还是觉得前面那个干净的声音比较耐听。」', ['「我也覺得，乾淨的音色其實很實用。」'], 2),
+            springSmsChoice('「你关掉效果器之后那几句也很好听。」', ['「那本來就是吉他的聲音啊。」'], 2),
+            springSmsChoice('「我比较喜欢清爽一点的感觉。」', ['「好啦，知道妳喜歡哪種了。」'], 2),
+          ]
+        : selected === 2
+          ? [
+              springSmsChoice('「我说你弹什么都好听是真的。」', ['「妳今天真的很會講欸。」'], 2),
+              springSmsChoice('「你刚刚是不是偷笑了？」', ['「哪有，妳看錯了啦。」'], 2),
+              springSmsChoice('「你自己是不是也觉得很帅？」', ['「蛤？妳不要一直抓我語病。」'], 2),
+            ]
+          : [
+              springSmsChoice('「我最喜歡後面那個音色，真的很有氣勢。」', ['「我就知道妳會喜歡那個，拿來表演很適合。」'], 2),
+              springSmsChoice('「我覺得你彈起來真的很帥。」', ['「又來了喔，妳今天很會講欸。」'], 2),
+              springSmsChoice('「我還記得你讓我踩開關那次。」', ['「哈哈，第一次當音控就上手了啦。」'], 2),
+            ]
+    return springSmsRound(incoming, choices)
+  }
+  if (character === 'ashin') {
+    const choices = selected === 0
+      ? [
+          springSmsChoice('「第一把的聲音真的很溫暖，我很喜歡。」', ['「我也喜歡那種音色，聽起來很舒服。」'], 2),
+          springSmsChoice('「我現在還記得第一把琴的共鳴。」', ['「那把的聲音比較厚一點，聽起來很柔和。」'], 2),
+          springSmsChoice('「你剛剛彈第一把的時候，我覺得很舒服。」', ['「哈哈，那就好，我自己也滿喜歡那個聲音。」'], 2),
+        ]
+      : selected === 1
+        ? [
+            springSmsChoice('「第二把比較清亮，真的很適合唱歌。」', ['「對啊，配人聲應該會滿好的。」'], 2),
+            springSmsChoice('「我還記得你剛剛哼的那兩句。」', ['「哈哈，妳有聽到喔？我剛剛唱得很小聲耶。」'], 2),
+            springSmsChoice('「我覺得第二把的聲音比較清楚。」', ['「妳耳朵真的滿好的，有聽出那個差別。」'], 2),
+          ]
+        : selected === 2
+          ? [
+              springSmsChoice('「我還是分不太出來，你下次再彈給我聽一次。」', ['「好啊，下次我再放慢一點，讓妳慢慢聽。」'], 2),
+              springSmsChoice('「你慢慢彈，我就比較聽得出來了。」', ['「沒問題啊，不用急，慢慢聽就好。」'], 2),
+              springSmsChoice('「我覺得你彈兩把都很好聽。」', ['「哈哈，這樣我會不知道妳到底喜歡哪一把耶。」'], 2),
+            ]
+          : [
+              springSmsChoice('「第一把的聲音比較溫暖，我很喜歡。」', ['「我也喜歡那種音色，聽起來很舒服。」'], 2),
+              springSmsChoice('「第二把比較清亮，真的很適合唱歌。」', ['「對啊，配人聲應該會滿好的。」'], 2),
+              springSmsChoice('「我還在想抱著木吉他的感覺，好大一把。」', ['「哈哈，妳剛剛真的像抱大抱枕。」'], 2),
+            ]
+    return springSmsRound(incoming, choices)
+  }
+  if (character === 'masa') {
+    const choices = selected === 0
+      ? [
+          springSmsChoice('「你剛剛那段低音真的很帥，我還想再聽一次。」', ['「妳是來聽演唱會的喔？」'], 2),
+          springSmsChoice('「我现在知道 Bass 为什么这么重要了。」', ['「現在知道還不遲，低音可不是裝飾。」'], 2),
+          springSmsChoice('「地板真的有在震，太有感觉了！」', ['「那是妳站太近了啦。」'], 2),
+        ]
+      : selected === 1
+        ? [
+            springSmsChoice('「我说像蹦迪不是嫌弃啦，真的很有节奏。」', ['「最好是，妳剛剛明明笑得很開心。」'], 2),
+            springSmsChoice('「你刚刚故意弹得更夸张，是想让我跳起来吗？」', ['「不然咧？我還可以再誇張一點。」'], 2),
+            springSmsChoice('「我现在脑袋里还在响那个节奏。」', ['「那表示妳有聽進去一點嘛。」'], 2),
+          ]
+        : selected === 2
+          ? [
+              springSmsChoice('「原来 Bass 也可以这么好听，我以前真的小看它了。」', ['「現在知道就好，不要再說我們是裝飾。」'], 2),
+              springSmsChoice('「你刚刚弹的时候看起来超投入。」', ['「廢話，自己的樂器當然要認真。」'], 2),
+              springSmsChoice('「我觉得低音一出来，整首歌都不一样了。」', ['「這句總算講到重點了。」'], 2),
+            ]
+          : [
+              springSmsChoice('「Bass 的聲音真的很有力量！」', ['「不然咧？低音可不是站在旁邊裝飾的。」'], 2),
+              springSmsChoice('「我现在还记得你嫌琴弦太贵。」', ['「那個價格本來就很沒有道理好不好。」'], 2),
+              springSmsChoice('「你今天一直叫我帮忙，我是不是很有用？」', ['「至少比只會站旁邊說好聽有用一點。」'], 2),
+            ]
+    return springSmsRound(incoming, choices)
+  }
+  if (character === 'stone') {
+    const choices = selected === 0
+      ? [
+          springSmsChoice('「黑色那条真的很耐看，我觉得很适合你。」', ['「我也覺得，簡單一點比較不容易看膩。」'], 2),
+          springSmsChoice('「你刚刚搭在肩上那条，看起来很舒服。」', ['「背帶還是要先看舒不舒服，外型再慢慢挑。」'], 2),
+          springSmsChoice('「我觉得黑色很适合你平常用。」', ['「嗯，平常練團用這種最方便。」'], 2),
+        ]
+      : selected === 1
+        ? [
+            springSmsChoice('「我还是喜欢那条比较特别的，有自己的感觉。」', ['「那條也不錯，平常可以換著用。」'], 2),
+            springSmsChoice('「那条特别一点的真的很好看。」', ['「哈哈，妳喜歡就好，我再想想要不要帶。」'], 2),
+            springSmsChoice('「你可以两条换着用啊。」', ['「這樣好像也不錯，之後再看看。」'], 2),
+          ]
+        : selected === 2
+          ? [
+              springSmsChoice('「我说你戴哪条都好看是真的。」', ['「哈哈，妳這樣我很難選欸。」'], 2),
+              springSmsChoice('「你最后还是选实用的，对吧？」', ['「對啊，畢竟每天都要用，舒服比較重要。」'], 2),
+              springSmsChoice('「我觉得你认真挑东西的样子很好笑。」', ['「有這麼好笑嗎？我只是想挑仔細一點。」'], 2),
+            ]
+          : [
+              springSmsChoice('「黑色那条真的很耐看。」', ['「我也覺得，簡單一點比較不容易看膩。」'], 2),
+              springSmsChoice('「我喜欢那条比较特别的。」', ['「那條也不錯，之後可以換著用。」'], 2),
+              springSmsChoice('「我今天才知道保养吉他也要这么仔细。」', ['「平常多注意一點，琴就可以陪很久。」'], 2),
+            ]
+    return springSmsRound(incoming, choices)
+  }
+  return springSmsRound(incoming, [
+    springSmsChoice('「今天看器材真的学到不少。」', ['「那就好，至少知道規格差在哪裡。」'], 2),
+    springSmsChoice('「你每样东西都确认得好仔细。」', ['「習慣了，買回去要大家都用得順手。」'], 2),
+    springSmsChoice('「下次还想跟你一起去逛。」', ['「好啊，有需要再一起去。」'], 2),
+  ])
+}
+
 export const getSpringSmsRounds = (character: SpringCharacterId, context: SpringDayContext): SpringSmsRound[] => {
   const rehearsal: Record<SpringCharacterId, SpringSmsRound[]> = {
     wen: [
@@ -1372,37 +1486,7 @@ export const getSpringSmsRounds = (character: SpringCharacterId, context: Spring
     ])
 } else if (wentStore) {
     const secondIncoming = springStoreFollowUpLine(character, context)
-    if (character === 'wen') {
-      rounds[0] = springSmsRound(springContextLine(character, context), [
-        springSmsChoice('「我最喜歡後面那個音色，真的很有氣勢。」', ['「我就知道妳會喜歡那個，拿來表演很適合。」'], 2),
-        springSmsChoice('「我覺得你彈起來真的很帥。」', ['「又來了喔，妳今天很會講欸。」'], 2),
-        springSmsChoice('「我還記得你讓我踩開關那次。」', ['「哈哈，第一次當音控就上手了啦。」'], 2),
-      ])
-    } else if (character === 'ashin') {
-      rounds[0] = springSmsRound(springContextLine(character, context), [
-        springSmsChoice('「第一把的聲音比較溫暖，我很喜歡。」', ['「我也喜歡那種音色，聽起來很舒服。」'], 2),
-        springSmsChoice('「第二把比較清亮，真的很適合唱歌。」', ['「對啊，配人聲應該會滿好的。」'], 2),
-        springSmsChoice('「我還在想抱著木吉他的感覺，好大一把。」', ['「哈哈，妳剛剛真的像抱大抱枕。」'], 2),
-      ])
-    } else if (character === 'masa') {
-      rounds[0] = springSmsRound(springContextLine(character, context), [
-        springSmsChoice('「Bass 的聲音真的很有力量！」', ['「不然咧？低音可不是站在旁邊裝飾的。」'], 2),
-        springSmsChoice('「我现在还记得你嫌琴弦太贵。」', ['「那個價格本來就很沒有道理好不好。」'], 2),
-        springSmsChoice('「你今天一直叫我帮忙，我是不是很有用？」', ['「至少比只會站旁邊說好聽有用一點。」'], 2),
-      ])
-    } else if (character === 'stone') {
-      rounds[0] = springSmsRound(springContextLine(character, context), [
-        springSmsChoice('「黑色那条真的很耐看。」', ['「我也覺得，簡單一點比較不容易看膩。」'], 2),
-        springSmsChoice('「我喜欢那条比较特别的。」', ['「那條也不錯，之後可以換著用。」'], 2),
-        springSmsChoice('「我今天才知道保养吉他也要这么仔细。」', ['「平常多注意一點，琴就可以陪很久。」'], 2),
-      ])
-    } else {
-      rounds[0] = springSmsRound(springContextLine(character, context), [
-        springSmsChoice('「今天看器材真的学到不少。」', ['「那就好，至少知道規格差在哪裡。」'], 2),
-        springSmsChoice('「你每样东西都确认得好仔细。」', ['「習慣了，買回去要大家都用得順手。」'], 2),
-        springSmsChoice('「下次还想跟你一起去逛。」', ['「好啊，有需要再一起去。」'], 2),
-      ])
-    }
+    rounds[0] = springStoreSmsFirstRound(character, context)
     rounds[1] = springSmsRound(secondIncoming, [
       springSmsChoice('「你真的很会挑东西欸。」', [character === 'wen' ? '「還好啦，自己要用的當然要看仔細。」' : character === 'ashin' ? '「多聽幾次就會知道自己喜歡哪種聲音了。」' : character === 'masa' ? '「不然錢花下去，買到不合用的不是更嘔？」' : character === 'stone' ? '「用得舒服比較重要，不一定要挑最貴的。」' : '「器材合用最重要，其他都可以慢慢看。」'], 2),
       springSmsChoice('「我今天其实玩得很开心。」', ['「那就好，下次有空再一起來。」'], 2),
