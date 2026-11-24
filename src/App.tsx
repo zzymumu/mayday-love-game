@@ -7724,7 +7724,7 @@ function App() {
                                     <h2>{springDiaryData.title}</h2>
                                     <DiarySection label="日記" text={springDiaryData.text} />
                                   </div>
-                                ) :                                 {selectedDiaryDate === '1997-02-03' && februaryDiaryUnlocked && februaryDiaryData ? (
+                                ) : selectedDiaryDate === '1997-02-03' && februaryDiaryUnlocked && februaryDiaryData ? (
                                   <div className="diary-paper">
                                     <span className="diary-date">1997 年 2 月初</span>
                                     <h2>{februaryDiaryData.title}</h2>
