@@ -452,14 +452,25 @@ export const getSpringSmsRounds = (character: SpringCharacterId, context: Spring
   const dinner = character === 'yanming' && context.afterChoice === 'yanming-dinner'
   if (character === 'yanming' && !dinner) {
     rounds[0] = { ...rounds[0], choices: [
-      { text: '「今天看你們練團真的很有趣！」', response: ['「哈哈，大家練得投入的時候就是這樣。」'], affection: 1 },
+      { text: wentStore ? '「今天謝謝你陪我去看器材！」' : '「今天看你們練團真的很有趣！」', response: [wentStore ? '「不客氣啊，妳有沒有看到喜歡的東西？」' : '「哈哈，大家練得投入的時候就是這樣。」'], affection: 1 },
       rounds[0].choices[1],
       rounds[0].choices[2],
     ] }
-    rounds[1] = { ...rounds[1], incoming: '今天大家練得很投入，妳在旁邊有沒有聽得很過癮？', choices: [
+    rounds[1] = { ...rounds[1], incoming: wentStore ? '今天在店裡看的那些器材，妳後來有沒有最喜歡哪一樣？' : '今天大家練得很投入，妳在旁邊有沒有聽得很過癮？', choices: wentStore ? [
+      { text: '「那兩副鼓棒我都覺得很有趣！」', response: ['「哈哈，下次再讓妳試試看。」'], affection: 2 },
+      { text: '「我覺得你挑東西真的很仔細。」', response: ['「習慣了啦，用得順手比較重要。」'], affection: 2 },
+      { text: '「下次還想跟你一起去逛。」', response: ['「好啊，有要買東西再一起去。」'], affection: 2 },
+    ] : [
       { text: '「有啊！尤其最後一遍，超有氣勢。」', response: ['「那就好，他們聽到應該會很開心。」'], affection: 2 },
       { text: '「我差點被佑達的鼓聲嚇到。」', response: ['「哈哈，他一投入就會這樣。」'], affection: 1 },
       { text: '「你下次也要坐旁邊陪我聽喔。」', response: ['「好啊，有空我就陪妳。」'], affection: 2 },
+    ] }
+  }
+  if (character === 'yanming' && dinner) {
+    rounds[1] = { ...rounds[1], incoming: '今天那家店妳覺得怎麼樣？下次還想吃什麼？', choices: [
+      { text: '「我覺得很好吃！下次還可以再去。」', response: ['「好啊，那下次再帶妳去。」'], affection: 2 },
+      { text: '「下次換我請你，不可以拒絕。」', response: ['「哈哈，好，我不跟妳搶。」'], affection: 2 },
+      { text: '「我比較喜歡今天有人陪我吃飯。」', response: ['「……這樣喔。」他隔了一會兒才回：「那下次有空再一起吃。」'], affection: 2 },
     ] }
   }
   if (character === 'masa' && !learned) {
@@ -469,21 +480,37 @@ export const getSpringSmsRounds = (character: SpringCharacterId, context: Spring
       { text: '「我覺得你們感情很好欸。」', response: ['「……妳不要亂下結論。」'], affection: 2 },
     ] }
   }
-  if (character === 'ashin' && !learned && !wentStore) {
-    rounds[0] = { ...rounds[0], choices: [
-      { text: '「你唱到一半差點笑場，我有看到！」', response: ['「哈哈，真的差點唱不下去馁。」'], affection: 2 },
-      { text: '「今天最後一次大家接得很順欸。」', response: ['「對啊，大家一起進去的時候很過癮。」'], affection: 2 },
-      { text: '「下次還想聽你們練團。」', response: ['「好啊，妳有空就來。」'], affection: 2 },
-    ] }
-    rounds[1] = { ...rounds[1], incoming: '妳剛剛有聽清楚最後那段嗎？我自己覺得這次接得滿順的。' }
+  if (character === 'ashin' && !learned) {
+    if (!wentStore) {
+      rounds[0] = { ...rounds[0], choices: [
+        { text: '「你唱到一半差點笑場，我有看到！」', response: ['「哈哈，真的差點唱不下去馁。」'], affection: 2 },
+        { text: '「今天最後一次大家接得很順欸。」', response: ['「對啊，大家一起進去的時候很過癮。」'], affection: 2 },
+        { text: '「下次還想聽你們練團。」', response: ['「好啊，妳有空就來。」'], affection: 2 },
+      ] }
+      rounds[1] = { ...rounds[1], incoming: '妳剛剛有聽清楚最後那段嗎？我自己覺得這次接得滿順的。' }
+    } else {
+      rounds[1] = { ...rounds[1], incoming: '今天在店裡試的那把木吉他，妳覺得聲音怎麼樣？', choices: [
+        { text: '「很溫柔欸，我很喜歡。」', response: ['「我也覺得，那把音色滿舒服的馁。」'], affection: 2 },
+        { text: '「我比較喜歡你坐在旁邊教我的時候。」', response: ['「哈哈，妳怎麼突然講這個啦。」'], affection: 2 },
+        { text: '「下次還想再試一次！」', response: ['「好啊，下次再去看看。」'], affection: 2 },
+      ] }
+    }
   }
-  if (character === 'stone' && !learned && !wentStore) {
-    rounds[0] = { ...rounds[0], choices: [
-      { text: '「今天最後一遍吉他接得很好欸。」', response: ['「真的喔？那下次再把那段練穩一點。」'], affection: 2 },
-      { text: '「你跟溫尚翊兩把吉他接起來很帥欸。」', response: ['「真的喔？那我下次再注意那個地方。」'], affection: 2 },
-      { text: '「下次還想聽你們練團。」', response: ['「好啊，妳有空就來。」'], affection: 2 },
-    ] }
-    rounds[1] = { ...rounds[1], incoming: '今天最後那遍真的比前面順很多，大家終於有接在一起。' }
+  if (character === 'stone' && !learned) {
+    if (!wentStore) {
+      rounds[0] = { ...rounds[0], choices: [
+        { text: '「今天最後一遍吉他接得很好欸。」', response: ['「真的喔？那下次再把那段練穩一點。」'], affection: 2 },
+        { text: '「你跟溫尚翊兩把吉他接起來很帥欸。」', response: ['「真的喔？那我下次再注意那個地方。」'], affection: 2 },
+        { text: '「下次還想聽你們練團。」', response: ['「好啊，妳有空就來。」'], affection: 2 },
+      ] }
+      rounds[1] = { ...rounds[1], incoming: '今天最後那遍真的比前面順很多，大家終於有接在一起。' }
+    } else {
+      rounds[1] = { ...rounds[1], incoming: '今天在店裡那條背帶，妳後來還有一直想到嗎？', choices: [
+        { text: '「有啊，顏色真的很好看。」', response: ['「哈哈，那下次再去看看有沒有別的顏色。」'], affection: 2 },
+        { text: '「你說適合我的，我就記住了。」', response: ['「我是真的覺得滿適合妳的。」'], affection: 2 },
+        { text: '「我還想再背一次那把木吉他。」', response: ['「好啊，下次再讓妳試。」'], affection: 2 },
+      ] }
+    }
   }
   if (character === 'wen' && !wentStore && !learned) {
     rounds[0] = { ...rounds[0], choices: [
