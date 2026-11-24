@@ -951,7 +951,7 @@ const springDailySmsRound = (incoming: string, choices: SpringDailySmsChoiceData
 // so the player's reply always answers the message immediately above it.
 const springDailySmsOpeners: Record<SpringCharacterId, { text: string; response: string; affection: number }[]> = {
   wen: [
-    { text: '「欸溫尚翊，我今天買到一杯超難喝的草莓奶茶，真的想拿去退錢。」', response: '「蛤，草莓奶茶怎麼會喝起來像牙膏，這家很敢欸。」', affection: 2 },
+    { text: '「欸溫尚翊，我剛剛泡了一杯熱可可，結果第一口喝太急，差點把舌頭燙到……現在講話都有點不利索了哈哈哈哈。」', response: '「妳是有多急啦？熱的東西也不知道先吹一下喔。」', affection: 2 },
     { text: '「我剛剛看到一隻貓坐在店門口，胖得像老闆，真的太有氣勢了。」', response: '「哈哈，妳一定又停在那邊看很久，看到貓就走不動。」', affection: 2 },
     { text: '「我今天上課差點睡著，老師一轉頭我整個彈起來，差點撞到桌子。」', response: '「妳差點撞到桌子也太糗了啦，今天真的累壞了喔。」', affection: 3 },
   ],
@@ -980,10 +980,10 @@ const springDailySmsOpeners: Record<SpringCharacterId, { text: string; response:
 const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
   wen: {
     openings: [
-      springDailySmsRound('「我以前也買過一杯看起來很厲害的飲料，第一口喝下去就知道自己被包裝騙了。」', [
-        { text: '「對吧！店家真的很會，杯子漂亮到我差點相信它很好喝。」', response: ['「哈哈，包裝很努力，飲料本人完全沒跟上。」', '「我上次也差點被一個很帥的效果器外殼騙到，踩下去才知道不是那回事。」'] },
-        { text: '「你還好意思說我，我看你也很容易被新東西騙吧。」', response: '「蛤，我至少會先看一下啦。妳是看到新品就衝。」' },
-        { text: '「我現在只想回去喝熟成紅茶，安慰一下自己。」', response: '「這樣才對，先回到安全的地方，不要再拿舌頭做實驗。」' },
+      springDailySmsRound('「所以妳現在是先把它放涼，還是還想跟它拚輸贏？」', [
+        { text: '「我哪有！我只是太想喝了嘛。」', response: '「最好是啦，連喝個東西都等不了。」' },
+        { text: '「那你下次要記得提醒我。」', response: '「蛤？喝個東西還要我提醒喔？……好啦，下次我盯著妳。」', affection: 3 },
+        { text: '「你不要講我，你自己肯定也會這樣！」', response: '「我才不會咧，至少我知道燙的東西要先放一下。」' },
       ]),
       springDailySmsRound('「我上次在巷口也看到一隻貓，坐在門口像在顧店，連路過的人都要先看牠一眼。」', [
         { text: '「是不是！牠們真的很會挑位置，坐著就有氣勢。」', response: '「對啊，根本不用做事，大家就知道牠是老闆。」' },
@@ -998,25 +998,25 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
     ],
     tracks: [
       [
-        springDailySmsRound('「有些飲料店招牌真的很會弄，粉紅粉紅的，光看就很容易被騙進去。」', [
-          { text: '「就巷口新開那家啊！裝潢弄得超漂亮，我一走進去就覺得不妙了，結果還是點了。」', response: '「妳是被店面騙進去，不是被飲料騙進去喔？欸，這家很會欸。」' },
-          { text: '「我還很不死心地加了珍珠欸，結果珍珠也救不了它……」', response: '「連珍珠都救不了，這杯可以直接判出局了啦。」' },
-          { text: '「我本來都要點熟的了，看到『新品』兩個字又鬼迷心竅，真的很欠。」', response: '「妳每次看到新品都這樣喔？下次先拍給我看，我幫妳踩煞車啦。」' },
+        springDailySmsRound('「妳平常是不是也很喜歡喝甜的？我記得妳好像滿常買飲料。」', [
+          { text: '「超喜歡啊！甜的東西真的會讓心情變好欸。」', response: '「這麼容易滿足喔？那妳心情不好，是不是請妳喝一杯就好了？」', affection: 3 },
+          { text: '「看心情啦，太甜的我不行。」', response: '「喔，還有標準喔。那妳下次點之前先想清楚，不要又被新品騙走。」' },
+          { text: '「你呢？你喜歡喝什麼？」', response: '「我喔，咖啡吧。有時候練團前喝一杯，不然腦袋還沒醒。」' },
         ]),
-        springDailySmsRound('「我猜你最後還是喝了幾口，畢竟錢都付了嘛。」', [
-          { text: '「喝兩口就放棄了，真的不行。」', response: '「做得好，終於學會不要委屈自己了。」' },
-          { text: '「喝完了啊，錢都付了欸。」', response: '「妳是把錢喝回來是不是？不好喝就丟掉啦。」' },
-          { text: '「我拿去給朋友喝，結果她也說難喝。」', response: '「哈哈，那就不是妳的問題了，這杯可以正式判死刑。」' },
+        springDailySmsRound('「我有時候練團到一半也會突然很想吃東西，忙起來才發現都過飯點了。」', [
+          { text: '「那你要記得吃飯啦，不要每次忙起來就忘記。」', response: '「知道啦，妳講得好像我媽。」' },
+          { text: '「那你應該隨身帶點零食啊！」', response: '「妳以為我是小學生喔？不過餅乾倒是可以考慮。」' },
+          { text: '「下次看到好吃的我推薦給你！」', response: '「好啊，先說好不要拿奇怪的東西來敷衍我。」', affection: 3 },
         ]),
-        springDailySmsRound('「妳平常明明都喝熟成紅茶，突然換口味真的很不像妳。」', [
-          { text: '「我平常都喝熟成紅茶啦，今天只是想換口味。」', response: '「那就喝妳熟悉的啊，沒事不要挑戰自己的底線。」' },
-          { text: '「看到店門口寫新品上市，我就忍不住了。」', response: '「妳真的很容易被兩個字拐走欸。下次先問清楚再買啦。」' },
-          { text: '「我也不知道，可能今天腦袋比較不清醒。」', response: '「這個理由我接受，妳今天腦袋可能真的還沒開機。」' },
+        springDailySmsRound('「妳真的很會把生活裡的小事講得很有趣欸，一杯熱可可可以講這麼久。」', [
+          { text: '「我明明是在跟你分享生活欸！」', response: '「好啦，我有在聽啊。妳繼續講，我又沒說不准。」' },
+          { text: '「你嫌我煩喔？」', response: '「我哪有，妳不要自己亂想。只是覺得妳講起來很好笑。」', affection: 3 },
+          { text: '「那我以後不跟你講了。」', response: '「蛤？我又沒說不想聽，妳不要亂下結論啦。」' },
         ]),
-        springDailySmsRound('「下次要買新品先傳給我看一下，至少幫妳把關。」', [
-          { text: '「你又不是飲料評審，憑什麼？」', response: '「我至少不會買草莓牙膏，這點就贏妳了吧。」', affection: 3 },
-          { text: '「好啊，那你要負責推薦一杯好喝的。」', response: '「欸，還把工作丟給我喔？好啦，我想一下。」', affection: 3 },
-          { text: '「我怕你也踩雷，兩個人一起浪費錢。」', response: '「那就當作一起做市場調查啊，妳怕喔？」', affection: 3 },
+        springDailySmsRound('「好啦，妳那杯應該也喝完了吧？等一下還要忙嗎？」', [
+          { text: '「我要去洗澡啦！今天先放過你。」', response: '「誰放過誰啦。快去啦，浴室地板小心一點。」' },
+          { text: '「還不想睡欸，跟你聊天還蠻好玩的。」', response: ['「……妳突然講這個幹嘛啦。」', '「好啦，我也覺得還不錯。」'], affection: 4 },
+          { text: '「你也早點休息啦，不要又熬夜。」', response: '「知道啦。妳也是，晚安。」' },
         ]),
       ],
       [
