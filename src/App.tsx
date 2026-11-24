@@ -4687,11 +4687,11 @@ function App() {
       yanming: '諺明哥',
     }
     const storeMemories: Record<SpringCharacterId, string> = {
-      wen: '下午跟溫尚翊去樂器行，說好只是逛逛，結果他一進門就熟門熟路地鑽去效果器區。吉他一接上音箱，他踩下開關時音色忽然變得厚起來，還一本正經問我帥不帥——到底是在問效果器還是在問他自己啊。後來又把展示琴遞給我試，走之前還說記得我剛剛講的事。',
-      ashin: '阿信陪我在店裡慢慢逛，走到木吉他區才停下來。他把兩把琴輪流彈給我聽，還把速度放慢讓我比較；抱起木吉他才知道比想像中大，他笑我像抱大抱枕。最後拿琴型卡跟我講尺寸，問我是不是有點想學。',
-      masa: '瑪莎一進店就直奔 Bass 區，先被琴弦的價格嚇到，嘴上嫌貴，轉頭卻接上展示 Bass 彈了一段。後來兩包琴弦擺在我面前，說要我幫忙看差別，明明自己已經研究得很仔細。結帳時還一眼看穿我在偷看電吉他，真煩人。',
-      stone: '石頭今天要買背帶、琴弦和保養用品，挑背帶時還真的問我哪條好看。後來他一邊講解清潔用品，一邊示範怎麼擦琴，連展示琴都先問我想不想試。跟他逛店很舒服，不會催人，也不會替我做決定。',
-      yanming: '下午跟諺明哥看鼓棒和器材，他連重量差一點點都拿起來比較。果然是很仔細的人，連逛個樂器行都讓人有種事情一定會被安排妥當的安心感。',
+      wen: '上午跟溫尚翊去樂器行，說好只是逛逛，結果他一進門就熟門熟路地鑽去效果器區。吉他一接上音箱，他踩下開關時音色忽然變得厚起來，還一本正經問我帥不帥——到底是在問效果器還是在問他自己啊。後來又把展示琴遞給我試，走之前還說記得我剛剛講的事。',
+      ashin: '上午阿信陪我在店裡慢慢逛，走到木吉他區才停下來。他把兩把琴輪流彈給我聽，還把速度放慢讓我比較；抱起木吉他才知道比想像中大，他笑我像抱大抱枕。最後拿琴型卡跟我講尺寸，問我是不是有點想學。',
+      masa: '上午瑪莎一進店就直奔 Bass 區，先被琴弦的價格嚇到，嘴上嫌貴，轉頭卻接上展示 Bass 彈了一段。後來兩包琴弦擺在我面前，說要我幫忙看差別，明明自己已經研究得很仔細。結帳時還一眼看穿我在偷看電吉他，真煩人。',
+      stone: '上午跟石頭去買背帶、琴弦和保養用品，挑背帶時還真的問我哪條好看。後來他一邊講解清潔用品，一邊示範怎麼擦琴，連展示琴都先問我想不想試。跟他逛店很舒服，不會催人，也不會替我做決定。',
+      yanming: '上午跟諺明哥看鼓棒和器材，他連重量差一點點都拿起來比較。果然是很仔細的人，連逛個樂器行都讓人有種事情一定會被安排妥當的安心感。',
     }
     const lessonMemories: Record<Exclude<SpringCharacterId, 'yanming'>, string> = {
       wen: '後來留下來學電吉他，手指痛得我差點想跟琴弦絕交。偏偏溫尚翊手上的繭就在眼前，我一時好奇問出口，摸到的時候才發現真的比看起來粗。最可疑的是他明明有點不自在，還硬要裝沒事，突然把弦刷得超大聲。拜託，誰看不出來啦。',
@@ -7065,7 +7065,7 @@ function App() {
                     <div className="story-kicker">A NEW SEMESTER</div><h2 className="story-scene-title">又回到熟悉的日子</h2>
                     <StoryBlocks blocks={[
                       { kind: 'narration', text: '過年幾天一下子就過去了。拜年、吃飯、收紅包，還有被長輩問功課的時間，轉眼就結束。開學後，校園重新熱鬧起來，你也把課本和筆記重新塞回書包。' },
-                      { kind: 'narration', text: '下午下課時，你才剛走出教室，手機就接連響了幾聲。有人問你今天有沒有空，說想去樂器行看看。' },
+                      { kind: 'narration', text: '上午下課時，你才剛走出教室，手機就接連響了幾聲。有人問你今天有沒有空，說想去樂器行看看。' },
                       { kind: 'narration', text: '你低頭看著螢幕，發現不是每個人都傳了訊息。到底有誰想約你一起去呢？' },
                     ]} />
                   </div>
@@ -7075,7 +7075,7 @@ function App() {
 
               {storyStage === 'spring-invite-picker' && (
                 <div className="story-screen-overlay">
-                  <div className="story-screen-head"><div className="chapter-mark">春季學期</div><div className="story-contact-title"><strong>樂器行邀約</strong><small>1997 年 2 月・下午</small></div><span className="story-head-spacer" /></div>
+                  <div className="story-screen-head"><div className="chapter-mark">春季學期</div><div className="story-contact-title"><strong>樂器行邀約</strong><small>1997 年 2 月・上午</small></div><span className="story-head-spacer" /></div>
                   <div className="story-narrative-scroll">
                     <div className="story-kicker">WHO WANTS TO GO WITH YOU?</div><h2 className="story-scene-title">{springInvitePendingCandidates.length ? '有人約你一起出門' : '今天沒有收到邀約'}</h2>
                     {springInvitePendingCandidates.length ? (
@@ -7101,7 +7101,7 @@ function App() {
 
               {storyStage === 'spring-store' && springStoreCharacter && (
                 <div className="story-screen-overlay">
-                  <div className="story-screen-head"><div className="chapter-mark">下午・樂器行</div><div className="story-contact-title"><strong>{springStoreRoutes[springStoreCharacter].title}</strong><small>一起逛逛</small></div><span className="story-head-spacer" /></div>
+                  <div className="story-screen-head"><div className="chapter-mark">上午・樂器行</div><div className="story-contact-title"><strong>{springStoreRoutes[springStoreCharacter].title}</strong><small>一起逛逛</small></div><span className="story-head-spacer" /></div>
                   <div className="story-narrative-scroll">
                     <div className="story-kicker">MUSIC STORE</div><h2 className="story-scene-title">逛一間熟悉的店</h2>
                     <StoryBlocks blocks={springStoreRoutes[springStoreCharacter].blocks} />
