@@ -4628,7 +4628,7 @@ function App() {
       dinnerReplies: springDinnerReplies,
     }
     const opening = getSpringSmsOpeners(springSmsTarget, context)[choiceIndex]
-    const firstRound = getSpringSmsRounds(springSmsTarget, context)[0]
+    const firstRound = getSpringSmsRounds(springSmsTarget, context, [])[0]
     if (!opening || !firstRound) return
     appendChatMessages(springSmsTarget, [
       { from: 'me', text: opening.text, time: '21:08' },
@@ -4653,7 +4653,7 @@ function App() {
       lessonReplies: springLessonReplies,
       dinnerReplies: springDinnerReplies,
     }
-    const rounds = getSpringSmsRounds(springSmsTarget, context)
+    const rounds = getSpringSmsRounds(springSmsTarget, context, springSmsReplies)
     const round = rounds[springSmsRound]
     const choice = round?.choices[choiceIndex]
     if (!choice) return
@@ -5113,7 +5113,7 @@ function App() {
     lessonReplies: springLessonReplies,
     dinnerReplies: springDinnerReplies,
   }
-  const currentSpringSmsRounds = springSmsTarget ? getSpringSmsRounds(springSmsTarget, springDayContext) : []
+  const currentSpringSmsRounds = springSmsTarget ? getSpringSmsRounds(springSmsTarget, springDayContext, springSmsReplies) : []
   const currentSpringSmsOpeners = springSmsTarget ? getSpringSmsOpeners(springSmsTarget, springDayContext) : []
   const springInvitePendingCandidates = springInviteCandidates.filter((character) => !springInviteDeclined.includes(character))
   const currentSpringInviteRound = springInviteTarget ? springInviteRounds[springInviteTarget][springInviteReplies.length] ?? null : null
