@@ -3838,18 +3838,28 @@ function App() {
   }
 
   const buildYearEndDiaryData = (): YearEndDiaryData => {
-    const moments: Record<YearEndRouteCharacterId, string> = {
-      wen: '今天跟溫尚翊去買年貨。出門前他還特地把清單折得方方正正，到了市場卻沒有想像中那麼有原則，經過糖果攤就停下來，拿起一包問我是不是喜歡這個口味。我說你怎麼還記得，他回得超快：「這有什麼好忘的。」……真的很煩欸，這種話講完又一臉沒事，害我一路都不知道要看哪裡。晚上在河堤集合，瑪莎又在跟佑達搶零食，溫尚翊蹲在旁邊拆仙女棒，拆半天還叫我不要站太近。倒數的時候大家喊得亂七八糟，根本沒有人數得整齊。煙火炸開那一下我有抬頭看，可是旁邊的人笑得太大聲，我又忍不住轉頭。剛剛那包糖到底放哪了？我現在想吃。',
-      masa: '今天陪瑪莎買年貨，我合理懷疑他根本不是來採買，是來沿路試吃的。清單被風吹走那次真的很好笑，我們兩個蹲在地上抓紙，他還一手捏著地瓜球不肯放。後來辣餅乾明明辣到他眼睛都紅了，還硬說是市場太熱。我沒有拆穿他，因為我也吃了，真的滿辣的。晚上集合時他又去招惹佑達，兩個人為了一包零食吵得像那是什麼稀世珍寶。煙火開始前他把那包餅乾塞給我，說先幫他拿，免得被大家吃光。結果我才剛收好，他又伸手問我還有沒有。到底是要我保管還是要我交出來啦？新的一年可不可以不要再讓我當瑪莎的私人置物櫃。',
-      ashin: '阿信今天帶我去買年貨，明明是大家一起要用的東西，他卻連小卡片都想到了。坐在文具店的小桌子前寫字時，他把細繩纏到手指上，越解越亂，我在旁邊笑，他也不急，就把手伸過來叫我幫忙。後來他另外留了一張卡片給我，沒有跟大家的放在一起。我到現在還沒想好要不要再看一次，剛剛明明已經看過好幾次了。晚上他又忙著幫大家分飲料，自己那杯放在旁邊，差點忘記喝。煙火升上去時，他站在我旁邊，沒有一直講話，只是跟著大家一起喊。其實這樣就很好。卡片我先夾在書裡好了，不然放桌上一定會被我一直拿起來看。拜託不要折到。',
-      stone: '今天石頭帶相機去市場，看到燈籠倒映在水窪裡，整個人就蹲下去拍，旁邊的人都快繞不過他了。我本來只是陪他看照片，結果他拍我挑糖果的樣子，還說那張很自然。哪裡自然，我明明正在努力判斷哪一包比較值得買。晚上他一直在拍大家，拍到瑪莎又被佑達惹毛，還說這張一定要留下來。我問他會不會把我拍得很奇怪，他只說等洗出來再讓我自己檢查。現在反而有點期待那捲底片了。煙火那時候我沒有一直看鏡頭，因為忙著抬頭，火光一下亮一下暗，大家的臉也跟著變來變去。希望照片裡有拍到那個瞬間，不要只有一堆糊掉的背影。',
-      yanming: '今天跟諺明哥去買年貨，清單分得比我的課堂筆記還整齊。市場人很多，他一路提醒我不要被人潮擠散，還先買了熱飲給我。最後在紅豆餅攤前，我明明只停下來看了一眼，他就買了兩個，還把比較完整的那個遞給我。這個人是不是什麼都看得到啊。晚上河堤那邊也是，他先把水、垃圾袋和煙火用品放好，確認大家站的位置，才終於肯坐下來。大家倒數時他明明也笑得很開心，還是會分神看一下旁邊有沒有人拿煙火太靠近。紅豆餅那個細節我一直記得，外皮有一點脆，裡面燙得我差點咬到舌頭。下次不要一邊走一邊吃了，真的很狼狽。',
-    }
     const focus = yearEndInviteTarget
+    const shoppingRoute = focus ? yearEndShoppingRoutes[focus] : null
+    const chosenShopping = shoppingRoute
+      ? yearEndShoppingReplies.map((choiceIndex, roundIndex) => shoppingRoute.rounds[roundIndex]?.choices[choiceIndex]?.text).filter((value): value is string => Boolean(value))
+      : []
+    const chosenFireworks = yearEndFireworksReplies.map((choiceIndex, roundIndex) => yearEndFireworksRounds[roundIndex]?.choices[choiceIndex]?.text).filter((value): value is string => Boolean(value))
+    const firstChoice = chosenShopping[0]
+    const lastChoice = chosenFireworks[chosenFireworks.length - 1]
+    const openings: Record<YearEndRouteCharacterId, string> = {
+      wen: '我現在才想到，溫尚翊把那包水果糖遞給我的時候，我居然只顧著問他怎麼還記得，連謝謝都差點忘了講。這個人真的很討厭，講一句很普通的話就可以害我一路心不在焉。明明今天市場那麼多人、袋子那麼重，我卻只記得那一小包糖。到底有什麼好記的啦。',
+      masa: '我今天跟瑪莎出門到底是去買年貨還是去看他試吃？清單明明在他手上，最後變成我幫忙抓紙、拿東西，還要聽他替每一包零食找理由。最好笑的是他明明被辣到，還硬說沒有。這種人真的很適合拿來鬥嘴，完全不用擔心沒話題。',
+      ashin: '阿信把那張小卡片留給我的時候，我表面上好像很正常，實際上一路都在想要不要再拿出來看。明明只是幾行字，又不是什麼了不起的東西……可是我剛剛真的又看了一次。好啦，先夾在書裡，不要弄丟。',
+      stone: '石頭今天又在找角度拍照。明明大家都在忙著買東西，他可以為了一個水窪蹲在那裡研究半天。被他拍到的時候我還很想抗議，結果現在反而有點期待照片洗出來。很奇怪欸，平常最怕被拍得很醜，今天居然想知道他鏡頭裡的我長什麼樣子。',
+      yanming: '諺明哥真的很會注意小地方。我只是停在紅豆餅攤前看了一下，他就記住了，還把比較完整的那個遞給我。今天明明一直在幫大家跑腿，卻還是有空留意這種小事。那個紅豆餅燙得我差點咬到舌頭，現在想起來還覺得有點好笑。',
+    }
+    const shared = '剛回來，耳朵裡好像還有大家倒數的聲音。佑達喊得最大聲，瑪莎偏偏要跟他搶，石頭忙著拍照，阿信在分飲料，諺明哥確認煙火和大家站的位置。溫尚翊蹲在旁邊拆仙女棒，嘴上還叫大家不要亂來。煙火真的放起來時，我本來想好好許個願，結果旁邊有人笑到彎腰，我也跟著笑，根本沒空想。算了，願望先欠著。'
+    const choiceNote = firstChoice ? `我還記得今天我說「${firstChoice}」的時候，他回我的那個反應。現在想起來還是覺得有點好笑。` : ''
+    const fireworksNote = lastChoice ? `後來大家問我「${lastChoice}」，我居然真的就那樣做了。現在想想，當時好像比我自己以為的還開心。` : ''
     const diaryText = focus
-      ? moments[focus]
-      : '現在已經不知道幾點了，手上還有一點仙女棒的味道，外套好像也沾到烤香腸。大家剛剛吵成那樣，回來突然安靜，反而有點不習慣。瑪莎和佑達為了零食鬥嘴，阿信忙著分飲料，石頭一直在找角度，諺明哥像在巡場，溫尚翊蹲著拆煙火。明明只是跨年，怎麼像跟一群人完成了一個大型任務。剛才到底有沒有許願？好像沒有。算了，現在補一個：明年大家也要一起在。';
-    return { title: '一九九六年最後一天，寫到哪算哪', sections: [{ label: '日記', text: diaryText }] }
+      ? `${openings[focus]} ${choiceNote} ${fireworksNote} ${shared}`
+      : shared
+    return { title: '一九九六年最後一天，想到哪寫到哪', sections: [{ label: '日記', text: diaryText }] }
   }
 
   const startYearEndDiary = () => {
@@ -4025,10 +4035,21 @@ function App() {
 
   const buildWinterDiaryData = (): WinterDiaryData => {
     if (!winterBusStopCharacter) {
-      return { title: '一月二十二日，今天有點睡不著', sections: [{ label: '日記', text: '今天去酒吧聽他們唱歌，散場後大家各自忙著收東西。回家的路上發生了一點小插曲，現在想起來還是有點心跳加快。先不寫了，等我明天冷靜一點再說。' }] }
+      return { title: '一月二十二日，回來還是很吵', sections: [{ label: '日記', text: '現在耳朵還在嗡嗡叫。下午練團室那幾條導線到底是誰收的，瑪莎和佑達可以為了這個吵到下一首歌都要開始了還不肯停。晚上酒吧倒是很順，前面幾首歌一接起來，剛才那些吵鬧好像都變成理所當然。最後佑達真的加了鼓花，瑪莎嘴上嫌他，手上還不是接得好好的。回來突然安靜下來，才發現我剛才一直在笑。' }] }
     }
     const route = winterBusStopRoutes[winterBusStopCharacter]
-    return { title: '一月二十二日，今天有點睡不著', sections: [{ label: '日記', text: route.diarySummary }] }
+    const selected = winterBusStopReplies.map((choiceIndex, roundIndex) => route.rounds[roundIndex]?.choices[choiceIndex]?.text).filter((value): value is string => Boolean(value))
+    const recalled = selected.map((choice, index) => index === 0 ? `走去公車站時，他問我「${route.rounds[index]?.prompt ?? ''}」，我居然回答「${choice}」。` : `後來我還說了「${choice}」。`).join(' ')
+    const openings: Record<WinterCharacterId, string> = {
+      wen: '溫尚翊剛才那個反應真的很誇張。機車衝出來的時候，他一把把我拉過去，罵人的台語快得我根本來不及聽清楚。等車騎遠了，他才發現我還抓著他的T恤，整個人突然不知道手要放哪裡，問我有沒有受傷又問得結結巴巴。拜託，剛才在台上不是很跩嗎？現在又是怎樣。',
+      ashin: '阿信今天一路都在笑，還學瑪莎和佑達在台上鬥嘴，學得亂七八糟，自己倒是笑到停不下來。後來機車突然衝過來，他先把我拉到旁邊，自己差點踩空，還先問我有沒有撞到。走到站牌才承認他也嚇了一跳。真的很像他，明明自己也慌，還是先確認別人沒事。',
+      masa: '瑪莎今天真的很欠揍，台上那段Bass明明帥得要命，下台後卻一路追問我有沒有聽出來。機車衝過來時他扯住我的背包把我拉回騎樓，第一句不是問我怕不怕，是叫我看肩帶有沒有被勾到。這個人關心別人也要先找個很奇怪的理由。',
+      stone: '石頭今天在台上很安靜，雙吉他那段卻接得漂亮得不得了。走去公車站時遇到機車突然衝出來，他先把我帶進騎樓，自己站在外側，等我緩過來才繼續走。沒有一直追問，只是陪我停了一下。這種不急著講話的溫柔，反而讓人不知道要怎麼接。',
+      yanming: '下午諺明哥被大家拱上鼓椅，嘴上說很久沒打，結果一坐下去整個練團室都安靜了。晚上他又真的到酒吧外面等我，還多帶了一件外套。問我下午是不是一直看他打鼓的時候，我差點不知道要怎麼回答。那張臉明明很平常，偏偏我自己先心虛。',
+    }
+    const extra = recalled ? ` ${recalled}` : ''
+    const ending = '回來後才發現手心還有點熱，頭髮也都是酒吧裡的味道。今天其實有夠吵，練團室吵、酒吧也吵，散場後那一小段路反而安靜得很奇怪。現在躺下來，腦袋又自己把剛才的畫面播了一次。算了，不寫了，明天看到這段一定會嫌自己很煩。'
+    return { title: '一月二十二日，現在才想到要寫', sections: [{ label: '日記', text: `${openings[winterBusStopCharacter]}${extra} ${ending}` }] }
   }
 
   const startWinterDiary = () => {
@@ -4052,7 +4073,7 @@ function App() {
   }
 
   useEffect(() => {
-    const rewriteKey = 'mayday-diary-narrative-rewrite-v11'
+    const rewriteKey = 'mayday-diary-narrative-rewrite-v12'
     if (localStorage.getItem(rewriteKey) === 'true') return
 
     if (yearEndDiaryData) {
