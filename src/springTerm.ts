@@ -106,7 +106,7 @@ export const springStoreRoutes: Record<SpringCharacterId, SpringRoute> = {
 }
 
 export const springRehearsalBlocks: SpringBlock[] = [
-  { kind: 'narration', text: '練團室裡先傳出一聲很響的鼓點，接著是佑達不服氣的喊聲。門一推開，才發現大家已經為了今天要練哪一段吵了起來。' },
+  { kind: 'narration', text: '佑達正坐在鼓組旁邊轉著鼓棒，瑪莎抱著 Bass，兩個人還沒開始練就已經為了今天要練哪一段鬥起嘴來。' },
   { kind: 'dialogue', speaker: '錢佑達', text: '我剛剛那個鼓點明明很帥！' },
   { kind: 'dialogue', speaker: '瑪莎', text: '帥在哪？我只聽到有人差點把歌帶去隔壁棚。' },
   { kind: 'dialogue', speaker: '溫尚翊', text: '好了啦，今天先把《轧車》練順，不要還沒開始就先吵到沒力。' },
