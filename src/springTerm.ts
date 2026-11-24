@@ -937,11 +937,7 @@ const springYanmingOwnerSmsRounds = (replies: number[]): SpringSmsRound[] => {
   const reply2 = replies[2] ?? 0
   const reply3 = replies[3] ?? 0
 
-  const round1Incoming = [
-    '那件事處理完，我才發現櫃檯那杯茶已經涼了。今天好像一直在忙這些小事。',
-    '那件事處理完，我才發現櫃檯那杯茶已經涼了。今天好像一直在忙這些小事。',
-    '那件事處理完，我才發現櫃檯那杯茶已經涼了。今天好像一直在忙這些小事。',
-  ]
+  const round1Incoming = '那件事處理完，我才發現櫃檯那杯茶已經涼了。今天好像一直在忙這些小事。'
 
   const round2Incoming = [
     '我剛才重新泡了一杯，這次先喝完才回來整理。',
@@ -1003,7 +999,7 @@ const springYanmingOwnerSmsRounds = (replies: number[]): SpringSmsRound[] => {
       springSmsChoice('「他有沒有回頭跟你拿？」', ['「有，還特地跑回來說謝謝，倒讓我有點不好意思。」'], 2),
       springSmsChoice('「下次乾脆在門口貼張『離開前檢查隨身物品』。」', ['「這個主意不錯，我可以真的貼一張。」'], 3),
     ]),
-    springSmsRound(round1Incoming[reply0], [
+    springSmsRound(round1Incoming, [
       springSmsChoice('「你自己也要記得照顧好，別只顧著店裡。」', ['「我會注意，事情忙完也得留點時間給自己。」'], 3),
       springSmsChoice('「這些小事你都記得，難怪店裡不容易亂。」', ['「習慣了，東西放回原位，後面就不容易找不到。」'], 2),
       springSmsChoice('「我下次去要看看你有沒有真的照做。」', ['「妳還真會記得這種事。好，讓妳檢查。」'], 3),
