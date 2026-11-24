@@ -6756,6 +6756,178 @@ function App() {
                 </div>
               )}
 
+              {storyStage === 'spring-term-intro' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head"><div className="chapter-mark">春季學期</div><div className="story-contact-title"><strong>開學以後</strong><small>1997 年 2 月・台北</small></div><span className="story-head-spacer" /></div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">A NEW SEMESTER</div><h2 className="story-scene-title">又回到熟悉的日子</h2>
+                    <StoryBlocks blocks={[
+                      { kind: 'narration', text: '過年幾天一下子就過去了。拜年、吃飯、收紅包，還有被長輩問功課的時間，轉眼就結束。開學後，校園重新熱鬧起來，你也把課本和筆記重新塞回書包。' },
+                      { kind: 'narration', text: '下午下課時，你才剛走出教室，手機就接連響了幾聲。有人問你今天有沒有空，說想去樂器行看看。' },
+                      { kind: 'narration', text: '你低頭看著螢幕，發現不是每個人都傳了訊息。到底有誰想約你一起去呢？' },
+                    ]} />
+                  </div>
+                  <div className="story-action-bar"><button className="story-primary-button" onClick={beginSpringInvites}>看看手機 <ChevronRight size={15} /></button></div>
+                </div>
+              )}
+
+              {storyStage === 'spring-invite-picker' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head"><div className="chapter-mark">春季學期</div><div className="story-contact-title"><strong>樂器行邀約</strong><small>1997 年 2 月・下午</small></div><span className="story-head-spacer" /></div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">WHO WANTS TO GO WITH YOU?</div><h2 className="story-scene-title">{springInviteCandidates.length ? '有人約你一起出門' : '今天沒有收到邀約'}</h2>
+                    {springInviteCandidates.length ? (
+                      <>
+                        <StoryBlocks blocks={[{ kind: 'narration', text: '訊息一條接著一條跳出來。你看了看時間，決定從收到的邀約裡挑一個人一起去樂器行。' }]} />
+                        <div className="choice-area"><div className="choice-heading">選擇一個邀約</div>
+                          {springInviteCandidates.map((character) => (
+                            <button className="reply-choice" key={character} onClick={() => chooseSpringStoreCharacter(character)}>
+                              <span><strong>{characterNames[character]}</strong><small>{springInvites[character].join(' ')}</small></span><ChevronRight size={15} />
+                            </button>
+                          ))}
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <StoryBlocks blocks={[{ kind: 'narration', text: '看來大家今天都有自己的安排。你把手機收起來，想了想，還是決定自己去練團室看看。' }]} />
+                        <div className="story-action-bar"><button className="story-primary-button" onClick={() => changeStage('spring-rehearsal')}>自己去練團室 <ChevronRight size={15} /></button></div>
+                      </>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'spring-store' && springStoreCharacter && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head"><div className="chapter-mark">下午・樂器行</div><div className="story-contact-title"><strong>{springStoreRoutes[springStoreCharacter].title}</strong><small>一起逛逛</small></div><span className="story-head-spacer" /></div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">MUSIC STORE</div><h2 className="story-scene-title">逛一間熟悉的店</h2>
+                    <StoryBlocks blocks={springStoreRoutes[springStoreCharacter].blocks} />
+                    {springStoreReply === null ? (
+                      <div className="choice-area"><div className="choice-heading">{springStoreRoutes[springStoreCharacter].prompt}</div>
+                        {springStoreRoutes[springStoreCharacter].choices.map((choice, index) => (
+                          <button className="reply-choice" key={index} onClick={() => chooseSpringStoreReply(index)}><span>{choice.text}</span><ChevronRight size={15} /></button>
+                        ))}
+                      </div>
+                    ) : (
+                      <>
+                        <StoryBlocks blocks={[{ kind: 'dialogue', speaker: springStoreCharacter === 'wen' ? '溫尚翊' : springStoreCharacter === 'ashin' ? '陳信宏' : springStoreCharacter === 'masa' ? '瑪莎' : springStoreCharacter === 'stone' ? '石錦航' : '劉諺明', text: springStoreRoutes[springStoreCharacter].choices[springStoreReply].response }]} />
+                        <div className="story-action-bar"><button className="story-primary-button" onClick={() => changeStage('spring-rehearsal')}>一起去練團室 <ChevronRight size={15} /></button></div>
+                      </>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'spring-rehearsal' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head"><div className="chapter-mark">春季學期・主線</div><div className="story-contact-title"><strong>練團室</strong><small>今天練習《轧車》</small></div><span className="story-head-spacer" /></div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">MAYDAY REHEARSAL</div><h2 className="story-scene-title">轧車！</h2>
+                    <StoryBlocks blocks={[
+                      { kind: 'narration', text: springStoreCharacter ? characterNames[springStoreCharacter] + '陪你一路走到練團室。你們一起推開門，裡面立刻傳來佑達敲鼓的聲音。' : '你自己走到練團室，推開門時，裡面已經傳出佑達敲鼓的聲音。' },
+                      ...springRehearsalBlocks,
+                    ]} />
+                  </div>
+                  <div className="story-action-bar"><button className="story-primary-button" onClick={() => changeStage('spring-after-picker')}>練團結束了 <ChevronRight size={15} /></button></div>
+                </div>
+              )}
+
+              {storyStage === 'spring-after-picker' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head"><div className="chapter-mark">練團結束・晚上</div><div className="story-contact-title"><strong>接下來的時間</strong><small>佑達已經先離開</small></div><span className="story-head-spacer" /></div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">AFTER REHEARSAL</div><h2 className="story-scene-title">{springAfterChoice === 'lesson' ? '想跟誰學一點東西？' : '晚上想做什麼？'}</h2>
+                    <StoryBlocks blocks={springAfterChoice === 'lesson'
+                      ? [{ kind: 'narration', text: '佑達說和朋友約好要去拿東西，拎起包包先走了。其他人還在收拾器材。瑪莎把 Bass 放回琴袋，溫尚翊和石頭整理吉他，阿信把麥克風收好。你忽然想趁大家還在，多學一點。' }]
+                      : [{ kind: 'narration', text: '佑達說和朋友約好要去拿東西，拎起包包先走了。大家還在收拾器材，諺明哥看了看時間，問你要不要一起去吃點東西。另一邊，幾個人也問你要不要留下來學樂器。' }]} />
+                    {springAfterChoice !== 'lesson' ? (
+                      <div className="choice-area"><div className="choice-heading">選擇今晚的安排</div>
+                        <button className="reply-choice" onClick={() => chooseSpringAfterChoice('yanming-dinner')}><span><strong>跟諺明哥去吃飯</strong><small>附近有家他常去的小店。</small></span><ChevronRight size={15} /></button>
+                        <button className="reply-choice" onClick={() => chooseSpringAfterChoice('lesson')}><span><strong>留下來學樂器</strong><small>溫尚翊、阿信、瑪莎或石頭。</small></span><ChevronRight size={15} /></button>
+                      </div>
+                    ) : (
+                      <div className="choice-area"><div className="choice-heading">選一位老師</div>
+                        {(['wen', 'ashin', 'masa', 'stone'] as const).map((character) => (
+                          <button className="reply-choice" key={character} onClick={() => chooseSpringLessonCharacter(character)}><span>{springLessonRoutes[character].title}</span><ChevronRight size={15} /></button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'spring-lesson' && springLessonCharacter && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head"><div className="chapter-mark">練團室・留下來一下</div><div className="story-contact-title"><strong>{springLessonRoutes[springLessonCharacter].title}</strong><small>手指上的小秘密</small></div><span className="story-head-spacer" /></div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">A LITTLE CLOSER</div><h2 className="story-scene-title">那些練出來的茧子</h2>
+                    <StoryBlocks blocks={springLessonRoutes[springLessonCharacter].blocks} />
+                    {springLessonReply === null ? (
+                      <div className="choice-area"><div className="choice-heading">{springLessonRoutes[springLessonCharacter].prompt}</div>
+                        {springLessonRoutes[springLessonCharacter].choices.map((choice, index) => (
+                          <button className="reply-choice" key={index} onClick={() => chooseSpringLessonReply(index)}><span>{choice.text}</span><ChevronRight size={15} /></button>
+                        ))}
+                      </div>
+                    ) : (
+                      <>
+                        <StoryBlocks blocks={[{ kind: 'dialogue', speaker: springLessonCharacter === 'wen' ? '溫尚翊' : springLessonCharacter === 'ashin' ? '陳信宏' : springLessonCharacter === 'masa' ? '瑪莎' : '石錦航', text: springLessonRoutes[springLessonCharacter].choices[springLessonReply].response }]} />
+                        <div className="story-action-bar"><button className="story-primary-button" onClick={() => changeStage('spring-sms-picker')}>收拾東西，回家 <ChevronRight size={15} /></button></div>
+                      </>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'spring-dinner' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head"><div className="chapter-mark">練團後・晚餐</div><div className="story-contact-title"><strong>和諺明一起吃飯</strong><small>附近的小店</small></div><span className="story-head-spacer" /></div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">DINNER WITH YANMING</div><h2 className="story-scene-title">慢慢吃，不趕時間</h2>
+                    <StoryBlocks blocks={springYanmingDinnerBlocks} />
+                    {springDinnerReply === null ? (
+                      <div className="choice-area"><div className="choice-heading">諺明哥把筷子遞給你，你怎麼回？</div>
+                        {springYanmingDinnerChoices.map((choice, index) => (
+                          <button className="reply-choice" key={index} onClick={() => chooseSpringDinnerReply(index)}><span>{choice.text}</span><ChevronRight size={15} /></button>
+                        ))}
+                      </div>
+                    ) : (
+                      <>
+                        <StoryBlocks blocks={[{ kind: 'dialogue', speaker: '劉諺明', text: springYanmingDinnerChoices[springDinnerReply].response }]} />
+                        <div className="story-action-bar"><button className="story-primary-button" onClick={() => changeStage('spring-sms-picker')}>吃完飯，回家 <ChevronRight size={15} /></button></div>
+                      </>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'spring-sms-picker' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head"><div className="chapter-mark">回家後・手機</div><div className="story-contact-title"><strong>想傳訊息給誰？</strong><small>1997 年 2 月・晚上</small></div><span className="story-head-spacer" /></div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">ONE MORE MESSAGE</div><h2 className="story-scene-title">今天還有話想說</h2>
+                    <StoryBlocks blocks={[{ kind: 'narration', text: '回到家，洗完澡，你把今天在樂器行和練團室發生的事情又想了一遍。手機就在枕頭旁邊。你想找一個人聊聊今天，最後決定先傳訊息給誰？' }]} />
+                    <div className="choice-area"><div className="choice-heading">選擇一位聯絡人</div>
+                      {springCharacterOrder.map((character) => (
+                        <button className="reply-choice" key={character} onClick={() => chooseSpringSmsTarget(character, 'day')}><span>{characterNames[character]}</span><ChevronRight size={15} /></button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'spring-diary' && springDiaryData && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head"><div className="chapter-mark">開學後・私人日記</div><div className="story-contact-title"><strong>寫給今天的自己</strong><small>1997 年 2 月 17 日・夜晚</small></div><span className="story-head-spacer" /></div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">1997 · SPRING SEMESTER</div><h2 className="story-scene-title">{springDiaryData.title}</h2>
+                    <div className="diary-paper story-diary-paper"><span className="diary-date">1997 年 2 月 17 日</span><h2>{springDiaryData.title}</h2><DiarySection label="日記" text={springDiaryData.text} /></div>
+                    <div className="reunion-pause-note">這篇日記會保留在日記列表裡，之後可以隨時重讀。</div>
+                  </div>
+                  <div className="story-action-bar"><button className="story-primary-button" onClick={finishSpringDiary}>合上日記，結束今天 <ChevronRight size={15} /></button></div>
+                </div>
+              )}
+
               {storyStage === 'paused' && (
                 <div className="paused-story-banner">
                   <div>
