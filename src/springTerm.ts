@@ -932,105 +932,143 @@ const springSmsChoice = (text: string, response: string[], affection = 2): Sprin
 const springSmsRound = (incoming: string, choices: SpringSmsChoice[]): SpringSmsRound => ({ incoming, choices })
 
 const springYanmingOwnerSmsRounds = (replies: number[]): SpringSmsRound[] => {
-  const reply1 = replies[1] ?? 0
-  const reply2 = replies[2] ?? 0
-  const reply3 = replies[3] ?? 0
-
-  const round1Incoming = [
-    '說起來，最容易忘的反而是我自己的東西。桌上的茶放到涼了，才想起來還沒喝。',
-    '他拿到外套後還一直跟我道謝，我倒有點不好意思，這種小事本來就是順手而已。',
-    '妳那個提醒的主意我先記下來，明天找張紙貼在門口，省得再追出去。',
-  ]
-
-  const round1Choices = [
-    [
-      springSmsChoice('「你自己也要記得照顧好，別只顧著店裡。」', ['「我會注意，事情忙完也得留點時間給自己。」'], 3),
-      springSmsChoice('「你也會忙到忘記喝茶喔？」', ['「有時候一忙就顧著手邊的事，抬頭才發現整杯都涼了。」'], 2),
-      springSmsChoice('「下次我去要提醒你先把茶喝完。」', ['「那我就先把杯子放在最顯眼的地方。」'], 3),
-    ],
-    [
-      springSmsChoice('「他應該鬆一口氣吧，不然還得再跑一趟。」', ['「是啊，少跑一趟就好。」'], 2),
-      springSmsChoice('「你還特地送到門口，真的很周到。」', ['「東西就在手邊，順手拿過去而已。」'], 3),
-      springSmsChoice('「他有沒有說你人很好？」', ['「沒有啦，只是一直道謝，客氣得很。」'], 2),
-    ],
-    [
-      springSmsChoice('「這個主意不錯，至少下次不用追出去。」', ['「我也覺得，省得客人走遠才發現。」'], 3),
-      springSmsChoice('「你會真的去貼嗎？」', ['「會啊，等我找張紙寫得清楚一點。」'], 2),
-      springSmsChoice('「我幫你想標語，但可能會很搞笑。」', ['「那我得先審稿，免得客人只記得笑。」'], 3),
-    ],
-  ]
-
-  const round2Incoming = [
-    '我剛才重新泡了一杯，這次先喝完才回來整理。',
-    '櫃檯我重新收了一遍，東西放回原位之後，看起來舒服多了。',
-    '我差點真的把茶杯寫進清單，想想還是算了，桌上那麼明顯的東西都能忘記，講出去有點丟臉。',
-  ]
-
-  const round3Incoming = [
-    '照妳剛才說的，我把手邊幾件事先排好順序，現在看起來清楚多了。',
-    '我把最後幾樣東西歸位了，櫃檯總算空出來，明天開門也省事。',
-    '妳還真打算當檢查員，我先把桌面收乾淨，免得被妳扣分。',
-  ]
-
-  const round4Incoming = [
-    '最後一組客人已經走了，我把燈一盞一盞關掉，今天差不多可以收工。',
-    '明天要用的東西我都先放好了，這次應該不會臨時找不到。',
-    '我先把桌面收乾淨了，明天妳要是來，應該挑不出什麼毛病。',
-  ]
-
-  const round2Choices = [
-    [
-      springSmsChoice('「這樣就對了，事情不會因為你休息幾分鐘就跑掉。」', ['「嗯，緩一下反而比較有精神。」'], 3),
-      springSmsChoice('「你這次真的有乖乖喝完喔。」', ['「有啦，不然又要被妳記上一筆。」'], 3),
-      springSmsChoice('「那你現在總算能喝到熱茶了。」', ['「嗯，這杯還是熱的，算今天的小勝利。」'], 2),
-    ],
-    [
-      springSmsChoice('「東西有固定位置，真的省得一直找。」', ['「對，尤其忙的時候，伸手就拿得到。」'], 3),
-      springSmsChoice('「你這個人連櫃檯都要整理得這麼仔細。」', ['「習慣了，太亂反而會影響做事。」'], 2),
-      springSmsChoice('「下次我去要看看是不是還這麼整齊。」', ['「好啊，先讓妳當一次檢查員。」'], 3),
-    ],
-    [
-      springSmsChoice('「你還真的寫好了，效率很高欸。」', ['「趁還記得就先寫下來，不然明天又忘了。」'], 3),
-      springSmsChoice('「字醜沒關係，能讓人看到就有用。」', ['「那就好，我不想為了字體再拖一天。」'], 2),
-      springSmsChoice('「我可以幫你想標語，但不保證不會變搞笑版。」', ['「那我得先審稿，免得客人只記得笑。」'], 3),
-    ],
-  ]
-
-  const round4Choices = [
-    [
-      springSmsChoice('「那你今天辛苦了，早點回去休息。」', ['「好，晚安。妳也別熬太晚。」'], 3),
-      springSmsChoice('「終於收工啦，今天可以不用再惦記店裡了。」', ['「嗯，鎖好門就先不想工作了。晚安。」'], 2),
-      springSmsChoice('「下次不要又忙到這麼晚才回家。」', ['「我會記得，妳也早點休息。」'], 3),
-    ],
-    [
-      springSmsChoice('「這樣明天就不用一早手忙腳亂了。」', ['「對，先準備好，明天就能省點時間。」'], 3),
-      springSmsChoice('「你這個習慣真的很可靠欸。」', ['「習慣先想一步，大家用起來也方便。」'], 3),
-      springSmsChoice('「那我下次要抽查你有沒有照清單放好。」', ['「可以，不過標準要先講好喔。」'], 2),
-    ],
-    [
-      springSmsChoice('「我還沒去就先有驗收的感覺了。」', ['「那我得先確保不會被妳扣分。」'], 3),
-      springSmsChoice('「你這樣講我更想去看看了。」', ['「好啊，哪天有空再來坐坐。」'], 2),
-      springSmsChoice('「我下次真的會去檢查，不准臨時收拾。」', ['「知道了，檢查員。晚安。」'], 3),
-    ],
-  ]
-
+  const r0 = replies[0] ?? 0
+  const r1 = replies[1] ?? 0
   return [
-    springSmsRound('剛才最後一組客人走得急，把外套忘在房間裡。我拿到門口才追上他，店裡有時候還真像失物招領處。', [
-      springSmsChoice('「你這裡還兼顧失物招領喔，什麼都得管。」', ['「店裡的東西總得有人顧，看到就順手處理了。」'], 2),
-      springSmsChoice('「他有沒有回頭跟你拿？」', ['「有，還特地跑回來說謝謝，倒讓我有點不好意思。」'], 2),
-      springSmsChoice('「下次乾脆在門口貼張『離開前檢查隨身物品』。」', ['「這個主意不錯，我可以真的貼一張。」'], 3),
+    springSmsRound('剛才有個客人把預約時間記成昨天，站在門口跟我對了半天。我把簿子翻給他看，他才一臉恍然大悟。', [
+      springSmsChoice('「你這裡除了練團室，還兼差當客服喔？」', ['「差不多啦，店裡什麼狀況都會遇到，習慣就好。」'], 2),
+      springSmsChoice('「最後有幫他安排到時間嗎？」', ['「有，剛好後面有空檔，讓他晚一點補進來了。」'], 2),
+      springSmsChoice('「你怎麼都不會不耐煩啊？換我可能早就翻白眼了。」', ['「人家也不是故意的，能處理就先處理，省得大家都麻煩。」'], 3),
     ]),
-    springSmsRound(round1Incoming[replies[0] ?? 0], round1Choices[replies[0] ?? 0]),
-    springSmsRound(round2Incoming[reply1], round2Choices[reply1]),
-    springSmsRound(round3Incoming[reply2], [
-      springSmsChoice('「你這樣安排，就不會一忙起來什麼都忘了。」', ['「對，先排好順序，事情就不會擠成一團。」'], 3),
-      springSmsChoice('「偶爾忙昏頭也沒什麼，別太跟自己過不去。」', ['「謝謝妳，這句我收下了。」'], 3),
-      springSmsChoice('「檢查員很嚴格的，你要小心喔。」', ['「那我得先把桌面整理好，不能讓妳抓到把柄。」'], 3),
+    springSmsRound(
+      r0 === 0 ? '我剛把預約簿重新抄了一遍，明天的時段總算排清楚了。'
+        : r0 === 1 ? '那個客人走之前還跟我道歉，弄得我反而不知道要回什麼。'
+          : '其實忙起來也會煩啦，只是事情一件一件處理完，就沒那麼亂了。',
+      [
+        springSmsChoice('「你做事真的很有條理欸，難怪店裡都安排得好好的。」', ['「只是習慣先把事情記下來，不然忙起來真的會忘。」'], 3),
+        springSmsChoice('「你就跟他說下次記得看清楚嘛。」', ['「有提醒了，他還說下次會先確認。」'], 2),
+        springSmsChoice('「偶爾煩一下也沒關係啊，不用什麼都自己扛。」', ['「謝謝妳，這句我有聽進去。」'], 3),
+      ]),
+    springSmsRound(
+      r1 === 0
+        ? '桌上那杯茶我總算喝完了，這次沒有放到完全涼掉。'
+        : r1 === 1
+          ? '我把明天要用的東西先放在櫃檯旁邊，明早就不用再找。'
+          : '妳剛剛那句倒是提醒我了，忙歸忙，還是得記得停一下。',
+      [
+        springSmsChoice('「很好，這次有乖乖喝完，值得鼓勵。」', ['「被妳這樣講，好像真的完成什麼大事一樣。」'], 3),
+        springSmsChoice('「你連明天的東西都先準備好，真的很像店長。」', ['「本來就是我該做的，先準備好，大家用起來比較順。」'], 2),
+        springSmsChoice('「那你現在先坐下來休息五分鐘，不准又站起來。」', ['「好，聽妳的，先坐一下。」'], 3),
+      ]),
+    springSmsRound('最後一組客人走了，我把燈一盞一盞關掉。店裡安靜下來之後，才發現今天也過得滿快的。', [
+      springSmsChoice('「終於可以收工啦，今天辛苦你了。」', ['「嗯，總算忙完了。妳今天也辛苦了。」'], 3),
+      springSmsChoice('「你每天都這樣忙，會不會覺得很累？」', ['「會啊，不過看到大家練得順利，還是覺得值得。」'], 2),
+      springSmsChoice('「我下次去要檢查你有沒有真的休息。」', ['「好，先幫妳留一張檢查證，標準不要訂太高就好。」'], 3),
     ]),
-    springSmsRound(round4Incoming[reply3], round4Choices[reply3]),
+    springSmsRound('我把門鎖好了，現在才真的能把店裡的事放一邊。妳也早點休息，別熬夜。', [
+      springSmsChoice('「晚安，回去路上也小心。」', ['「好，晚安。」'], 2),
+      springSmsChoice('「你明天也不要忘記喝茶。」', ['「知道了，明天會記得。晚安。」'], 3),
+      springSmsChoice('「下次去店裡再找你聊天。」', ['「好啊，來之前傳個訊息就好。」'], 3),
+    ]),
   ]
 }
 
+const springYanmingSharedSmsRounds = (context: SpringDayContext, replies: number[]): SpringSmsRound[] => {
+  const wentStore = context.storeCharacter === 'yanming'
+  const ateDinner = context.afterChoice === 'yanming-dinner'
+  const dessert = context.dinnerReplies?.[5]
+  const r0 = replies[0] ?? 0
+
+  if (ateDinner) return [
+    springSmsRound(
+      dessert === 0 || dessert === 2
+        ? '妳剛剛那碗紅豆湯吃得很認真，我差點以為還要再幫妳叫一碗。'
+        : '剛剛看妳吃到最後真的飽了，我就沒再勸妳點甜湯。吃舒服比較重要。',
+      [
+        springSmsChoice('「那碗真的很好吃啊，我差點想把最後一口也留著。」', ['「看得出來，妳吃得很滿足，我就放心了。」'], 3),
+        springSmsChoice('「我是真的吃不下了，再吃會走不動啦。」', ['「我知道，所以才沒勉強妳。下次還有機會再吃。」'], 2),
+        springSmsChoice('「你剛剛也吃得很開心吧？」', ['「有啊，難得不用趕時間，慢慢吃一頓很好。」'], 3),
+      ]),
+    springSmsRound(
+      wentStore
+        ? '今天先陪妳看器材，後來又一起吃飯，時間一下就過去了。'
+        : '今天那家店的老闆還記得我，問我最近怎麼比較少過去。聊了幾句，才發現以前常去的地方都沒變。',
+      [
+        springSmsChoice('「我也覺得時間過好快，還有點意猶未盡。」', ['「那下次不用等練團結束，有空也可以再去吃。」'], 3),
+        springSmsChoice('「難怪你跟老闆那麼熟，感覺你常常去欸。」', ['「以前比較常去，最近事情多，倒是有一陣子沒去了。」'], 2),
+        springSmsChoice('「下次換我帶你去我喜歡的店！」', ['「好啊，那我就等妳推薦了。」'], 3),
+      ]),
+    springSmsRound(
+      r0 === 0
+        ? '妳剛剛說那碗甜湯值得再來一次，我先記下來了。'
+        : r0 === 1
+          ? '妳剛剛吃到一半還在講學校的事，說著說著自己先笑了。'
+          : '我剛才走回來時想了一下，今天這樣坐著聊天，比趕著吃完就走舒服多了。',
+      [
+        springSmsChoice('「你真的記下來了喔？下次不准忘記。」', ['「記下來了，妳放心。」'], 3),
+        springSmsChoice('「我講到一半才想到自己好像說太多了。」', ['「不會啊，我有在聽。妳想說什麼都可以慢慢說。」'], 3),
+        springSmsChoice('「我也喜歡這樣，不用一直看時間。」', ['「嗯，偶爾這樣就很好。」'], 3),
+      ]),
+    springSmsRound('我把明天店裡的事情先排好了，今天就不再想工作了。', [
+      springSmsChoice('「很好，今天下班了就不准再想店裡的事。」', ['「好，今天聽妳的。」'], 3),
+      springSmsChoice('「你做事真的很讓人放心。」', ['「謝謝妳，這句我收下了。」'], 3),
+      springSmsChoice('「下次吃飯不要又聊到忘記時間。」', ['「那要看妳會不會又講到有趣的事。」'], 2),
+    ]),
+    springSmsRound('今天謝謝妳一起吃飯。回去早點休息，下次想吃什麼再跟我說。', [
+      springSmsChoice('「我也很開心，晚安諺明哥！」', ['「晚安，回去路上小心。」'], 3),
+      springSmsChoice('「下次換我請你，不准搶著結帳。」', ['「好啊，那我就不跟妳客氣了。」'], 3),
+      springSmsChoice('「晚安，你也不要忙到太晚。」', ['「好，我會記得。晚安。」'], 2),
+    ]),
+  ]
+
+  if (wentStore) return [
+    springSmsRound('今天在鼓棒那邊，妳拿起來比了好幾支，最後挑的那支重量剛好。妳的眼光其實不錯。', [
+      springSmsChoice('「我只是怕挑錯，回去還要被你退貨。」', ['「不會啦，尺寸和重量都合適，這次挑得很好。」'], 2),
+      springSmsChoice('「你自己明明也比較了很久，還說我。」', ['「器材還是要確認清楚，買回去大家才用得順手。」'], 2),
+      springSmsChoice('「你剛剛有看到我偷偷拿另一支嗎？」', ['「有啊，不過妳最後還是選了比較合手的那支。」'], 3),
+    ]),
+    springSmsRound('我把今天確認過的規格寫進清單了，下一次補貨就不用再從頭查。', [
+      springSmsChoice('「你那張清單真的很有用，感覺什麼都不會漏掉。」', ['「習慣先記下來，忙的時候才不會忘。」'], 2),
+      springSmsChoice('「你連這種小地方都記得，真的很細心。」', ['「店裡要用的東西，還是仔細一點比較好。」'], 2),
+      springSmsChoice('「下次我還要幫你挑，這次我有經驗了。」', ['「好啊，下次再讓妳當一次顧問。」'], 3),
+    ]),
+    springSmsRound('店員還問我是不是每次都列這麼細，我說習慣了，不然買錯一次，大家都得等。', [
+      springSmsChoice('「你真的很替大家著想欸。」', ['「都是一起用的東西，先確認好比較省事。」'], 3),
+      springSmsChoice('「那你有沒有自己的購物清單？還是只記店裡的？」', ['「自己的東西反而比較隨便，這點可能要改一下。」'], 2),
+      springSmsChoice('「下次你也列一張給我，我要看看有多誇張。」', ['「可以啊，不過妳不要拿去笑我。」'], 2),
+    ]),
+    springSmsRound('今天謝謝妳陪我跑一趟，有人一起看，確實比我自己慢慢比快一些。', [
+      springSmsChoice('「不客氣啦，我也覺得很有趣。」', ['「那就好，下次有需要再一起去。」'], 3),
+      springSmsChoice('「那下次要請我吃東西，顧問不能白當。」', ['「好，這次先記帳，下次補給妳。」'], 3),
+      springSmsChoice('「你不用每次都這麼客氣啦。」', ['「習慣了，還是要跟妳說聲謝謝。」'], 2),
+    ]),
+    springSmsRound('今天先這樣吧，妳回去早點休息。下次店裡有需要補的東西，我再問妳有沒有空。', [
+      springSmsChoice('「好啊，有需要再叫我。」', ['「好，晚安，路上小心。」'], 3),
+      springSmsChoice('「下次不要只找我做苦力喔。」', ['「不會啦，至少會先請妳吃東西。」'], 3),
+      springSmsChoice('「晚安，清單先生。」', ['「晚安，妳也早點休息。」'], 2),
+    ]),
+  ]
+
+  return springYanmingOwnerSmsRounds(replies)
+}
+
+const springYanmingSmsOpeners = (context: SpringDayContext): { text: string; response: string; affection: number }[] => {
+  if (context.afterChoice === 'yanming-dinner') return [
+    { text: '「我到家了，今天那碗紅豆湯真的很好吃。」', response: '「到家就好。看妳吃得開心，我也覺得這家店沒帶錯。」', affection: 3 },
+    { text: '「今天謝謝你帶我去吃飯，感覺整個人都放鬆下來了。」', response: '「不客氣，偶爾停下來吃頓飯也很好，妳開心就好。」', affection: 3 },
+    { text: '「下次換我帶你去吃我喜歡的店！」', response: '「好啊，那我就等妳推薦了。」', affection: 3 },
+  ]
+  if (context.storeCharacter === 'yanming') return [
+    { text: '「今天陪你去看器材還滿有趣的，原來你連鼓棒都要比較半天。」', response: '「習慣了，東西要合用才行。不過有妳一起看，確實快很多。」', affection: 2 },
+    { text: '「我回家才發現自己好像也學會看一點規格了。」', response: '「那很好啊，下次再去就知道要注意哪些地方了。」', affection: 2 },
+    { text: '「下次還要找我一起去，不准自己偷偷跑掉。」', response: '「好啊，有需要我再問妳。今天謝謝妳陪我。」', affection: 3 },
+  ]
+  return [
+    { text: '「諺明哥，今天店裡還順利嗎？」', response: '「還算順利，剛送走最後一組客人，現在才有空坐下來。」', affection: 2 },
+    { text: '「你今天是不是又忙到忘記喝茶了？」', response: '「被妳猜到了，剛才那杯真的放涼了才想起來。」', affection: 3 },
+    { text: '「剛剛看你一直忙，差點忘了跟你說晚安。」', response: '「沒關係，妳先回家休息。我這邊收完就準備回去了。」', affection: 3 },
+  ]
+}
 
 const springStoreFollowUpLine = (character: SpringCharacterId, context: SpringDayContext): string => {
   const storeReply = context.storeReplies?.[1] ?? null
@@ -1066,170 +1104,140 @@ const springContextLine = (character: SpringCharacterId, context: SpringDayConte
   const learnedTogether = context.lessonCharacter === character
   const ateTogether = character === 'yanming' && context.afterChoice === 'yanming-dinner'
   const touchedCallus = context.lessonReplies?.[4] === 0
-  const thirdStoreReply = context.storeReplies?.[2] ?? null
 
-  if (wentStore && learnedTogether) {
-    if (character === 'wen') return '剛剛那個和弦妳最後有彈出來，現在還記得食指要怎麼放嗎？'
-    if (character === 'ashin') return '剛剛那幾個木吉他和弦，妳回家還記得指尖要靠哪裡嗎？'
-    if (character === 'masa') return '妳回家以後，腦袋裡是不是還在打那段 Bass 節奏？'
-    if (character === 'stone') return '剛剛最後一次換和弦比前面順多了，妳自己有沒有感覺到？'
-  }
-
-  if (wentStore && ateTogether) return '妳到家了嗎？今天先去看器材，後來又一起吃飯，回去路上還順利嗎？'
-
-  if (wentStore) {
-    if (character === 'wen') {
-      if (thirdStoreReply === 0) return '妳今天問我會不會教妳，我有記得喔。真的想學的話，來練團室找我就好。'
-      if (thirdStoreReply === 1) return '妳今天還叫我先彈給妳聽，現在是不是更想學了？'
-      if (thirdStoreReply === 2) return '妳今天還沒學就先擔心自己沒天分，先玩玩看啦，不用想那麼多。'
-      return '今天在樂器行玩效果器還滿有趣的吧？'
-    }
-    if (character === 'ashin') {
-      if (thirdStoreReply === 0) return '妳今天說想學木吉他，我有記得喔。下次去練團室可以先陪妳試最簡單的和弦。'
-      if (thirdStoreReply === 1) return '妳剛剛還擔心手指會痛，先不用急著練很久，慢慢來就好。'
-      if (thirdStoreReply === 2) return '妳說看我們彈比較輕鬆也沒關係啊，哪天想學了再跟我說。'
-      return '今天那兩把木吉他的聲音，妳後來有沒有想起來？'
-    }
-    if (character === 'masa') {
-      if (thirdStoreReply === 0) return '妳今天說有一點想學吉他，我有聽到喔，不要明天就反悔。'
-      if (thirdStoreReply === 1) return '妳今天問自己適合學什麼，我回去想了一下，還是覺得先試吉他比較好。'
-      if (thirdStoreReply === 2) return '妳說只是覺得吉他好看，最好是啦，我又不是沒看到妳盯著看。'
-      return '今天 Bass 那幾個低音有沒有讓妳感覺到地板在震？'
-    }
-    if (character === 'stone') {
-      if (thirdStoreReply === 0) return '妳今天背著展示琴的樣子很認真，回去有沒有想起來？'
-      if (thirdStoreReply === 1) return '妳今天問自己適不適合學吉他，我覺得可以慢慢試，不用急著決定。'
-      if (thirdStoreReply === 2) return '妳說每天練琴很辛苦，我倒覺得喜歡的話就會慢慢習慣。'
-      return '今天那條背帶，妳後來有沒有覺得哪個顏色比較好看？'
-    }
-    return '今天清單上的器材都確認好了，妳有沒有哪樣還想再多看一點？'
+  if (character === 'yanming') {
+    if (ateTogether) return context.dinnerReplies?.[5] === 0 || context.dinnerReplies?.[5] === 2
+      ? '妳剛剛那碗紅豆湯吃得很認真，我差點以為還要再幫妳叫一碗。'
+      : '剛剛看妳吃到最後真的飽了，我就沒再勸妳點甜湯。'
+    if (wentStore) return '今天在鼓棒那邊，妳拿起來比了好幾支，最後挑的那支重量剛好。'
+    return '剛才有個客人把預約時間記成昨天，站在門口跟我對了半天，現在想起來還覺得有點好笑。'
   }
 
   if (learnedTogether) {
     if (character === 'wen') return touchedCallus
-      ? '妳剛剛摸完我的繭，後來是不是又突然不好意思了？手指還酸嗎？'
-      : '妳回家後有沒有試著回想剛剛那個和弦？我看妳最後幾次已經順很多了。'
+      ? '欸，妳剛剛摸完我的手，還盯著看了好一會兒，最後倒是我先把手收回來。'
+      : '欸，妳最後那個和弦總算有聲音了，剛剛那個得意的表情我到現在還記得。'
     if (character === 'ashin') return touchedCallus
-      ? '妳剛剛摸完我指尖的繭，後來有沒有覺得不好意思？'
-      : '剛剛那個和弦妳最後有彈出來，現在還記得指尖要靠哪裡嗎？'
+      ? '妳剛剛摸我指尖的時候很小心，像是怕一用力就會弄痛我。其實不用那麼緊張啦。'
+      : '妳最後那個和弦一出聲，自己先愣住，然後才笑出來。我有看到喔。'
     if (character === 'masa') return touchedCallus
-      ? '妳剛剛檢查完我的繭，現在是不是還想替我寫那份報告？'
-      : '妳現在腦袋裡是不是還在打剛剛那段 Bass 節奏？'
-    if (character === 'stone') return touchedCallus
-      ? '妳剛剛摸了我指腹上的繭，會不會覺得比看起來粗一點？'
-      : '剛剛換和弦那幾次，妳最後一次是不是覺得順多了？'
+      ? '欸，妳剛剛摸完我的繭，表情像在驗貨。Bass老師本人還沒收費，妳倒是先檢查起來了。'
+      : '妳剛剛那段節奏終於接上了，中間還有一個音跑出去散步，不過算妳過關。'
+    return touchedCallus
+      ? '妳剛剛碰到我手指時很輕，像是怕弄痛我。其實不用那麼小心，我有注意到妳自己手也很酸。'
+      : '妳最後一次換和弦，手指終於沒有互相打架了。那一下聽起來很乾淨，我有替妳高興。'
   }
 
-  if (ateTogether) return '妳到家了嗎？剛剛那頓飯吃得還習慣嗎？'
-  if (character === 'yanming' && wentStore) return '今天清單上的器材都確認好了，妳有沒有哪樣還想再多看一點？'
-  if (character === 'wen') return '今天《轧車》最後一遍總算接起來了，妳是不是笑佑達笑得很開心？'
-  if (character === 'ashin') return '今天《轧車》練到最後總算順了，佑達那幾下鼓花真的很有精神。'
-  if (character === 'masa') return '今天《轧車》那幾遍妳也看到了吧？佑達差點把歌變成自己的獨奏會。'
-  if (character === 'stone') return '今天最後一遍大家接得比前面順很多，妳有聽出來嗎？'
-  return '剛把店裡的預約簿和櫃檯整理好，現在才有空坐下來。'
+  if (wentStore) {
+    if (character === 'wen') return '欸，妳剛剛踩那顆效果器時明明往後縮了一下，下一秒又自己跑回去再踩一次。'
+    if (character === 'ashin') return '妳抱著那把木吉他的時候，肩膀有點僵，我幫妳把位置調好後，妳才終於放鬆下來。'
+    if (character === 'masa') return '妳今天盯著琴弦標價的眼神，比我還像來查帳的。店員大概以為我們是來稽核的。'
+    return '妳替我看背帶時，拿起來比了好幾次，最後還特地確認肩膀那邊會不會磨。'
+  }
+
+  if (character === 'wen') return '欸，佑達第一遍那個鼓花真的太敢了，妳剛剛笑到肩膀一直抖，差點害我也彈歪。'
+  if (character === 'ashin') return '剛剛第一遍真的有點失控，佑達一加鼓花，瑪莎的表情我差點看不下去，差點唱不住。'
+  if (character === 'masa') return '佑達第一遍那個鼓花差點把整首歌帶去別的地方，我剛剛真的很想把他的鼓棒沒收。'
+  return '前面那幾遍雖然有點亂，最後一次大家還是接起來了。那一下聽起來很舒服。'
 }
 
 type SpringMemberSmsId = Exclude<SpringCharacterId, 'yanming'>
 
-const springNaturalMemberSmsOpeners = (character: SpringMemberSmsId, context: SpringDayContext) => {
-  const mode = context.storeCharacter === character
-    ? context.lessonCharacter === character ? 'storeLesson' : 'store'
-    : context.lessonCharacter === character ? 'lesson' : 'rehearsal'
+const springNaturalMemberSmsOpeners = (character: SpringMemberSmsId, context: SpringDayContext): { text: string; response: string; affection: number }[] => {
+  const wentStore = context.storeCharacter === character
+  const learned = context.lessonCharacter === character
+  const touched = context.lessonReplies?.[4] === 0
 
-  const storeLesson: Record<SpringMemberSmsId, { text: string; response: string; affection: number }[]> = {
-    wen: [
-      { text: '「今天先玩效果器又抱吉他，回家手指大概會跟我抗議。」', response: '「誰叫妳每樣都想試，最後還真的把和弦按出來了。」', affection: 2 },
-      { text: '「我把你送的撥片收好了，第一堂課紀念品。」', response: '「才一片撥片就要紀念喔，妳還滿會的嘛。」', affection: 3 },
-      { text: '「今天最意外的是你居然很有耐心。」', response: '「蛤？妳平常到底把我想成什麼樣子？」', affection: 2 },
-    ],
-    ashin: [
-      { text: '「今天那把木吉他的聲音還留在我耳朵裡。」', response: '「我也是，回來以後還想再彈一遍。」', affection: 2 },
-      { text: '「我終於把那個和弦按出聲音了！」', response: '「有啊，我聽到了，妳那時候笑得好開心。」', affection: 3 },
-      { text: '「你一直叫我慢慢來，我真的就沒那麼緊張了。」', response: '「那就好，學東西本來就可以慢慢來。」', affection: 2 },
-    ],
-    masa: [
-      { text: '「Bass比我想的還難，兩隻手完全不聽話。」', response: '「現在知道我平常在忙什麼了吧。」', affection: 2 },
-      { text: '「我宣布今天的Bass課程沒有白上。」', response: '「先別急著頒獎，妳還有很多地方要練。」', affection: 2 },
-      { text: '「我被你吐槽了整路，但好像真的有學到。」', response: '「那妳至少有學到東西，不算白費我口水。」', affection: 2 },
-    ],
-    stone: [
-      { text: '「今天換和弦時我終於沒有一直卡住了。」', response: '「我有看到，妳後來放鬆很多。」', affection: 2 },
-      { text: '「謝謝你一直陪我慢慢來，沒有催我。」', response: '「不用謝，妳照自己的速度就好。」', affection: 3 },
-      { text: '「我還記得你幫我把琴轉過來的樣子。」', response: '「那樣妳比較看得清楚，我就順手幫妳調一下。」', affection: 2 },
-    ],
+  if (learned) {
+    if (character === 'wen') return touched
+      ? [
+          { text: '「我剛剛摸到你手上的繭，真的比看起來粗欸。」', response: '「不然咧，練這麼多年是裝飾喔？妳剛才倒是摸得滿認真的。」', affection: 3 },
+          { text: '「你剛剛突然把手收回去，我還以為我弄痛你了。」', response: '「沒有啦！是妳突然抬頭看我，我一時不知道要看哪裡。」', affection: 3 },
+          { text: '「我比較在意你耳朵怎麼紅了。」', response: '「蛤？妳今天是來學吉他，還是來檢查我耳朵的？」', affection: 4 },
+        ]
+      : [
+          { text: '「我回家才發現手指真的有點酸，今天玩太多了啦。」', response: '「現在才發現喔？妳剛剛每個和弦都要再試一次，當然會酸。」', affection: 2 },
+          { text: '「你剛剛明明一臉很認真，結果還是有偷笑我。」', response: '「我哪有笑妳，是妳那個表情真的很好笑……欸，不是啦，是很有趣。」', affection: 3 },
+          { text: '「撥片我收好了，不准反悔喔。」', response: '「送妳就送妳，誰跟妳反悔啦。收好，不要又弄丟。」', affection: 3 },
+        ]
+    if (character === 'ashin') return touched
+      ? [
+          { text: '「剛剛摸到你指尖的時候，我真的有點不敢用力。」', response: '「我有感覺到妳很小心啊。沒關係的，不用那麼緊張。」', affection: 3 },
+          { text: '「原來你手上的繭摸起來是這種感覺，跟我想像的不太一樣。」', response: '「是不是？看起來薄薄的，摸起來其實有一點硬。」', affection: 2 },
+          { text: '「你剛剛一直讓我慢慢看，我反而有點不好意思。」', response: '「欸～我只是想讓妳看清楚而已，沒有要讓妳尷尬啦。」', affection: 3 },
+        ]
+      : [
+          { text: '「我回家還在想剛剛那個和弦，終於有一次彈得很清楚。」', response: '「有啊，我有聽到。妳那時候自己也愣了一下，然後才笑出來。」', affection: 3 },
+          { text: '「你一直叫我慢慢來，害我真的沒那麼緊張了。」', response: '「那就好啊，第一次本來就不用急，妳願意試就很棒了。」', affection: 3 },
+          { text: '「我還記得你坐在旁邊陪我，一直沒有催我。」', response: '「我又不趕時間。看妳慢慢抓到那個聲音，我也滿開心的。」', affection: 3 },
+        ]
+    if (character === 'masa') return touched
+      ? [
+          { text: '「檢查報告還沒寫完，老師先不要急著下課。」', response: '「欸，妳還真的要寫喔？那記得寫優點，不准只挑毛病。」', affection: 3 },
+          { text: '「我只是好奇，誰叫你的手看起來不像會長繭。」', response: '「妳是把我當成每天坐辦公室的人喔？Bass不是拿來擺好看的。」', affection: 2 },
+          { text: '「你剛剛明明一直在笑，還裝得很鎮定。」', response: '「我是在配合檢查員，服務態度要好一點嘛。」', affection: 3 },
+        ]
+      : [
+          { text: '「我現在手指還在抗議，Bass真的不是看起來那麼簡單。」', response: '「現在知道了吧？剛剛還一副很有把握的樣子。」', affection: 2 },
+          { text: '「你今天吐槽歸吐槽，還是有把我教會一點點。」', response: '「一點點也是進步啦，妳不要急著領獎。」', affection: 3 },
+          { text: '「下次我要練到你沒話可以吐槽。」', response: '「這個目標很遠大，我先幫妳記在行事曆上。」', affection: 3 },
+        ]
+    return touched
+      ? [
+          { text: '「剛剛摸到你指腹的繭，比我想像中粗一點。」', response: '「有一點吧，練久了就會這樣。妳剛剛碰得很輕，我有感覺到。」', affection: 3 },
+          { text: '「你一直把手攤著讓我看，我反而不知道要說什麼了。」', response: '「沒關係啊，不用特別說什麼。妳只是好奇而已。」', affection: 3 },
+          { text: '「我本來怕你會覺得我很奇怪，結果你比我還自然。」', response: '「我只是覺得沒什麼好尷尬的，妳不用一直想太多。」', affection: 3 },
+        ]
+      : [
+          { text: '「我回家還記得最後那次換和弦，真的順過去了！」', response: '「我有看到，妳那一下整個人都放鬆了，聲音也乾淨很多。」', affection: 3 },
+          { text: '「謝謝你一直等我，我前面真的卡了好久。」', response: '「不用謝啊，妳後來有抓到就好。前面多試幾次很正常。」', affection: 3 },
+          { text: '「你剛剛沒有催我，我反而比較敢一直試。」', response: '「那就照這個速度來，下次也不用怕按錯。」', affection: 3 },
+        ]
   }
 
-  const storeOnly: Record<SpringMemberSmsId, { text: string; response: string; affection: number }[]> = {
-    wen: [
-      { text: '「你剛剛還說只是看看，結果效果器一顆一顆試得比誰都認真。」', response: '「妳不是也踩得很開心？不要把責任都推給我。」', affection: 2 },
-      { text: '「我現在還記得那個音色突然變厚的聲音。」', response: '「那顆效果器確實不錯，拿來表演很有存在感。」', affection: 2 },
-      { text: '「下次換我自己試，你不準先幫我按。」', response: '「好啦，讓妳自己玩，這次我站旁邊看。」', affection: 3 },
-    ],
-    ashin: [
-      { text: '「今天那兩把木吉他的聲音，我到現在還分得出來。」', response: '「妳耳朵滿仔細的，兩把的音色真的不太一樣。」', affection: 2 },
-      { text: '「我抱著那把琴的時候，真的有點不知道手要放哪裡。」', response: '「我有看到，所以才幫妳把位置調好，這樣比較舒服。」', affection: 2 },
-      { text: '「今天逛得很慢，但我覺得很開心。」', response: '「我也是啊，慢慢看比較不會錯過喜歡的東西。」', affection: 3 },
-    ],
-    masa: [
-      { text: '「你今天盯著琴弦標價的眼神，比我還像來查帳的。」', response: '「價差那麼大，不看清楚是要當冤大頭喔？」', affection: 2 },
-      { text: '「我現在知道你為什麼可以在一排琴弦前面站那麼久了。」', response: '「很好，至少今天不是只有我一個人在研究。」', affection: 2 },
+  if (wentStore) {
+    if (character === 'wen') return [
+      { text: '「你不是說只是看看？結果在效果器那邊蹲到差點忘記我。」', response: '「欸，我哪有忘記妳？妳不是也踩得很開心，還踩第二次。」', affection: 2 },
+      { text: '「我回家還記得那顆效果器一踩下去的聲音，真的差好多。」', response: '「那顆不錯吧，聲音厚起來很有感覺，拿去表演也很適合。」', affection: 2 },
+      { text: '「下次換我自己試，你不准先幫我按。」', response: '「好啦，讓妳自己玩。這次我站旁邊，看妳會不會又踩太早。」', affection: 3 },
+    ]
+    if (character === 'ashin') return [
+      { text: '「今天那兩把木吉他的聲音，我到現在還分得出來。」', response: '「妳耳朵滿仔細的耶，第一把比較厚，第二把亮一點。」', affection: 2 },
+      { text: '「我抱著那把琴的時候，真的有點不知道手要放哪裡。」', response: '「我有看到啦，所以才幫妳把位置調好。後來是不是舒服多了？」', affection: 2 },
+      { text: '「你剛剛彈給我聽的那段，我回家還在哼。」', response: '「真的喔？那我下次再彈給妳聽，這次讓妳聽完整一點。」', affection: 3 },
+    ]
+    if (character === 'masa') return [
+      { text: '「你今天盯著琴弦標價的眼神，真的很像在查帳。」', response: '「價差那麼大，不看清楚是要當冤大頭喔？」', affection: 2 },
+      { text: '「你最後還是買了那包比較貴的，嘴上嫌半天欸。」', response: '「規格差那麼多，便宜也不能亂買好不好。」', affection: 2 },
       { text: '「下次再去，我要負責挑東西，你負責不要吐槽。」', response: '「這個分工有點困難，我盡量啦。」', affection: 3 },
-    ],
-    stone: [
-      { text: '「你最後選的那條背帶，我越想越覺得很適合你。」', response: '「謝謝，妳剛剛幫我看了好幾次，我也比較放心。」', affection: 2 },
+    ]
+    return [
+      { text: '「你最後選的那條背帶，我越想越覺得很適合你。」', response: '「謝謝，妳剛剛幫我看了好幾次，我自己也比較放心。」', affection: 2 },
       { text: '「今天才知道，原來挑一條背帶也要看這麼多細節。」', response: '「背起來舒服最重要，外型再慢慢挑就好。」', affection: 2 },
       { text: '「下次我還想再試試看那把展示琴。」', response: '「好啊，下次有空再一起去，不用急。」', affection: 3 },
-    ],
+    ]
   }
 
-  const lesson: Record<SpringMemberSmsId, { text: string; response: string; affection: number }[]> = {
-    wen: [
-      { text: '「我剛剛真的把那個和弦按出來了，現在想起來還是有點得意。」', response: '「有啦，有聽到。妳那個表情比和弦本身還有戲。」', affection: 2 },
-      { text: '「今天第一次學吉他，手指比腦袋還忙。」', response: '「先讓手指休息，今天不用再跟它們吵架了。」', affection: 2 },
-      { text: '「你今天沒有嫌我慢，我有記得喔。」', response: '「我哪有嫌妳，妳不要自己亂加戲。」', affection: 2 },
-    ],
-    ashin: [
-      { text: '「我剛剛回家還在想那個和弦的聲音。」', response: '「那個聲音很好聽吧，妳自己彈出來的時候更不一樣。」', affection: 2 },
-      { text: '「今天謝謝你陪我慢慢試，我一開始真的有點緊張。」', response: '「不會啦，妳願意試就很好了，不用急著一次學會。」', affection: 3 },
-      { text: '「我現在才知道木吉他按弦也會讓手指這麼忙。」', response: '「第一次都會有一點不習慣，休息一下就好。」', affection: 2 },
-    ],
-    masa: [
-      { text: '「我現在腦袋裡還在重播那段Bass節奏。」', response: '「至少有一段成功住進妳腦袋裡了。」', affection: 2 },
-      { text: '「今天被你吐槽好幾次，但我真的有學到。」', response: '「那我今天的教學費就不算白收了。」', affection: 2 },
-      { text: '「我決定下次要把那段節奏練到你沒話說。」', response: '「這個志氣不錯，先記著，別下次又忘了。」', affection: 3 },
-    ],
-    stone: [
-      { text: '「我回家還記得你剛剛慢慢示範的那個動作。」', response: '「記得一點就很好了，不用一下子把全部背起來。」', affection: 2 },
-      { text: '「今天謝謝你沒有催我，我後來真的比較不緊張了。」', response: '「妳不用跟別人比，照自己的速度就好。」', affection: 3 },
-      { text: '「第一次學換和弦，原來比看起來難這麼多。」', response: '「看起來簡單，手真的放上去才知道不一樣。」', affection: 2 },
-    ],
-  }
-
-  const rehearsal: Record<SpringMemberSmsId, { text: string; response: string; affection: number }[]> = {
-    wen: [
-      { text: '「佑達今天那個鼓花真的太誇張，我回家還在想他哪來的自信。」', response: '「妳還不是笑最大聲的那個，少裝啦。」', affection: 2 },
-      { text: '「最後那一遍你彈得很帥，我有看到你自己也很滿意。」', response: '「有接起來就好，不然前面被佑達鬧成那樣就白練了。」', affection: 3 },
-      { text: '「我今天坐在旁邊，差點被你們的音量震到。」', response: '「那妳下次坐遠一點啦，免得又怪我們太吵。」', affection: 2 },
-    ],
-    ashin: [
-      { text: '「今天最後一遍一進來，整間練團室都跟著熱起來。」', response: '「嗯～那一段大家都很投入，我自己也唱得很開心。」', affection: 2 },
-      { text: '「佑達那個鼓花把我笑到不行，瑪莎的表情也太好笑。」', response: '「他們兩個真的很有默契，連鬥嘴都接得很順。」', affection: 2 },
-      { text: '「你唱到一半差點笑場，我有看到喔。」', response: '「有啦，差點忍不住，還好後來有接回來。」', affection: 3 },
-    ],
-    masa: [
-      { text: '「你今天吐槽佑達的速度比Bass還快。」', response: '「那是因為他提供的素材太多了。」', affection: 2 },
-      { text: '「佑達今天根本想把《轧車》改成個人秀。」', response: '「我差點就把他的鼓棒沒收，真的。」', affection: 2 },
-      { text: '「我現在還覺得地板在震。」', response: '「那是妳笑到腳軟，不要怪音箱。」', affection: 2 },
-    ],
-    stone: [
-      { text: '「最後一遍收得很齊，我有聽出來。」', response: '「謝謝，前面雖然鬧，但大家最後都有接住。」', affection: 2 },
-      { text: '「你彈吉他的時候看起來很投入。」', response: '「今天那段其實滿順的，彈起來很舒服。」', affection: 2 },
-      { text: '「我坐在旁邊跟著拍子，差點也想拿起樂器。」', response: '「下次有機會可以試試看，不用急。」', affection: 3 },
-    ],
-  }
-
-  const rows = mode === 'storeLesson' ? storeLesson[character] : mode === 'store' ? storeOnly[character] : mode === 'lesson' ? lesson[character] : rehearsal[character]
-  return rows.map((row) => ({ ...row }))
+  if (character === 'wen') return [
+    { text: '「佑達今天那個鼓花真的太誇張，我回家還在笑。」', response: '「妳還不是笑最大聲的那個，少裝啦。」', affection: 2 },
+    { text: '「最後那一遍你彈得很帥，我有看到你自己也很滿意。」', response: '「有接起來就好，不然前面被佑達鬧成那樣就白練了。」', affection: 3 },
+    { text: '「我今天坐在旁邊，差點被你們的音量震到。」', response: '「那妳下次坐遠一點啦，免得又怪我們太吵。」', affection: 2 },
+  ]
+  if (character === 'ashin') return [
+    { text: '「今天第一遍真的有點失控，佑達一加鼓花，我差點笑到聽不見你唱歌。」', response: '「欸～我自己也差點唱不下去，還好後來有接回來。」', affection: 2 },
+    { text: '「最後一遍大家一起進來的時候，整間練團室突然變得好有氣勢。」', response: '「對啊，那一下大家都有抓到同一個感覺，唱起來很過癮。」', affection: 3 },
+    { text: '「我有看到你差點笑場，還硬是忍住。」', response: '「有啦，妳不要一直提醒我，不然我現在又要笑了。」', affection: 3 },
+  ]
+  if (character === 'masa') return [
+    { text: '「你今天吐槽佑達的速度比Bass還快。」', response: '「那是因為他提供的素材太多了，怪我喔？」', affection: 2 },
+    { text: '「佑達今天根本想把《轧車》改成個人秀。」', response: '「我差點把他的鼓棒沒收，真的。還好最後有把歌救回來。」', affection: 2 },
+    { text: '「我現在還覺得地板在震，耳朵也在震。」', response: '「那是妳笑到腳軟，不要什麼都怪音箱。」', affection: 2 },
+  ]
+  return [
+    { text: '「最後一遍收得很齊，我有聽出來，前面明明還亂成一團。」', response: '「前面大家都在鬧，最後那次反而更專心，聽起來就不一樣了。」', affection: 2 },
+    { text: '「你彈吉他的時候看起來很投入，我差點也想拿一把來試。」', response: '「下次有機會可以試試看，不用怕，慢慢來就好。」', affection: 3 },
+    { text: '「佑達跟瑪莎真的很有戲，坐在旁邊像看現場喜劇。」', response: '「他們兩個一搭一唱的，有時候連我們都不知道該不該接話。」', affection: 2 },
+  ]
 }
 
 const springNaturalStoreOnlySmsRounds = (
@@ -1237,139 +1245,98 @@ const springNaturalStoreOnlySmsRounds = (
   replies: number[],
 ): SpringSmsRound[] => {
   const r0 = replies[0] ?? 0
-  const r1 = replies[1] ?? 0
-  const r2 = replies[2] ?? 0
-  const r3 = replies[3] ?? 0
 
-  if (character === 'wen') {
-    return [
-      springSmsRound('剛剛那顆效果器妳踩下去的時候，整個人往後縮了一下，結果下一秒又自己跑回去再踩一次。', [
-        springSmsChoice('「第一次真的有被嚇到，第二次就知道怎麼玩了。」', ['「嗯，第二次有比較像樣，沒白試。」'], 2),
-        springSmsChoice('「我是在確認效果，不是被嚇到！」', ['「好啦，妳說什麼就是什麼。」'], 2),
-        springSmsChoice('「下次換你踩，我要看你會不會也嚇到。」', ['「我踩很多次了，換妳玩比較有趣。」'], 3),
+  if (character === 'wen') return [
+    springSmsRound('欸，妳剛剛踩那顆效果器時明明往後縮了一下，下一秒又自己跑回去再踩一次。', [
+      springSmsChoice('「第一次真的有被嚇到，第二次就知道怎麼玩了。」', ['「我就知道妳還會再踩一次，剛剛眼睛都亮了。」'], 2),
+      springSmsChoice('「我才沒有被嚇到，我是在確認效果！」', ['「好啦，確認效果。妳說什麼就是什麼。」'], 2),
+      springSmsChoice('「下次換你踩，我要看你會不會也縮一下。」', ['「我踩過幾百次了，妳還是先顧好自己吧。」'], 3),
+    ]),
+    springSmsRound(
+      r0 === 0 ? '妳第二次踩下去就沒縮了，還站在那邊聽了好一會兒。'
+        : r0 === 1 ? '嘴巴說沒被嚇到，手倒是一直想再按一次，這個我有看到。'
+          : '我剛剛試音時還在等妳會不會又突然踩下去。',
+      [
+        springSmsChoice('「那顆真的很好玩，我想再聽一次不同的音色。」', ['「好啊，下次讓妳自己試，我不搶。」'], 3),
+        springSmsChoice('「你明明一直在旁邊偷看我。」', ['「我是在看妳有沒有把音箱關掉，少自作多情。」'], 3),
+        springSmsChoice('「你就承認你也覺得我玩得很開心嘛。」', ['「有啦，看得出來。這樣總可以了吧？」'], 2),
       ]),
-      springSmsRound(
-        r0 === 0 ? '妳後來站在那排效果器前面研究得很認真，我差點以為妳要把整排搬回家。'
-          : r0 === 1 ? '妳嘴巴說沒被嚇到，手倒是一直想再按一次，這個我有看到。'
-            : '我剛剛試音的時候，還真的有在等妳下一次會不會又突然踩下去。',
-        [
-          springSmsChoice('「我只是想把每一顆都聽過，不然怎麼比較。」', ['「有道理，至少妳不是亂按一通。」'], 2),
-          springSmsChoice('「那是因為真的很好玩啊，誰叫你不早點讓我試。」', ['「現在不是讓妳試了？要求還真多。」'], 3),
-          springSmsChoice('「你是不是一直在旁邊偷看我？」', ['「我是在看妳有沒有把音箱關掉，少自作多情。」'], 3),
-        ]),
-      springSmsRound(
-        r1 === 0 ? '我把妳剛剛喜歡的那顆型號記下來了，下次去不用從頭找。'
-          : r1 === 1 ? '那顆音色我自己也滿喜歡的，聲音一厚起來，整個感覺就不一樣。'
-            : '妳今天挑東西倒是挺有主見的，不像一開始說自己完全不懂。',
-        [
-          springSmsChoice('「你居然有記得喔？」', ['「妳講了好幾次，我想忘記也難。」'], 3),
-          springSmsChoice('「我只是有認真聽你彈啦。」', ['「知道啦，沒有說妳不認真。」'], 2),
-          springSmsChoice('「下次我還要自己試，不準搶先按。」', ['「好，這次讓妳當主控，別又踩太早。」'], 3),
-        ]),
-      springSmsRound(
-        r2 === 0 ? '今天那顆效果器先記著，下次有空再試別的音色，不用一次玩完。'
-          : r2 === 1 ? '我本來以為妳只會喜歡熱鬧的音色，結果妳也有認真聽乾淨的聲音。'
-            : '妳今天一直說自己不懂，結果最後挑得比我還快。',
-        [
-          springSmsChoice('「我想把每一種聲音都聽懂一點。」', ['「慢慢來啦，不用一天就變專家。」'], 2),
-          springSmsChoice('「乾淨的聲音也很好聽啊，簡單一點反而耐聽。」', ['「這句倒是講得不錯。」'], 3),
-          springSmsChoice('「那是因為你一直在旁邊給提示。」', ['「我只是提醒，最後還是妳自己選的。」'], 2),
-        ]),
-      springSmsRound(
-        r3 === 0 ? '好啦，今天先逛到這裡。下次再來，妳可以自己挑一顆想試的。'
-          : r3 === 1 ? '今天陪妳慢慢聽這些音色，時間過得還滿快的。'
-            : '下次再去樂器行，記得先說好，不可以一進門就把整排效果器試完。',
-        [
-          springSmsChoice('「知道啦，下次還要你陪我去。」', ['「好啊，有空再一起去。」'], 3),
-          springSmsChoice('「你也早點休息，今天辛苦啦。」', ['「妳也是，晚安。」'], 2),
-          springSmsChoice('「晚安，效果器老師！」', ['「少來，晚安啦。」'], 3),
-        ]),
-    ]
-  }
+    springSmsRound('我把妳剛剛喜歡的那顆型號記下來了，下次去不用從頭找。', [
+      springSmsChoice('「你居然有記得喔？」', ['「妳講了好幾次，我想忘記也難。」'], 3),
+      springSmsChoice('「我只是有認真聽你彈啦。」', ['「知道啦，沒有說妳不認真。」'], 2),
+      springSmsChoice('「下次我還要自己試，不准搶先按。」', ['「好，這次讓妳當主控，別又踩太早。」'], 3),
+    ]),
+    springSmsRound('剛剛店員還問妳是不是也玩樂器的，我差點替妳回答。', [
+      springSmsChoice('「你敢亂講我就當場拆穿你。」', ['「我本來想說妳是來監督我不要亂買的。」'], 2),
+      springSmsChoice('「那你怎麼回答？」', ['「我說妳是效果器試聽員，還滿專業的。」'], 2),
+      springSmsChoice('「我以後學會了再去，讓你刮目相看。」', ['「好啊，我等著看。先別急著買一整排。」'], 3),
+    ]),
+    springSmsRound('好啦，今天先逛到這裡。下次妳想試哪顆再跟我說，這次不准一進門就把整排踩完。', [
+      springSmsChoice('「知道啦，下次還要你陪我去。」', ['「好啊，有空再一起去。晚安啦。」'], 3),
+      springSmsChoice('「你也早點休息，今天辛苦啦。」', ['「妳也是，手指今天也很忙。晚安。」'], 2),
+      springSmsChoice('「晚安，效果器老師！」', ['「少來，晚安啦。」'], 3),
+    ]),
+  ]
 
-  if (character === 'ashin') {
-    return [
-      springSmsRound('妳抱著那把木吉他的時候，肩膀有點僵，我差點想幫妳把琴身再調低一點。', [
-        springSmsChoice('「真的有點重，我一開始還不知道手要放哪裡。」', ['「我有看到，所以才幫妳把位置調好，後來看起來就舒服多了。」'], 2),
-        springSmsChoice('「我怕一放鬆就會把琴滑下去。」', ['「不會啦，我在旁邊，妳慢慢試就好。」'], 3),
-        springSmsChoice('「你剛剛幫我調背帶的時候，我有點緊張。」', ['「啊？我只是怕妳抱得太辛苦，沒有別的意思啦。」'], 4),
-      ]),
-      springSmsRound(
-        r0 === 0 ? '那兩把琴的聲音我回來後還在想，第一把比較厚，第二把亮一點。'
-          : r0 === 1 ? '妳後來抱穩以後，整個人就放鬆了，還多試了幾下。'
-            : '妳剛剛那句話我有記得，不過我真的只是想讓妳拿得舒服一點。',
-        [
-          springSmsChoice('「第一把比較溫暖，我還是最喜歡那個聲音。」', ['「我也喜歡那把，聽起來很舒服。」'], 2),
-          springSmsChoice('「第二把比較清亮，感覺很適合配人聲。」', ['「對啊，唱歌的時候應該會滿合的。」'], 2),
-          springSmsChoice('「你不用解釋啦，我知道你是在照顧我。」', ['「那就好，我怕妳誤會我突然靠太近。」'], 4),
-        ]),
-      springSmsRound(
-        r1 === 0 ? '我把今天兩把琴的型號記下來了，下次妳想再聽，就不用重新找。'
-          : r1 === 1 ? '我自己也很喜歡今天慢慢試琴的感覺，沒有急著選，反而聽得更清楚。'
-            : '妳今天願意把琴抱起來試，我覺得比只站在旁邊看更有意思。',
-        [
-          springSmsChoice('「你還特地記下來喔，謝謝你。」', ['「不客氣啊，免得下次又要找半天。」'], 3),
-          springSmsChoice('「我也喜歡慢慢聽，不用急著決定。」', ['「嗯，喜歡的聲音可以多聽幾次。」'], 3),
-          springSmsChoice('「下次我想再抱一次，這次會熟練一點。」', ['「好啊，下次我先幫妳調好，不用緊張。」'], 3),
-        ]),
-      springSmsRound(
-        r2 === 0 ? '今天逛得很慢，但我覺得很好。可以把時間花在喜歡的東西上，滿難得的。'
-          : r2 === 1 ? '妳今天聽得很仔細，我有幾次都差點忘記自己原本要試哪把琴。'
-            : '下次如果再來，我想帶妳聽聽看不同木頭的聲音，應該會很有趣。',
-        [
-          springSmsChoice('「我也是，跟你一起慢慢逛很舒服。」', ['「那就好，下次有空再一起來。」'], 3),
-          springSmsChoice('「你也會忘記喔？我還以為只有我會分心。」', ['「會啊，尤其有人一直在旁邊很認真聽的時候。」'], 3),
-          springSmsChoice('「好啊，我想多聽幾種不一樣的聲音。」', ['「好，我先記著。」'], 2),
-        ]),
-      springSmsRound('今天先到這裡吧，妳回去好好休息。謝謝妳陪我逛，晚安喔。', [
-        springSmsChoice('「晚安，今天真的很開心。」', ['「晚安～我也是。」'], 3),
-        springSmsChoice('「你也早點休息，今天謝謝你。」', ['「不客氣啦，妳也早點睡。」'], 2),
-        springSmsChoice('「下次還要一起去聽木吉他喔。」', ['「好啊，說好了。」'], 3),
-      ]),
-    ]
-  }
+  if (character === 'ashin') return [
+    springSmsRound('妳抱著那把木吉他的時候，肩膀有點僵，我幫妳把位置調好後，妳才終於放鬆下來。', [
+      springSmsChoice('「真的有點大把，我一開始不知道手要放哪裡。」', ['「我有看到，所以才幫妳調一下。後來抱起來有比較順吧。」'], 2),
+      springSmsChoice('「你幫我調背帶的時候，我有一點緊張。」', ['「啊？我只是怕妳抱得太辛苦，沒有別的意思啦。」'], 3),
+      springSmsChoice('「我其實很喜歡你剛剛彈給我聽的聲音。」', ['「那就好，我自己也滿喜歡那把琴的音色。」'], 3),
+    ]),
+    springSmsRound('我剛剛把兩把琴的型號寫下來了，免得下次想再試，還要重新找半天。', [
+      springSmsChoice('「你真的有寫喔？我還以為你只是在記心裡。」', ['「有啊，寫下來比較不會忘。妳想聽哪一把都可以。」'], 2),
+      springSmsChoice('「第一把那個比較厚的聲音，我還是最喜歡。」', ['「我也喜歡那把，聽起來很溫暖。」'], 3),
+      springSmsChoice('「下次我想自己抱起來試，這次比較不會手忙腳亂了。」', ['「好啊，下次我先幫妳調好，妳就慢慢試。」'], 3),
+    ]),
+    springSmsRound('妳剛剛聽我彈的時候，還跟著節奏輕輕晃了一下，我有看到。', [
+      springSmsChoice('「有嗎？我自己都沒發現欸。」', ['「有啊，很自然。看得出來妳是真的喜歡那個聲音。」'], 3),
+      springSmsChoice('「因為那段真的很好聽嘛。」', ['「謝謝妳，妳這樣說我會有點不好意思。」'], 3),
+      springSmsChoice('「你不要一直注意我啦，我會分心。」', ['「好啦，那我下次假裝沒看到。」'], 2),
+    ]),
+    springSmsRound('今天逛得比我想像中久，不過慢慢聽幾把琴，反而比較知道自己喜歡什麼。', [
+      springSmsChoice('「我也是，原來不同木吉他的聲音差這麼多。」', ['「對啊，有時候差一點點，感覺就完全不一樣。」'], 2),
+      springSmsChoice('「跟你一起慢慢逛，時間真的過得很快。」', ['「我也是啊，沒有趕時間的感覺很好。」'], 3),
+      springSmsChoice('「下次還想再聽一次你剛剛那段。」', ['「好啊，我記得。下次再彈給妳聽。」'], 3),
+    ]),
+    springSmsRound('今天先到這裡吧，謝謝妳陪我逛。回去路上小心，晚安喔。', [
+      springSmsChoice('「晚安，今天真的很開心。」', ['「晚安～我也是。」'], 3),
+      springSmsChoice('「你也早點休息，今天謝謝你。」', ['「不客氣啦，妳也早點睡。」'], 2),
+      springSmsChoice('「下次還要一起去聽木吉他喔。」', ['「好啊，說好了。」'], 3),
+    ]),
+  ]
 
-  if (character === 'masa') {
-    return [
-      springSmsRound('妳今天盯著琴弦標價的眼神，比我還像來查帳的。店員大概以為我們是來稽核的。', [
-        springSmsChoice('「價差那麼大，不查清楚怎麼行！」', ['「好啦，這句算妳有做功課。」'], 2),
-        springSmsChoice('「我是在幫你省錢，你還嫌我喔？」', ['「我哪有嫌，這不是有把妳的意見聽進去嗎。」'], 3),
-        springSmsChoice('「下次我帶計算機來，幫你算到一毛不差。」', ['「拜託不要，買個琴弦不用開董事會。」'], 2),
+  if (character === 'masa') return [
+    springSmsRound('妳今天盯著琴弦標價的眼神，比我還像來查帳的。店員大概以為我們是來稽核的。', [
+      springSmsChoice('「價差那麼大，不查清楚怎麼行！」', ['「好啦，這句算妳有做功課。」'], 2),
+      springSmsChoice('「我是在幫你省錢，你還嫌我喔？」', ['「我哪有嫌，這不是有把妳的意見聽進去嗎。」'], 3),
+      springSmsChoice('「下次我帶計算機來，幫你算到一毛不差。」', ['「拜託不要，買個琴弦不用開董事會。」'], 2),
+    ]),
+    springSmsRound(
+      r0 === 0 ? '我最後買的還是照規格挑的，沒有因為便宜就亂拿。'
+        : r0 === 1 ? '妳剛剛那句幫我省錢講得很順，差點以為妳要跟我收顧問費。'
+          : '我想了一下，妳真的帶計算機來，我可能會先把妳請出店。',
+      [
+        springSmsChoice('「我只是想確保你不要買錯嘛。」', ['「知道啦，這次算妳有幫上忙。」'], 3),
+        springSmsChoice('「顧問費可以用請吃飯抵喔。」', ['「妳這個人真的很會安排。」'], 3),
+        springSmsChoice('「我下次改帶紙筆，不會嚇到店員。」', ['「不用啦，正常一點就好。」'], 2),
       ]),
-      springSmsRound(
-        r0 === 0 ? '我最後買的那包還是照規格挑的，沒有因為便宜就亂拿。'
-          : r0 === 1 ? '妳剛剛那句幫我省錢倒是講得很順，差點以為妳要跟我收顧問費。'
-            : '我想了一下，妳真的帶計算機來，我可能會先把妳請出店。',
-        [
-          springSmsChoice('「我只是想確保你不要買錯嘛。」', ['「知道啦，這次算妳有幫上忙。」'], 3),
-          springSmsChoice('「顧問費可以用請吃飯抵喔。」', ['「妳這個人真的很會安排。」'], 3),
-          springSmsChoice('「那我下次改帶紙筆，不會嚇到店員。」', ['「不用啦，正常一點就好。」'], 2),
-        ]),
-      springSmsRound(
-        r1 === 0 ? '妳今天看Bass那邊也看得很認真，還真的沒有只顧著看熱鬧。'
-          : r1 === 1 ? '我承認妳剛剛幫忙比價有用，不過不要因此以為自己升職了。'
-            : '店員剛剛還問妳是不是也玩樂器的，我差點替妳回答。',
-        [
-          springSmsChoice('「我現在還不會，但以後可以學啊。」', ['「先把興趣留著，別一下子買一堆東西。」'], 3),
-          springSmsChoice('「我至少是很認真的觀眾吧。」', ['「這個倒是，妳看得比我還仔細。」'], 2),
-          springSmsChoice('「你差點怎麼回答？不準亂說喔。」', ['「我說妳是來監督我不要亂花錢的。」'], 3),
-        ]),
-      springSmsRound(
-        r2 === 0 ? '下次妳再來，我可以讓妳試試Bass，不過先說好，手忙腳亂我還是會吐槽。'
-          : r2 === 1 ? '今天買東西有人一起看，確實比我自己在那邊比半天快一點。'
-            : '妳今天倒是挺會接話的，害我有幾次想吐槽都找不到空隙。',
-        [
-          springSmsChoice('「你吐槽歸吐槽，還是要教我喔。」', ['「知道啦，妳先把手指準備好。」'], 3),
-          springSmsChoice('「那下次繼續找我當顧問啊。」', ['「看妳表現，顧問也要有績效。」'], 2),
-          springSmsChoice('「你今天是不是覺得我很有趣？」', ['「妳先不要自己下結論。」'], 3),
-        ]),
-      springSmsRound('好了，今天採購部門可以下班了。妳回去休息，別再盯著價目表做夢。', [
-        springSmsChoice('「晚安啦，明天不要又偷偷去買東西。」', ['「我哪有，晚安啦。」'], 2),
-        springSmsChoice('「下次還要找我，我可是很專業的。」', ['「好啦，先把今天的顧問費記帳。」'], 3),
-        springSmsChoice('「晚安，今天被你吐槽也算有收穫。」', ['「知道就好，晚安。」'], 2),
-      ]),
-    ]
-  }
+    springSmsRound('店員剛剛還問妳是不是也玩樂器的，我差點替妳回答。', [
+      springSmsChoice('「你敢說我是來監督你花錢的，我就承認。」', ['「那我還真沒說錯，妳今天眼睛都長在價目表上。」'], 2),
+      springSmsChoice('「你到底怎麼回答？」', ['「我說妳是來幫我抓預算的，聽起來很專業吧。」'], 2),
+      springSmsChoice('「我現在不會，以後可以學啊。」', ['「先把興趣留著，別一下子連器材都買齊。」'], 3),
+    ]),
+    springSmsRound('今天有人一起比價確實快很多，不然我自己站在那邊，可能還要再研究半小時。', [
+      springSmsChoice('「所以你承認我有幫上忙了吧？」', ['「有啦，有幫忙。這句不要逼我講第二次。」'], 3),
+      springSmsChoice('「你本來就很會研究東西，我只是陪你看。」', ['「至少有人可以幫我吐槽價格，這點很有用。」'], 2),
+      springSmsChoice('「下次再找我，我可是很專業的。」', ['「先不要自己加薪，顧問費還沒談好。」'], 3),
+    ]),
+    springSmsRound('好了，今天採購部門可以下班了。妳回去休息，別再盯著價目表做夢。', [
+      springSmsChoice('「晚安啦，明天不要又偷偷去買東西。」', ['「我哪有，晚安啦。」'], 2),
+      springSmsChoice('「下次還要找我，我可是很專業的。」', ['「好啦，先把今天的顧問費記帳。」'], 3),
+      springSmsChoice('「晚安，今天被你吐槽也算有收穫。」', ['「知道就好，晚安。」'], 2),
+    ]),
+  ]
 
   return [
     springSmsRound('妳替我看背帶時，拿起來比了好幾次，最後還特地確認肩膀那邊會不會磨。那時候我覺得妳比我還認真。', [
@@ -1377,37 +1344,25 @@ const springNaturalStoreOnlySmsRounds = (
       springSmsChoice('「我怕你買回去才發現不舒服，還要再跑一趟。」', ['「謝謝妳替我想到這些，我自己有時候會只顧著看外型。」'], 3),
       springSmsChoice('「我只是想多跟你待一下，所以才看得那麼仔細。」', ['「……那今天好像逛得還不夠久。」'], 4),
     ]),
-    springSmsRound(
-      r0 === 0 ? '我最後還是選了那條比較簡單的，背起來舒服，平常練團也方便。'
-        : r0 === 1 ? '妳剛剛替我想得很周到，連之後背久了會不會磨都注意到了。'
-          : '妳那句話我剛剛回來路上還想了一下，今天確實過得很快。',
-      [
-        springSmsChoice('「那條真的很適合你，簡單又耐看。」', ['「謝謝，妳這樣說我就放心了。」'], 3),
-        springSmsChoice('「下次換我挑東西，你只要負責試用。」', ['「好啊，我也想看看妳會怎麼挑。」'], 3),
-        springSmsChoice('「我也覺得今天一下就過去了。」', ['「下次有空再一起慢慢逛。」'], 3),
-      ]),
-    springSmsRound(
-      r1 === 0 ? '今天那條背帶我已經放進包裡了，之後用起來應該會很順手。'
-        : r1 === 1 ? '我平常挑東西會想很久，今天有人一起看，反而比較快做決定。'
-          : '我也想多留一點時間，不用每次都急著把事情辦完就走。',
-      [
-        springSmsChoice('「你平常真的很仔細，難怪東西都照顧得很好。」', ['「習慣了，喜歡的東西就會想好好整理。」'], 2),
-        springSmsChoice('「下次我還可以陪你去，慢慢挑就好。」', ['「好啊，我會記得。」'], 3),
-        springSmsChoice('「那下次我們不要趕時間，逛久一點。」', ['「可以，慢慢來也很好。」'], 3),
-      ]),
-    springSmsRound(
-      r2 === 0 ? '我剛剛把今天看到的幾樣配件記下來了，之後有需要就不用重新找。'
-        : r2 === 1 ? '今天謝謝妳陪我看這些小東西，很多細節有人一起討論，真的不太一樣。'
-          : '下次如果妳想試琴，我可以先幫妳把高度調好。',
-      [
-        springSmsChoice('「你還記得我想試琴喔？」', ['「有啊，妳剛剛看了好幾次，我有注意到。」'], 3),
-        springSmsChoice('「我也很喜歡跟你一起慢慢看東西。」', ['「那就好，下次再一起來。」'], 3),
-        springSmsChoice('「好啊，下次我想真的抱起來試試。」', ['「沒問題，我會先幫妳調好。」'], 3),
-      ]),
+    springSmsRound('我最後還是選了那條比較簡單的，背起來舒服，平常練團也方便。', [
+      springSmsChoice('「那條真的很適合你，簡單又耐看。」', ['「謝謝，妳這樣說我就放心了。」'], 3),
+      springSmsChoice('「下次換我挑東西，你只要負責試用。」', ['「好啊，我也想看看妳會怎麼挑。」'], 3),
+      springSmsChoice('「你剛剛其實猶豫很久，我有看出來。」', ['「被妳看出來了。我平常挑東西會想比較久。」'], 2),
+    ]),
+    springSmsRound('我把今天看到的幾樣配件記下來了，之後有需要就不用重新找。', [
+      springSmsChoice('「你真的很仔細，連這種小東西都記下來。」', ['「習慣了，喜歡的東西就會想好好整理。」'], 2),
+      springSmsChoice('「下次我還可以陪你去，慢慢挑就好。」', ['「好啊，有人一起看，確實比較容易決定。」'], 3),
+      springSmsChoice('「你是不是每次買東西都要做筆記？」', ['「差不多吧，不然很容易忘記當時看中的細節。」'], 2),
+    ]),
+    springSmsRound('今天謝謝妳陪我看這些小東西，很多細節有人一起討論，真的不太一樣。', [
+      springSmsChoice('「我也很喜歡跟你一起慢慢看東西。」', ['「那就好，下次再一起來。」'], 3),
+      springSmsChoice('「你不用客氣啦，我今天也學到不少。」', ['「那我們算是互相幫忙了。」'], 2),
+      springSmsChoice('「下次我想真的抱起來試試看那把琴。」', ['「沒問題，我會先幫妳把高度調好。」'], 3),
+    ]),
     springSmsRound('今天先這樣吧，謝謝妳陪我跑一趟。回去路上小心，晚安。', [
       springSmsChoice('「不客氣，今天跟你一起逛很開心。」', ['「我也是，晚安。」'], 3),
       springSmsChoice('「你也早點休息，背帶記得收好。」', ['「好，我會記得。妳也晚安。」'], 2),
-      springSmsChoice('「下次再一起去，不準忘記喔。」', ['「不會忘記，說好了。」'], 3),
+      springSmsChoice('「下次再一起去，不准忘記喔。」', ['「不會忘記，說好了。」'], 3),
     ]),
   ]
 }
@@ -1417,394 +1372,349 @@ const springNaturalMemberSmsRounds = (
   context: SpringDayContext,
   replies: number[],
 ): SpringSmsRound[] => {
-  const touchedCallus = context.lessonReplies?.[4] === 0
-  const r0 = replies[0] ?? 0
-  const r1 = replies[1] ?? 0
-  const r2 = replies[2] ?? 0
-  const r3 = replies[3] ?? 0
+  const touched = context.lessonReplies?.[4] === 0
   const wentStore = context.storeCharacter === character
   const learned = context.lessonCharacter === character
+  const r0 = replies[0] ?? 0
 
   if (wentStore && !learned) return springNaturalStoreOnlySmsRounds(character, replies)
 
   if (learned) {
-    if (character === 'wen') {
-      return [
-        springSmsRound(
-          touchedCallus
-            ? '妳剛剛摸完我的手，還一臉很認真，害我差點忘記自己原本在教吉他。'
-            : '妳前面一直皺著眉，後來一彈對，整個人突然坐直了。那個反應比我彈十遍還明顯。',
-          [
-            springSmsChoice('「我真的沒想到會成功！前面明明一直只有雜音。」', ['「就說再試一次啦。妳剛剛那個表情，像突然中了獎一樣。」'], 2),
-            springSmsChoice('「你教得比我想像中有耐心耶。」', ['「蛤？妳平常到底把我想成什麼樣子？我明明就很有耐心好不好。」'], 3),
-            springSmsChoice(touchedCallus ? '「我現在比較記得你把手伸過來的樣子。」' : '「我現在比較記得你坐在旁邊的樣子。」', ['「……妳今天真的很會講。琴都還沒學會，先學會鬧我喔。」'], 4),
-          ]),
-        springSmsRound(
-          r0 === 0
-            ? '妳剛剛那聲「有了」喊得很大聲，我在旁邊差點也跟著喊。'
-            : r0 === 1
-              ? '我哪有沒耐心，妳自己前面一直說手指不聽話，我才多講兩句。'
-              : '妳今天真的很會把話題帶歪，剛才還一本正經地研究我的手。',
-          r0 === 0
+    if (character === 'wen') return [
+      springSmsRound(
+        touched
+          ? '欸，妳剛剛摸完我的手，還盯著看了好一會兒，最後倒是我先把手收回來。'
+          : '欸，妳最後那個和弦總算有聲音了，剛剛那個得意的表情我到現在還記得。',
+        touched
+          ? [
+              springSmsChoice('「我只是想知道繭到底有多粗，你突然收手我才愣住欸。」', ['「我哪有突然收手，是妳一抬頭看我，我一時不知道要看哪裡。」'], 3),
+              springSmsChoice('「我第一次摸到吉他手的繭，當然要認真研究一下。」', ['「研究得很仔細嘛。下次是不是還要帶放大鏡？」'], 2),
+              springSmsChoice('「我比較在意你耳朵怎麼紅了。」', ['「蛤？妳今天是來學吉他，還是來檢查我耳朵的？」'], 4),
+            ]
+          : [
+              springSmsChoice('「我前面按半天都只有雜音，成功一次當然要得意一下！」', ['「齁，還得意咧。好啦，第一次就按出來，確實可以高興一下。」'], 2),
+              springSmsChoice('「還不是你一直在旁邊提醒我，不然我早就放棄了。」', ['「我只提醒位置而已，真正按出來的是妳。不要把功勞全推給我喔。」'], 3),
+              springSmsChoice('「我比較記得你把手伸過來幫我調位置的樣子。」', ['「……妳不是在學和弦嗎？怎麼這個記得特別清楚。」'], 4),
+            ]),
+      springSmsRound(
+        r0 === 0
+          ? '妳剛剛成功那一下，整個人都坐直了，差點把我也嚇一跳。'
+          : r0 === 1
+            ? '我哪有一直提醒，妳不要把我講得像在旁邊碎念的老師。'
+            : '妳剛剛那句我有聽到，現在想起來還是有點不知道怎麼接。',
+        r0 === 0
+          ? [
+              springSmsChoice('「我真的以為又要失敗了，突然有聲音我自己也嚇到！」', ['「有啦，我看得出來。那個表情很值得紀念。」'], 2),
+              springSmsChoice('「你也嚇到？我還以為只有我很激動。」', ['「我是在旁邊等妳成功，結果妳突然喊那麼大聲。」'], 2),
+              springSmsChoice('「下次我要一次就成功，不准笑我。」', ['「先把今天這個練熟啦，別急著訂下一個目標。」'], 3),
+            ]
+          : r0 === 1
             ? [
-                springSmsChoice('「我哪有喊很大聲，是你先笑出來的！」', ['「我那是被妳嚇到，突然喊那麼大聲。」'], 2),
-                springSmsChoice('「那下次還要再讓我成功一次。」', ['「先把今天這個練熟啦，別急著升級。」'], 3),
-                springSmsChoice('「我第一次彈出來欸，不準笑我。」', ['「我哪有笑妳，是替妳高興好不好。」'], 3),
+                springSmsChoice('「你明明就一直念，還說自己沒有。」', ['「我那叫提醒，妳不聽等一下又要問一次。」'], 2),
+                springSmsChoice('「那你下次少念一點，我可能學更快。」', ['「好啊，我閉嘴，看妳自己跟琴弦吵架。」'], 3),
+                springSmsChoice('「可是你念的我都有記住啦。」', ['「……有記住就好，至少我沒白講。」'], 3),
               ]
-            : r0 === 1
-              ? [
-                  springSmsChoice('「我以為你會嫌我笨手笨腳。」', ['「我嫌妳幹嘛，妳又不是來考試的。」'], 3),
-                  springSmsChoice('「你平常看起來就是有點凶啊。」', ['「那是我認真，不是凶。妳不要亂扣帽子。」'], 2),
-                  springSmsChoice('「那我下次還要預約這位老師。」', ['「先看妳有沒有乖乖練啦，大小姐。」'], 3),
-                ]
-              : [
-                  springSmsChoice('「我哪有，我只是在認真觀察。」', ['「觀察出什麼結果？」'], 2),
-                  springSmsChoice('「你耳朵是不是紅了？」', ['「少來，妳不要隔著手機亂判斷。」'], 3),
-                  springSmsChoice('「那你下次也坐這麼近教我。」', ['「好啦，妳先把手指顧好再說。」'], 3),
-                ]),
-        springSmsRound(
-          touchedCallus
-            ? '剛剛那片撥片送妳了，收好。別跟收據一起塞口袋，回家就找不到。'
-            : wentStore
-              ? '剛剛那片撥片送妳了，收好。別跟收據一起塞口袋，回家就找不到。'
-              : '我把撥片放在琴盒上了，妳拿回去留著，別跟零錢一起弄丟。',
-          [
-            springSmsChoice('「收好了！這可是第一堂課的紀念品。」', ['「才第一堂就要紀念品喔，妳還滿會的嘛。」'], 3),
-            springSmsChoice('「我差點忘了它在手上，剛剛一直顧著跟你講話。」', ['「……妳這樣講，我反而不知道要回什麼。」'], 4),
-            springSmsChoice('「那你下次再送我一片不同顏色的。」', ['「妳先把這片顧好，不要什麼都想收集。」'], 2),
-          ]),
-        springSmsRound(
-          r2 === 0
-            ? '本來還想多教妳一個和弦，後來看妳指尖都紅了，還是先放過妳。'
-            : r2 === 1
-              ? wentStore ? '效果器那顆妳喜歡的音色我記下來了，下次去不用重新找。' : '妳剛剛說想再試一次，我記得。下次把今天的和弦練熟一點，再往下教。'
-              : '今天妳最後那一下彈得不錯，至少證明妳不是完全沒天分。',
-          [
-            springSmsChoice('「我明明還可以再練！」', ['「好啦，下次再讓妳證明，今天先休息。」'], 2),
-            springSmsChoice('「你是怕我把琴弦按斷吧？」', ['「琴弦沒那麼脆弱啦，我是怕妳明天連筷子都拿不穩。」'], 3),
-            springSmsChoice('「那下次要補課，不能賴帳。」', ['「知道啦，妳記性倒是很好。」'], 3),
-          ]),
-        springSmsRound(
-          r3 === 0
-            ? '好了，今天就到這裡。妳手指先放假，不準回家又偷偷練到半夜。'
-            : r3 === 1
-              ? wentStore ? '我把妳喜歡的那顆效果器型號寫下來了，下次去不用重新找。' : '我把今天那個和弦的位置記下來了，下次不用重新找。'
-              : wentStore ? '今天還滿好玩的。下次再帶妳去逛，不過這次先把和弦練熟。' : '今天練得滿不錯的。下次再教妳別的，先把手指顧好。',
-          [
-            springSmsChoice('「知道啦，吉他老師管好多。」', ['「我不管妳，明天手痛又要怪我。晚安啦。」'], 2),
-            springSmsChoice('「你也不要練到太晚，不準只管我。」', ['「好啦，知道了。晚安，撥片收好。」'], 3),
-            springSmsChoice('「晚安，今天真的很好玩。」', ['「嗯，今天不錯。下次見。」'], 3),
-          ]),
-      ]
-    }
+            : [
+                springSmsChoice('「你不用急著回答，我只是說我記得。」', ['「我知道啦。妳今天真的很會突然講這種話。」'], 3),
+                springSmsChoice('「你剛剛不是也坐得很近嗎？」', ['「我是在看妳手指啦，少把事情講得那麼奇怪。」'], 3),
+                springSmsChoice('「那下次還要坐這麼近教我。」', ['「好啦，先把今天的和弦練熟再說。」'], 3),
+              ]),
+      springSmsRound('妳的指尖今天都紅了，我本來還想多教一個和弦，後來想想還是先放過妳。', [
+        springSmsChoice('「我明明還可以再練一下啦！」', ['「不要硬撐，琴又不會跑掉。明天手痛不要怪我沒提醒。」'], 2),
+        springSmsChoice('「你這麼怕我手痛喔？」', ['「我是不想妳明天連筷子都拿不穩，少亂想。」'], 3),
+        springSmsChoice('「那下次要補課，不能賴帳。」', ['「知道啦，妳記性倒是很好。」'], 3),
+      ]),
+      springSmsRound(
+        wentStore
+          ? '今天從效果器玩到和弦，妳真的每一樣都想試。那顆妳喜歡的音色，我有幫妳記下來。'
+          : '撥片我放妳手裡了，收好。不要跟收據、零錢塞在一起，回家又找不到。',
+        wentStore
+          ? [
+              springSmsChoice('「你居然有記得我喜歡哪一顆喔？」', ['「妳那時候聽完又踩了一次，我想忘記也難。」'], 3),
+              springSmsChoice('「下次還要我自己試，不准你先按。」', ['「好啦，讓妳當主控。這次不要踩太早。」'], 3),
+              springSmsChoice('「我今天是不是很像來玩的，根本沒在幫你挑東西。」', ['「妳有玩得開心就好，反正我本來也不是找妳來做採購。」'], 2),
+            ]
+          : [
+              springSmsChoice('「收好了！第一堂課紀念品欸。」', ['「才第一堂就要紀念喔，妳還滿會的嘛。」'], 3),
+              springSmsChoice('「你怎麼知道我會弄丟？」', ['「妳剛剛連筆都差點忘在椅子上，還敢問。」'], 2),
+              springSmsChoice('「那你下次再送我一片不同顏色的。」', ['「先把這片顧好再說啦。」'], 2),
+            ]),
+      springSmsRound('好啦，今天就到這裡。妳手指先放假，不准回家又偷偷練到半夜。', [
+        springSmsChoice('「知道啦，吉他老師管好多。」', ['「我不管妳，明天手痛又要怪我。晚安啦。」'], 2),
+        springSmsChoice('「你也不要練到太晚，不准只管我。」', ['「好啦，知道了。撥片收好，晚安。」'], 3),
+        springSmsChoice('「晚安，今天真的很好玩，下次還要你教。」', ['「好啊，妳先把今天的和弦記熟，我等妳來。」'], 3),
+      ]),
+    ]
 
-    if (character === 'ashin') {
-      return [
-        springSmsRound(
-          touchedCallus
-            ? '妳剛剛看我手指的時候很專心，我差點以為妳要幫我做研究筆記。'
-            : '我剛剛收琴時還想起妳一開始很緊張，後來慢慢就敢自己試了。那個變化我有看到。',
-          [
-            springSmsChoice('「我真的有點不敢相信，前面一直彈不出來。」', ['「我知道啊，所以那一下出來的時候，我也替妳開心。」'], 3),
-            springSmsChoice('「你一直叫我慢慢來，我就沒那麼緊張了。」', ['「那就好，第一次學本來就不用急，妳願意試就很好了。」'], 3),
-            springSmsChoice(touchedCallus ? '「我比較記得你把手掌翻過來給我看的樣子。」' : '「我其實比較記得你坐在旁邊陪我的樣子。」', ['「……那我今天應該也算有幫上忙了。」'], 4),
-          ]),
-        springSmsRound(
-          r0 === 0
-            ? '我剛開始學的時候也常常按不乾淨，手指會痛，還會懷疑是不是自己不適合。後來就是一點一點練起來的。'
-            : r0 === 1
-              ? '妳剛剛願意慢慢試，我就覺得很好了。第一次不需要急著把每個音都按得很漂亮。'
-              : '妳剛剛那句話我有收到，老實說，我聽了有一點開心。',
-          [
-            springSmsChoice('「原來你也有過這種時候，我安心多了。」', ['「當然有啊，沒有誰一開始就很厲害。」'], 3),
-            springSmsChoice('「我還以為你天生就會彈。」', ['「哪有那麼誇張，我也是從很簡單的和弦開始。」'], 2),
-            springSmsChoice('「聽你這樣說，我下次比較敢試了。」', ['「那就好，我下次再陪妳慢慢來。」'], 3),
-          ]),
-        springSmsRound(
-          r1 === 0
-            ? '妳剛剛把琴放回去前，還偷偷按了一下那個和弦。我沒有打斷妳，想讓妳自己記住那個聲音。'
-            : r1 === 1
-              ? '我把今天那把木吉他的調音稍微記下來了，下次可以直接拿給妳試。'
-              : '妳今天手指有點紅，回去就先別練了。今天已經很棒了。',
-          [
-            springSmsChoice('「被你看到啦，我只是想再確認一次。」', ['「我有看到，不過妳按得比第一次穩多了。」'], 3),
-            springSmsChoice('「我怕一放下就忘記了。」', ['「那就先記住那個感覺，不用急著記所有東西。」'], 2),
-            springSmsChoice('「我其實還想再彈一下。」', ['「下次再繼續，今天先讓手指休息。」'], 3),
-          ]),
-        springSmsRound(
-          r2 === 0
-            ? '今天那把木吉他的聲音我也很喜歡，妳坐在旁邊聽的時候，我有點捨不得太快收起來。'
-            : r2 === 1
-              ? '剛剛妳抱琴時肩膀有點僵，下次我先幫妳把背帶調好，就不用一直撐著。'
-              : '那個和弦先留著，不急著往下學。等手指舒服一點，再接下一段。',
-          [
-            springSmsChoice('「那你下次再彈給我聽，我會乖乖坐好。」', ['「好啊，我記得。」'], 3),
-            springSmsChoice('「我喜歡你剛剛彈得很慢的那一段。」', ['「那下次我再放慢一點，讓妳聽清楚。」'], 3),
-            springSmsChoice('「其實我更喜歡你教我的時候。」', ['「……妳這樣講，我會有點不好意思。」'], 4),
-          ]),
-        springSmsRound(
-          r3 === 0
-            ? '今天就先到這裡吧。妳已經把第一個和弦留下來了，剩下的不用急，晚安喔。'
-            : r3 === 1
-              ? '下次如果再一起練，我想帶妳從和弦接一小段旋律，不用一次學很多。'
-              : '今天謝謝妳願意試。看到妳從緊張到笑出來，我也覺得很開心。',
-          [
-            springSmsChoice('「晚安，今天真的很開心。」', ['「晚安～妳也好好休息，手指不要再逞強了。」'], 3),
-            springSmsChoice('「那下次要說好了喔，我還想學。」', ['「說好了，我會記得。」'], 3),
-            springSmsChoice('「你也早點休息，不要又彈到忘記時間。」', ['「好啦，我等等就收。妳也早點睡。」'], 2),
-          ]),
-      ]
-    }
+    if (character === 'ashin') return [
+      springSmsRound(
+        touched
+          ? '妳剛剛摸我指尖的時候很小心，像是怕一用力就會弄痛我。其實不用那麼緊張啦。'
+          : '妳最後那個和弦一出聲，自己先愣住，然後才笑出來。我有看到喔。',
+        touched
+          ? [
+              springSmsChoice('「我怕弄痛你嘛，所以才不敢太用力。」', ['「不會痛啦，妳很小心，我有感覺到。」'], 3),
+              springSmsChoice('「我只是第一次摸到，想看清楚一點。」', ['「嗯，我知道啊。妳剛剛那個認真的樣子滿可愛的。」'], 3),
+              springSmsChoice('「你一直讓我摸，我反而更不好意思了。」', ['「欸～我只是想讓妳不用那麼緊張，沒有要笑妳啦。」'], 3),
+            ]
+          : [
+              springSmsChoice('「我真的以為又會只有雜音，結果突然就成功了！」', ['「我有聽到啊，那一下很清楚。妳自己也嚇一跳吧。」'], 3),
+              springSmsChoice('「你笑得比我還開心耶。」', ['「有啊，看到妳成功，我也會跟著開心嘛。」'], 3),
+              springSmsChoice('「我比較記得你坐在旁邊陪我的樣子。」', ['「……那我今天應該也算有幫上忙了。」'], 4),
+            ]),
+      springSmsRound(
+        r0 === 0
+          ? '我以前剛開始學的時候也常常按不乾淨，手指會痛，還會懷疑是不是自己不適合。'
+          : r0 === 1
+            ? '妳剛剛那句話我有收到，老實說，聽了有一點開心。'
+            : '妳今天願意慢慢試，我就覺得很好了。第一次真的不用急著把每個音都按漂亮。',
+        [
+          springSmsChoice('「原來你也有過這種時候，我安心多了。」', ['「當然有啊，沒有人一開始就很厲害的。」'], 3),
+          springSmsChoice('「我還以為你天生就會彈。」', ['「哪有那麼誇張，我也是從最簡單的和弦開始。」'], 2),
+          springSmsChoice('「那下次我還想跟你練，不想自己亂摸索。」', ['「好啊，妳想學的話，我就陪妳慢慢來。」'], 3),
+        ]),
+      springSmsRound('我把今天那個和弦的位置記下來了，下次不用重新找。妳也不用急著背，手先記住就好。', [
+        springSmsChoice('「你還真的幫我記下來喔，謝謝你。」', ['「不客氣啊，免得下次又要從頭找。」'], 2),
+        springSmsChoice('「我怕一放下琴就忘記剛剛那個聲音。」', ['「那就先記住那個感覺，不用急著記所有東西。」'], 3),
+        springSmsChoice('「下次我想自己把和弦換過去，不要一直靠你提醒。」', ['「可以啊，我在旁邊看著，妳自己試試看。」'], 3),
+      ]),
+      springSmsRound(
+        wentStore
+          ? '今天在店裡聽的那把木吉他，我自己也滿喜歡。妳那時候抱著琴，後來肩膀終於放鬆了。'
+          : '妳今天手指有點紅，回去就先別練了。今天已經很棒了，不用再跟自己較勁。',
+        wentStore
+          ? [
+              springSmsChoice('「我一開始真的不知道怎麼抱，還好你有幫我調。」', ['「下次我先幫妳調好，妳就可以直接試了。」'], 3),
+              springSmsChoice('「那把琴的聲音我也很喜歡，想再聽一次。」', ['「好啊，下次再彈給妳聽。」'], 3),
+              springSmsChoice('「我剛剛有沒有看起來很笨？」', ['「沒有啦，只是第一次抱琴會不習慣，很正常。」'], 2),
+            ]
+          : [
+              springSmsChoice('「我明明還想再彈一下。」', ['「下次再繼續，今天先讓手指休息。」'], 3),
+              springSmsChoice('「你不要又自己練到忘記時間喔。」', ['「好啦，我會注意。妳也不要逞強。」'], 2),
+              springSmsChoice('「我今天真的有比較敢試了。」', ['「有啊，我有看到。下次妳會更放鬆。」'], 3),
+            ]),
+      springSmsRound('好啦，今天先這樣。妳已經把第一個和弦留下來了，剩下的不用急。晚安喔。', [
+        springSmsChoice('「晚安，今天真的很開心。」', ['「晚安～妳也好好休息，手指不要再逞強了。」'], 3),
+        springSmsChoice('「那下次要說好了喔，我還想學。」', ['「說好了，我會記得。」'], 3),
+        springSmsChoice('「你也早點休息，不要又彈到忘記時間。」', ['「好啦，我等等就收。妳也早點睡。」'], 2),
+      ]),
+    ]
 
-    if (character === 'masa') {
-      return [
-        springSmsRound(
-          touchedCallus
-            ? '妳剛剛摸完我的繭，表情像在驗貨。Bass老師本人還沒收費，妳倒是先檢查起來了。'
-            : '我剛剛收Bass時還在想，妳居然真的願意把那段節奏拆開來慢慢練，這點值得記一筆。',
-          [
-            springSmsChoice('「才停戰三秒，你就開始得意了。」', ['「不然呢，老師也要有成就感。」'], 2),
-            springSmsChoice('「我明明有跟上，是你一直在旁邊干擾我。」', ['「我那叫提醒，妳不要把教學當干擾。」'], 2),
-            springSmsChoice(touchedCallus ? '「檢查報告還沒寫完，你不要急著收工。」' : '「下次我要練到你閉嘴。」', ['「這個目標比學Bass還困難，妳慢慢努力。」'], 3),
-          ]),
-        springSmsRound(
-          r0 === 0
-            ? '我剛剛收Bass的時候還在想，妳那句「才三秒」是不是打算跟我算得很仔細。'
-            : r0 === 1
-              ? '我今天被妳說成干擾教學，這個罪名還滿新鮮的。'
-              : '妳說要練到我閉嘴，我先把這句記下來，免得妳下次裝沒說過。',
-          [
-            springSmsChoice('「當然要算清楚，你不能亂扣分。」', ['「好，那我先申請一條但書：妳搶拍的時候我還是要講。」'], 3),
-            springSmsChoice('「我那是合理保護學生權益。」', ['「學生權益很好，先把節拍練對再來談。」'], 2),
-            springSmsChoice('「你不吐槽我就不會分心了。」', ['「那我下次閉嘴五分鐘，妳最好真的有進步。」'], 3),
-          ]),
-        springSmsRound(
-          wentStore
-            ? '妳今天挑的那包琴弦我已經放進袋子了，至少這次沒有被店員牽著走。'
-            : '我剛剛把Bass收好，還在想妳今天到底跟拍子吵了幾次。',
-          [
-            springSmsChoice('「我明明有幫你看，這叫採購顧問。」', ['「好啦，顧問有做事，這次給妳一點分數。」'], 3),
-            springSmsChoice('「你自己也猶豫很久，不要都怪我。」', ['「我那是在確認，不是在猶豫，差很多。」'], 2),
-            springSmsChoice('「下次我還要去，這次我已經比較懂了。」', ['「可以啊，至少下次不要只看標價。」'], 3),
-          ]),
-        springSmsRound(
-          r2 === 0
-            ? '今天妳那個節奏有幾次真的抓到了，我有聽見。先不要急著得意，這句稱讚很難得。'
-            : r2 === 1
-              ? '我本來以為妳會嫌Bass麻煩，結果還挺有耐心，這點倒是有點意外。'
-              : '下次我先不吐槽，讓妳完整彈一遍。妳最好把握機會。',
-          [
-            springSmsChoice('「你居然會稱讚人，我要記下來。」', ['「少來，這種事不用特地公告。」'], 3),
-            springSmsChoice('「你是不是偷偷覺得我有天分？」', ['「我只說妳有進步，妳不要自己加那麼多。」'], 3),
-            springSmsChoice('「好啊，到時候不準反悔。」', ['「知道啦，我講話算話。」'], 2),
-          ]),
-        springSmsRound(
-          r3 === 0
-            ? '好了，今天的Bass課到此為止。學生回去休息，老師也要下班了。'
-            : r3 === 1
-              ? '妳今天有幾下真的抓得不錯，這句我只講一次，自己記著。'
-              : '下次再練，妳要是又搶拍，我可不會假裝沒聽見。',
-          [
-            springSmsChoice('「晚安啦，老師，今天沒有白交學費！」', ['「妳有交學費嗎？我怎麼沒收到。晚安啦。」'], 3),
-            springSmsChoice('「你才要早點睡，不要一直吐槽到半夜。」', ['「我那是教學的一部分好不好。晚安啦。」'], 2),
-            springSmsChoice('「下次我要練到你沒話可以吐槽。」', ['「好啊，我等著看妳有沒有這個本事。」'], 3),
-          ]),
-      ]
-    }
+    if (character === 'masa') return [
+      springSmsRound(
+        touched
+          ? '欸，妳剛剛摸完我的繭，表情像在驗貨。Bass老師本人還沒收費，妳倒是先檢查起來了。'
+          : '妳剛剛那段節奏終於接上了，中間還有一個音跑出去散步，不過算妳過關。',
+        touched
+          ? [
+              springSmsChoice('「檢查員有職業操守，當然要看仔細一點。」', ['「好喔，那報告記得寫優點，不准只挑毛病。」'], 3),
+              springSmsChoice('「你明明一直在笑，還裝得很鎮定。」', ['「我是在配合檢查員，服務態度要好一點嘛。」'], 2),
+              springSmsChoice('「我只是想知道你平常練Bass有多辛苦。」', ['「這個理由勉強可以接受，至少不是純粹找我麻煩。」'], 3),
+            ]
+          : [
+              springSmsChoice('「那個音是故意的，增加一點驚喜。」', ['「喔？那妳的驚喜還滿多的，下一次先通知我。」'], 2),
+              springSmsChoice('「你不要只記得那個音，我後面明明有跟上！」', ['「有啦，後面那段有跟上，這句算稱讚。」'], 3),
+              springSmsChoice('「下次我要練到你沒話可以吐槽。」', ['「這個目標比學Bass還困難，妳慢慢努力。」'], 3),
+            ]),
+      springSmsRound(
+        r0 === 0
+          ? '妳剛剛還替那個失誤找理由，反應倒是很快。'
+          : r0 === 1
+            ? '好啦，我承認後面那段有比較穩，這句不用妳再提醒。'
+            : '妳說要練到我閉嘴，我先把這句記下來，免得妳下次裝沒說過。',
+        [
+          springSmsChoice('「你不能只挑錯的地方講，這樣學生會沒信心。」', ['「好啦，今天有進步。這樣有沒有比較有信心？」'], 3),
+          springSmsChoice('「你居然自己承認了，我要記錄下來。」', ['「記錄可以，不准拿去到處宣傳。」'], 3),
+          springSmsChoice('「我說到做到，下次你就等著看。」', ['「行啊，我等著驗收，別到時候又找藉口。」'], 3),
+        ]),
+      springSmsRound('我把Bass收回去時，還聽到妳在旁邊小聲哼那個節奏。看來今天不是完全白教。', [
+        springSmsChoice('「因為那段真的有點洗腦，現在停不下來。」', ['「那就讓它住在妳腦袋裡，至少不用我再教一次。」'], 2),
+        springSmsChoice('「我是在複習，不是在哼歌！」', ['「好啦，複習。妳高興就好。」'], 2),
+        springSmsChoice('「下次我想把整段接起來。」', ['「可以啊，先把今天這一小段練穩。」'], 3),
+      ]),
+      springSmsRound(
+        wentStore
+          ? '對了，妳今天幫我看琴弦規格那段還滿有用的，至少沒讓我被店員講到暈。'
+          : '手指今天應該也夠累了，回去別再硬練。Bass不會因為妳休息一晚就長腳跑掉。',
+        wentStore
+          ? [
+              springSmsChoice('「所以我有幫上忙吧？顧問費呢？」', ['「有啦有啦，顧問費先欠著，別一直催。」'], 3),
+              springSmsChoice('「你本來就懂，我只是陪你比一下。」', ['「有人幫忙看，還是比較快。這句我承認。」'], 2),
+              springSmsChoice('「下次還可以找我，不過要請吃飯。」', ['「條件越開越多欸，妳先把Bass練好再談。」'], 3),
+            ]
+          : [
+              springSmsChoice('「我才沒有硬練，我只是想趁熱打鐵。」', ['「熱打鐵也要看手指狀況，明天還要上課吧。」'], 2),
+              springSmsChoice('「那你下次還要教我，不能嫌我慢。」', ['「知道啦，妳不要每次都先替我下結論。」'], 3),
+              springSmsChoice('「我今晚先放過它，明天再繼續。」', ['「這樣才對，總算有聽進去一次。」'], 2),
+            ]),
+      springSmsRound('好了，今天的Bass課到此為止。學生回去休息，老師也要下班了。', [
+        springSmsChoice('「晚安啦，老師，今天沒有白交學費！」', ['「妳有交學費嗎？我怎麼沒收到。晚安啦。」'], 3),
+        springSmsChoice('「你才要早點睡，不要一直吐槽到半夜。」', ['「我那是教學的一部分好不好。晚安啦。」'], 2),
+        springSmsChoice('「下次我要練到你沒話可以吐槽。」', ['「好啊，我等著看妳有沒有這個本事。」'], 3),
+      ]),
+    ]
 
     return [
       springSmsRound(
-        touchedCallus
-          ? '妳剛剛碰到我手指時很小心，像怕一用力就會弄痛我。其實不用那麼緊張。'
-          : '妳剛剛每次按錯都先抬頭看我一下，好像在等我說是不是又錯了。其實我沒有在幫妳打分數。',
-        [
-          springSmsChoice('「我怕你覺得我學得太慢。」', ['「不會啊，每個人都有自己的速度，我比較怕妳太勉強自己。」'], 3),
-          springSmsChoice('「你剛剛真的很有耐心，我都不好意思了。」', ['「不用不好意思，妳願意試就很好了。」'], 3),
-          springSmsChoice(touchedCallus ? '「我怕弄痛你，所以才一直不敢用力。」' : '「其實你坐在旁邊，我比較安心。」', ['「……那我下次也坐旁邊，陪妳慢慢練。」'], 4),
-        ]),
+        touched
+          ? '妳剛剛碰到我手指時很輕，像是怕弄痛我。其實不用那麼小心，我有注意到妳自己手也很酸。'
+          : '妳最後一次換和弦，手指終於沒有互相打架了。那一下聽起來很乾淨，我有替妳高興。',
+        touched
+          ? [
+              springSmsChoice('「我怕弄痛你嘛，而且你手上那層繭真的很特別。」', ['「不會痛啦。妳剛剛看得很仔細，我有點不好意思而已。」'], 3),
+              springSmsChoice('「你怎麼知道我手也酸？我明明沒說。」', ['「妳一直甩手指，我有看到。下次不舒服就直接說。」'], 3),
+              springSmsChoice('「我本來以為你會覺得我很奇怪。」', ['「不會啊，妳只是好奇。沒什麼好奇怪的。」'], 3),
+            ]
+          : [
+              springSmsChoice('「真的！前面一直卡住，突然順過去我自己都嚇到。」', ['「我有看到妳愣了一下，後來笑得很開心。」'], 3),
+              springSmsChoice('「還不是你一直等我，沒有催我。」', ['「學東西本來就不用趕，妳照自己的速度就好。」'], 3),
+              springSmsChoice('「我現在比較記得你坐在旁邊陪我的樣子。」', ['「……那我今天應該也算有幫上忙。」'], 4),
+            ]),
       springSmsRound(
         r0 === 0
-          ? '我以前剛開始學吉他的時候，手指也常常按到發紅。那時候還以為自己怎麼都學不會。'
+          ? '妳剛剛成功那一下，肩膀整個放鬆了，跟前面皺著眉的樣子差很多。'
           : r0 === 1
-            ? '妳不用因為我坐在旁邊就緊張，學琴本來就會有出錯的時候。'
-            : '妳剛剛那句話我記住了。其實有人願意一起慢慢練，感覺也不錯。',
+            ? '我以前練琴也常常卡在同一個地方，後來才知道越急越容易按錯。'
+            : '妳那句話我記住了。其實有人願意一起慢慢練，感覺也不錯。',
         [
-          springSmsChoice('「原來你以前也會這樣，我安心多了。」', ['「會啊，只是後來練習多了，手慢慢就記住了。」'], 3),
-          springSmsChoice('「我以為你一直都很有把握。」', ['「也沒有，只是現在比較知道怎麼調整。」'], 2),
+          springSmsChoice('「我前面真的有點急，總覺得自己怎麼還學不會。」', ['「很正常啊，先讓手記住位置，其他的慢慢來。」'], 3),
+          springSmsChoice('「你以前也會這樣？看不出來欸。」', ['「當然會，只是現在比較知道怎麼調整了。」'], 2),
           springSmsChoice('「下次我還想跟你練，不想自己亂摸索。」', ['「好啊，我可以陪妳慢慢來。」'], 3),
         ]),
-      springSmsRound(
-        r1 === 0
-          ? '剛剛收琴時，我還想起妳第一次彈出聲音的樣子，妳自己好像也愣了一下。'
-          : r1 === 1
-            ? '今天那個和弦先記住一個位置就好，不用一次把全部都背起來。'
-            : '我把今天練的那個和弦記下來了，下次不用從頭找。',
-        [
-          springSmsChoice('「我自己也嚇了一跳，原來真的能彈出來。」', ['「妳做得到，只是還需要一點時間熟悉。」'], 3),
-          springSmsChoice('「我想把今天那一下記久一點。」', ['「會記得的，第一次彈出來的聲音通常忘不掉。」'], 3),
-          springSmsChoice('「下次我想接著學，不想停在這裡。」', ['「好啊，等妳手指休息好了，我們再往下練。」'], 3),
-        ]),
-      springSmsRound(
-        r2 === 0
-          ? '今天不用把所有東西都記住，妳有把自己逼得太緊的時候，我其實看得出來。'
-          : r2 === 1
-            ? '我覺得妳今天最好的地方，是沒有因為前面幾次失敗就把琴放下。'
-            : '下次我會先把琴調好放在旁邊，妳來了就可以直接開始，不用等。',
-        [
-          springSmsChoice('「被你發現了，我有時候真的很怕做不好。」', ['「沒關係，慢慢來就好，不需要每次都做到最好。」'], 3),
-          springSmsChoice('「你這樣講，我突然覺得今天很值得。」', ['「本來就值得啊，妳有認真試過就很好了。」'], 3),
-          springSmsChoice('「那我下次可不可以再多練一點？」', ['「可以，不過還是照妳的速度，不要勉強。」'], 3),
-        ]),
-      springSmsRound(
-        r3 === 0
-          ? '時間不早了，今天先到這裡。妳回去好好休息，手指明天會舒服一點。'
-          : r3 === 1
-            ? '今天陪妳練琴我也很開心。下次見面再慢慢接下去就好。'
-            : '我把琴收好了，今天那個和弦也替妳留著。晚安。',
-        [
-          springSmsChoice('「晚安，今天謝謝你陪我慢慢練。」', ['「不客氣，今天妳很認真。晚安。」'], 3),
-          springSmsChoice('「你也早點休息，不要再彈到忘記時間。」', ['「好，我會記得。妳也要照顧好自己的手。」'], 2),
-          springSmsChoice('「下次再教我別的和弦，好不好？」', ['「當然好啊，下次我們再慢慢練。」'], 3),
-        ]),
-    ]
-  }
-
-  if (character === 'wen') {
-    return [
-      springSmsRound('今天最後那遍總算接起來了。佑達前面亂加鼓花，害我差點跟著笑場，還好最後有收住。', [
-        springSmsChoice('「你明明也笑了，還裝得很認真。」', ['「我那是在忍啦，差點真的彈錯欸。」'], 2),
-        springSmsChoice('「我還以為你要叫他把鼓棒交出來。」', ['「我有想過，怕他不肯交。」'], 2),
-        springSmsChoice('「你最後看佑達那一眼超兇的。」', ['「不兇一下他又要加戲了啦。」'], 3),
+      springSmsRound('我把今天那個和弦的位置記下來了，下次不用從頭找。妳今天已經記住一個很好的開始。', [
+        springSmsChoice('「你還幫我記下來喔，謝謝你。」', ['「不客氣，免得下次又要重新找位置。」'], 2),
+        springSmsChoice('「我想趁現在還記得，再自己練一次。」', ['「可以，但不要練太久，手指酸了就停。」'], 3),
+        springSmsChoice('「下次我想自己換過去，看看能不能不靠你提醒。」', ['「好啊，我在旁邊看著，讓妳自己試。」'], 3),
       ]),
       springSmsRound(
-        r0 === 0
-          ? '佑達剛剛還說那個鼓花是他精心設計的，講得一副自己很厲害的樣子。'
-          : r0 === 1
-            ? '瑪莎嘴上嫌歸嫌，第二遍還是接得很準，根本沒真的跟他計較。'
-            : '我本來想忍住，結果看到妳笑成那樣，我也差點破功。',
-        [
-          springSmsChoice('「他真的很有自信欸，完全不覺得自己亂來。」', ['「那就是佑達啊，越亂越有自信。」'], 2),
-          springSmsChoice('「瑪莎嘴上嫌，手上倒是很誠實。」', ['「他們兩個每天都這樣，吵完還不是照樣一起練。」'], 2),
-          springSmsChoice('「你笑出來我才更想笑，根本不能怪我。」', ['「好啦，這次算我也有份。」'], 3),
-        ]),
-      springSmsRound(
-        r1 === 0
-          ? '我剛剛把吉他收起來，還在想佑達那個鼓花到底是怎麼想出來的。'
-          : r1 === 1
-            ? '第二遍開始以後，大家其實都很專心，只有佑達還想偷偷加東西。'
-            : '妳今天坐在旁邊笑得那麼開心，整間練團室都被妳感染了。',
-        [
-          springSmsChoice('「下次你們可以先讓他完整發揮一次，再把他拉回來。」', ['「妳這個提議很危險欸，他會當真。」'], 2),
-          springSmsChoice('「你們默契真的很好，連吵架都知道什麼時候停。」', ['「練久了就知道啦，不然每天都要吵到天亮。」'], 3),
-          springSmsChoice('「我才沒有笑那麼大聲，是你們太好笑。」', ['「好好好，都是我們的問題。」'], 2),
-        ]),
-      springSmsRound(
-        r2 === 0
-          ? '下次妳再來，位置還是幫妳留旁邊。坐遠了就聽不到我們在講什麼了。'
-          : r2 === 1
-            ? '今天最後那一下收得不錯，我回去還想再彈一次，剛好把前面那些亂七八糟的地方蓋掉。'
-            : '妳今天笑成那樣，我差點以為妳不是來聽練團，是來看我們出糗的。',
-        [
-          springSmsChoice('「我本來就是來看熱鬧的啊，順便聽歌。」', ['「欸，講得這麼直接喔。」'], 3),
-          springSmsChoice('「我下次還是坐旁邊，免得漏掉你們的八卦。」', ['「妳還想聽八卦喔，想得美。」'], 2),
-          springSmsChoice('「最後那一下真的很好聽，我有認真聽啦。」', ['「知道啦，妳有認真聽我有看到。」'], 3),
-        ]),
-      springSmsRound('好啦，今天就這樣。妳早點休息，別躺在床上還一直重播佑達那個鼓花。', [
-        springSmsChoice('「我才沒有，我現在腦袋裡是你彈吉他的聲音。」', ['「……妳今天很會講欸。晚安啦。」'], 3),
-        springSmsChoice('「晚安，團長大人，今天辛苦啦。」', ['「少來，快去睡。晚安。」'], 2),
-        springSmsChoice('「你也早點休息，不準偷偷練到半夜。」', ['「知道啦，妳也是。晚安。」'], 2),
+        wentStore
+          ? '今天在店裡挑背帶時，妳還特地幫我看肩膀那邊會不會磨。後來想想，妳注意到的地方真的很實用。'
+          : '我覺得妳今天最好的地方，是前面幾次沒成功，也沒有把琴放下來不試了。',
+        wentStore
+          ? [
+              springSmsChoice('「我只是怕你買回去不舒服，還要再跑一趟。」', ['「謝謝妳，妳替我想到這些，我自己有時候會漏掉。」'], 3),
+              springSmsChoice('「下次換我挑東西，你只要負責試用。」', ['「好啊，我也想看看妳會怎麼挑。」'], 3),
+              springSmsChoice('「我今天是不是比你還認真？」', ['「有一點，尤其妳檢查背帶那幾次。」'], 2),
+            ]
+          : [
+              springSmsChoice('「我其實有點怕自己拖慢你時間。」', ['「不會，今天本來就是想陪妳慢慢試。」'], 3),
+              springSmsChoice('「我就是不想每次都半途而廢嘛。」', ['「這樣很好啊，慢慢來就會看見進步。」'], 3),
+              springSmsChoice('「你這樣講，我突然覺得今天很值得。」', ['「本來就值得，妳有認真試過就很好了。」'], 3),
+            ]),
+      springSmsRound('時間不早了，妳先休息，手指明天應該會舒服一點。今天不用再逼自己練了。', [
+        springSmsChoice('「晚安，今天謝謝你陪我慢慢練。」', ['「不客氣，今天妳很認真。晚安。」'], 3),
+        springSmsChoice('「你也早點休息，不要再彈到忘記時間。」', ['「好，我會記得。妳也照顧好自己的手。」'], 2),
+        springSmsChoice('「下次再教我別的和弦，好不好？」', ['「當然好啊，下次我們再慢慢練。」'], 3),
       ]),
     ]
   }
 
-  if (character === 'ashin') {
-    return [
-      springSmsRound('今天最後一遍一進來，大家好像突然找到同一個方向，整首歌一下子就熱起來了。', [
-        springSmsChoice('「前面還亂成一團，最後突然很有氣勢。」', ['「對啊，大家一起進來的時候真的很過癮。」'], 3),
-        springSmsChoice('「我有看到你差點笑場，還努力忍住。」', ['「有啦，差點沒忍住，還好後來接回來了。」'], 3),
-        springSmsChoice('「你唱得很投入，我坐在旁邊都跟著緊張。」', ['「妳有跟著聽進去，我就覺得很開心了。」'], 2),
-      ]),
-      springSmsRound(
-        r0 === 0
-          ? '我剛剛回去還在想那個收尾，大家同時停下來的時候，心裡有種終於對上的感覺。'
-          : r0 === 1
-            ? '其實我也有看到妳在旁邊忍笑，妳一笑我差點就忘記下一句要進來了。'
-            : '妳剛剛說坐在旁邊會緊張，我反而覺得妳聽得很投入。',
-        [
-          springSmsChoice('「那一下真的很整齊，聽起來很舒服。」', ['「嗯，大家有互相聽，才會有那個感覺。」'], 3),
-          springSmsChoice('「我不是故意害你笑場的啦。」', ['「我知道啦，妳笑得那麼開心，我也很難忍住。」'], 3),
-          springSmsChoice('「下次我會帶耳朵來認真聽，不帶緊張。」', ['「哈哈，不用那麼正式，妳放輕鬆就好。」'], 2),
-        ]),
-      springSmsRound(
-        r1 === 0
-          ? '佑達今天真的很有精神，瑪莎一邊嫌他，一邊還是把每個拍子都接住了。'
-          : r1 === 1
-            ? '我其實很喜歡大家練到後來那種默契，不用多說什麼就知道下一個人要進來。'
-            : '剛剛收東西時，我還聽見妳在小聲哼那個節奏。',
-        [
-          springSmsChoice('「他們兩個真的很像每天都要鬥嘴才會開心。」', ['「是啊，不過有他們在，練團室很少安靜。」'], 2),
-          springSmsChoice('「你們練久了真的很有默契，感覺很棒。」', ['「嗯，慢慢累積起來的。不是每次都順，但大家都會一起調整。」'], 3),
-          springSmsChoice('「被你發現了，我真的一直在想那個節奏。」', ['「那就讓它在腦袋裡多留一下，今天的聲音很值得記住。」'], 3),
-        ]),
-      springSmsRound(
-        r2 === 0
-          ? '下次有機會再來聽吧，我可以把今天最後那一段再彈給妳聽。'
-          : r2 === 1
-            ? '我把木吉他放回架上時，還想起妳剛剛說那段很有氣勢，聽了滿開心的。'
-            : '今天大家收工後還在聊剛剛的失誤，結果又笑了一輪。',
-        [
-          springSmsChoice('「好啊，我想再聽一次最後那一段。」', ['「好，說好了，下次再彈給妳聽。」'], 3),
-          springSmsChoice('「你開心就好，我是真的覺得很好聽。」', ['「謝謝妳，這句我有好好收下。」'], 3),
-          springSmsChoice('「你們是不是每次收工都還要再鬧一輪？」', ['「差不多啦，不然一下子安靜下來還有點不習慣。」'], 2),
-        ]),
-      springSmsRound('好啦，今天先到這裡。妳早點休息，今天聽了這麼多聲音，回家讓耳朵也放個假。', [
-        springSmsChoice('「晚安，今天真的很開心。」', ['「晚安～下次有空再來，路上也要小心。」'], 3),
-        springSmsChoice('「你也不要太晚睡，明天才有精神。」', ['「好啦，我等等就收。妳也是喔。」'], 2),
-        springSmsChoice('「下次見，我還想聽你們練別的歌。」', ['「好啊，下次再讓妳聽。」'], 3),
-      ]),
-    ]
-  }
+  if (character === 'wen') return [
+    springSmsRound('欸，佑達第一遍那個鼓花真的太敢了，妳剛剛笑到肩膀一直抖，差點害我也彈歪。', [
+      springSmsChoice('「你明明也在笑，還裝得很專心！」', ['「我那是在忍啦，誰叫他突然來那一下。」'], 2),
+      springSmsChoice('「我真的以為他下一秒要把鼓拆了。」', ['「妳想太多，他只是今天特別有表演慾。」'], 2),
+      springSmsChoice('「最後那遍你彈得很帥，我有看到。」', ['「……前面那幾遍不算喔？好啦，謝謝妳。」'], 3),
+    ]),
+    springSmsRound('佑達收工還在替那個鼓花辯護，瑪莎一句話就把他堵回去了。', [
+      springSmsChoice('「瑪莎根本等那句等很久了。」', ['「他們兩個每天都要鬥一下才舒服。」'], 2),
+      springSmsChoice('「你剛剛也在旁邊拱火，少裝無辜。」', ['「我哪有，我只是說實話而已。」'], 2),
+      springSmsChoice('「你們在一起真的很吵欸。」', ['「嫌吵還坐到最後，妳也沒好到哪裡去啦。」'], 3),
+    ]),
+    springSmsRound('我剛才收吉他時還在想，最後那一下大家一起收住，總算把前面的混亂救回來。', [
+      springSmsChoice('「那一下真的很整齊，聽起來超爽。」', ['「有接起來就好，今天沒白吵。」'], 2),
+      springSmsChoice('「我喜歡你彈進副歌那個瞬間。」', ['「妳聽得還滿仔細的嘛。」'], 3),
+      springSmsChoice('「你是不是又偷偷練了？」', ['「不然咧，總不能每次都靠運氣。」'], 2),
+    ]),
+    springSmsRound('我現在耳朵裡還有佑達的鼓聲，這首歌真的很適合拿來鬧。', [
+      springSmsChoice('「你不要說他，明明你也玩得很開心。」', ['「有一點啦，這首就是要鬧起來才對。」'], 2),
+      springSmsChoice('「下次我坐遠一點好了。」', ['「坐遠一點也沒用，佑達的鼓聲到哪裡都聽得到。」'], 2),
+      springSmsChoice('「下次再練給我看，我要聽你們更整齊的一次。」', ['「好啊，下次讓妳驗收。」'], 3),
+    ]),
+    springSmsRound('好啦，今天先到這裡。妳回去別再學佑達亂加鼓花，先學會坐好聽歌。', [
+      springSmsChoice('「我才不要，我也要加入你們亂來。」', ['「先把拍子抓好再說啦。」'], 2),
+      springSmsChoice('「你下次彈吉他給我看，我就乖乖坐好。」', ['「這個可以，妳自己說的喔。」'], 3),
+      springSmsChoice('「晚安啦，今天真的很好玩。」', ['「晚安，回去小心。」'], 2),
+    ]),
+  ]
+
+  if (character === 'ashin') return [
+    springSmsRound('剛剛第一遍真的有點失控，佑達一加鼓花，瑪莎的表情我差點看不下去，差點唱不住。', [
+      springSmsChoice('「你明明也在笑，還一直假裝在唱歌！」', ['「有啦，差點沒忍住，還好後來有接回來。」'], 2),
+      springSmsChoice('「瑪莎那個表情真的太好笑了。」', ['「他嘴上嫌歸嫌，其實也玩得很開心啦。」'], 2),
+      springSmsChoice('「你唱到副歌那裡真的很有氣勢。」', ['「謝謝妳～那一段大家一起進來，唱起來很過癮。」'], 3),
+    ]),
+    springSmsRound('後來最後一遍大家一起進來，整間練團室突然變得很有氣勢。前面鬧成那樣，最後居然收得那麼齊。', [
+      springSmsChoice('「對啊，前面像在打架，最後突然變得超帥。」', ['「妳這個形容好直接喔，不過真的有那個感覺。」'], 3),
+      springSmsChoice('「我有看到你差點笑場，還努力忍住。」', ['「妳不要一直提醒我啦，我現在又想笑了。」'], 3),
+      springSmsChoice('「你唱得很投入，我坐旁邊都跟著緊張。」', ['「妳有跟著聽進去，我就覺得很開心了。」'], 2),
+    ]),
+    springSmsRound('收東西的時候，我還聽見妳在小聲哼那個節奏。看來今天真的有留在妳腦袋裡。', [
+      springSmsChoice('「被你發現了，我回家還在哼。」', ['「那就讓它多留一下，今天那個聲音滿值得記住的。」'], 3),
+      springSmsChoice('「我只是怕忘記，先在腦袋裡複習一下。」', ['「不用那麼認真啦，妳放輕鬆聽就好。」'], 2),
+      springSmsChoice('「誰叫你們最後那一遍真的很好聽。」', ['「謝謝妳，聽到妳這樣說我很開心。」'], 3),
+    ]),
+    springSmsRound('佑達跟瑪莎剛才又在爭那個鼓花到底算不算多餘，兩個人講到最後還是一起把器材收好了。', [
+      springSmsChoice('「他們兩個根本每天都要吵一下才行。」', ['「差不多啦，不過有他們在，真的很少冷場。」'], 2),
+      springSmsChoice('「你們其他人都習慣了吧？」', ['「習慣是習慣，有時候還是會被他們逗笑。」'], 2),
+      springSmsChoice('「下次我還要來看他們鬥嘴。」', ['「好啊，不過也要聽我們把歌練完喔。」'], 3),
+    ]),
+    springSmsRound('好啦，今天先這樣。妳回去讓耳朵休息一下，今天聽了這麼多聲音，晚安喔。', [
+      springSmsChoice('「晚安，今天真的很開心。」', ['「晚安～下次有空再來，路上也要小心。」'], 3),
+      springSmsChoice('「你也不要太晚睡，明天才有精神。」', ['「好啦，我等等就收。妳也是喔。」'], 2),
+      springSmsChoice('「下次見，我還想聽你們練別的歌。」', ['「好啊，下次再讓妳聽。」'], 3),
+    ]),
+  ]
+
+  if (character === 'masa') return [
+    springSmsRound('佑達第一遍那個鼓花差點把整首歌帶去別的地方，我剛剛真的很想把他的鼓棒沒收。', [
+      springSmsChoice('「你明明也在旁邊笑得很開心。」', ['「我是在苦笑，妳不要亂替我加表情。」'], 2),
+      springSmsChoice('「他今天根本想把《轧車》變成個人秀。」', ['「對啊，主唱都快變伴奏了。」'], 2),
+      springSmsChoice('「可是你吐槽他的時候也很好笑。」', ['「謝謝喔，至少有人懂得欣賞我的專業。」'], 3),
+    ]),
+    springSmsRound('我剛剛收Bass時還在想，佑達那個人到底哪來那麼多力氣，第一遍就像要把鼓打穿。', [
+      springSmsChoice('「可能他今天早餐吃了十份吧。」', ['「那下次叫他少吃一點，留點力氣給正確的拍子。」'], 2),
+      springSmsChoice('「你們不是早就習慣他這樣了嗎？」', ['「習慣不代表不想吐槽，這兩件事不衝突。」'], 2),
+      springSmsChoice('「你剛剛是不是差點真的走過去阻止他？」', ['「我有考慮，後來想說讓他把電放完好了。」'], 3),
+    ]),
+    springSmsRound('不過最後一遍有收回來，大家一起進去那一下還滿爽的。至少今天沒有白吵。', [
+      springSmsChoice('「那一下真的很帥，前面鬧成那樣反而更有反差。」', ['「這句講得還可以，總算不是只記得佑達。」'], 3),
+      springSmsChoice('「我有聽到你的Bass，低音一進來整個就穩了。」', ['「嗯，低音不是拿來裝飾的，這句記起來。」'], 3),
+      springSmsChoice('「我還是覺得佑達最搶戲。」', ['「妳到底是來看團還是來看鼓手的？」'], 2),
+    ]),
+    springSmsRound('瑪莎本人今天也算有收穫，至少有人終於承認Bass不是背景音。', [
+      springSmsChoice('「我本來就沒有這樣說過好不好！」', ['「最好是，妳以前那個表情我還記得。」'], 2),
+      springSmsChoice('「那你下次再彈一段給我聽，我要重新認識Bass。」', ['「可以啊，這次讓妳站近一點，聽清楚再評論。」'], 3),
+      springSmsChoice('「你是不是很在意別人有沒有聽見Bass？」', ['「廢話，彈了當然希望有人聽到。」'], 2),
+    ]),
+    springSmsRound('好了，今天的吐槽大會到此結束。妳回去休息，不要睡前還在腦補佑達的鼓花。', [
+      springSmsChoice('「我現在腦袋裡是你吐槽他的聲音。」', ['「那更糟，妳趕快去睡。」'], 3),
+      springSmsChoice('「晚安啦，明天不要又嫌佑達。」', ['「我盡量，不能保證。」'], 2),
+      springSmsChoice('「下次我還要坐前面看你們鬥嘴。」', ['「妳是來看團還是看戲的？」'], 3),
+    ]),
+  ]
 
   return [
-    springSmsRound('今天前面雖然鬧了一點，最後一遍大家還是很整齊地收住了。那一下聽起來很舒服。', [
-      springSmsChoice('「我有聽出來，最後真的很穩。」', ['「謝謝，大家都有互相聽，才會接得那麼好。」'], 3),
-      springSmsChoice('「你彈吉他的時候看起來很投入，我差點忘了看其他人。」', ['「妳這樣講，我會有點不好意思。」'], 3),
-      springSmsChoice('「佑達那個鼓花真的讓我印象太深了。」', ['「他今天很有精神，大家都被他帶得很熱鬧。」'], 2),
+    springSmsRound('前面那幾遍雖然有點亂，最後一次大家還是接起來了。那一下聽起來很舒服。', [
+      springSmsChoice('「有啊，最後突然整齊起來，我還愣了一下。」', ['「我也有感覺到，大家一起收住的時候很有成就感。」'], 3),
+      springSmsChoice('「你彈吉他的時候看起來很投入，我有注意到。」', ['「謝謝妳，今天那段彈起來滿順的。」'], 3),
+      springSmsChoice('「我其實一直在等佑達會不會又加鼓花。」', ['「他今天真的很搶眼，連我都忍不住看他。」'], 2),
     ]),
-    springSmsRound(
-      r0 === 0
-        ? '我剛剛收琴時還在想，前面那幾次雖然有點亂，但大家都沒有真的慌掉。'
-        : r0 === 1
-          ? '妳坐在旁邊看得很認真，我有幾次一抬頭就看到妳跟著拍子點頭。'
-          : '佑達今天真的很搶眼，連我都忍不住一直看他那邊。',
-      [
-        springSmsChoice('「你們已經很熟了，所以亂一下也知道怎麼接回來。」', ['「對，熟悉彼此的習慣，就比較知道怎麼補位。」'], 3),
-        springSmsChoice('「我有跟著點頭嗎？自己都沒發現。」', ['「有啊，不過看起來很自然，不用不好意思。」'], 2),
-        springSmsChoice('「他真的很有活力，瑪莎都快被他逼瘋了。」', ['「他們兩個平常就這樣，吵歸吵，合作還是很好的。」'], 2),
-      ]),
-    springSmsRound(
-      r1 === 0
-        ? '其實練團就是這樣，偶爾會有小失誤，但大家願意互相接住就很好。'
-        : r1 === 1
-          ? '妳剛剛跟著節拍點頭的樣子，我覺得很可愛，像是也一起參與了。'
-          : '今天大家收工時還在笑，這種時候反而會覺得練團很值得。',
-      [
-        springSmsChoice('「聽你這樣說，感覺你們真的很珍惜一起練團。」', ['「是啊，能一起把一首歌慢慢練好，滿難得的。」'], 3),
-        springSmsChoice('「我只是怕自己坐著不動會睡著啦。」', ['「妳看起來不像想睡，倒是聽得很投入。」'], 2),
-        springSmsChoice('「我也喜歡你們收工後還能這樣鬧。」', ['「有時候這些小事，反而會記很久。」'], 3),
-      ]),
-    springSmsRound(
-      r2 === 0
-        ? '下次如果妳再來，我幫妳留個舒服一點的位置，不用坐在音箱旁邊。'
-        : r2 === 1
-          ? '今天那個收尾我自己也很喜歡，回去應該還會再想一下。'
-          : '妳今天笑得很開心，我想大家也都有感覺到。',
-      [
-        springSmsChoice('「好啊，下次我想坐得近一點看你們。」', ['「可以，妳想坐哪邊再跟我說。」'], 3),
-        springSmsChoice('「那個收尾真的很好聽，我會記得。」', ['「謝謝妳，聽到妳這樣說我很開心。」'], 3),
-        springSmsChoice('「下次我還要來看你們鬧。」', ['「好啊，有妳在旁邊一起笑也不錯。」'], 3),
-      ]),
-    springSmsRound('今天辛苦妳了，回去早點休息。希望妳今天帶回家的不只是耳鳴，還有一點好心情。', [
+    springSmsRound('妳剛剛跟著節拍點頭的樣子，我有看到。看起來是真的聽進去了。', [
+      springSmsChoice('「我自己都沒發現，可能不知不覺就跟著動了。」', ['「很自然啊，不用不好意思。」'], 3),
+      springSmsChoice('「因為最後那段真的很好聽嘛。」', ['「謝謝，大家有互相聽，才會接得那麼好。」'], 3),
+      springSmsChoice('「我只是怕坐著睡著，才一直點頭。」', ['「妳看起來不像快睡著，倒是聽得很投入。」'], 2),
+    ]),
+    springSmsRound('收工時大家還在笑剛才的失誤，結果又把同一段重演了一遍。', [
+      springSmsChoice('「你們是不是每次收工都還要再鬧一次？」', ['「差不多啦，一下子安靜下來反而不習慣。」'], 2),
+      springSmsChoice('「我真的很喜歡你們這種氣氛。」', ['「能一起玩音樂，也能一起笑，滿難得的。」'], 3),
+      springSmsChoice('「我下次也想坐近一點看你們怎麼配合。」', ['「好啊，下次幫妳留個舒服的位置。」'], 3),
+    ]),
+    springSmsRound('今天最後那一段我自己也很喜歡，回去可能還會在腦袋裡重播一陣子。', [
+      springSmsChoice('「那就留著慢慢回味，我也會記得。」', ['「好，今天這個聲音值得記一下。」'], 3),
+      springSmsChoice('「下次再彈給我聽，我想聽得更清楚。」', ['「好啊，下次可以再讓妳聽一次。」'], 3),
+      springSmsChoice('「你這樣講，我突然又想回去聽了。」', ['「那下次有空再來，不用急。」'], 2),
+    ]),
+    springSmsRound('今天辛苦妳了，回去早點休息。希望妳帶回家的不只是耳鳴，還有一點好心情。', [
       springSmsChoice('「晚安，今天謝謝你們讓我旁聽。」', ['「不客氣，妳願意來我們也很開心。晚安。」'], 3),
       springSmsChoice('「你也早點休息，今天彈得很棒。」', ['「謝謝妳，晚安。」'], 3),
       springSmsChoice('「下次見喔，我還會來的。」', ['「好啊，下次見。」'], 2),
@@ -1815,6 +1725,7 @@ const springNaturalMemberSmsRounds = (
 const shouldUseNaturalMemberSms = (character: SpringCharacterId): boolean => character !== 'yanming'
 
 export const getSpringSmsOpeners = (character: SpringCharacterId, context: SpringDayContext): { text: string; response: string; affection: number }[] => {
+  if (character === 'yanming') return springYanmingSmsOpeners(context)
   if (shouldUseNaturalMemberSms(character)) return springNaturalMemberSmsOpeners(character as SpringMemberSmsId, context)
   const rehearsal: Record<SpringCharacterId, { text: string; response: string; affection: number }[]> = {
     wen: [
@@ -2077,6 +1988,7 @@ const springStoreSmsFirstRound = (character: SpringCharacterId, context: SpringD
 }
 
 export const getSpringSmsRounds = (character: SpringCharacterId, context: SpringDayContext, smsReplies: number[] = []): SpringSmsRound[] => {
+  if (character === 'yanming') return springYanmingSharedSmsRounds(context, smsReplies)
   if (shouldUseNaturalMemberSms(character)) return springNaturalMemberSmsRounds(character as SpringMemberSmsId, context, smsReplies)
   if (character === 'yanming' && context.storeCharacter !== 'yanming' && context.afterChoice !== 'yanming-dinner') return springYanmingOwnerSmsRounds(smsReplies)
   const rehearsal: Record<SpringCharacterId, SpringSmsRound[]> = {
