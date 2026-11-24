@@ -6319,7 +6319,7 @@ function App() {
                     <div className="story-kicker">A SMALL GESTURE</div>
                     <h2 className="story-scene-title">{februaryAfterDinnerRoutes[februaryTableCharacter ?? currentFebruaryHighestAffection].label} · 餐桌上的小動作</h2>
                     <StoryBlocks blocks={februaryTableMoments[februaryTableCharacter ?? currentFebruaryHighestAffection]} />
-                    <div className="reunion-pause-note">這個小動作由目前好感度最高的角色觸發；飯後你仍然可以重新選擇同行的人。</div>
+                    <div className="reunion-pause-note">飯後，你還可以重新選擇想一起走一段路的人。</div>
                   </div>
                   <div className="story-action-bar">
                     <button className="story-primary-button" onClick={() => changeStage('february-after-dinner-picker')}>吃完了，想再和誰走一段路？ <ChevronRight size={15} /></button>
