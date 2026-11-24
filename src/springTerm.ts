@@ -423,7 +423,7 @@ export const springLessonRoutes: Record<Exclude<SpringCharacterId, 'yanming'>, S
   wen: {
     title: '溫尚翊・電吉他',
     blocks: [
-      { kind: 'narration', text: '其他人把最後一批器材搬到樓下，門闔上後，練團室一下安靜了不少。溫尚翊沒有跟著出去，反而把吉他重新背好，拖了張椅子到你旁邊。' },
+      { kind: 'narration', text: '練團結束後，大家各自收拾好東西，陸續離開練團室。門口的笑鬧聲漸漸遠去，溫尚翊卻沒有急著走，反而把吉他重新背好，拖了張椅子到你旁邊。' },
       { kind: 'dialogue', speaker: '溫尚翊', text: '妳剛剛一直盯著我按弦，是不是也想試？' },
       { kind: 'dialogue', speaker: '你', text: '我是在看你有沒有彈錯啦。' },
       { kind: 'dialogue', speaker: '溫尚翊', text: '蛤？我哪有那麼容易彈錯。來啦，給妳試一下。' },
@@ -447,7 +447,8 @@ export const springLessonRoutes: Record<Exclude<SpringCharacterId, 'yanming'>, S
     ],
     touchNarration: '你終於伸出手，指腹輕輕碰上他左手常按弦的位置。那層薄繭比看起來硬一些，沿著指腹摸過去時，能感覺到一點粗糙。溫尚翊原本還撐著一副沒什麼的樣子，直到你的指尖真的停在他指腹上，他的手指才不受控制地蜷了一下。你抬起眼，正好撞上他的目光；他也看著你，卻只停了一瞬，就像突然想起什麼似的把視線挪開。他清了清喉嚨，立刻把手收回去，伸手撈起旁邊的撥片，在指間轉了兩圈。像是怕空氣安靜得太明顯，他把吉他重新抱穩，故意刷出一串清脆的和弦，音量比剛才大了一點。「好啦，檢查完了喔？」他沒等你回答，又接著彈了兩下，裝作只是在示範。「來，換妳。剛剛那個和弦再試一次，我看看妳到底是哪根手指不聽話。」說著，他把椅子往你這邊挪近一點，伸手指了指琴頸，像是剛才那幾秒根本沒發生過。',
     touchBlocks: [
-      { kind: 'narration', text: '你終於伸出手，指腹輕輕碰上他左手常按弦的位置。那層薄繭比看起來硬一些，沿著指腹摸過去時，能感覺到一點粗糙。溫尚翊原本還撐著一副沒什麼的樣子，直到你的指尖真的停在他指腹上，他的手指才不受控制地蜷了一下。你抬起眼，正好撞上他的目光；他也看著你，卻只停了一瞬，就像突然想起什麼似的把視線挪開。他清了清喉嚨，立刻把手收回去，伸手撈起旁邊的撥片，在指間轉了兩圈。像是怕空氣安靜得太明顯，他把吉他重新抱穩，故意刷出一串清脆的和弦，音量比剛才大了一點。' },
+      { kind: 'narration', text: '你終於伸出手，指腹輕輕碰上他左手常按弦的位置。那層薄繭比看起來硬一些，沿著指腹摸過去時，能感覺到一點粗糙。溫尚翊原本還撐著一副沒什麼的樣子，直到你的指尖真的停在他指腹上，他的手指才不受控制地蜷了一下。' },
+      { kind: 'narration', text: '你抬起眼，正好撞上他的目光；他也看著你，卻只停了一瞬，就像突然想起什麼似的把視線挪開。他清了清喉嚨，立刻把手收回去，伸手撈起旁邊的撥片，在指間轉了兩圈。像是怕空氣安靜得太明顯，他把吉他重新抱穩，故意刷出一串清脆的和弦，音量比剛才大了一點。' },
       { kind: 'dialogue', speaker: '溫尚翊', text: '好啦，檢查完了喔？' },
       { kind: 'narration', text: '他沒等你回答，又接著彈了兩下，裝作只是在示範。' },
       { kind: 'dialogue', speaker: '溫尚翊', text: '來，換妳。剛剛那個和弦再試一次，我看看妳到底是哪根手指不聽話。' },
@@ -456,14 +457,14 @@ export const springLessonRoutes: Record<Exclude<SpringCharacterId, 'yanming'>, S
     prompt: '他把琴頸轉向你，撥片在弦上輕輕敲了兩下，催你再試一次。明明裝得很像在認真教學，耳根卻還沒完全退紅。你想怎麼接他的話？',
     choices: [
       { text: '你剛剛是不是故意彈那麼大聲？', response: '「哪有，剛好想試一下音啦。」他回得飛快，低頭又刷了一下弦，這次音量倒是乖乖小了下來。你還沒來得及笑，他就把撥片往你手裡一放：「笑什麼，換妳彈。」', affection: 2 },
-      { text: '你是不是害羞了？', response: '「蛤？我哪有。」他立刻否認，手上卻把撥片轉了兩圈，差點掉到地上。他若無其事地接住，咳了一聲：「不要亂講啦，手放好，我教妳。」說著伸手替你把食指的位置調正，指尖在你手背旁停了一瞬才收回。', affection: 2 },
+      { text: '你是不是害羞了？', response: '「蛤？我哪有。」他立刻否認，低頭想再刷一個和弦，撥片卻在弦上刮出一聲突兀的雜音。他皺了下眉，裝作只是沒拿穩，清了清喉嚨：「不要亂講啦，手放好，我教妳。」說著伸手替你把食指的位置調正，指尖在你手背旁停了一瞬才收回。', affection: 2 },
       { text: '好啊，那你坐近一點教我。', response: '「我現在不夠近喔？」他嘴上回得很快，卻真的把椅子往你身邊挪了半寸，肩膀幾乎碰上來。「這樣可以了吧？來，手給我。」他伸手托住你的手腕，低頭看著琴頸，說話聲音比剛才低了些。', affection: 1 },
     ],
   },
   ashin: {
     title: '陳信宏・木吉他',
     blocks: [
-      { kind: 'narration', text: '其他人把器材搬到樓下，阿信把木吉他留在身邊，拉了張椅子坐到你旁邊。剛才大家吵吵鬧鬧的聲音隔著門淡下去，只剩他慢慢調弦的聲音。' },
+      { kind: 'narration', text: '練團結束後，大家各自收拾好東西，陸續離開練團室。阿信把木吉他留在身邊，拉了張椅子坐到你旁邊，等門口的笑鬧聲慢慢遠去，他才低頭調起弦來。' },
       { kind: 'dialogue', speaker: '陳信宏', text: '妳剛剛聽得很認真耶，是不是也想試試看？' },
       { kind: 'dialogue', speaker: '你', text: '我怕我一彈就把好好的琴弄得很難聽。' },
       { kind: 'dialogue', speaker: '陳信宏', text: '不會啦，我在旁邊啊。' },
@@ -499,7 +500,7 @@ export const springLessonRoutes: Record<Exclude<SpringCharacterId, 'yanming'>, S
   masa: {
     title: '瑪莎・Bass',
     blocks: [
-      { kind: 'narration', text: '其他人先把器材搬到樓下，瑪莎把 Bass 留在身上，隨手拉了張椅子坐到你面前。練團室終於安靜，他反而先嘆了一口氣。' },
+      { kind: 'narration', text: '其他人收拾好自己的東西，陸續離開練團室。瑪莎把 Bass 靠到椅子旁，隨手拉了張椅子坐到你面前。練團室終於安靜下來，他反而先嘆了一口氣。' },
       { kind: 'dialogue', speaker: '瑪莎', text: '終於安靜了，剛剛被佑達吵到我耳朵都痛了。' },
       { kind: 'dialogue', speaker: '你', text: '你不是也跟著罵他嗎？' },
       { kind: 'dialogue', speaker: '瑪莎', text: '我那叫維持秩序。好啦，妳不是想學？先看右手。' },
@@ -538,7 +539,7 @@ export const springLessonRoutes: Record<Exclude<SpringCharacterId, 'yanming'>, S
   stone: {
     title: '石錦航・吉他',
     blocks: [
-      { kind: 'narration', text: '其他人把器材搬到樓下，石頭把吉他放到椅子上，先替你把旁邊的椅子拉開。練團室安靜下來後，他才坐到你身旁。' },
+      { kind: 'narration', text: '練團結束後，其他人收拾好自己的東西，陸續離開練團室。石頭把吉他靠在椅子旁，先替你把旁邊的椅子拉開；等門口的說話聲漸漸遠去，他才坐到你身旁。' },
       { kind: 'dialogue', speaker: '石錦航', text: '妳想學哪一段？不一定要從最難的開始。' },
       { kind: 'dialogue', speaker: '你', text: '先教我最簡單的好了，我怕我拖累你。' },
       { kind: 'dialogue', speaker: '石錦航', text: '不會啦，慢慢來就好。' },
@@ -562,7 +563,7 @@ export const springLessonRoutes: Record<Exclude<SpringCharacterId, 'yanming'>, S
     ],
     promptBlocks: [
       { kind: 'narration', text: '石頭看著你，語氣仍舊溫柔：' },
-      { kind: 'dialogue', speaker: '石錦航', text: '是不是比想像中硬？' },
+      { kind: 'dialogue', speaker: '石錦航', text: '會不會覺得有點粗？我怕刮到妳的手。' },
     ],
     prompt: '你想怎麼回答？',
     choices: [
