@@ -577,8 +577,11 @@ export const springLessonRoutes: Record<Exclude<SpringCharacterId, 'yanming'>, S
   },
 }
 export const springYanmingDinnerBlocks: SpringBlock[] = [
-  { kind: 'narration', text: '諺明哥等大家收拾得差不多，才拿起外套問你要不要一起去吃飯。其他人還在門口鬧成一團，他倒是不急，站在旁邊等你收好東西。' },
-  { kind: 'dialogue', speaker: '劉諺明', text: '附近有家店還不錯，妳有吃過嗎？' },
+  { kind: 'narration', text: '你把包背好，跟練團室裡的人打了聲招呼，推開門走出去。門關上後，裡面收拾器材的聲音一下子遠了，走廊也安靜不少。' },
+  { kind: 'narration', text: '諺明哥沒有留在練團室裡。他已經先一步到樓下了，你沿著樓梯走出去，朝外面的騎樓看了一圈，才在柱子旁找到他。他手上拿著外套，看到你便抬起手示意。' },
+  { kind: 'dialogue', speaker: '你', text: '你怎麼先跑到外面來了？' },
+  { kind: 'dialogue', speaker: '劉諺明', text: '裡面還要收東西，我想說先出來等妳。走吧，附近有家店還不錯。' },
+  { kind: 'narration', text: '他沒有急著往前走，等你走近了，才和你一起往街口走。' },
   { kind: 'narration', text: '小店裡有幾桌熟客，老闆一看到諺明哥就笑著打招呼。他替你拉開椅子，等你坐好才把菜單遞過來。' },
   { kind: 'dialogue', speaker: '你', text: '你常常來這裡喔？' },
   { kind: 'dialogue', speaker: '劉諺明', text: '練團結束比較晚的時候會來。今天剛好想到妳可能也餓了，就問問看。' },
