@@ -2,6 +2,7 @@ export type SpringCharacterId = 'wen' | 'ashin' | 'masa' | 'stone' | 'yanming'
 export type SpringBlock = { kind: 'narration' | 'dialogue' | 'aside'; speaker?: string; text: string }
 export type SpringChoice = { text: string; response: string; affection: number }
 export type SpringRoute = { title: string; blocks: SpringBlock[]; prompt: string; choices: SpringChoice[] }
+export type SpringLessonRoute = SpringRoute & { touchPrompt: string; touchChoices: SpringChoice[]; touchNarration: string }
 export type SpringInviteChoice = { text: string; response: string[]; affection: number; accepted?: boolean }
 export type SpringInviteRound = { incoming: string[]; choices: SpringInviteChoice[] }
 export type SpringSmsChoice = { text: string; response: string[]; affection: number; nextIncoming?: string }
@@ -225,21 +226,28 @@ export const springRehearsalBlocks: SpringBlock[] = [
   { kind: 'narration', text: '佑達離開後，練團室終於安靜了幾秒。溫尚翊把吉他放回架上，阿信揉了揉肩膀，石頭把導線捲好，瑪莎則蹲下來收 Bass。' },
 ]
 
-export const springLessonRoutes: Record<Exclude<SpringCharacterId, 'yanming'>, SpringRoute> = {
+export const springLessonRoutes: Record<Exclude<SpringCharacterId, 'yanming'>, SpringLessonRoute> = {
   wen: {
     title: '溫尚翊・電吉他',
     blocks: [
-      { kind: 'narration', text: '溫尚翊把吉他重新背好，讓你站到他旁邊。他先示範怎麼按弦，再把琴交給你。你試著按了幾次，指尖很快就開始發酸。' },
-      { kind: 'dialogue', speaker: '你', text: '嘶……手指好痛喔。' },
-      { kind: 'dialogue', speaker: '溫尚翊', text: '哈哈，第一次都這樣啦。妳剛剛是不是又太用力？' },
-      { kind: 'narration', text: '他伸手看了看你的指尖。你卻注意到他左手指腹有一層薄薄的硬繭，邊緣被琴弦磨得有點粗。' },
-      { kind: 'dialogue', speaker: '你', text: '欸，你手上好多茧子喔。' },
-      { kind: 'dialogue', speaker: '你', text: '我可以摸摸看嗎？' },
-      { kind: 'narration', text: '溫尚翊愣了一下，低頭看了看自己的手，像是沒想到你會突然提出這種要求。' },
-      { kind: 'dialogue', speaker: '溫尚翊', text: '蛤？有什麼好摸的啦……' },
-      { kind: 'narration', text: '嘴上這樣說，他還是把左手伸到你面前。' },
+      { kind: 'narration', text: '溫尚翊把電吉他背好，沒有急著讓你自己亂按。他站到你旁邊，先用手指點了點琴頸上的位置，示範最簡單的和弦要怎麼按。' },
+      { kind: 'dialogue', speaker: '溫尚翊', text: '先把食指放這裡，手指立起來一點，不要整根貼上去。手腕放鬆啦。' },
+      { kind: 'dialogue', speaker: '你', text: '這樣喔？我怎麼覺得每根手指都在打架。' },
+      { kind: 'narration', text: '你照著他的指示按下去，第一下只發出悶悶的聲音。你不服氣地又試了一次，這回總算有一根弦清楚地響起來。' },
+      { kind: 'dialogue', speaker: '溫尚翊', text: '欸，有了啦。不要一開始就想一次全部按好，先一根一根來。' },
+      { kind: 'dialogue', speaker: '你', text: '可是我手指好像快抽筋了……' },
+      { kind: 'narration', text: '他本來還想笑，看到你真的甩了甩手，才把琴扶穩，低頭看你的指尖。' },
+      { kind: 'dialogue', speaker: '溫尚翊', text: '痛喔？給我看一下。妳是不是整個指尖都在用力？剛開始不用這麼拚啦。' },
+      { kind: 'narration', text: '他重新示範一次，把你的手腕輕輕調到比較放鬆的位置，還讓你先停下來休息幾秒。你看著他按弦的左手，這才注意到他的指腹有一層被琴弦磨出來的薄繭。' },
     ],
-    prompt: '你輕輕碰了碰他的指尖，他有點不自在地笑了。',
+    touchPrompt: '你注意到他左手指腹上的薄繭，想怎麼開口？',
+    touchChoices: [
+      { text: '「欸，你手上好多茧子喔，可以摸摸看嗎？」', response: '「蛤？這有什麼好摸的啦……」他嘴上嫌了一句，還是把左手伸到你面前。', affection: 2 },
+      { text: '「這些都是彈琴磨出來的喔？借我摸一下啦！」', response: '「差不多啦。妳怎麼什麼都想研究……好啦，輕一點。」', affection: 1 },
+      { text: '「你先不要把手收回去，我想摸摸看。」', response: '「……妳真的很會找事情欸。」他嘆了口氣，卻還是把手留在原處。', affection: 2 },
+    ],
+    touchNarration: '他把左手攤開，你用指尖輕輕碰了碰他的指腹。那層薄繭摸起來比看起來硬一點，他像是有些不自在，手指微微蜷了一下。',
+    prompt: '你輕輕碰了碰他的指尖，他有點不自在地笑了。你想說些什麼？',
     choices: [
       { text: '「真的硬硬的欸！你以前也會痛嗎？」', response: '「廢話，剛開始哪有不痛的。」他把手收回去，又補了一句：「妳慢慢練就好，不用急。」', affection: 2 },
       { text: '「原來你每天都這樣練喔，難怪這麼厲害。」', response: '「哪有每天……好啦，差不多啦。」他低頭調音，耳朵有點紅。', affection: 2 },
@@ -249,18 +257,26 @@ export const springLessonRoutes: Record<Exclude<SpringCharacterId, 'yanming'>, S
   ashin: {
     title: '陳信宏・木吉他',
     blocks: [
-      { kind: 'narration', text: '阿信把木吉他放到你腿上，先教你最簡單的和弦。你一開始還覺得沒什麼，結果按了幾輪，指尖很快就酸起來。' },
-      { kind: 'dialogue', speaker: '你', text: '欸，木吉他弦好硬喔！手指痛死了。' },
-      { kind: 'dialogue', speaker: '陳信宏', text: '哈哈，真的會欸。妳先休息一下，不要硬撐馁。' },
-      { kind: 'narration', text: '他把琴接過去放好，你這才看見他左手指尖也有明顯的茧。' },
-      { kind: 'dialogue', speaker: '你', text: '阿信，你手上這個也是彈琴長出來的嗎？' },
-      { kind: 'dialogue', speaker: '你', text: '我可以摸摸看嗎？' },
-      { kind: 'dialogue', speaker: '陳信宏', text: '哈哈，可以啊。剛開始真的會痛，後來就慢慢習慣了馁。' },
-      { kind: 'narration', text: '他把手掌攤開，讓你仔細看。你用指尖輕輕碰了一下，他低頭看著你，笑得有點不好意思。' },
+      { kind: 'narration', text: '阿信把木吉他放到你腿上，先替你調整坐姿，再示範最簡單的和弦。他沒有急著讓你刷完整個和弦，只叫你先把幾根手指放到正確的位置。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '妳先按這裡，指尖靠近品絲一點點，這樣聲音比較不會悶掉。慢慢來就好。' },
+      { kind: 'dialogue', speaker: '你', text: '這樣有對嗎？我覺得我手指快要打結了。' },
+      { kind: 'narration', text: '他低頭看了一眼，幫你把其中一根手指挪開一點。你重新撥弦，總算有幾個音乾淨地跑出來，忍不住又多試了兩次。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '有了耶！妳看，剛剛那次就很清楚啊。' },
+      { kind: 'dialogue', speaker: '你', text: '欸，可是按到後面手指真的好痛喔。' },
+      { kind: 'narration', text: '阿信立刻把琴接過去，沒有再叫你繼續。他看了看你的指尖，讓你先把手放鬆，還拿自己的手示範怎麼用比較省力。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '先休息一下啦，不要硬撐。剛開始按弦真的會痛，妳已經很認真了。' },
+      { kind: 'narration', text: '他重新把琴拿起來示範時，你看見他左手指尖也有一層薄薄的繭，幾個常按弦的位置摸起來似乎特別厚。' },
     ],
-    prompt: '他把木吉他重新拿回來，問你還要不要再試一次。',
+    touchPrompt: '你看見他指尖上的薄繭，想怎麼問他？',
+    touchChoices: [
+      { text: '「你的手也有茧子欸，是彈吉他留下來的嗎？可以摸摸看嗎？」', response: '「對啊，彈久了就會這樣。可以啊，妳慢慢看。」他笑著把手掌攤開。', affection: 2 },
+      { text: '「欸，我想看看你練琴的手，可以借我摸一下嗎？」', response: '「哈哈，可以啊。只是沒有什麼特別的啦。」他把左手往你這邊伸了一點。', affection: 1 },
+      { text: '「這層茧子摸起來會不會很硬？我可以摸一下嗎？」', response: '「妳摸摸看就知道了啊。」他說完，還特地把指尖轉向你。', affection: 2 },
+    ],
+    touchNarration: '阿信把手掌翻過來，讓你碰到指尖那層薄薄的繭。你用指腹輕輕摸了一下，他一直看著你的表情，像是在等你發表什麼重大心得。',
+    prompt: '他把木吉他重新拿回來，問你還要不要再試一次。你想怎麼回答？',
     choices: [
-      { text: '「好啊！這次我想把和弦按好。」', response: '「好，那我陪妳慢慢來。這次手指不要太用力，按穩就好馁。」', affection: 2 },
+      { text: '「好啊！這次我想把和弦按好。」', response: '「好，那我陪妳慢慢來。這次手指不要太用力，按穩就好。」', affection: 2 },
       { text: '「等一下啦，我還想再研究一下你的手。」', response: '「哈哈哈哈，妳怎麼突然對這個這麼有興趣？」他沒有把手收走，反而又攤開給你看了一眼。', affection: 2 },
       { text: '「今天先不要了，我怕明天拿筆都拿不動。」', response: '「那就休息啦。第一次已經很厲害了，不要把手弄痛才是真的。」', affection: 1 },
     ],
@@ -268,15 +284,25 @@ export const springLessonRoutes: Record<Exclude<SpringCharacterId, 'yanming'>, S
   masa: {
     title: '瑪莎・Bass',
     blocks: [
-      { kind: 'narration', text: '瑪莎把 Bass 調好，讓你坐在旁邊試著跟節拍撥弦。你才練了幾分鐘，左手指尖就開始發酸。' },
-      { kind: 'dialogue', speaker: '你', text: '欸，手指真的好痛喔！' },
-      { kind: 'dialogue', speaker: '瑪莎', text: '哈哈哈哈，現在知道弦不是拿來裝飾的了吧？' },
-      { kind: 'narration', text: '你揉著手指，忽然發現他的指尖有一層明顯的硬繭。' },
-      { kind: 'dialogue', speaker: '你', text: '欸，你手上這個茧子可以摸嗎？' },
-      { kind: 'dialogue', speaker: '瑪莎', text: '蛤？妳現在連這個都要研究喔？' },
-      { kind: 'narration', text: '他嘴上吐槽，卻把手伸過來，還故意把指尖翻給你看。' },
+      { kind: 'narration', text: '瑪莎把 Bass 調好，先示範右手怎麼輪流用食指和中指撥弦，再讓你試著跟上簡單的節拍。你一開始只顧著看他的手，輪到自己時卻連續漏了好幾拍。' },
+      { kind: 'dialogue', speaker: '瑪莎', text: '欸，妳先不要急著跟整段啦。右手輪流，左手按穩，兩隻手不要各做各的。' },
+      { kind: 'dialogue', speaker: '你', text: '你剛剛明明看起來很簡單啊！' },
+      { kind: 'dialogue', speaker: '瑪莎', text: '那是因為我在彈啊。換妳當然就不一樣了。' },
+      { kind: 'narration', text: '你瞪了他一眼，低頭又試了一次。這次節拍總算接上了，雖然中間還是有一個音被你撥得特別大聲。' },
+      { kind: 'dialogue', speaker: '你', text: '欸！這次有比較好了吧？' },
+      { kind: 'dialogue', speaker: '瑪莎', text: '嗯，至少沒有像剛剛那樣在跟 Bass 吵架。' },
+      { kind: 'narration', text: '你正想反駁，左手指尖卻先疼了起來。你甩了甩手，他這才注意到你皺起眉頭，伸手把琴扶住。' },
+      { kind: 'dialogue', speaker: '瑪莎', text: '欸欸，先停。手指痛就講啊，妳是打算跟弦比誰比較硬喔？' },
+      { kind: 'narration', text: '他讓你先歇一下，又拿起自己的左手示範按弦的位置。你這才看見他的指尖有一層明顯的硬繭。' },
     ],
-    prompt: '你摸了摸他的指尖，他等著聽你的評論。',
+    touchPrompt: '你看見他指尖那層硬繭，忍不住想開口。',
+    touchChoices: [
+      { text: '「欸，你手指也太粗糙了吧？借我摸一下啦！」', response: '「蛤？妳是來學 Bass 還是來檢查我的手啦？」他嘴上吐槽，手卻真的伸了過來。', affection: 2 },
+      { text: '「這是 Bass 玩家認證的茧子喔？我摸一下確認看看。」', response: '「妳還自己發明認證喔？好啦，檢查員請。」他故意把手指攤得很開。', affection: 1 },
+      { text: '「你手上這層該不會是被弦磨出來的吧？可以摸嗎？」', response: '「不然是我拿砂紙磨的喔？摸啦，拜託不要寫檢查報告。」', affection: 2 },
+    ],
+    touchNarration: '瑪莎故意把手伸得老遠，還把指尖在你面前晃了兩下。你摸上去，他立刻問你是不是要幫他評分，害你差點笑出來。',
+    prompt: '你摸了摸他的指尖，他等著聽你的評論。你怎麼說？',
     choices: [
       { text: '「真的很硬欸！你是砂紙喔？」', response: '「……妳摸完還要人身攻擊是不是？」他把手收回去，自己也笑了。', affection: 2 },
       { text: '「原來這就是 Bass 大師的證明。」', response: '「那當然，不然妳以為這幾年白彈的喔？」他一臉得意地把琴重新背好。', affection: 2 },
@@ -286,15 +312,24 @@ export const springLessonRoutes: Record<Exclude<SpringCharacterId, 'yanming'>, S
   stone: {
     title: '石錦航・吉他',
     blocks: [
-      { kind: 'narration', text: '石頭把吉他調整好，讓你先練習最基本的和弦轉換。你試了幾次，手指開始酸，換弦時還不小心碰到旁邊的弦。' },
-      { kind: 'dialogue', speaker: '你', text: '我手指快沒知覺了啦。' },
-      { kind: 'dialogue', speaker: '石錦航', text: '哈哈，先休息一下。剛開始真的會不習慣。' },
-      { kind: 'narration', text: '他把琴放到一旁，你看見他左手指尖有一層薄薄的繭。' },
-      { kind: 'dialogue', speaker: '你', text: '石頭，你手上這個茧子……我可以摸摸看嗎？' },
-      { kind: 'narration', text: '他愣了一下，隨即笑著把手掌攤開，讓你看得更清楚。' },
-      { kind: 'dialogue', speaker: '石錦航', text: '可以啊，這個就是練久了留下來的。' },
+      { kind: 'narration', text: '石頭先把吉他的音調好，坐在你旁邊示範最基本的和弦轉換。他沒有把琴直接塞給你，而是先慢慢做一次，讓你看清楚手指怎麼移動。' },
+      { kind: 'dialogue', speaker: '石錦航', text: '先不用快，妳看我這樣換過去。手指先抬起來，再一起放下去，慢慢就會順了。' },
+      { kind: 'dialogue', speaker: '你', text: '我試試看……欸，怎麼每次都會碰到旁邊那根弦？' },
+      { kind: 'narration', text: '他把速度放得更慢，讓你跟著他的手勢練習。你連續試了幾次，終於有一次換得比較順，自己都忍不住笑了。' },
+      { kind: 'dialogue', speaker: '石錦航', text: '有啊，剛剛那次就很好。記得不要急，先把手指放準比較重要。' },
+      { kind: 'dialogue', speaker: '你', text: '可是我手指快沒知覺了啦，真的有點痛。' },
+      { kind: 'narration', text: '石頭立刻把琴放到一旁，仔細看了看你的指尖，提醒你先休息，沒有要你硬把那個和弦練完。' },
+      { kind: 'dialogue', speaker: '石錦航', text: '那先休息一下。剛開始練都會這樣，手指還不習慣，不用勉強。' },
+      { kind: 'narration', text: '他把琴重新拿起來示範時，你看見他左手指尖有一層薄薄的繭，幾個按弦的位置比其他地方粗糙一些。' },
     ],
-    prompt: '你輕輕碰了碰他的指尖，他安靜地看著你。',
+    touchPrompt: '你注意到他指尖上的繭，想怎麼問？',
+    touchChoices: [
+      { text: '「石頭，你手上這個茧子……我可以摸摸看嗎？」', response: '「可以啊。」他笑著把手掌攤開，還特地轉了個角度讓你看清楚。', affection: 2 },
+      { text: '「你以前剛開始練的時候，也會長這樣嗎？我可以摸一下嗎？」', response: '「會啊，練久了就慢慢變成這樣了。妳想摸就摸吧。」', affection: 1 },
+      { text: '「這是你練吉他留下來的喔？借我摸摸看好不好？」', response: '「嗯，是練琴留下來的。」他把手往你面前放近了一點，語氣很溫柔。', affection: 2 },
+    ],
+    touchNarration: '石頭把手放在你面前，沒有催你。你用指尖輕輕碰了碰那層繭，他安靜地笑了一下，像是很享受這個不需要急著說話的片刻。',
+    prompt: '他安靜地看著你，等你說說剛才摸到的感覺。你想怎麼回？',
     choices: [
       { text: '「原來真的摸得到耶，好神奇。」', response: '「哈哈，妳剛剛不是還嫌手痛？現在反而對這個比較有興趣。」', affection: 2 },
       { text: '「你以前剛開始練的時候也會這麼痛嗎？」', response: '「會啊，所以我知道妳現在的感覺。慢慢來就好。」', affection: 2 },
