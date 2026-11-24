@@ -254,12 +254,14 @@ export const winterBreakGigEndingBlocks: WinterStoryBlock[] = [
 
 export const winterYanmingPickupBlocks: WinterStoryBlock[] = [
   { kind: 'narration', text: '你正準備跟大家往外走，手機忽然震了一下。螢幕上跳出諺明哥的名字。' },
-  { kind: 'dialogue', speaker: '劉諺明', text: '我到酒吧外面了。你們結束了嗎？外面有點冷，妳慢慢出來就好。' },
-  { kind: 'narration', text: '你推開酒吧的門，騎樓下的燈光正好落在諺明哥身上。他就站在門口等你，手裡拿著一件多帶來的外套。看見你出來，他往前迎了兩步，先把外套遞給你，問你裡面是不是很熱。' },
-  { kind: 'dialogue', speaker: '劉諺明', text: '辛苦了。看妳們收得差不多，我才傳訊息。今天很晚了，我陪妳走到公車站。' },
+  { kind: 'dialogue', speaker: '劉諺明', text: '我到酒吧外面了。你們結束了嗎？外面風有點大，妳慢慢出來就好。' },
+  { kind: 'narration', text: '你推開酒吧的門，騎樓下的燈光正好落在諺明哥身上。他站在門邊，手裡拿著一件多帶來的外套。看見你出來，他往前迎了兩步，把外套遞給你。' },
+  { kind: 'dialogue', speaker: '劉諺明', text: '外面風大，先拿著。要不要穿都沒關係，別著涼就好。' },
   { kind: 'dialogue', speaker: '你', text: '你怎麼真的跑來了？不是說你今天也有事情要忙嗎？' },
-  { kind: 'dialogue', speaker: '劉諺明', text: '事情先處理完了。想說妳散場後要自己搭車，過來等一下比較放心。' },
-  { kind: 'narration', text: '他說得很平常，像只是順路做了一件小事，卻連外套都替你多帶了一件。你把外套披上，他確認你有穿好，才轉身陪你往前走。' },
+  { kind: 'dialogue', speaker: '劉諺明', text: '事情先處理完了。想說妳們散場晚，過來看看妳有沒有順利出來。' },
+  { kind: 'narration', text: '他沒有催你往公車站走，只往旁邊讓了讓，讓你先把外套拿好。店門又被推開，溫尚翊他們陸續走出來，還在接著爭論剛才最後一首歌的收尾。' },
+  { kind: 'dialogue', speaker: '劉諺明', text: '妳先跟他們說一聲，不用急，我在這裡等妳。' },
+  { kind: 'narration', text: '諺明哥站在騎樓下，沒有替你決定接下來的路。你轉頭看向剛走出來的幾個人，今晚最後一段路要跟誰一起走，還是由你自己決定。' },
 ]
 
 export const winterBusStopRoutes: Record<WinterCharacterId, WinterBusStopRoute> = {
@@ -478,13 +480,13 @@ export const winterBusStopRoutes: Record<WinterCharacterId, WinterBusStopRoute> 
     label: '跟劉諺明一起走',
     title: '和劉諺明走到公車站',
     blocks: [
-      { kind: 'narration', text: '諺明哥站在酒吧外的騎樓下等你，手裡拿著一件多帶來的外套。看見你出來，他先把外套遞過來，確認你穿好後才陪你往公車站走。街上比店裡安靜很多，遠處偶爾有車燈從路口掠過。' },
-      { kind: 'narration', text: '他沒有急著問演出好不好看，而是先確認你有沒有帶齊東西。等你把包包背好，他才笑著說，剛才站在外面等的時候，隔著門都聽得出來裡面玩得很開心。' },
-      { kind: 'dialogue', speaker: '劉諺明', text: '今天辛苦了。剛才看妳們收得差不多，我才傳訊息給妳。' },
+      { kind: 'narration', text: '你跟其他人打過招呼，走回諺明哥身邊。他看見你選了自己，只朝你點點頭，等你把外套披好，才陪你往公車站的方向走。' },
+      { kind: 'narration', text: '離開酒吧後，裡面的音樂和笑聲很快被關在門後。街上比店裡安靜很多，遠處偶爾有車燈從路口掠過；他走在靠近馬路的那一側，步子放得很慢，配合著你的速度。' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '今天辛苦了。剛才在外面等的時候，隔著門都聽得出來你們玩得很開心。' },
     ],
     rounds: [
       {
-        scene: '你提起下午在練團室看他打鼓的事。諺明哥聽完笑了一下，像是還有點不好意思，卻沒有否認自己剛才確實玩得很開心。他把外套領口替你順好，才繼續往前走，還記得提醒你不要踩到騎樓邊緣翹起來的地磚。',
+        scene: '你們走了一小段，諺明哥像是想起下午在練團室被大家拱上鼓椅的事，笑意又浮了上來。他把步子放慢，側過頭看了你一眼，才像是終於忍不住想問。',
         promptSpeaker: '劉諺明',
         prompt: '下午我打鼓的時候，妳是不是一直看著？我還以為妳覺得太吵了。',
         choices: [
