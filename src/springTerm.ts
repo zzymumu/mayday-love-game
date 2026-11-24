@@ -960,7 +960,6 @@ const springHomeSmsOpeners: Record<SpringCharacterId, { text: string; response: 
 }
 
 const springHomeBranchText = (values: string[], index: number): string => values[index] ?? values[0]
-const springHomeBranchChoices = (values: SpringSmsChoice[][], index: number): SpringSmsChoice[] => values[index] ?? values[0]
 
 const springHomeMemberSmsRounds = (
   character: SpringMemberSmsId,
