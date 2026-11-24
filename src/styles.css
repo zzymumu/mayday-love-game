@@ -602,27 +602,27 @@ button { cursor: pointer; }
 .message-bubble {
   max-width: 83%;
   padding: 8px 10px;
-  border: 1px solid #eee5da;
+  border: 0;
   border-radius: 12px 12px 12px 4px;
   color: #62574c;
   background: #f1eee8;
-  box-shadow: 0 1px 2px rgba(87,66,49,.04);
+  box-shadow: none;
   font-size: 9px;
   line-height: 1.65;
   overflow-wrap: anywhere;
 }
 .message-bubble.mine {
-  border-color: #e8d2c4;
+  border: 0;
   border-radius: 12px 12px 4px 12px;
   color: #6c5146;
   background: #f2e1d6;
 }
 .choice-area {
   margin-top: 15px;
-  padding: 12px 10px 9px;
-  border: 1px solid #eadccf;
-  border-radius: 12px;
-  background: #f7efe6;
+  padding: 12px 0 9px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 }
 .choice-heading {
   margin-bottom: 8px;
@@ -638,17 +638,22 @@ button { cursor: pointer; }
   gap: 7px;
   width: 100%;
   margin: 6px 0;
-  padding: 9px 9px;
-  border: 1px solid #e8d6c7;
-  border-radius: 9px;
+  padding: 9px 2px;
+  border: 0;
+  border-radius: 0;
   color: #68574b;
-  background: #fffdf8;
+  background: transparent;
   text-align: left;
   font-size: 9px;
   line-height: 1.55;
-  transition: background .15s, transform .15s, border-color .15s;
+  transition: color .15s;
 }
-.reply-choice:hover { border-color: #d2aa96; background: #fff8f1; transform: translateY(-1px); }
+.reply-choice:hover {
+  border: 0;
+  color: #987466;
+  background: transparent;
+  transform: none;
+}
 .reply-choice svg { flex: 0 0 auto; color: #b58a76; }
 .choice-area > small {
   display: block;
