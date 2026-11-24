@@ -4628,7 +4628,7 @@ function App() {
       dinnerReplies: springDinnerReplies,
     }
     const opening = getSpringSmsOpeners(springSmsTarget, context)[choiceIndex]
-    const firstRound = getSpringSmsRounds(springSmsTarget, context, [])[0]
+    const firstRound = getSpringSmsRounds(springSmsTarget, context, [], choiceIndex)[0]
     if (!opening || !firstRound) return
     appendChatMessages(springSmsTarget, [
       { from: 'me', text: opening.text, time: '21:08' },
@@ -4653,12 +4653,12 @@ function App() {
       lessonReplies: springLessonReplies,
       dinnerReplies: springDinnerReplies,
     }
-    const rounds = getSpringSmsRounds(springSmsTarget, context, springSmsReplies)
+    const rounds = getSpringSmsRounds(springSmsTarget, context, springSmsReplies, springSmsOpeningChoice)
     const round = rounds[springSmsRound]
     const choice = round?.choices[choiceIndex]
     if (!choice) return
     const nextReplies = [...springSmsReplies, choiceIndex]
-    const nextRounds = getSpringSmsRounds(springSmsTarget, context, nextReplies)
+    const nextRounds = getSpringSmsRounds(springSmsTarget, context, nextReplies, springSmsOpeningChoice)
     const minute = 11 + springSmsRound * 3
     appendChatMessages(springSmsTarget, [
       { from: 'me', text: choice.text, time: '21:' + String(minute).padStart(2, '0') },
@@ -5114,7 +5114,7 @@ function App() {
     lessonReplies: springLessonReplies,
     dinnerReplies: springDinnerReplies,
   }
-  const currentSpringSmsRounds = springSmsTarget ? getSpringSmsRounds(springSmsTarget, springDayContext, springSmsReplies) : []
+  const currentSpringSmsRounds = springSmsTarget ? getSpringSmsRounds(springSmsTarget, springDayContext, springSmsReplies, springSmsOpeningChoice) : []
   const currentSpringSmsOpeners = springSmsTarget ? getSpringSmsOpeners(springSmsTarget, springDayContext) : []
   const springInvitePendingCandidates = springInviteCandidates.filter((character) => !springInviteDeclined.includes(character))
   const currentSpringInviteRound = springInviteTarget ? springInviteRounds[springInviteTarget][springInviteReplies.length] ?? null : null
@@ -7296,7 +7296,7 @@ function App() {
                   <div className="story-screen-head"><div className="chapter-mark">回家後・手機</div><div className="story-contact-title"><strong>想傳訊息給誰？</strong><small>1997 年 2 月・晚上</small></div><span className="story-head-spacer" /></div>
                   <div className="story-narrative-scroll">
                     <div className="story-kicker">ONE MORE MESSAGE</div><h2 className="story-scene-title">今天還有話想說</h2>
-                    <StoryBlocks blocks={[{ kind: 'narration', text: '回到家，洗完澡，你把今天在樂器行和練團室發生的事情又想了一遍。手機就在枕頭旁邊。你想找一個人聊聊今天，最後決定先傳訊息給誰？' }]} />
+                    <StoryBlocks blocks={[{ kind: 'narration', text: '回到家，洗完澡，練團室裡《轧車》的鼓聲好像還留在耳朵裡。你想起剛才那些笑聲，還有每個人各自忙著收東西的樣子。手機就在枕頭旁邊，你想找一個人聊聊今天，最後決定先傳訊息給誰？' }]} />
                     <div className="choice-area"><div className="choice-heading">選擇一位聯絡人</div>
                       {springCharacterOrder.map((character) => (
                         <button className="reply-choice" key={character} onClick={() => chooseSpringSmsTarget(character, 'day')}><span>{characterNames[character]}</span><ChevronRight size={15} /></button>
