@@ -6949,7 +6949,10 @@ function App() {
                       </div>
                     ) : (
                       <>
-                        <StoryBlocks blocks={[{ kind: 'dialogue', speaker: springStoreCharacter === 'wen' ? '溫尚翊' : springStoreCharacter === 'ashin' ? '陳信宏' : springStoreCharacter === 'masa' ? '瑪莎' : springStoreCharacter === 'stone' ? '石錦航' : '劉諺明', text: springStoreRoutes[springStoreCharacter].choices[springStoreReply].response }]} />
+                        <StoryBlocks blocks={[
+                          { kind: 'dialogue', speaker: '你', text: springStoreRoutes[springStoreCharacter].choices[springStoreReply].text.replace(/^「|」$/g, '') },
+                          { kind: 'dialogue', speaker: springStoreCharacter === 'wen' ? '溫尚翊' : springStoreCharacter === 'ashin' ? '陳信宏' : springStoreCharacter === 'masa' ? '瑪莎' : springStoreCharacter === 'stone' ? '石錦航' : '劉諺明', text: springStoreRoutes[springStoreCharacter].choices[springStoreReply].response },
+                        ]} />
                         <div className="story-action-bar"><button className="story-primary-button" onClick={() => changeStage('spring-rehearsal')}>一起去練團室 <ChevronRight size={15} /></button></div>
                       </>
                     )}
@@ -7009,7 +7012,10 @@ function App() {
                       </div>
                     ) : (
                       <>
-                        <StoryBlocks blocks={[{ kind: 'dialogue', speaker: springLessonCharacter === 'wen' ? '溫尚翊' : springLessonCharacter === 'ashin' ? '陳信宏' : springLessonCharacter === 'masa' ? '瑪莎' : '石錦航', text: springLessonRoutes[springLessonCharacter].choices[springLessonReply].response }]} />
+                        <StoryBlocks blocks={[
+                          { kind: 'dialogue', speaker: '你', text: springLessonRoutes[springLessonCharacter].choices[springLessonReply].text.replace(/^「|」$/g, '') },
+                          { kind: 'dialogue', speaker: springLessonCharacter === 'wen' ? '溫尚翊' : springLessonCharacter === 'ashin' ? '陳信宏' : springLessonCharacter === 'masa' ? '瑪莎' : '石錦航', text: springLessonRoutes[springLessonCharacter].choices[springLessonReply].response },
+                        ]} />
                         <div className="story-action-bar"><button className="story-primary-button" onClick={() => changeStage('spring-sms-picker')}>收拾東西，回家 <ChevronRight size={15} /></button></div>
                       </>
                     )}
@@ -7031,7 +7037,10 @@ function App() {
                       </div>
                     ) : (
                       <>
-                        <StoryBlocks blocks={[{ kind: 'dialogue', speaker: '劉諺明', text: springYanmingDinnerChoices[springDinnerReply].response }]} />
+                        <StoryBlocks blocks={[
+                          { kind: 'dialogue', speaker: '你', text: springYanmingDinnerChoices[springDinnerReply].text.replace(/^「|」$/g, '') },
+                          { kind: 'dialogue', speaker: '劉諺明', text: springYanmingDinnerChoices[springDinnerReply].response },
+                        ]} />
                         <div className="story-action-bar"><button className="story-primary-button" onClick={() => changeStage('spring-sms-picker')}>吃完飯，回家 <ChevronRight size={15} /></button></div>
                       </>
                     )}
