@@ -14,6 +14,9 @@ export type SpringDayContext = {
   afterChoice: 'yanming-dinner' | 'lesson' | 'home' | null
   lessonCharacter: Exclude<SpringCharacterId, 'yanming'> | null
   dinnerChoice: number | null
+  storeReplies?: [number | null, number | null, number | null]
+  lessonReplies?: number[]
+  dinnerReplies?: number[]
 }
 
 export const SPRING_INVITE_THRESHOLD = 60
@@ -925,353 +928,466 @@ export const springYanmingDinnerEndingBlocks: SpringBlock[] = [
   { kind: 'dialogue', speaker: '劉諺明', text: '今天吃得還習慣嗎？下次有想吃的再跟我說。回去路上小心。' },
 ]
 
-const springContextLine = (character: SpringCharacterId, context: SpringDayContext): string => {
-  if (context.storeCharacter === character && context.lessonCharacter === character) {
-    if (character === 'wen') return '今天先陪妳去樂器行，後來又留下來練吉他，妳的手指還痛嗎？'
-    if (character === 'ashin') return '今天木吉他從樂器行一路練到練團室，妳回家有沒有再試那幾個和弦？'
-    if (character === 'masa') return '今天先在店裡看 Bass，後來又真的留下來練，手指有沒有還在抗議？'
-    if (character === 'stone') return '今天一起看了配件，後來又練了和弦，妳手指還好嗎？'
+const springSmsChoice = (text: string, response: string[], affection = 2): SpringSmsChoice => ({ text, response, affection })
+const springSmsRound = (incoming: string, choices: SpringSmsChoice[]): SpringSmsRound => ({ incoming, choices })
+
+const springStoreFollowUpLine = (character: SpringCharacterId, context: SpringDayContext): string => {
+  const storeReply = context.storeReplies?.[1] ?? null
+  if (character === 'wen') {
+    if (storeReply === 0) return '妳第一次踩開關踩得太早那一下，我到現在還記得，第二次就配合得很好了。'
+    if (storeReply === 1) return '妳剛剛還怕自己踩錯，結果真的試過一次就上手了。'
+    if (storeReply === 2) return '妳說我找人幫忙，這不是被妳抓包了嗎？哈哈。'
+    return '剛剛那顆效果器妳有聽出差別吧？'
   }
-  if (context.storeCharacter === 'yanming' && character === 'yanming' && context.afterChoice === 'yanming-dinner') return '今天先一起逛了器材，後來又去吃飯，妳有沒有覺得行程排得很剛好？'
-  if (context.storeCharacter === character) {
-    if (character === 'wen') return '今天陪妳去樂器行，妳最後有沒有把那個撥片收好？'
-    if (character === 'ashin') return '今天去樂器行試木吉他還滿好玩的，妳後來手指還會酸嗎？'
-    if (character === 'masa') return '今天那把 Bass 妳最後還是選最貴的那把喔？我可沒答應要買。'
-    if (character === 'stone') return '今天妳在店裡試背帶的樣子還滿認真的，後來有沒有一直惦記那個顏色？'
-    return '今天在樂器行差點接不住鼓棒，回去有沒有再練習轉？'
+  if (character === 'ashin') {
+    if (storeReply === 0) return '妳剛剛抱著木吉他還不讓我笑，現在想起來還是覺得很可愛。'
+    if (storeReply === 1) return '後來幫妳把琴身調好，有沒有覺得抱起來舒服一點？'
+    if (storeReply === 2) return '妳抱著琴聽我彈的時候，還跟著節奏輕輕晃，真的很投入耶。'
+    return '今天那兩把木吉他，妳後來有沒有想起哪一把的聲音？'
   }
-  if (context.lessonCharacter === character) {
-    if (character === 'wen') return '今天練吉他的時候，妳手指後來還痛不痛？'
-    if (character === 'ashin') return '今天木吉他的和弦回家有沒有再試？手指還好嗎？'
-    if (character === 'masa') return '今天 Bass 的弦有沒有把妳手指弄痛？'
-    if (character === 'stone') return '今天練和弦有沒有又偷偷練？記得讓手指休息。'
+  if (character === 'masa') {
+    if (storeReply === 0) return '妳今天還真的陪我去問店員琴弦規格，助理做得不錯嘛。'
+    if (storeReply === 1) return '妳說挑便宜的，結果還想把省下來的錢拿去吃飯，算盤打得真響。'
+    if (storeReply === 2) return '妳把選擇丟回給我，自己倒是很會吐槽，這樣也算幫忙喔？'
+    return '那兩包琴弦的價差，妳現在還覺得很誇張吧？'
   }
-  if (character === 'yanming' && context.afterChoice === 'yanming-dinner') return '今天吃完飯回去有順利到家嗎？那家店妳覺得怎麼樣？'
-  return '今天《轧車》練到最後總算順了，佑達還一直說自己今天超穩。妳是不是也笑他了？'
+  if (character === 'stone') {
+    if (storeReply === 0) return '妳剛剛說我像在照顧小孩，我回去想想，好像也沒有說錯。'
+    if (storeReply === 1) return '妳剛剛問我會不會自己換琴弦，哪天有空可以真的示範給妳看。'
+    if (storeReply === 2) return '妳說我適合當老師，我反而有點怕自己講得太認真，讓妳覺得無聊。'
+    return '今天那些清潔用品和琴弦，妳有沒有覺得比想像中複雜？'
+  }
+  return '今天店裡那些器材的規格不少，還好有一起確認，沒有漏掉要買的東西。'
 }
 
-export const getSpringSmsOpeners = (character: SpringCharacterId, context: SpringDayContext) => {
-  const base: Record<SpringCharacterId, { text: string; response: string; affection: number }[]> = {
-    wen: [
-      { text: '「哈哈，今天真的很好玩欸。」', response: '「是喔，妳今天笑得很大聲欸。」', affection: 2 },
-      { text: '「我回家還在想剛剛練的那首歌。」', response: '「《轧車》喔？那首本來就很容易卡在腦袋裡。」', affection: 1 },
-      { text: '「你今天有沒有覺得我很認真？」', response: '「有啦，至少沒有一直喊累。」', affection: 2 },
-    ],
-    ashin: [
-      { text: '「今天真的很開心，謝謝你。」', response: '「哈哈，我也覺得今天滿好玩的耶。」', affection: 2 },
-      { text: '「我回家還一直想到今天那段旋律。」', response: '「那首很容易讓人一直哼欸。」', affection: 1 },
-      { text: '「下次有空還想再跟你去逛逛。」', response: '「好啊，有看到喜歡的琴再一起去。」', affection: 2 },
-    ],
-    masa: [
-      { text: '「今天被你吐槽好多次喔！」', response: '「哈哈，妳自己明明也笑得很開心。」', affection: 1 },
-      { text: '「我現在終於知道 Bass 沒那麼簡單了。」', response: '「現在知道還不遲，先不要急著當大師。」', affection: 2 },
-      { text: '「你今天是不是故意逗我？」', response: '「我哪有，我只是很誠實。」', affection: 1 },
-    ],
-    stone: [
-      { text: '「今天謝謝你陪我，回家路上還一直想到剛剛的事。」', response: '「不客氣啊，今天大家都玩得滿開心的。」', affection: 2 },
-      { text: '「我覺得今天學到好多東西。」', response: '「那就好，慢慢來，不用一次記住全部。」', affection: 1 },
-      { text: '「下次還想跟你一起去樂器行。」', response: '「好啊，下次有空再一起去。」', affection: 2 },
-    ],
-    yanming: [
-      { text: '「今天謝謝你，吃飯很開心！」', response: '「不客氣，妳喜歡那家店就好。」', affection: 2 },
-      { text: '「今天大家練《轧車》真的好吵哈哈哈。」', response: '「哈哈，他們練得投入的時候就是這樣。」', affection: 1 },
-      { text: '「你回去也要記得休息喔。」', response: '「好，妳也是。今天辛苦了。」', affection: 2 },
-    ],
-  }
-  const choices = base[character].map((choice) => ({ ...choice }))
+const springContextLine = (character: SpringCharacterId, context: SpringDayContext): string => {
   const wentStore = context.storeCharacter === character
   const learnedTogether = context.lessonCharacter === character
   const ateTogether = character === 'yanming' && context.afterChoice === 'yanming-dinner'
+  const touchedCallus = context.lessonReplies?.[4] === 0
+  const thirdStoreReply = context.storeReplies?.[2] ?? null
 
   if (wentStore && learnedTogether) {
-    choices[0] = { text: '「今天從樂器行一路待到練團室，真的好充實！」', response: '「哈哈，妳今天很認真欸。手指後來還好嗎？」', affection: 2 }
-  } else if (wentStore) {
-    choices[0] = { text: '「今天一起逛樂器行真的很好玩！」', response: character === 'wen' ? '「是喔？妳最後那個撥片有收好吧。」' : character === 'ashin' ? '「我也覺得啊，木吉他那區可以逛很久。」' : character === 'masa' ? '「妳今天挑東西的眼光還滿敢的嘛。」' : character === 'stone' ? '「妳有喜歡就好，下次還可以慢慢看。」' : '「哈哈，今天逛得還算仔細吧。」', affection: 2 }
-  } else if (learnedTogether) {
-    choices[0] = { text: '「今天留下來學樂器真的很好玩！」', response: character === 'wen' ? '「有玩到就好，手指還痛不痛？」' : character === 'ashin' ? '「妳今天學得很認真耶，和弦有記住嗎？」' : character === 'masa' ? '「哈哈，現在知道 Bass 沒那麼好惹了吧。」' : '「妳今天學得滿認真的，回家有沒有再練？」', affection: 2 }
-  } else if (ateTogether) {
-    choices[0] = { text: '「今天謝謝你陪我吃飯，真的很開心！」', response: '「不客氣，妳喜歡那家店就好。」', affection: 2 }
-  } else {
-    choices[0] = { text: '「今天《轧車》練得好熱鬧，我回家還在笑。」', response: character === 'wen' ? '「哈哈，妳是不是又在笑佑達？」' : character === 'ashin' ? '「他今天真的超有精神，差點害我唱錯。」' : character === 'masa' ? '「妳也有看到吧？我真的忍他很久了。」' : character === 'stone' ? '「哈哈，他們兩個每次都這樣。」' : '「哈哈，他們一練起來就會忘記時間。」', affection: 1 }
+    if (character === 'wen') return '今天先在樂器行試效果器，後來又留下來練吉他，妳的手指還好嗎？'
+    if (character === 'ashin') return '今天先聽木吉他，後來又真的坐下來練和弦，妳回家手指有沒有酸？'
+    if (character === 'masa') return '今天先看 Bass，後來又留下來練，妳的手指有沒有還在抗議？'
+    if (character === 'stone') return '今天先看背帶和吉他，後來又留下來練和弦，妳手指還好嗎？'
   }
 
-  if (character === 'ashin' && !wentStore) choices[2] = { text: '「下次還想聽你彈木吉他。」', response: '「好啊，有空再彈給妳聽啊。」', affection: 2 }
-  if (character === 'masa' && !learnedTogether) choices[1] = { text: '「今天《轧車》的 Bass 聽起來特別有勁！」', response: '「那當然，Bass 可不是站在旁邊裝飾的。」', affection: 2 }
-  if (character === 'stone' && !learnedTogether) choices[1] = { text: '「今天最後一遍真的很順欸！」', response: '「對啊，大家終於接在一起了。」', affection: 1 }
-  if (character === 'stone' && !wentStore) choices[2] = { text: '「下次還想聽你們練團。」', response: '「好啊，妳有空就過來。」', affection: 2 }
-  if (character === 'wen' && !wentStore && !learnedTogether) choices[2] = { text: '「你們今天最後一遍真的很帥！」', response: '「有嗎？那就好，沒有白練。」', affection: 2 }
-  if (character === 'yanming' && !ateTogether) choices[0] = { text: '「今天看你們練團真的很有趣！」', response: '「哈哈，大家玩得開心就好。」', affection: 1 }
-  return choices
+  if (wentStore) {
+    if (character === 'wen') {
+      if (thirdStoreReply === 0) return '妳今天問我會不會教妳，我有記得喔。真的想學的話，來練團室找我就好。'
+      if (thirdStoreReply === 1) return '妳今天還叫我先彈給妳聽，現在是不是更想學了？'
+      if (thirdStoreReply === 2) return '妳今天還沒學就先擔心自己沒天分，先玩玩看啦，不用想那麼多。'
+      return '今天在樂器行玩效果器還滿有趣的吧？'
+    }
+    if (character === 'ashin') {
+      if (thirdStoreReply === 0) return '妳今天說想學木吉他，我有記得喔。下次去練團室可以先陪妳試最簡單的和弦。'
+      if (thirdStoreReply === 1) return '妳剛剛還擔心手指會痛，先不用急著練很久，慢慢來就好。'
+      if (thirdStoreReply === 2) return '妳說看我們彈比較輕鬆也沒關係啊，哪天想學了再跟我說。'
+      return '今天那兩把木吉他的聲音，妳後來有沒有想起來？'
+    }
+    if (character === 'masa') {
+      if (thirdStoreReply === 0) return '妳今天說有一點想學吉他，我有聽到喔，不要明天就反悔。'
+      if (thirdStoreReply === 1) return '妳今天問自己適合學什麼，我回去想了一下，還是覺得先試吉他比較好。'
+      if (thirdStoreReply === 2) return '妳說只是覺得吉他好看，最好是啦，我又不是沒看到妳盯著看。'
+      return '今天 Bass 那幾個低音有沒有讓妳感覺到地板在震？'
+    }
+    if (character === 'stone') {
+      if (thirdStoreReply === 0) return '妳今天背著展示琴的樣子很認真，回去有沒有想起來？'
+      if (thirdStoreReply === 1) return '妳今天問自己適不適合學吉他，我覺得可以慢慢試，不用急著決定。'
+      if (thirdStoreReply === 2) return '妳說每天練琴很辛苦，我倒覺得喜歡的話就會慢慢習慣。'
+      return '今天那條背帶，妳後來有沒有覺得哪個顏色比較好看？'
+    }
+    return '今天一起去看器材，清單上的東西有沒有都看清楚？妳有沒有覺得哪樣最有趣？'
+  }
+
+  if (learnedTogether) {
+    if (character === 'wen') return touchedCallus
+      ? '妳今天真的摸了我手上的繭，現在還在想那個觸感喔？手指有沒有酸？'
+      : '今天練的那個和弦回家還記得嗎？妳的手指有沒有比較習慣？'
+    if (character === 'ashin') return touchedCallus
+      ? '妳今天摸到我指尖那層繭了，會不會覺得跟想像中不太一樣？'
+      : '今天木吉他那幾個和弦，妳回家有沒有再想起來？手指還好嗎？'
+    if (character === 'masa') return touchedCallus
+      ? '妳今天還真的要檢查我的繭，現在有沒有比較了解 Bass 手指要受多少罪？'
+      : '今天 Bass 那段節奏有沒有又在腦袋裡打轉？手指還好嗎？'
+    if (character === 'stone') return touchedCallus
+      ? '妳今天摸了我指腹上的繭，會不會覺得比看起來粗一點？'
+      : '今天練的換和弦，回去有沒有再試一次？記得讓手指休息。'
+  }
+
+  if (ateTogether) return '今天一起吃飯還滿開心的，妳回到家了嗎？有沒有吃飽？'
+
+  if (character === 'yanming' && wentStore) return '今天一起去看器材，妳有沒有覺得店裡比想像中好逛？'
+  if (character === 'wen') return '今天《轧車》最後一遍總算接起來了，妳是不是笑佑達笑得很開心？'
+  if (character === 'ashin') return '今天《轧車》練到最後總算順了，佑達那幾下鼓花真的很有精神。'
+  if (character === 'masa') return '今天《轧車》那幾遍妳也看到了吧？佑達差點把歌變成自己的獨奏會。'
+  if (character === 'stone') return '今天最後一遍大家接得比前面順很多，妳有聽出來嗎？'
+  return '今天《轧車》練得很熱鬧，佑達第一遍就加了不少東西，妳應該也有被嚇到。'
+}
+
+export const getSpringSmsOpeners = (character: SpringCharacterId, context: SpringDayContext) => {
+  const rehearsal: Record<SpringCharacterId, { text: string; response: string; affection: number }[]> = {
+    wen: [
+      { text: '「今天《轧車》最後一遍真的很帥！」', response: '「妳終於有講一句公道話了喔。」', affection: 2 },
+      { text: '「我回家还在笑佑达的鼓花。」', response: '「哈哈，他自己也知道很誇張啦。」', affection: 1 },
+      { text: '「你们今天练团也太热闹了吧。」', response: '「《轧車》就是要這樣啦。」', affection: 2 },
+    ],
+    ashin: [
+      { text: '「今天《轧車》最後那遍好好聽。」', response: '「謝謝～最後那次大家真的有接起來。」', affection: 2 },
+      { text: '「我回家脑袋里还在响佑达的鼓声。」', response: '「哈哈，他今天真的很有精神。」', affection: 1 },
+      { text: '「今天看你们练团很开心。」', response: '「那就好，下次有空再來聽啊。」', affection: 2 },
+    ],
+    masa: [
+      { text: '「你今天吐槽佑达真的太好笑。」', response: '「我那是忍很久了好不好。」', affection: 2 },
+      { text: '「佑达是不是每天都这么有精力？」', response: '「我也想知道他的電池在哪裡。」', affection: 1 },
+      { text: '「你们练《轧車》也太吵了啦。」', response: '「嫌吵還笑那麼大聲？」', affection: 2 },
+    ],
+    stone: [
+      { text: '「今天最後一遍真的很順欸。」', response: '「對啊，前面鬧歸鬧，最後有接起來就好。」', affection: 2 },
+      { text: '「我还在想刚刚那段吉他。」', response: '「有聽到妳喜歡的地方嗎？」', affection: 1 },
+      { text: '「今天看你们练团很开心。」', response: '「那就好，下次再來聽。」', affection: 2 },
+    ],
+    yanming: [
+      { text: '「今天佑达第一遍真的吓到我了。」', response: '「哈哈，他今天特別有精神。」', affection: 2 },
+      { text: '「最後一遍大家接得好整齊。」', response: '「那一遍大家都有聽彼此，才會這麼順。」', affection: 2 },
+      { text: '「今天练团很热闹欸。」', response: '「是啊，大家玩得很開心。」', affection: 1 },
+    ],
+  }
+
+  const storeAndLesson: Record<Exclude<SpringCharacterId, 'yanming'>, { text: string; response: string; affection: number }[]> = {
+    wen: [
+      { text: '「今天從樂器行到練團室，手指有點忙不過來了。」', response: '「哈哈，今天是讓妳體驗一下啦。手指還好嗎？」', affection: 2 },
+      { text: '「效果器跟吉他都玩到了，今天很充實欸。」', response: '「有玩到就好，妳今天還滿認真的。」', affection: 2 },
+      { text: '「我回家還在想你教我按和弦的樣子。」', response: '「先不要想太多啦，記得休息就好。」', affection: 2 },
+    ],
+    ashin: [
+      { text: '「今天從聽木吉他到自己按和弦，差好多。」', response: '「有啊，妳後來真的有彈出聲音了。」', affection: 2 },
+      { text: '「我回家還在想今天那把木吉他的聲音。」', response: '「那把音色真的滿舒服的，下次可以再聽。」', affection: 2 },
+      { text: '「今天謝謝你陪我慢慢試。」', response: '「不客氣啊，妳今天很認真耶。」', affection: 2 },
+    ],
+    masa: [
+      { text: '「今天先看 Bass，後來又真的上手練了。」', response: '「現在知道兩隻手要合作有多難了吧。」', affection: 2 },
+      { text: '「我現在還記得你教我的那個節奏。」', response: '「那就好，至少沒有白教。」', affection: 2 },
+      { text: '「今天被你吐槽，但好像真的有學到東西。」', response: '「妳有學到就好，不然我不是白費口水。」', affection: 1 },
+    ],
+    stone: [
+      { text: '「今天先看配件，後來還真的坐下來練和弦。」', response: '「妳今天很認真，手指還好嗎？」', affection: 2 },
+      { text: '「我回家還在想你教我換和弦的樣子。」', response: '「慢慢練就好，不用一次記住全部。」', affection: 2 },
+      { text: '「今天謝謝你陪我從頭慢慢來。」', response: '「不客氣啊，妳有興趣就很好。」', affection: 2 },
+    ],
+  }
+
+  const storeOnly: Record<SpringCharacterId, { text: string; response: string; affection: number }[]> = {
+    wen: [
+      { text: '「今天那顆效果器的聲音真的差好多。」', response: '「妳聽得出來就好啦，這顆還滿有意思的。」', affection: 2 },
+      { text: '「我还记得你让我踩开关那段。」', response: '「哈哈，第一次當音控還不錯啦。」', affection: 2 },
+      { text: '「你说要带我去练团室试吉他，算数喔。」', response: '「有啦，記得啦，妳不要一直催。」', affection: 2 },
+    ],
+    ashin: [
+      { text: '「今天那两把木吉他的声音真的不一样。」', response: '「對啊，妳有聽出差別就好。」', affection: 2 },
+      { text: '「我还记得抱木吉他的感觉，好大一把。」', response: '「哈哈，妳剛剛真的像抱大抱枕。」', affection: 2 },
+      { text: '「你说下次要教我和弦喔。」', response: '「好啊，慢慢來，不用急。」', affection: 2 },
+    ],
+    masa: [
+      { text: '「今天 Bass 的声音震得我脚底都麻了。」', response: '「那是妳站太近了啦。」', affection: 2 },
+      { text: '「琴弦真的有必要那么贵吗？」', response: '「我也想問店家這個問題。」', affection: 1 },
+      { text: '「你还记得我看了那把吉他吗？」', response: '「我又沒有瞎，當然看到了。」', affection: 2 },
+    ],
+    stone: [
+      { text: context.storeReplies?.[0] === 1 ? '「你后来有考虑那条比较特别的背带吗？」' : '「你后来还是选了那条背带吗？」', response: '「有啊，最後挑了一條背起來舒服的。」', affection: 2 },
+      { text: '「我今天才知道吉他保养也有这么多学问。」', response: '「其實不難，平常多注意就好。」', affection: 2 },
+      { text: '「你说下次可以再让我试琴喔。」', response: '「可以啊，妳想試的時候再說。」', affection: 2 },
+    ],
+    yanming: [
+      { text: '「今天跟你去看器材还蛮有趣的。」', response: '「有妳一起看，確認起來也快一點。」', affection: 2 },
+      { text: '「你买东西真的好仔细。」', response: '「器材要合用，還是得多確認一下。」', affection: 2 },
+      { text: '「下次还想去看看你们用的鼓棒。」', response: '「好啊，下次再帶妳去。」', affection: 2 },
+    ],
+  }
+
+  const lessonOnly: Record<Exclude<SpringCharacterId, 'yanming'>, { text: string; response: string; affection: number }[]> = {
+    wen: [
+      { text: '「今天練的和弦我回家還想再試一次。」', response: '「先休息啦，手指不要硬撐。」', affection: 2 },
+      { text: '「我还记得你手指上的茧子。」', response: '「練久了就會有啊，妳不用急。」', affection: 2 },
+      { text: '「今天谢谢你没有嫌我学得慢。」', response: '「我哪有嫌妳，慢慢來就好。」', affection: 2 },
+    ],
+    ashin: [
+      { text: '「今天木吉他那几个和弦我还记得一点。」', response: '「那就好，慢慢練就會記得更牢。」', affection: 2 },
+      { text: '「我还在想你手指上的那层薄茧。」', response: '「哈哈，彈久了就會這樣，妳不用急著練成這樣。」', affection: 2 },
+      { text: '「今天谢谢你一直陪我慢慢试。」', response: '「不客氣啦，妳願意試就很好了。」', affection: 2 },
+    ],
+    masa: [
+      { text: '「Bass那段节奏我现在脑袋里还在循环。」', response: '「那表示妳有記住一點了。」', affection: 2 },
+      { text: '「我现在还记得你手指上的茧。」', response: '「哈哈，這是練出來的，不是故意弄給妳看的。」', affection: 2 },
+      { text: '「今天被你吐槽，结果还是学到了。」', response: '「不然妳以為我真的只會吐槽喔？」', affection: 2 },
+    ],
+    stone: [
+      { text: '「今天换和弦的时候我一直按错。」', response: '「很正常啊，慢慢來就好。」', affection: 2 },
+      { text: '「我还记得你指腹上的茧子。」', response: '「練久了就會有，妳不用急著也練成這樣。」', affection: 2 },
+      { text: '「今天谢谢你没有催我。」', response: '「學東西本來就不用趕，照自己的速度就好。」', affection: 2 },
+    ],
+  }
+
+  const dinnerOnly: { text: string; response: string; affection: number }[] = [
+    { text: '「今天谢谢你陪我吃饭，真的很开心。」', response: '「不客氣，妳喜歡那家店就好。」', affection: 2 },
+    { text: '「我回家还在想刚刚桌上的笑话。」', response: '「哈哈，今天大家練團的事又被我們講了一遍。」', affection: 2 },
+    { text: '「下次换我请你吃饭！」', response: '「好啊，那我就等妳安排。」', affection: 2 },
+  ]
+
+  if (context.storeCharacter === character && context.lessonCharacter === character && character !== 'yanming') return storeAndLesson[character]
+  if (context.storeCharacter === character) return storeOnly[character]
+  if (context.lessonCharacter === character && character !== 'yanming') return lessonOnly[character]
+  if (character === 'yanming' && context.afterChoice === 'yanming-dinner') return dinnerOnly
+  return rehearsal[character]
 }
 
 export const getSpringSmsRounds = (character: SpringCharacterId, context: SpringDayContext): SpringSmsRound[] => {
-  const firstIncoming = springContextLine(character, context)
-  const scripts: Record<SpringCharacterId, SpringSmsRound[]> = {
+  const rehearsal: Record<SpringCharacterId, SpringSmsRound[]> = {
     wen: [
-      { incoming: firstIncoming, choices: [
-        { text: '「我有收好啦，才不會弄丟。」', response: ['「最好是，妳上次還把東西忘在練團室。」', '「下次來記得帶著。」'], affection: 2 },
-        { text: '「手指還有一點酸，不過還好。」', response: ['「那就不要一直練，休息一下啦。」'], affection: 1 },
-        { text: '「你是不是很想知道我有沒有想你？」', response: ['「蛤？妳今天怎麼突然這樣啦。」', '「……少來。」'], affection: 2 },
-      ] },
-      { incoming: '對了，三月底那個演出，妳真的會來喔？', choices: [
-        { text: '「當然啊，我要看你們站上台！」', response: ['「好啊，那妳到時候記得找個看得到的位置。」'], affection: 2 },
-        { text: '「看你表現囉。」', response: ['「妳要求還真多欸。」'], affection: 1 },
-        { text: '「你上台不要彈錯就好。」', response: ['「喂！妳到底站哪邊的？」'], affection: 1 },
-      ] },
-      { incoming: '妳今天笑佑達笑得很大聲欸。', choices: [
-        { text: '「因為他真的很有戲啊！」', response: ['「哈哈，他自己也知道啦。」'], affection: 1 },
-        { text: '「你笑得也不小聲。」', response: ['「我哪有，妳不要亂講。」'], affection: 2 },
-        { text: '「我是在笑你們兩個啦。」', response: ['「……妳真的很會欸。」'], affection: 2 },
-      ] },
-      { incoming: '今天那段終於練順了，回去我還在想最後那個收尾。', choices: [
-        { text: '「我覺得超帥的！」', response: ['「有嗎？那就好。」'], affection: 2 },
-        { text: '「你可以再彈一次給我聽。」', response: ['「下次來再彈給妳聽啦。」'], affection: 2 },
-        { text: '「我只記得佑達亂加鼓花。」', response: ['「哈哈哈哈，那個真的很煩。」'], affection: 1 },
-      ] },
-      { incoming: '好啦，時間不早了，妳快去睡。', choices: [
-        { text: '「你也是，不要練到太晚。」', response: ['「知道啦，晚安。」'], affection: 1 },
-        { text: '「你先說晚安。」', response: ['「……晚安啦。」'], affection: 2 },
-        { text: '「晚安，明天見！」', response: ['「明天見。」'], affection: 1 },
-      ] },
+      springSmsRound(springContextLine(character, context), [
+        springSmsChoice('「我有啊，佑達第一遍那個鼓花真的太誇張了。」', ['「哈哈，他自己也知道啦，還一直說那是他的新招。」'], 1),
+        springSmsChoice('「最後一遍很帥欸，你們接得超整齊。」', ['「有練到啦，不然前面那幾遍不就白吵了。」'], 2),
+        springSmsChoice('「我覺得你今天彈得很帥。」', ['「妳今天怎麼一直講這個啦。」', '「……不過我有聽到。」'], 2),
+      ]),
+      springSmsRound('妳今天笑佑達笑得那麼大聲，他自己都快聽到了吧。', [
+        springSmsChoice('「誰叫他一直自己加戲！」', ['「哈哈，他就是很有自己的想法。」'], 1),
+        springSmsChoice('「你也笑得很開心啊。」', ['「我哪有，妳不要亂講。」'], 2),
+        springSmsChoice('「你們兩個根本半斤八兩。」', ['「喂，這句我不能接受欸。」'], 2),
+      ]),
+      springSmsRound('下次還會來練團室嗎？', [
+        springSmsChoice('「會啊，我都快變固定班底了。」', ['「哈哈，那我們要幫妳留位置了。」'], 2),
+        springSmsChoice('「要看有沒有人陪我。」', ['「有空的話，我可以陪妳。」'], 2),
+        springSmsChoice('「你會在的話我就來。」', ['「那我盡量在。」'], 2),
+      ]),
+      springSmsRound('我剛剛回去還在想最後那個收尾，總算沒有再亂掉。', [
+        springSmsChoice('「那段真的很好聽！」', ['「有嗎？那就好，沒有白練。」'], 2),
+        springSmsChoice('「你下次再彈一次給我聽。」', ['「下次來再彈給妳聽啦。」'], 2),
+        springSmsChoice('「我只記得佑達又想加鼓花。」', ['「哈哈，那個真的很難忘。」'], 1),
+      ]),
+      springSmsRound('好啦，時間不早了，妳快去睡。', [
+        springSmsChoice('「你也是，不要練到太晚。」', ['「知道啦，晚安。」'], 1),
+        springSmsChoice('「你先說晚安。」', ['「……晚安啦。」'], 2),
+        springSmsChoice('「晚安，明天見！」', ['「明天見。」'], 1),
+      ]),
     ],
     ashin: [
-      { incoming: firstIncoming, choices: [
-        { text: '「我還想再練一下，今天好像有進步。」', response: ['「有啊，妳今天已經比剛開始順很多了耶。」'], affection: 2 },
-        { text: '「我的手指有點酸，明天再練好了。」', response: ['「對啦，先休息，手指要慢慢適應。」'], affection: 1 },
-        { text: '「今天跟你一起逛真的很開心。」', response: ['「我也是啊，下次再一起去。」'], affection: 2 },
-      ] },
-      { incoming: '妳剛剛那個和弦後來有沒有記住？', choices: [
-        { text: '「我有偷偷記在紙上！」', response: ['「哈哈，這麼認真喔？」'], affection: 2 },
-        { text: '「沒有欸，明天可能又忘了。」', response: ['「沒關係，下次我再教妳一次啊。」'], affection: 1 },
-        { text: '「你要不要再傳一次指法給我？」', response: ['「好啊，我找一下畫給妳。」'], affection: 2 },
-      ] },
-      { incoming: '今天練《轧車》的時候，佑達真的很有精神欸。', choices: [
-        { text: '「他差點把整首歌打成另一首！」', response: ['「哈哈哈哈，瑪莎剛剛臉都皺起來了，超好笑。」'], affection: 1 },
-        { text: '「可是最後一次真的很順！」', response: ['「對啊，大家一起進去的時候很過癮。」'], affection: 2 },
-        { text: '「你唱到一半是不是也笑了？」', response: ['「有啦，我差點真的唱不下去。」'], affection: 2 },
-      ] },
-      { incoming: '下次如果妳還想練木吉他，可以再找我。', choices: [
-        { text: '「說好了喔，不可以嫌我笨。」', response: ['「不會啦，妳明明就很認真。」'], affection: 2 },
-        { text: '「那我要從頭開始學。」', response: ['「好啊，我們慢慢來。」'], affection: 1 },
-        { text: '「那你要準備好當老師了。」', response: ['「哈哈，這個老師有點不專業啦。」'], affection: 1 },
-      ] },
-      { incoming: '好啦，今天先這樣，妳早點休息。', choices: [
-        { text: '「晚安阿信，今天謝謝你。」', response: ['「晚安～今天真的很開心。」'], affection: 2 },
-        { text: '「你也不要太晚睡！」', response: ['「好啦，我等等就收。」'], affection: 1 },
-        { text: '「下次見！」', response: ['「下次見喔。」'], affection: 1 },
-      ] },
+      springSmsRound(springContextLine(character, context), [
+        springSmsChoice('「他差點把整首歌打成另一首！」', ['「哈哈哈哈，瑪莎剛剛臉都皺起來了，真的很好笑。」'], 1),
+        springSmsChoice('「可是最後一次真的很順！」', ['「對啊，大家一起進去的時候很過癮。」'], 2),
+        springSmsChoice('「你唱到一半是不是也笑了？」', ['「有啦，我差點真的唱不下去。」'], 2),
+      ]),
+      springSmsRound('今天練《轧車》的時候，佑達真的很有精神欸。', [
+        springSmsChoice('「他差點把鼓組拆了吧！」', ['「沒有那麼誇張啦，不過他今天真的很投入。」'], 1),
+        springSmsChoice('「瑪莎是不是快被他氣死了？」', ['「哈哈，他們兩個平常就很會互相吐槽。」'], 2),
+        springSmsChoice('「我覺得你們最後一起收住那一下很帥。」', ['「謝謝～那一下大家有抓到同一個點。」'], 2),
+      ]),
+      springSmsRound('下次如果妳還想練木吉他，可以再找我。', [
+        springSmsChoice('「說好了喔，不可以嫌我笨。」', ['「不會啦，妳明明就很認真。」'], 2),
+        springSmsChoice('「那我要從頭開始學。」', ['「好啊，我們慢慢來。」'], 1),
+        springSmsChoice('「那你要準備好當老師了。」', ['「哈哈，這個老師有點不專業啦。」'], 1),
+      ]),
+      springSmsRound('妳剛剛有聽清楚最後那段嗎？我自己覺得這次接得滿順的。', [
+        springSmsChoice('「有啊！最後一次大家一起進來的時候很有氣勢。」', ['「對啊，那一下真的很過癮，前面亂成那樣還好最後有接起來。」'], 2),
+        springSmsChoice('「我有看到你差點笑場！」', ['「哈哈，妳有看到喔？我真的快忍不住了。」'], 2),
+        springSmsChoice('「佑達的鼓聲太搶戲了啦。」', ['「他今天真的很有精神，瑪莎應該快被他弄瘋了。」'], 1),
+      ]),
+      springSmsRound('好啦，今天先這樣，妳早點休息。', [
+        springSmsChoice('「晚安阿信，今天謝謝你。」', ['「晚安～今天真的很開心。」'], 2),
+        springSmsChoice('「你也不要太晚睡！」', ['「好啦，我等等就收。」'], 1),
+        springSmsChoice('「下次見！」', ['「下次見喔。」'], 1),
+      ]),
     ],
     masa: [
-      { incoming: firstIncoming, choices: [
-        { text: '「我今天真的被你笑死了！」', response: ['「哈哈，妳自己也沒好到哪裡去。」'], affection: 1 },
-        { text: '「我已經決定要把 Bass 練起來了。」', response: ['「先不要立志太快，手指先練出來再說。」'], affection: 2 },
-        { text: '「你今天其實教得滿好的嘛。」', response: ['「什麼叫其實？我本來就很會教好不好。」'], affection: 2 },
-      ] },
-      { incoming: '妳剛剛摸完我的手，是不是覺得很有專業感？', choices: [
-        { text: '「我覺得比較像砂紙。」', response: ['「……妳真的很不會聊天欸。」'], affection: 1 },
-        { text: '「有啦，Bass 大師認證。」', response: ['「這還差不多。」'], affection: 2 },
-        { text: '「我只是想確認是不是會痛。」', response: ['「剛開始會啦，現在早就習慣了。」'], affection: 2 },
-      ] },
-      { incoming: '佑達今天又差點把我們帶去隔壁棚。', choices: [
-        { text: '「哈哈哈哈你不要再講了！」', response: ['「我真的忍很久欸。」'], affection: 1 },
-        { text: '「可是他最後一次很穩啊。」', response: ['「妳不要鼓勵他，他會得意。」'], affection: 1 },
-        { text: '「你們兩個明明都很享受互相吐槽。」', response: ['「誰跟他享受啊？」'], affection: 2 },
-      ] },
-      { incoming: '下次要不要再試一次？這次不准說弦太硬。', choices: [
-        { text: '「好啊，我才不會怕你。」', response: ['「很好，有志氣。」'], affection: 2 },
-        { text: '「你要先保證不笑我。」', response: ['「這個我沒辦法保證。」'], affection: 1 },
-        { text: '「那你要再教我一段。」', response: ['「行啦，先把今天的練熟。」'], affection: 2 },
-      ] },
-      { incoming: '好啦，不鬧妳了，去睡。', choices: [
-        { text: '「晚安啦，Bass 大師。」', response: ['「晚安，學生。」'], affection: 2 },
-        { text: '「你才要早點睡。」', response: ['「知道啦。」'], affection: 1 },
-        { text: '「明天不要再嫌我。」', response: ['「看妳表現。」'], affection: 1 },
-      ] },
+      springSmsRound(springContextLine(character, context), [
+        springSmsChoice('「還不是因為你一直吐槽佑達！」', ['「那是他真的很好吐槽，妳自己也有笑吧。」'], 1),
+        springSmsChoice('「你們兩個根本是固定搭檔。」', ['「誰跟他固定搭檔啊？」'], 2),
+        springSmsChoice('「我覺得你們感情很好欸。」', ['「……妳不要亂下結論。」'], 2),
+      ]),
+      springSmsRound('今天看妳在旁邊笑得那麼開心，我差點也忘記要彈 Bass 了。', [
+        springSmsChoice('「那你還怪我？」', ['「我哪有怪妳，我是在提醒妳不要笑到跌下去。」'], 2),
+        springSmsChoice('「因為你講話真的很好笑。」', ['「謝謝喔，我是不是還要收妳門票？」'], 2),
+        springSmsChoice('「下次我坐遠一點好了。」', ['「不用啦，坐近一點才聽得到我彈得多好。」'], 1),
+      ]),
+      springSmsRound('下次有空再來練團室聽我們練啊。', [
+        springSmsChoice('「好啊！但你們不可以再吵到把歌帶去隔壁棚。」', ['「那妳要先叫佑達安分一點。」'], 2),
+        springSmsChoice('「我想再聽一次你彈 Bass。」', ['「這個簡單，下次彈給妳聽。」'], 2),
+        springSmsChoice('「看你表現囉。」', ['「妳要求還真多。」'], 1),
+      ]),
+      springSmsRound('妳今天是不是一直在等我吐槽佑達？', [
+        springSmsChoice('「被你发现了！」', ['「我就知道，妳根本不是來聽歌的。」'], 2),
+        springSmsChoice('「我明明也有认真听歌！」', ['「有啦有啦，偶爾有認真一下。」'], 1),
+        springSmsChoice('「谁叫你们两个太有戏。」', ['「那是他自己先開始的，不要算到我頭上。」'], 2),
+      ]),
+      springSmsRound('好啦，今天先聊到這裡，妳也早點休息。', [
+        springSmsChoice('「你也不要練到太晚。」', ['「知道啦，妳也是。」'], 1),
+        springSmsChoice('「晚安啦，明天練團見！」', ['「晚安，明天見。」'], 2),
+        springSmsChoice('「下次我還要看你吐槽佑達。」', ['「妳是把我當脫口秀喔？」'], 2),
+      ]),
     ],
     stone: [
-      { incoming: firstIncoming, choices: [
-        { text: '「今天真的謝謝你，跟你逛很開心。」', response: ['「不客氣啊，妳玩得開心就好。」'], affection: 2 },
-        { text: '「我覺得我好像有比較懂吉他了。」', response: ['「有啊，慢慢就會熟悉。」'], affection: 1 },
-        { text: '「我還想再看一次那條背帶。」', response: ['「下次有空再一起去看。」'], affection: 2 },
-      ] },
-      { incoming: '妳剛剛問的那個和弦，我可以再畫一次給妳。', choices: [
-        { text: '「好！我怕我回家忘記。」', response: ['「那我畫清楚一點，妳照著按就好。」'], affection: 2 },
-        { text: '「你真的很有耐心欸。」', response: ['「因為妳有認真學啊。」'], affection: 2 },
-        { text: '「我下次要彈給你聽。」', response: ['「好啊，我等妳。」'], affection: 2 },
-      ] },
-      { incoming: '今天《轧車》最後那遍，大家配合得滿好的。', choices: [
-        { text: '「對啊，前面還吵成那樣！」', response: ['「哈哈，這就是他們平常的樣子。」'], affection: 1 },
-        { text: '「你跟溫尚翊兩把吉他接起來很帥欸。」', response: ['「真的喔？那我下次再注意那個地方。」'], affection: 2 },
-        { text: '「佑達真的很有精神。」', response: ['「他每次都很有精神。」'], affection: 1 },
-      ] },
-      { incoming: '今天手指有沒有比較舒服？不要練過頭喔。', choices: [
-        { text: '「有啦，我有乖乖休息。」', response: ['「那就好。」'], affection: 1 },
-        { text: '「還有一點點酸，你要負責。」', response: ['「哈哈，那下次我教慢一點。」'], affection: 2 },
-        { text: '「下次還要你教我。」', response: ['「好啊，妳想學就來。」'], affection: 2 },
-      ] },
-      { incoming: '晚點了，早點休息。', choices: [
-        { text: '「晚安，謝謝你今天陪我。」', response: ['「晚安，今天很開心。」'], affection: 2 },
-        { text: '「你也早點睡。」', response: ['「好，妳也是。」'], affection: 1 },
-        { text: '「下次見喔！」', response: ['「下次見。」'], affection: 1 },
-      ] },
+      springSmsRound(springContextLine(character, context), [
+        springSmsChoice('「有啊！你跟溫尚翊接起來的地方很好聽。」', ['「謝謝，今天那一段大家真的配合得不錯。」'], 2),
+        springSmsChoice('「我還在想佑達到底加了幾次鼓花。」', ['「哈哈，這個可能要問他本人才知道。」'], 1),
+        springSmsChoice('「下次還想坐近一點聽你們練。」', ['「好啊，下次幫妳留位置。」'], 2),
+      ]),
+      springSmsRound('今天看妳聽得很投入，回家後還在回想最後那段嗎？', [
+        springSmsChoice('「有啊，最後大家一起收住的地方很漂亮。」', ['「對啊，那一遍大家都有聽彼此。」'], 2),
+        springSmsChoice('「我還在想前面到底亂了幾次。」', ['「哈哈，前面多試幾次，後面才會更穩。」'], 1),
+        springSmsChoice('「你下次可以再彈給我聽嗎？」', ['「可以啊，妳來的話我再彈一次。」'], 2),
+      ]),
+      springSmsRound('下次還想來練團室聽嗎？', [
+        springSmsChoice('「想啊，你們練團很有趣。」', ['「那就好，妳有空就過來。」'], 2),
+        springSmsChoice('「想，但你要幫我留位置。」', ['「好啊，幫妳留靠前面一點。」'], 2),
+        springSmsChoice('「看我那天有沒有空。」', ['「沒關係，不用特地趕。」'], 1),
+      ]),
+      springSmsRound('今天最後那遍吉他接得還不錯，妳有聽出來嗎？', [
+        springSmsChoice('「有啊！你跟溫尚翊接得很漂亮。」', ['「真的喔？那下次再把那個地方練穩一點。」'], 2),
+        springSmsChoice('「我有聽到，整段變得很完整。」', ['「那就好，大家一起接起來的感覺很好。」'], 2),
+        springSmsChoice('「我只顧著看佑達有沒有又加鼓花。」', ['「哈哈，他今天真的很搶眼。」'], 1),
+      ]),
+      springSmsRound('今天辛苦妳了，早點休息。', [
+        springSmsChoice('「你也是，晚安！」', ['「晚安，明天見。」'], 1),
+        springSmsChoice('「謝謝你今天陪我，晚安。」', ['「不客氣，今天大家都玩得很開心。」'], 2),
+        springSmsChoice('「下次見喔！」', ['「好，下次見。」'], 1),
+      ]),
     ],
     yanming: [
-      { incoming: firstIncoming, choices: [
-        { text: '「今天謝謝你陪我，吃飯很開心！」', response: ['「不客氣，妳喜歡那家店就好。」'], affection: 2 },
-        { text: '「今天練團室真的好熱鬧哈哈哈。」', response: ['「他們一練起來就很投入，吵是難免的。」'], affection: 1 },
-        { text: '「你回去也要記得休息喔。」', response: ['「好，妳也是。今天辛苦了。」'], affection: 2 },
-      ] },
-      { incoming: '剛剛看妳跟著節奏敲桌子，還滿認真的。', choices: [
-        { text: '「我是在幫忙打拍子！」', response: ['「哈哈，我有聽出來。」'], affection: 2 },
-        { text: '「我怕自己聽得太入迷。」', response: ['「那很好啊，喜歡就多聽。」'], affection: 1 },
-        { text: '「你是不是在偷看我？」', response: ['「剛好看到而已啦。」'], affection: 2 },
-      ] },
-      { incoming: '妳下次還會來練團室嗎？', choices: [
-        { text: '「會啊，我都快變固定班底了。」', response: ['「哈哈，那我們要幫妳留位置了。」'], affection: 2 },
-        { text: '「要看有沒有人陪我。」', response: ['「有空的話，我可以陪妳。」'], affection: 2 },
-        { text: '「你會在的話我就來。」', response: ['「那我盡量在。」'], affection: 2 },
-      ] },
-      { incoming: '今天大家都挺開心的，妳也早點休息。', choices: [
-        { text: '「你也是，晚安！」', response: ['「晚安。」'], affection: 1 },
-        { text: '「下次再一起吃飯。」', response: ['「好啊，等妳有空。」'], affection: 2 },
-        { text: '「記得下次還要推薦好吃的店。」', response: ['「沒問題。」'], affection: 1 },
-      ] },
-      { incoming: '那我不吵妳了，晚安。', choices: [
-        { text: '「晚安，諺明哥。」', response: ['「晚安，路上……啊，妳已經到家了，哈哈。好好休息。」'], affection: 1 },
-        { text: '「你也快去休息。」', response: ['「好，明天見。」'], affection: 1 },
-        { text: '「明天見！」', response: ['「明天見。」'], affection: 1 },
-      ] },
+      springSmsRound(springContextLine(character, context), [
+        springSmsChoice('「我真的以為佑達要把整套鼓拆掉了！」', ['「哈哈哈，沒有那麼誇張啦，他一興奮就會想加東西。」'], 2),
+        springSmsChoice('「可是最後一遍真的很好聽。」', ['「那一遍有抓到，大家都有聽彼此。」'], 2),
+        springSmsChoice('「你今天一直在旁邊看大家，真的很像隊長。」', ['「習慣了，大家一起練，總要互相照應。」'], 2),
+      ]),
+      springSmsRound('佑達今天第一遍就加了不少鼓花，妳有沒有被嚇到？', [
+        springSmsChoice('「有！我差點以為他打錯歌了。」', ['「哈哈，他自己倒是打得很開心。」'], 2),
+        springSmsChoice('「瑪莎那個表情才好笑。」', ['「他們平常就這樣，嘴上嫌，最後還是會配合。」'], 2),
+        springSmsChoice('「你怎麼都不阻止他？」', ['「先讓他試，最後再一起把段落收好就行。」'], 2),
+      ]),
+      springSmsRound('下次如果有空，妳還可以來聽我們練團。', [
+        springSmsChoice('「好啊，我還想再聽一次《轧車》。」', ['「好，下一次再讓妳聽完整一點。」'], 2),
+        springSmsChoice('「你會不會覺得我們在旁邊很吵？」', ['「不會啊，有人一起聽，練團室也比較熱鬧。」'], 2),
+        springSmsChoice('「那你要幫我留個位置。」', ['「沒問題，我幫妳留。」'], 2),
+      ]),
+      springSmsRound('今天大家練得很投入，妳在旁邊有沒有聽得過癮？', [
+        springSmsChoice('「有啊，尤其最後一次，真的很有氣勢。」', ['「那就好，大家聽到應該會很開心。」'], 2),
+        springSmsChoice('「我差點被佑達的鼓聲嚇到。」', ['「哈哈，他一投入就會這樣。」'], 1),
+        springSmsChoice('「你們平常練團也都這麼熱鬧嗎？」', ['「看練什麼歌，有時候比今天還吵。」'], 2),
+      ]),
+      springSmsRound('那我不吵妳了，晚安。', [
+        springSmsChoice('「晚安，諺明哥。」', ['「晚安，好好休息。」'], 1),
+        springSmsChoice('「你也快去休息。」', ['「好，妳也是。」'], 1),
+        springSmsChoice('「明天見！」', ['「明天見。」'], 1),
+      ]),
     ],
   }
-  const rounds = scripts[character].map((round, index) => index === 0 ? { ...round, incoming: firstIncoming } : round)
+
+  const rounds = rehearsal[character].map((round) => ({
+    incoming: round.incoming,
+    choices: round.choices.map((choice) => ({ ...choice, response: [...choice.response] })),
+  }))
   const wentStore = context.storeCharacter === character
-  const learned = context.lessonCharacter === character
-  const dinner = character === 'yanming' && context.afterChoice === 'yanming-dinner'
-  if (character === 'yanming' && !dinner) {
-    rounds[0] = { ...rounds[0], choices: [
-      { text: wentStore ? '「今天謝謝你陪我去看器材！」' : '「今天看你們練團真的很有趣！」', response: [wentStore ? '「不客氣啊，妳有沒有看到喜歡的東西？」' : '「哈哈，大家練得投入的時候就是這樣。」'], affection: 1 },
-      rounds[0].choices[1],
-      rounds[0].choices[2],
-    ] }
-    rounds[1] = { ...rounds[1], incoming: wentStore ? '今天在店裡看的那些器材，妳後來有沒有最喜歡哪一樣？' : '今天大家練得很投入，妳在旁邊有沒有聽得很過癮？', choices: wentStore ? [
-      { text: '「那兩副鼓棒我都覺得很有趣！」', response: ['「哈哈，下次再讓妳試試看。」'], affection: 2 },
-      { text: '「我覺得你挑東西真的很仔細。」', response: ['「習慣了啦，用得順手比較重要。」'], affection: 2 },
-      { text: '「下次還想跟你一起去逛。」', response: ['「好啊，有要買東西再一起去。」'], affection: 2 },
-    ] : [
-      { text: '「有啊！尤其最後一遍，超有氣勢。」', response: ['「那就好，他們聽到應該會很開心。」'], affection: 2 },
-      { text: '「我差點被佑達的鼓聲嚇到。」', response: ['「哈哈，他一投入就會這樣。」'], affection: 1 },
-      { text: '「你下次也要坐旁邊陪我聽喔。」', response: ['「好啊，有空我就陪妳。」'], affection: 2 },
-    ] }
-  }
-  if (character === 'yanming' && dinner) {
-    rounds[1] = { ...rounds[1], incoming: '今天那家店妳覺得怎麼樣？下次還想吃什麼？', choices: [
-      { text: '「我覺得很好吃！下次還可以再去。」', response: ['「好啊，那下次再帶妳去。」'], affection: 2 },
-      { text: '「下次換我請你，不可以拒絕。」', response: ['「哈哈，好，我不跟妳搶。」'], affection: 2 },
-      { text: '「我比較喜歡今天有人陪我吃飯。」', response: ['「……這樣喔。」他隔了一會兒才回：「那下次有空再一起吃。」'], affection: 2 },
-    ] }
-  }
-  if (character === 'masa' && !learned) {
-    rounds[3] = { ...rounds[3], incoming: '下次有空再來練團室聽我們練啊。', choices: [
-      { text: '「好啊！但你們不可以再吵到把歌帶去隔壁棚。」', response: ['「那妳要先叫佑達安分一點。」'], affection: 2 },
-      { text: '「我想再聽一次你彈 Bass。」', response: ['「這個簡單，下次彈給妳聽。」'], affection: 2 },
-      { text: '「看你表現囉。」', response: ['「妳要求還真多。」'], affection: 1 },
-    ] }
-    rounds[1] = { ...rounds[1], incoming: '今天看妳在旁邊笑得那麼開心，我差點也忘記要彈 Bass 了。', choices: [
-      { text: '「還不是因為你一直吐槽佑達！」', response: ['「那是他真的很好吐槽。」'], affection: 1 },
-      { text: '「你們兩個根本是固定搭檔。」', response: ['「誰跟他固定搭檔啊？」'], affection: 2 },
-      { text: '「我覺得你們感情很好欸。」', response: ['「……妳不要亂下結論。」'], affection: 2 },
-    ] }
-  }
-  if (character === 'ashin' && learned && !wentStore) {
-    rounds[0] = { ...rounds[0], choices: [
-      { text: '「今天真的謝謝你教我木吉他！」', response: ['「不客氣啦，妳今天很認真耶。」'], affection: 2 },
-      { text: '「我的手指現在還有一點酸。」', response: ['「那就先休息，明天不要急著練。」'], affection: 1 },
-      { text: '「下次還想再跟你學一點。」', response: ['「好啊，我們慢慢來。」'], affection: 2 },
-    ] }
-  }
-  if (character === 'ashin' && !learned) {
-    if (!wentStore) {
-      rounds[0] = { ...rounds[0], choices: [
-        { text: '「你唱到一半差點笑場，我有看到！」', response: ['「哈哈，真的差點唱不下去啦。」'], affection: 2 },
-        { text: '「今天最後一次大家接得很順欸。」', response: ['「對啊，大家一起進去的時候很過癮。」'], affection: 2 },
-        { text: '「下次還想聽你們練團。」', response: ['「好啊，妳有空就來。」'], affection: 2 },
-      ] }
-      rounds[1] = { ...rounds[1], incoming: '妳剛剛有聽清楚最後那段嗎？我自己覺得這次接得滿順的。' }
+  const learnedTogether = context.lessonCharacter === character && character !== 'yanming'
+  const ateTogether = character === 'yanming' && context.afterChoice === 'yanming-dinner'
+
+  if (wentStore && learnedTogether && character !== 'yanming') {
+    const combinedIncoming = springContextLine(character, context)
+    const secondIncoming = context.lessonReplies?.[4] === 0
+      ? character === 'wen' ? '妳今天真的摸了我的繭，後來有沒有覺得很新奇？'
+        : character === 'ashin' ? '妳今天摸到我指尖那層薄繭，會不會覺得比想像中硬？'
+          : character === 'masa' ? '妳今天還真的檢查我的繭，現在有沒有比較了解 Bass 手指的辛苦？'
+            : '妳今天摸了我指腹上的繭，會不會覺得比看起來粗一點？'
+      : character === 'wen' ? '剛剛練的那個和弦，妳回家有沒有再試？手指還酸嗎？'
+        : character === 'ashin' ? '今天木吉他那幾個和弦，妳回家有沒有再想起來？'
+          : character === 'masa' ? '今天練的 Bass 節奏，妳回去有沒有再試一次？'
+            : '今天練的換和弦，回家有沒有再試一次？'
+    rounds[0] = springSmsRound(combinedIncoming, [
+      springSmsChoice('「今天從樂器行一路到練團室，真的很充實！」', ['「哈哈，妳今天真的體驗不少，回去記得休息。」'], 2),
+      springSmsChoice('「我比較記得你剛剛教我的那一段。」', [character === 'wen' ? '「那就好，至少沒有白教妳。」' : character === 'ashin' ? '「有記住就好，下次再慢慢練。」' : character === 'masa' ? '「那表示我今天沒有白費口水。」' : '「那就好，慢慢練就會越來越順。」'], 2),
+      springSmsChoice('「今天最好玩的是我們一起在店裡試東西。」', ['「哈哈，妳有玩得開心就好。」'], 2),
+    ])
+    rounds[1] = springSmsRound(secondIncoming, [
+      springSmsChoice('「手指有一點酸，不過我還想再練。」', ['「先休息啦，不要一次練太多。」'], 2),
+      springSmsChoice('「我有記得，回家再慢慢試。」', ['「好啊，照自己的速度來就好。」'], 2),
+      springSmsChoice('「那下次你還要教我喔。」', ['「好，說好了。」'], 2),
+    ])
+  } else if (wentStore) {
+    const secondIncoming = springStoreFollowUpLine(character, context)
+    if (character === 'wen') {
+      rounds[0] = springSmsRound(springContextLine(character, context), [
+        springSmsChoice('「我最喜歡後面那個音色，真的很有氣勢。」', ['「我就知道妳會喜歡那個，拿來表演很適合。」'], 2),
+        springSmsChoice('「我覺得你彈起來真的很帥。」', ['「又來了喔，妳今天很會講欸。」'], 2),
+        springSmsChoice('「我還記得你讓我踩開關那次。」', ['「哈哈，第一次當音控就上手了啦。」'], 2),
+      ])
+    } else if (character === 'ashin') {
+      rounds[0] = springSmsRound(springContextLine(character, context), [
+        springSmsChoice('「第一把的聲音比較溫暖，我很喜歡。」', ['「我也喜歡那種音色，聽起來很舒服。」'], 2),
+        springSmsChoice('「第二把比較清亮，真的很適合唱歌。」', ['「對啊，配人聲應該會滿好的。」'], 2),
+        springSmsChoice('「我還在想抱著木吉他的感覺，好大一把。」', ['「哈哈，妳剛剛真的像抱大抱枕。」'], 2),
+      ])
+    } else if (character === 'masa') {
+      rounds[0] = springSmsRound(springContextLine(character, context), [
+        springSmsChoice('「Bass 的聲音真的很有力量！」', ['「不然咧？低音可不是站在旁邊裝飾的。」'], 2),
+        springSmsChoice('「我现在还记得你嫌琴弦太贵。」', ['「那個價格本來就很沒有道理好不好。」'], 2),
+        springSmsChoice('「你今天一直叫我帮忙，我是不是很有用？」', ['「至少比只會站旁邊說好聽有用一點。」'], 2),
+      ])
+    } else if (character === 'stone') {
+      rounds[0] = springSmsRound(springContextLine(character, context), [
+        springSmsChoice('「黑色那条真的很耐看。」', ['「我也覺得，簡單一點比較不容易看膩。」'], 2),
+        springSmsChoice('「我喜欢那条比较特别的。」', ['「那條也不錯，之後可以換著用。」'], 2),
+        springSmsChoice('「我今天才知道保养吉他也要这么仔细。」', ['「平常多注意一點，琴就可以陪很久。」'], 2),
+      ])
     } else {
-      rounds[1] = { ...rounds[1], incoming: '今天在店裡試的那把木吉他，妳覺得聲音怎麼樣？', choices: [
-        { text: '「很溫柔欸，我很喜歡。」', response: ['「我也覺得，那把音色滿舒服的啊。」'], affection: 2 },
-        { text: '「我比較喜歡你坐在旁邊教我的時候。」', response: ['「哈哈，妳怎麼突然講這個啦。」'], affection: 2 },
-        { text: '「下次還想再試一次！」', response: ['「好啊，下次再去看看。」'], affection: 2 },
-      ] }
+      rounds[0] = springSmsRound(springContextLine(character, context), [
+        springSmsChoice('「今天看器材真的学到不少。」', ['「那就好，至少知道規格差在哪裡。」'], 2),
+        springSmsChoice('「你每样东西都确认得好仔细。」', ['「習慣了，買回去要大家都用得順手。」'], 2),
+        springSmsChoice('「下次还想跟你一起去逛。」', ['「好啊，有需要再一起去。」'], 2),
+      ])
     }
+    rounds[1] = springSmsRound(secondIncoming, [
+      springSmsChoice('「你真的很会挑东西欸。」', [character === 'wen' ? '「還好啦，自己要用的當然要看仔細。」' : character === 'ashin' ? '「多聽幾次就會知道自己喜歡哪種聲音了。」' : character === 'masa' ? '「不然錢花下去，買到不合用的不是更嘔？」' : character === 'stone' ? '「用得舒服比較重要，不一定要挑最貴的。」' : '「器材合用最重要，其他都可以慢慢看。」'], 2),
+      springSmsChoice('「我今天其实玩得很开心。」', ['「那就好，下次有空再一起來。」'], 2),
+      springSmsChoice('「下次还要带我来喔。」', ['「好啦，知道了。」'], 2),
+    ])
+  } else if (learnedTogether) {
+    rounds[0] = springSmsRound(springContextLine(character, context), [
+      springSmsChoice('「我今天真的有学到东西，谢谢你。」', ['「不客氣啦，妳今天很認真。」'], 2),
+      springSmsChoice('「我手指有一点酸，不过还好。」', ['「那就先休息，不要急著練。」'], 1),
+      springSmsChoice('「下次还想继续学。」', ['「好啊，我們慢慢來。」'], 2),
+    ])
+    rounds[1] = springSmsRound(
+      context.lessonReplies?.[4] === 0
+        ? character === 'wen' ? '妳今天摸了我的繭，現在還覺得新奇嗎？'
+          : character === 'ashin' ? '妳今天摸到我手上的薄繭，會不會覺得很不一樣？'
+            : character === 'masa' ? '妳今天還真的檢查我的繭，這麼好奇喔？'
+              : '妳今天摸了我指腹上的繭，會不會覺得粗粗的？'
+        : '今天練到後來，妳的手指有沒有比較舒服？',
+      [
+        springSmsChoice('「真的比我想像中硬一点。」', ['「哈哈，練久了就會這樣。」'], 2),
+        springSmsChoice('「我觉得很神奇，原来练琴会留下这些痕迹。」', ['「都是慢慢累積的，不用急著也練成這樣。」'], 2),
+        springSmsChoice('「我回家会记得先休息，不会硬练。」', ['「這樣就對了，手指不舒服就停一下。」'], 2),
+      ])
+  } else if (ateTogether) {
+    rounds[0] = springSmsRound(springContextLine(character, context), [
+      springSmsChoice('「今天那家店真的很好吃，谢谢你带我去。」', ['「不客氣，妳喜歡就好。」'], 2),
+      springSmsChoice('「跟你吃饭很轻松，不用一直找话题。」', ['「哈哈，那就好，吃飯本來就不用太拘束。」'], 2),
+      springSmsChoice('「下次换我请你，不可以拒绝。」', ['「好啊，那我就等妳安排。」'], 2),
+    ])
+    const dessertChosen = context.dinnerReplies?.[5] === 0 || context.dinnerReplies?.[5] === 2
+    rounds[1] = springSmsRound(
+      dessertChosen ? '妳今天最後還有分紅豆湯，吃完有沒有覺得太飽？' : '今天那頓飯吃得還習慣嗎？下次想吃什麼可以跟我說。',
+      dessertChosen
+        ? [
+            springSmsChoice('「红豆汤很好吃，幸好有分着吃。」', ['「哈哈，一人一點剛剛好。」'], 2),
+            springSmsChoice('「我本来以为吃不下，结果还是吃完了。」', ['「那就好，沒有勉強妳就好。」'], 2),
+            springSmsChoice('「下次还想去那家店。」', ['「好啊，下次再帶妳去。」'], 2),
+          ]
+        : [
+            springSmsChoice('「我吃得很饱，今天谢谢你。」', ['「不客氣，吃飽就好。」'], 2),
+            springSmsChoice('「下次想试试别的菜。」', ['「好啊，下次再看看有什麼推薦的。」'], 2),
+            springSmsChoice('「下次换我找一家店！」', ['「沒問題，我等妳的推薦。」'], 2),
+          ])
   }
-  if (character === 'stone' && !learned) {
-    rounds[3] = { ...rounds[3], incoming: '今天最後那遍的吉他接得還不錯，妳有聽出來嗎？', choices: [
-      { text: '「有啊！你跟溫尚翊接得很漂亮。」', response: ['「謝謝，這次真的比較順了。」'], affection: 2 },
-      { text: '「有，我還在回想那段聲音。」', response: ['「哈哈，那就好。」'], affection: 1 },
-      { text: '「下次我還要坐近一點聽。」', response: ['「好啊，幫妳留個位置。」'], affection: 2 },
-    ] }
-  }
-  if (character === 'stone' && learned && !wentStore) {
-    rounds[0] = { ...rounds[0], choices: [
-      { text: '「今天謝謝你慢慢教我，真的有比較懂了。」', response: ['「有進步就好，今天不用再練太晚。」'], affection: 2 },
-      { text: '「我剛剛摸到你的茧子，還是覺得很神奇。」', response: ['「哈哈，練久了就會有，妳不用急著也練成這樣。」'], affection: 2 },
-      { text: '「下次還要你教我喔。」', response: ['「好啊，妳想學就來。」'], affection: 2 },
-    ] }
-  }
-  if (character === 'stone' && !learned) {
-    if (!wentStore) {
-      rounds[0] = { ...rounds[0], choices: [
-        { text: '「今天最後一遍吉他接得很好欸。」', response: ['「真的喔？那下次再把那段練穩一點。」'], affection: 2 },
-        { text: '「你跟溫尚翊兩把吉他接起來很帥欸。」', response: ['「真的喔？那我下次再注意那個地方。」'], affection: 2 },
-        { text: '「下次還想聽你們練團。」', response: ['「好啊，妳有空就來。」'], affection: 2 },
-      ] }
-      rounds[1] = { ...rounds[1], incoming: '今天最後那遍真的比前面順很多，大家終於有接在一起。' }
-    } else {
-      rounds[1] = { ...rounds[1], incoming: '今天在店裡那條背帶，妳後來還有一直想到嗎？', choices: [
-        { text: '「有啊，顏色真的很好看。」', response: ['「哈哈，那下次再去看看有沒有別的顏色。」'], affection: 2 },
-        { text: '「你說適合我的，我就記住了。」', response: ['「我是真的覺得滿適合妳的。」'], affection: 2 },
-        { text: '「我還想再背一次那把木吉他。」', response: ['「好啊，下次再讓妳試。」'], affection: 2 },
-      ] }
-    }
-  }
-  if (character === 'wen' && !wentStore && !learned) {
-    rounds[0] = { ...rounds[0], choices: [
-      { text: '「我有記得你們今天練《轧車》最後那遍。」', response: ['「那就好，最後那遍總算順了。」'], affection: 1 },
-      { text: '「我現在還在笑佑達亂加鼓花那段。」', response: ['「哈哈哈哈，他真的很愛自己加戲。」'], affection: 1 },
-      rounds[0].choices[2],
-    ] }
-  }
-  if (character === 'ashin' && !wentStore && !learned) {
-    rounds[1] = { ...rounds[1], incoming: '妳剛剛有聽清楚最後那段嗎？我自己覺得這次接得滿順的。', choices: [
-      { text: '「有啊！最後一次大家一起進來的時候很有氣勢。」', response: ['「對啊，那一下真的很過癮，前面亂成那樣還好最後有接起來。」'], affection: 2 },
-      { text: '「我有看到你差點笑場！」', response: ['「哈哈，妳有看到喔？我真的快忍不住了。」'], affection: 2 },
-      { text: '「佑達的鼓聲太搶戲了啦。」', response: ['「他今天真的很有精神，瑪莎應該快被他弄瘋了。」'], affection: 1 },
-    ] }
-    rounds[3] = { incoming: '下次來練團室，妳可以坐近一點，聽得比較清楚。', choices: [
-      { text: '「好啊，我要坐前面一點！」', response: ['「可以啊，幫妳留個位置。」'], affection: 2 },
-      { text: '「你到時候不要又笑場喔。」', response: ['「哈哈，我盡量啦。」'], affection: 2 },
-      { text: '「那你要唱大聲一點，我才聽得清楚。」', response: ['「好，收到，這位同學要求很多喔。」'], affection: 1 },
-    ] }
-  }
-  if (character === 'masa' && !wentStore && !learned) {
-    rounds[0] = { ...rounds[0], choices: [
-      { text: '「你剛剛一直吐槽佑達，我差點笑到聽不見歌。」', response: ['「那是因為他一直自己加戲，誰叫他那麼好吐槽。」'], affection: 2 },
-      { text: '「你彈 Bass 的時候看起來超投入欸。」', response: ['「廢話，總不能真的站在旁邊當裝飾吧。」'], affection: 1 },
-      { text: '「你們兩個到底誰比較愛鬧？」', response: ['「當然是佑達啊，這還需要問喔？」'], affection: 2 },
-    ] }
-    rounds[4] = { incoming: '好啦，今天先聊到這裡，妳也早點休息。', choices: [
-      { text: '「你也不要練到太晚。」', response: ['「知道啦，妳也是。」'], affection: 1 },
-      { text: '「晚安啦，明天練團見！」', response: ['「晚安，明天見。」'], affection: 2 },
-      { text: '「下次我還要看你吐槽佑達。」', response: ['「妳是把我當脫口秀喔？」'], affection: 2 },
-    ] }
-  }
-  if (character === 'stone' && !wentStore && !learned) {
-    rounds[4] = { incoming: '今天看妳聽得很投入，回家後還在回想最後那段嗎？', choices: [
-      { text: '「有啊，你跟溫尚翊接起來的地方很好聽。」', response: ['「謝謝，今天那一段大家真的配合得不錯。」'], affection: 2 },
-      { text: '「我還在想佑達到底加了幾次鼓花。」', response: ['「哈哈，這個可能要問他本人才知道。」'], affection: 1 },
-      { text: '「下次還想坐近一點聽你們練。」', response: ['「好啊，下次幫妳留位置。」'], affection: 2 },
-    ] }
-  }
+
   return rounds
 }
