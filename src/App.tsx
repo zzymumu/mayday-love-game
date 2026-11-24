@@ -2123,6 +2123,57 @@ function App() {
       return saved && typeof saved.title === 'string' && typeof saved.text === 'string' ? saved : null
     } catch { return null }
   })
+  const [springInviteCandidates, setSpringInviteCandidates] = useState<SpringCharacterId[]>(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('mayday-spring-invite-candidates') ?? '[]')
+      return Array.isArray(saved) ? saved.filter((id): id is SpringCharacterId => springCharacterOrder.includes(id)) : []
+    } catch { return [] }
+  })
+  const [springStoreCharacter, setSpringStoreCharacter] = useState<SpringCharacterId | null>(() => {
+    const saved = localStorage.getItem('mayday-spring-store-character')
+    return saved && springCharacterOrder.includes(saved as SpringCharacterId) ? saved as SpringCharacterId : null
+  })
+  const [springStoreReply, setSpringStoreReply] = useState<number | null>(() => {
+    const saved = Number(localStorage.getItem('mayday-spring-store-reply') ?? '-1')
+    return Number.isInteger(saved) && saved >= 0 && saved < 3 ? saved : null
+  })
+  const [springAfterChoice, setSpringAfterChoice] = useState<'yanming-dinner' | 'lesson' | null>(() => {
+    const saved = localStorage.getItem('mayday-spring-after-choice')
+    return saved === 'yanming-dinner' || saved === 'lesson' ? saved : null
+  })
+  const [springLessonCharacter, setSpringLessonCharacter] = useState<Exclude<SpringCharacterId, 'yanming'> | null>(() => {
+    const saved = localStorage.getItem('mayday-spring-lesson-character')
+    return saved && ['wen', 'ashin', 'masa', 'stone'].includes(saved) ? saved as Exclude<SpringCharacterId, 'yanming'> : null
+  })
+  const [springLessonReply, setSpringLessonReply] = useState<number | null>(() => {
+    const saved = Number(localStorage.getItem('mayday-spring-lesson-reply') ?? '-1')
+    return Number.isInteger(saved) && saved >= 0 && saved < 3 ? saved : null
+  })
+  const [springDinnerReply, setSpringDinnerReply] = useState<number | null>(() => {
+    const saved = Number(localStorage.getItem('mayday-spring-dinner-reply') ?? '-1')
+    return Number.isInteger(saved) && saved >= 0 && saved < 3 ? saved : null
+  })
+  const [springSmsTarget, setSpringSmsTarget] = useState<SpringCharacterId | null>(() => {
+    const saved = localStorage.getItem('mayday-spring-sms-target')
+    return saved && springCharacterOrder.includes(saved as SpringCharacterId) ? saved as SpringCharacterId : null
+  })
+  const [springSmsRound, setSpringSmsRound] = useState(() => Number(localStorage.getItem('mayday-spring-sms-round') ?? '0'))
+  const [springSmsReplied, setSpringSmsReplied] = useState(() => localStorage.getItem('mayday-spring-sms-replied') === 'true')
+  const [springSmsOpeningSent, setSpringSmsOpeningSent] = useState(() => localStorage.getItem('mayday-spring-sms-opening-sent') === 'true')
+  const [springSmsReplies, setSpringSmsReplies] = useState<number[]>(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('mayday-spring-sms-replies') ?? '[]')
+      return Array.isArray(saved) ? saved.filter((value): value is number => Number.isInteger(value) && value >= 0 && value <= 2).slice(0, 5) : []
+    } catch { return [] }
+  })
+  const [springSmsMode, setSpringSmsMode] = useState<'day' | 'free'>(() => localStorage.getItem('mayday-spring-sms-mode') === 'free' ? 'free' : 'day')
+  const [springDiaryUnlocked, setSpringDiaryUnlocked] = useState(() => localStorage.getItem('mayday-spring-diary-unlocked') === 'true')
+  const [springDiaryData, setSpringDiaryData] = useState<{ title: string; text: string } | null>(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('mayday-spring-diary-data') ?? 'null') as { title?: unknown; text?: unknown } | null
+      return saved && typeof saved.title === 'string' && typeof saved.text === 'string' ? { title: saved.title, text: saved.text } : null
+    } catch { return null }
+  })
   const [routeAffection, setRouteAffection] = useState<Record<RouteCharacterId, number>>(() => {
     let saved: Partial<Record<RouteCharacterId, number>> = {}
     try { saved = JSON.parse(localStorage.getItem('mayday-route-affection') ?? '{}') as Partial<Record<RouteCharacterId, number>> } catch { saved = {} }
