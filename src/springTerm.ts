@@ -828,7 +828,7 @@ export const getSpringSmsRounds = (character: SpringCharacterId, context: Spring
   }
   if (character === 'ashin' && learned && !wentStore) {
     rounds[0] = { ...rounds[0], choices: [
-      { text: '「今天真的謝謝你教我木吉他！」', response: ['「不客氣啦，妳今天很認真馁。」'], affection: 2 },
+      { text: '「今天真的謝謝你教我木吉他！」', response: ['「不客氣啦，妳今天很認真耶。」'], affection: 2 },
       { text: '「我的手指現在還有一點酸。」', response: ['「那就先休息，明天不要急著練。」'], affection: 1 },
       { text: '「下次還想再跟你學一點。」', response: ['「好啊，我們慢慢來。」'], affection: 2 },
     ] }
