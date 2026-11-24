@@ -2593,9 +2593,3 @@ export const getSpringSmsRounds = (
   return springDailySmsRounds[character]
 }
 
-
-
-export const getSpringSmsRounds = (character: SpringCharacterId, context: SpringDayContext, smsReplies: number[] = [], openingChoice: number | null = null): SpringSmsRound[] => {
-  if (character === 'yanming') return springYanmingSharedSmsRounds(context, smsReplies, openingChoice)
-  return springNaturalMemberSmsRounds(character as SpringMemberSmsId, context, smsReplies, openingChoice)
-}
