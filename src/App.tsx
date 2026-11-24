@@ -2196,8 +2196,8 @@ function App() {
     return saved && ['wen', 'ashin', 'masa', 'stone'].includes(saved) ? saved as Exclude<SpringCharacterId, 'yanming'> : null
   })
   const [springLessonTouchChoice, setSpringLessonTouchChoice] = useState<number | null>(() => {
-    const saved = Number(localStorage.getItem('mayday-spring-lesson-touch-choice') ?? '-1')
-    return Number.isInteger(saved) && saved >= 0 && saved < 3 ? saved : null
+    const savedCharacter = localStorage.getItem('mayday-spring-lesson-character')
+    return savedCharacter && ['wen', 'ashin', 'masa', 'stone'].includes(savedCharacter) ? 0 : null
   })
   const [springLessonReply, setSpringLessonReply] = useState<number | null>(() => {
     const hasTouchChoice = localStorage.getItem('mayday-spring-lesson-touch-choice') !== null
@@ -4533,22 +4533,15 @@ function App() {
   }
 
   const chooseSpringLessonCharacter = (character: Exclude<SpringCharacterId, 'yanming'>) => {
+    const spontaneousMoment = springLessonRoutes[character].touchChoices[0]
     setSpringLessonCharacter(character)
     localStorage.setItem('mayday-spring-lesson-character', character)
-    setSpringLessonTouchChoice(null)
-    localStorage.removeItem('mayday-spring-lesson-touch-choice')
+    setSpringLessonTouchChoice(0)
+    localStorage.setItem('mayday-spring-lesson-touch-choice', '0')
     setSpringLessonReply(null)
     localStorage.removeItem('mayday-spring-lesson-reply')
+    addRouteAffection(character, spontaneousMoment.affection)
     changeStage('spring-lesson')
-  }
-
-  const chooseSpringLessonTouchChoice = (choiceIndex: number) => {
-    if (!springLessonCharacter || springLessonTouchChoice !== null) return
-    const choice = springLessonRoutes[springLessonCharacter].touchChoices[choiceIndex]
-    if (!choice) return
-    setSpringLessonTouchChoice(choiceIndex)
-    localStorage.setItem('mayday-spring-lesson-touch-choice', String(choiceIndex))
-    addRouteAffection(springLessonCharacter, choice.affection)
   }
 
   const chooseSpringLessonReply = (choiceIndex: number) => {
@@ -7125,9 +7118,16 @@ function App() {
                       ? [{ kind: 'narration', text: '佑達已經先走了，其他人還在收拾器材。瑪莎把 Bass 放回琴袋，溫尚翊和石頭整理吉他，阿信把麥克風收好。你忽然想趁大家還在，多學一點。' }]
                       : [{ kind: 'narration', text: '佑達已經先走了。大家還在收拾器材，諺明哥看了看時間，問你要不要一起去吃點東西。另一邊，幾個人也問你要不要留下來學樂器。' }]} />
                     {springAfterChoice !== 'lesson' ? (
-                      <div className="choice-area"><div className="choice-heading">選擇今晚的安排</div>
-                        <button className="reply-choice" onClick={() => chooseSpringAfterChoice('yanming-dinner')}><span><strong>跟諺明哥去吃飯</strong><small>附近有家他常去的小店。</small></span><ChevronRight size={15} /></button>
-                        <button className="reply-choice" onClick={() => chooseSpringAfterChoice('lesson')}><span><strong>留下來學樂器</strong><small>溫尚翊、阿信、瑪莎或石頭。</small></span><ChevronRight size={15} /></button>
+                      <div className="spring-after-choice-list">
+                        <div className="spring-after-choice-heading">選擇今晚的安排</div>
+                        <button className="spring-after-choice-button" onClick={() => chooseSpringAfterChoice('yanming-dinner')}>
+                          <span className="spring-after-choice-copy"><strong>跟諺明哥去吃飯</strong><small>附近有家他常去的小店，正好可以慢慢聊聊。</small></span>
+                          <ChevronRight size={17} />
+                        </button>
+                        <button className="spring-after-choice-button" onClick={() => chooseSpringAfterChoice('lesson')}>
+                          <span className="spring-after-choice-copy"><strong>留下來學樂器</strong><small>溫尚翊、阿信、瑪莎或石頭，看看今晚誰留下來陪你。</small></span>
+                          <ChevronRight size={17} />
+                        </button>
                       </div>
                     ) : (
                       <div className="choice-area"><div className="choice-heading">選一位老師</div>
@@ -7146,42 +7146,31 @@ function App() {
                   <div className="story-narrative-scroll">
                     <div className="story-kicker">A LITTLE CLOSER</div><h2 className="story-scene-title">從第一個和弦開始</h2>
                     <StoryBlocks blocks={springLessonRoutes[springLessonCharacter].blocks} />
-                    {springLessonTouchChoice === null ? (
+                    <StoryBlocks blocks={[
+                      { kind: 'dialogue', speaker: '你', text: springLessonRoutes[springLessonCharacter].touchChoices[0].text },
+                      ...springResponseBlocks(
+                        springLessonCharacter === 'wen' ? '溫尚翊' : springLessonCharacter === 'ashin' ? '陳信宏' : springLessonCharacter === 'masa' ? '瑪莎' : '石錦航',
+                        springLessonRoutes[springLessonCharacter].touchChoices[0].response,
+                      ),
+                      { kind: 'narration', text: springLessonRoutes[springLessonCharacter].touchNarration },
+                    ]} />
+                    {springLessonReply === null ? (
                       <div className="choice-area">
-                        <div className="choice-heading">{springLessonRoutes[springLessonCharacter].touchPrompt}</div>
-                        {springLessonRoutes[springLessonCharacter].touchChoices.map((choice, index) => (
-                          <button className="reply-choice" key={index} onClick={() => chooseSpringLessonTouchChoice(index)}><span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} /></button>
+                        <div className="choice-heading">{springLessonRoutes[springLessonCharacter].prompt}</div>
+                        {springLessonRoutes[springLessonCharacter].choices.map((choice, index) => (
+                          <button className="reply-choice" key={index} onClick={() => chooseSpringLessonReply(index)}><span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} /></button>
                         ))}
                       </div>
                     ) : (
                       <>
                         <StoryBlocks blocks={[
-                          { kind: 'dialogue', speaker: '你', text: stripCornerQuotes(springLessonRoutes[springLessonCharacter].touchChoices[springLessonTouchChoice].text) },
+                          { kind: 'dialogue', speaker: '你', text: stripCornerQuotes(springLessonRoutes[springLessonCharacter].choices[springLessonReply].text) },
                           ...springResponseBlocks(
                             springLessonCharacter === 'wen' ? '溫尚翊' : springLessonCharacter === 'ashin' ? '陳信宏' : springLessonCharacter === 'masa' ? '瑪莎' : '石錦航',
-                            springLessonRoutes[springLessonCharacter].touchChoices[springLessonTouchChoice].response,
+                            springLessonRoutes[springLessonCharacter].choices[springLessonReply].response,
                           ),
-                          { kind: 'narration', text: springLessonRoutes[springLessonCharacter].touchNarration },
                         ]} />
-                        {springLessonReply === null ? (
-                          <div className="choice-area">
-                            <div className="choice-heading">{springLessonRoutes[springLessonCharacter].prompt}</div>
-                            {springLessonRoutes[springLessonCharacter].choices.map((choice, index) => (
-                              <button className="reply-choice" key={index} onClick={() => chooseSpringLessonReply(index)}><span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} /></button>
-                            ))}
-                          </div>
-                        ) : (
-                          <>
-                            <StoryBlocks blocks={[
-                              { kind: 'dialogue', speaker: '你', text: stripCornerQuotes(springLessonRoutes[springLessonCharacter].choices[springLessonReply].text) },
-                              ...springResponseBlocks(
-                                springLessonCharacter === 'wen' ? '溫尚翊' : springLessonCharacter === 'ashin' ? '陳信宏' : springLessonCharacter === 'masa' ? '瑪莎' : '石錦航',
-                                springLessonRoutes[springLessonCharacter].choices[springLessonReply].response,
-                              ),
-                            ]} />
-                            <div className="story-action-bar"><button className="story-primary-button" onClick={() => changeStage('spring-sms-picker')}>收拾東西，回家 <ChevronRight size={15} /></button></div>
-                          </>
-                        )}
+                        <div className="story-action-bar"><button className="story-primary-button" onClick={() => changeStage('spring-sms-picker')}>收拾東西，回家 <ChevronRight size={15} /></button></div>
                       </>
                     )}
                   </div>
