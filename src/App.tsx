@@ -1778,6 +1778,11 @@ function App() {
   const smsMessagesRef = useRef(smsMessages)
   const [storyStage, setStoryStage] = useState<StoryStage>(() => {
     const saved = localStorage.getItem('mayday-story-stage')
+    const savedSpringStage = saved === 'paused' ? localStorage.getItem('mayday-resume-stage') : saved
+    if (localStorage.getItem('mayday-spring-sms-content-version') !== 'daily-chat-v1') {
+      if (savedSpringStage === 'spring-sms-chat') return 'spring-sms-picker'
+      if (savedSpringStage === 'spring-free-chat') return 'spring-free-chat-picker'
+    }
     if (saved === 'completed' && localStorage.getItem('mayday-chapter1-complete') === 'true' && localStorage.getItem('mayday-greetings-complete') !== 'true') return 'greetings'
     if (saved === 'completed' && localStorage.getItem('mayday-free-chat-complete') === 'true' && localStorage.getItem('mayday-month-visit-complete') !== 'true') return 'month-free-time'
     if (saved === 'completed' && localStorage.getItem('mayday-next-month-day-complete') === 'true' && localStorage.getItem('mayday-year-end-day-complete') !== 'true') return 'year-end-intro'
