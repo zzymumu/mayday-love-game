@@ -4395,7 +4395,7 @@ function App() {
     const round = rounds[springInviteReplies.length]
     const choice = round?.choices[choiceIndex]
     if (!choice) return
-    const minute = 8 + springInviteReplies.length * 4
+    const minute = 8 + springInviteReplies.length * 6
     const time = (value: number) => '14:' + String(value).padStart(2, '0')
     appendChatMessages(springInviteTarget, [
       { from: 'me', text: choice.text, time: time(minute) },
