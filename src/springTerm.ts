@@ -1085,12 +1085,12 @@ export const getSpringSmsOpeners = (character: SpringCharacterId, context: Sprin
     wen: [
       { text: '「今天那顆效果器的聲音真的差好多。」', response: '「妳聽得出來就好啦，這顆還滿有意思的。」', affection: 2 },
       { text: '「我还记得你让我踩开关那段。」', response: '「哈哈，第一次當音控還不錯啦。」', affection: 2 },
-      { text: '「你说要带我去练团室试吉他，算数喔。」', response: '「有啦，記得啦，妳不要一直催。」', affection: 2 },
+      { text: '「今天那顆效果器的聲音，我回家還在想。」', response: '「哈哈，妳喜歡哪一種音色？」', affection: 2 },
     ],
     ashin: [
       { text: '「今天那两把木吉他的声音真的不一样。」', response: '「對啊，妳有聽出差別就好。」', affection: 2 },
       { text: '「我还记得抱木吉他的感觉，好大一把。」', response: '「哈哈，妳剛剛真的像抱大抱枕。」', affection: 2 },
-      { text: '「你说下次要教我和弦喔。」', response: '「好啊，慢慢來，不用急。」', affection: 2 },
+      { text: '「今天那兩把木吉他的聲音，我回家還在想。」', response: '「下次有空再來聽，我再彈給妳聽。」', affection: 2 },
     ],
     masa: [
       { text: '「今天 Bass 的声音震得我脚底都麻了。」', response: '「那是妳站太近了啦。」', affection: 2 },
