@@ -1752,6 +1752,7 @@ function App() {
     }
     return createInitialSmsMessages()
   })
+  const smsMessagesRef = useRef(smsMessages)
   const [storyStage, setStoryStage] = useState<StoryStage>(() => {
     const saved = localStorage.getItem('mayday-story-stage')
     if (saved === 'completed' && localStorage.getItem('mayday-chapter1-complete') === 'true' && localStorage.getItem('mayday-greetings-complete') !== 'true') return 'greetings'
@@ -1819,6 +1820,7 @@ function App() {
     }
     return createInitialChatMessages()
   })
+  const chatMessagesRef = useRef(chatMessages)
   const [greetingIndex, setGreetingIndex] = useState(() => Number(localStorage.getItem('mayday-greeting-index') ?? '0'))
   const [greetingRound, setGreetingRound] = useState(() => Number(localStorage.getItem('mayday-greeting-round') ?? '0'))
   const [greetingReplied, setGreetingReplied] = useState(() => localStorage.getItem('mayday-greeting-replied') === 'true')
@@ -2343,8 +2345,8 @@ function App() {
     put('mayday-chapter1-complete', String(firstChapterComplete))
     put('mayday-day2-diary-unlocked', String(day2DiaryUnlocked))
     put('mayday-month-diary-unlocked', String(monthDiaryUnlocked || localStorage.getItem('mayday-month-day-complete') === 'true'))
-    put('mayday-sms-messages', JSON.stringify(smsMessages))
-    put('mayday-chat-messages', JSON.stringify(chatMessages))
+    put('mayday-sms-messages', JSON.stringify(smsMessagesRef.current))
+    put('mayday-chat-messages', JSON.stringify(chatMessagesRef.current))
     put('mayday-greeting-index', String(greetingIndex))
     put('mayday-greeting-round', String(greetingRound))
     put('mayday-greeting-replied', String(greetingReplied))
@@ -2479,10 +2481,12 @@ function App() {
   }
 
   useEffect(() => {
+    smsMessagesRef.current = smsMessages
     localStorage.setItem('mayday-sms-messages', JSON.stringify(smsMessages))
   }, [smsMessages])
 
   useEffect(() => {
+    chatMessagesRef.current = chatMessages
     localStorage.setItem('mayday-chat-messages', JSON.stringify(chatMessages))
   }, [chatMessages])
 
@@ -2781,7 +2785,8 @@ function App() {
 
   const appendChatMessages = (character: CharacterId, entries: NewChatEntry[], date = '10月15日・晚上') => {
     const stamp = Date.now()
-    setChatMessages((current) => ({
+    const current = chatMessagesRef.current
+    const next: Record<CharacterId, SmsMessage[]> = {
       ...current,
       [character]: [
         ...(current[character] ?? []),
@@ -2793,7 +2798,12 @@ function App() {
           text: entry.text,
         })),
       ],
-    }))
+    }
+    // Persist each appended message immediately so a manual save cannot capture
+    // the previous render's chat history while React is still committing state.
+    chatMessagesRef.current = next
+    localStorage.setItem('mayday-chat-messages', JSON.stringify(next))
+    setChatMessages(next)
   }
 
   const addRouteAffection = (character: CharacterId, amount: number) => {
@@ -4742,6 +4752,7 @@ function App() {
     localStorage.removeItem('mayday-greetings-complete')
     const initialChats: Record<CharacterId, SmsMessage[]> = { wen: [], masa: [], ashin: [], stone: [], yanming: [], youda: [] }
     initialChats.wen = [{ id: 'greeting-wen-0', date: '10月15日・晚上', time: '21:18', from: 'wen', text: greetingChats.wen[0].incoming }]
+    chatMessagesRef.current = initialChats
     setChatMessages(initialChats)
     localStorage.setItem('mayday-chat-messages', JSON.stringify(initialChats))
     setGreetingIndex(0)
@@ -4798,7 +4809,9 @@ function App() {
     setNameDraft('')
     setActiveApp(null)
     setSelectedSmsThread(null)
-    setSmsMessages(createInitialSmsMessages())
+    const initialSmsMessages = createInitialSmsMessages()
+    smsMessagesRef.current = initialSmsMessages
+    setSmsMessages(initialSmsMessages)
     setStudioStep(0)
     setReplyKey(null)
     setWenAffection(0)
@@ -4807,7 +4820,9 @@ function App() {
     setDinnerReplyKey(null)
     setMarthaAffection(0)
     setFirstChapterComplete(false)
-    setChatMessages({ wen: [], masa: [], ashin: [], stone: [], yanming: [], youda: [] })
+    const emptyChatMessages: Record<CharacterId, SmsMessage[]> = { wen: [], masa: [], ashin: [], stone: [], yanming: [], youda: [] }
+    chatMessagesRef.current = emptyChatMessages
+    setChatMessages(emptyChatMessages)
     setGreetingIndex(0)
     setGreetingRound(0)
     setGreetingReplied(false)
@@ -4927,11 +4942,16 @@ function App() {
     setWenAffection(nextAffection)
     localStorage.setItem('mayday-reply', key)
     localStorage.setItem('mayday-affection-wen', String(nextAffection))
-    setSmsMessages((current) => current.some((message) => message.id === 'story-reply-player') ? current : [
-      ...current,
-      { id: 'story-reply-player', date: '今天', time: '15:43', from: 'me', text: selected.text },
-      ...selected.response.map((text, index) => ({ id: `story-reply-wen-${index}`, date: '今天', time: index === 0 ? '15:43' : '15:44', from: 'wen' as const, text })),
-    ])
+    if (!smsMessagesRef.current.some((message) => message.id === 'story-reply-player')) {
+      const nextSmsMessages = [
+        ...smsMessagesRef.current,
+        { id: 'story-reply-player', date: '今天', time: '15:43', from: 'me' as const, text: selected.text },
+        ...selected.response.map((text, index) => ({ id: `story-reply-wen-${index}`, date: '今天', time: index === 0 ? '15:43' : '15:44', from: 'wen' as const, text })),
+      ]
+      smsMessagesRef.current = nextSmsMessages
+      localStorage.setItem('mayday-sms-messages', JSON.stringify(nextSmsMessages))
+      setSmsMessages(nextSmsMessages)
+    }
     changeStage('reply')
   }
 
