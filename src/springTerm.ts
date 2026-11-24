@@ -1138,17 +1138,21 @@ export const getSpringSmsOpeners = (character: SpringCharacterId, context: Sprin
     { text: '「下次换我请你吃饭！」', response: '「好啊，那我就等妳安排。」', affection: 2 },
   ]
 
-  if (context.storeCharacter === character && context.lessonCharacter === character && character !== 'yanming') return storeAndLesson[character]
-  if (character === 'yanming' && context.storeCharacter === 'yanming' && context.afterChoice === 'yanming-dinner') {
-    return [
-      { text: '「今天看器材又一起吃飯，行程也太充實了吧。」', response: '「哈哈，今天剛好把事情一起辦完，也吃了頓飯。」', affection: 2 },
-      { text: '「今天谢谢你带我去看器材，还请我吃饭。」', response: '「不客氣，妳有玩得開心就好。」', affection: 2 },
-      { text: '「下次我们可以再找时间一起吃饭。」', response: '「好啊，有空再一起去。」', affection: 2 },
-    ]
+  if (character === 'yanming') {
+    if (context.storeCharacter === 'yanming' && context.afterChoice === 'yanming-dinner') {
+      return [
+        { text: '「今天看器材又一起吃飯，行程也太充實了吧。」', response: '「哈哈，今天剛好把事情一起辦完，也吃了頓飯。」', affection: 2 },
+        { text: '「今天谢谢你带我去看器材，还请我吃饭。」', response: '「不客氣，妳有玩得開心就好。」', affection: 2 },
+        { text: '「下次我们可以再找时间一起吃饭。」', response: '「好啊，有空再一起去。」', affection: 2 },
+      ]
+    }
+    if (context.storeCharacter === 'yanming') return storeOnly.yanming
+    if (context.afterChoice === 'yanming-dinner') return dinnerOnly
+    return rehearsal.yanming
   }
+  if (context.storeCharacter === character && context.lessonCharacter === character) return storeAndLesson[character]
   if (context.storeCharacter === character) return storeOnly[character]
-  if (context.lessonCharacter === character && character !== 'yanming') return lessonOnly[character]
-  if (character === 'yanming' && context.afterChoice === 'yanming-dinner') return dinnerOnly
+  if (context.lessonCharacter === character) return lessonOnly[character]
   return rehearsal[character]
 }
 
@@ -1296,10 +1300,42 @@ export const getSpringSmsRounds = (character: SpringCharacterId, context: Spring
     choices: round.choices.map((choice) => ({ ...choice, response: [...choice.response] })),
   }))
   const wentStore = context.storeCharacter === character
-  const learnedTogether = context.lessonCharacter === character && character !== 'yanming'
   const ateTogether = character === 'yanming' && context.afterChoice === 'yanming-dinner'
 
-  if (wentStore && learnedTogether && character !== 'yanming') {
+  if (character === 'yanming' && ateTogether) {
+    if (wentStore) {
+    rounds[0] = springSmsRound(springContextLine(character, context), [
+      springSmsChoice('「今天先看器材又一起吃飯，真的很充實。」', ['「哈哈，今天剛好把事情一起辦完，也吃了頓飯。」'], 2),
+      springSmsChoice('「謝謝你帶我去看器材，還找了好吃的店。」', ['「不客氣，妳喜歡那家店就好。」'], 2),
+      springSmsChoice('「下次換我找一家店請你！」', ['「好啊，那我就等妳安排。」'], 2),
+    ])
+    rounds[1] = springSmsRound('今天那家店妳覺得怎麼樣？下次還想吃什麼？', [
+      springSmsChoice('「我覺得很好吃，下次還可以再去。」', ['「好啊，那下次再帶妳去。」'], 2),
+      springSmsChoice('「下次想試試看別的菜。」', ['「沒問題，附近還有幾家也不錯。」'], 2),
+      springSmsChoice('「今天有人陪我吃飯就很開心了。」', ['「……這樣喔。」他隔了一會兒才回：「那下次有空再一起吃。」'], 2),
+    ])
+    } else {
+    rounds[0] = springSmsRound(springContextLine(character, context), [
+      springSmsChoice('「今天那家店真的很好吃，谢谢你带我去。」', ['「不客氣，妳喜歡就好。」'], 2),
+      springSmsChoice('「跟你吃饭很轻松，不用一直找话题。」', ['「哈哈，那就好，吃飯本來就不用太拘束。」'], 2),
+      springSmsChoice('「下次换我请你，不可以拒绝。」', ['「好啊，那我就等妳安排。」'], 2),
+    ])
+    const dessertChosen = context.dinnerReplies?.[5] === 0 || context.dinnerReplies?.[5] === 2
+    rounds[1] = springSmsRound(
+      dessertChosen ? '妳今天最後還有分紅豆湯，吃完有沒有覺得太飽？' : '今天那頓飯吃得還習慣嗎？下次想吃什麼可以跟我說。',
+      dessertChosen
+        ? [
+            springSmsChoice('「红豆汤很好吃，幸好有分着吃。」', ['「哈哈，一人一點剛剛好。」'], 2),
+            springSmsChoice('「我本来以为吃不下，结果还是吃完了。」', ['「那就好，沒有勉強妳就好。」'], 2),
+            springSmsChoice('「下次还想去那家店。」', ['「好啊，下次再帶妳去。」'], 2),
+          ]
+        : [
+            springSmsChoice('「我吃得很饱，今天谢谢你。」', ['「不客氣，吃飽就好。」'], 2),
+            springSmsChoice('「下次想试试别的菜。」', ['「好啊，下次再看看有什麼推薦的。」'], 2),
+            springSmsChoice('「下次换我找一家店！」', ['「沒問題，我等妳的推薦。」'], 2),
+          ])
+    }
+  } else if (wentStore && context.lessonCharacter === character) {
     const combinedIncoming = springContextLine(character, context)
     const secondIncoming = context.lessonReplies?.[4] === 0
       ? character === 'wen' ? '妳今天真的摸了我的繭，後來有沒有覺得很新奇？'
@@ -1320,18 +1356,7 @@ export const getSpringSmsRounds = (character: SpringCharacterId, context: Spring
       springSmsChoice('「我有記得，回家再慢慢試。」', ['「好啊，照自己的速度來就好。」'], 2),
       springSmsChoice('「那下次你還要教我喔。」', ['「好，說好了。」'], 2),
     ])
-  } else if (wentStore && ateTogether && character === 'yanming') {
-    rounds[0] = springSmsRound(springContextLine(character, context), [
-      springSmsChoice('「今天先看器材又一起吃飯，真的很充實。」', ['「哈哈，今天剛好把事情一起辦完，也吃了頓飯。」'], 2),
-      springSmsChoice('「謝謝你帶我去看器材，還找了好吃的店。」', ['「不客氣，妳喜歡那家店就好。」'], 2),
-      springSmsChoice('「下次換我找一家店請你！」', ['「好啊，那我就等妳安排。」'], 2),
-    ])
-    rounds[1] = springSmsRound('今天那家店妳覺得怎麼樣？下次還想吃什麼？', [
-      springSmsChoice('「我覺得很好吃，下次還可以再去。」', ['「好啊，那下次再帶妳去。」'], 2),
-      springSmsChoice('「下次想試試看別的菜。」', ['「沒問題，附近還有幾家也不錯。」'], 2),
-      springSmsChoice('「今天有人陪我吃飯就很開心了。」', ['「……這樣喔。」他隔了一會兒才回：「那下次有空再一起吃。」'], 2),
-    ])
-  } else if (wentStore) {
+} else if (wentStore) {
     const secondIncoming = springStoreFollowUpLine(character, context)
     if (character === 'wen') {
       rounds[0] = springSmsRound(springContextLine(character, context), [
@@ -1369,7 +1394,7 @@ export const getSpringSmsRounds = (character: SpringCharacterId, context: Spring
       springSmsChoice('「我今天其实玩得很开心。」', ['「那就好，下次有空再一起來。」'], 2),
       springSmsChoice('「下次还要带我来喔。」', ['「好啦，知道了。」'], 2),
     ])
-  } else if (learnedTogether) {
+} else if (context.lessonCharacter === character) {
     rounds[0] = springSmsRound(springContextLine(character, context), [
       springSmsChoice('「我今天真的有学到东西，谢谢你。」', ['「不客氣啦，妳今天很認真。」'], 2),
       springSmsChoice('「我手指有一点酸，不过还好。」', ['「那就先休息，不要急著練。」'], 1),
@@ -1387,26 +1412,7 @@ export const getSpringSmsRounds = (character: SpringCharacterId, context: Spring
         springSmsChoice('「我觉得很神奇，原来练琴会留下这些痕迹。」', ['「都是慢慢累積的，不用急著也練成這樣。」'], 2),
         springSmsChoice('「我回家会记得先休息，不会硬练。」', ['「這樣就對了，手指不舒服就停一下。」'], 2),
       ])
-  } else if (ateTogether) {
-    rounds[0] = springSmsRound(springContextLine(character, context), [
-      springSmsChoice('「今天那家店真的很好吃，谢谢你带我去。」', ['「不客氣，妳喜歡就好。」'], 2),
-      springSmsChoice('「跟你吃饭很轻松，不用一直找话题。」', ['「哈哈，那就好，吃飯本來就不用太拘束。」'], 2),
-      springSmsChoice('「下次换我请你，不可以拒绝。」', ['「好啊，那我就等妳安排。」'], 2),
-    ])
-    const dessertChosen = context.dinnerReplies?.[5] === 0 || context.dinnerReplies?.[5] === 2
-    rounds[1] = springSmsRound(
-      dessertChosen ? '妳今天最後還有分紅豆湯，吃完有沒有覺得太飽？' : '今天那頓飯吃得還習慣嗎？下次想吃什麼可以跟我說。',
-      dessertChosen
-        ? [
-            springSmsChoice('「红豆汤很好吃，幸好有分着吃。」', ['「哈哈，一人一點剛剛好。」'], 2),
-            springSmsChoice('「我本来以为吃不下，结果还是吃完了。」', ['「那就好，沒有勉強妳就好。」'], 2),
-            springSmsChoice('「下次还想去那家店。」', ['「好啊，下次再帶妳去。」'], 2),
-          ]
-        : [
-            springSmsChoice('「我吃得很饱，今天谢谢你。」', ['「不客氣，吃飽就好。」'], 2),
-            springSmsChoice('「下次想试试别的菜。」', ['「好啊，下次再看看有什麼推薦的。」'], 2),
-            springSmsChoice('「下次换我找一家店！」', ['「沒問題，我等妳的推薦。」'], 2),
-          ])
+}
   }
 
   return rounds
