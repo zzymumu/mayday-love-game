@@ -7154,11 +7154,11 @@ function App() {
                       ),
                       ...springLessonRoutes[springLessonCharacter].touchBlocks,
                     ]} />
+                    {springLessonRoutes[springLessonCharacter].promptBlocks?.length ? (
+                      <StoryBlocks blocks={springLessonRoutes[springLessonCharacter].promptBlocks} />
+                    ) : null}
                     {springLessonReply === null ? (
                       <div className="choice-area">
-                        {springLessonRoutes[springLessonCharacter].promptBlocks?.length ? (
-                          <StoryBlocks blocks={springLessonRoutes[springLessonCharacter].promptBlocks} />
-                        ) : null}
                         <div className="choice-heading">{springLessonRoutes[springLessonCharacter].prompt}</div>
                         {springLessonRoutes[springLessonCharacter].choices.map((choice, index) => (
                           <button className="reply-choice" key={index} onClick={() => chooseSpringLessonReply(index)}><span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} /></button>
