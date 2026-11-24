@@ -7152,13 +7152,13 @@ function App() {
                         springLessonCharacter === 'wen' ? '溫尚翊' : springLessonCharacter === 'ashin' ? '陳信宏' : springLessonCharacter === 'masa' ? '瑪莎' : '石錦航',
                         springLessonRoutes[springLessonCharacter].touchChoices[0].response,
                       ),
-                      ...springResponseBlocks(
-                        springLessonCharacter === 'wen' ? '溫尚翊' : springLessonCharacter === 'ashin' ? '陳信宏' : springLessonCharacter === 'masa' ? '瑪莎' : '石錦航',
-                        springLessonRoutes[springLessonCharacter].touchNarration,
-                      ),
+                      ...springLessonRoutes[springLessonCharacter].touchBlocks,
                     ]} />
                     {springLessonReply === null ? (
                       <div className="choice-area">
+                        {springLessonRoutes[springLessonCharacter].promptBlocks?.length ? (
+                          <StoryBlocks blocks={springLessonRoutes[springLessonCharacter].promptBlocks} />
+                        ) : null}
                         <div className="choice-heading">{springLessonRoutes[springLessonCharacter].prompt}</div>
                         {springLessonRoutes[springLessonCharacter].choices.map((choice, index) => (
                           <button className="reply-choice" key={index} onClick={() => chooseSpringLessonReply(index)}><span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} /></button>
