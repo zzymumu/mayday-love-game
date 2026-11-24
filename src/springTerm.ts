@@ -1267,7 +1267,7 @@ const springNaturalLessonSmsRounds = (
   if (character === 'wen') return [
     springSmsRound(
       touched
-        ? '欸，妳剛才摸完我手上的繭，還一副在做研究的樣子。怎樣，有沒有寫出心得？'
+        ? '欸，妳剛才那個表情很像在寫實驗報告，現在可以公布結果了吧？'
         : '欸，妳最後那個和弦總算有聲音了欸。妳那個瞬間整個坐直，我差點以為妳要站起來慶祝。',
       touched
         ? [
@@ -1335,8 +1335,8 @@ const springNaturalLessonSmsRounds = (
   if (character === 'ashin') return [
     springSmsRound(
       touched
-        ? '欸～剛剛妳摸我指尖的時候那麼小心，我差點想提醒妳，不用怕弄痛我啦。'
-        : '妳最後那個和弦一出聲，自己先愣住，過了兩秒才笑出來。我剛剛想到還是覺得很好笑。',
+        ? '妳剛剛看得那麼仔細，我差點以為自己要被妳打分數了。'
+        : '我剛才收琴時還想到，妳一開始手忙腳亂的，後來竟然自己找到位置了。看妳越來越放鬆，我也跟著鬆一口氣。',
       touched
         ? [
             springSmsChoice('「我怕弄痛你嘛，剛剛看你手指都磨出繭了。」', ['「不會啦，這些早就習慣了。倒是妳自己的手也紅紅的，回去要休息喔。」'], 3),
@@ -1403,7 +1403,7 @@ const springNaturalLessonSmsRounds = (
   if (character === 'masa') return [
     springSmsRound(
       touched
-        ? '欸，妳剛才摸完我的手，表情像在驗貨。報告呢？Bass老師的手有沒有通過檢驗？'
+        ? '報告寫好了沒？先說喔，老師只接受有建設性的意見。'
         : '妳剛剛那段節奏總算接上了，前面有個音自己跑出去散步，後面倒是有追回來。',
       touched
         ? [
@@ -1471,8 +1471,8 @@ const springNaturalLessonSmsRounds = (
   return [
     springSmsRound(
       touched
-        ? '剛才妳摸我指尖的時候很輕，我有注意到妳一直怕弄痛我。其實不用那麼小心啦。'
-        : '妳最後那個和弦接起來時，肩膀終於放鬆了。我本來想提醒妳，後來看妳自己抓到了。',
+        ? '妳剛剛看得那麼認真，我還以為妳要幫我做手部檢查了。'
+        : '剛才看妳終於不再皺眉頭，手指放鬆以後，那個和弦一下就乾淨了。',
       touched
         ? [
             springSmsChoice('「我怕弄痛你嘛，而且你手上那層繭真的很特別。」', ['「不會痛啦。妳剛剛看得很仔細，我反而有點不好意思。」'], 3),
@@ -1545,7 +1545,7 @@ const springNaturalRehearsalSmsRounds = (
   const r0 = replies[0] ?? 0
 
   if (character === 'wen') return [
-    springSmsRound('欸，妳剛才是不是笑到差點嗆到？佑達那個鼓花連我都差點沒忍住，妳還敢說自己有認真聽。', [
+    springSmsRound('欸，剛才那幾遍真的有夠亂，佑達還一直說自己是故意的。妳坐在旁邊看得很開心嘛？', [
       springSmsChoice('「我有認真聽啊，只是佑達太搶戲了！」', ['「他今天真的很有表演慾，妳不要跟他說我這樣講。」'], 2),
       springSmsChoice('「你明明也笑了，還差點彈歪！」', ['「我那是在忍，差一點而已啦。」'], 2),
       springSmsChoice('「最後一遍你彈得很帥，前面先不算。」', ['「蛤？前面那幾遍都不算喔？好啦，這句我收下。」'], 3),
@@ -1601,7 +1601,7 @@ const springNaturalRehearsalSmsRounds = (
   ]
 
   if (character === 'ashin') return [
-    springSmsRound('我回去後還想到第一遍那個鼓花，佑達一加進去，瑪莎的表情真的太好笑了，我差點唱不下去。', [
+    springSmsRound('我剛才差點忘記自己在唱歌，旁邊幾個人笑成一團，妳是不是也快忍不住了？', [
       springSmsChoice('「你明明也在笑，還一直假裝在唱歌！」', ['「有啦，差點沒忍住，還好後來有接回來。」'], 2),
       springSmsChoice('「瑪莎那個表情真的太好笑了，我現在想起來還會笑。」', ['「他嘴上嫌歸嫌，其實也玩得很開心啦。」'], 2),
       springSmsChoice('「你唱到副歌那裡真的很有氣勢。」', ['「謝謝妳～那一段大家一起進來，唱起來很過癮。」'], 3),
@@ -1713,7 +1713,7 @@ const springNaturalRehearsalSmsRounds = (
   ]
 
   return [
-    springSmsRound('剛才收東西時，我還想到妳最後那個表情。前面被佑達鬧得那麼亂，最後一遍總算有把歌接回來。', [
+    springSmsRound('妳剛剛坐在旁邊聽得很認真，前面亂成那樣還能抓到最後那一下，耳朵很厲害欸。', [
       springSmsChoice('「我真的以為你們要一路亂到底了。」', ['「我也有一瞬間這樣想，還好大家最後有聽彼此的。」'], 2),
       springSmsChoice('「你彈吉他的時候看起來很投入，我有注意到。」', ['「謝謝妳。今天那段彈起來滿順的，自己也有點開心。」'], 3),
       springSmsChoice('「我其實一直在等佑達會不會又加鼓花。」', ['「他今天真的很搶眼，連我都忍不住看他。」'], 2),
