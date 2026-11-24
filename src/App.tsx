@@ -54,6 +54,20 @@ import {
   type WinterDiaryData,
 } from './winterBreak'
 import {
+  februaryIntroBlocks,
+  februarySecretInteractions,
+  februarySecretReplyChoices,
+  februaryDinnerBlocks,
+  februaryDinnerChoices,
+  februaryTableMoments,
+  februaryAfterDinnerRoutes,
+  februarySecretDiaryText,
+  februaryTableDiaryText,
+  februaryAfterDinnerDiaryText,
+  type FebruaryCharacterId,
+  type FebruaryDiaryData,
+} from './february'
+import {
   YEAR_END_INVITE_THRESHOLD,
   yearEndIntroBlocks,
   yearEndShoppingRoutes,
@@ -72,7 +86,7 @@ import {
 type AppKey = 'messages' | 'contacts' | 'calls' | 'diary' | 'calendar' | 'photos' | 'music' | 'notes' | 'settings'
 type CharacterId = 'wen' | 'masa' | 'ashin' | 'stone' | 'yanming' | 'youda'
 type RouteCharacterId = Exclude<CharacterId, 'youda'>
-type StoryStage = 'notification' | 'messages' | 'reply' | 'walk' | 'studio' | 'reunion' | 'reunion-chat' | 'nickname' | 'rehearsal' | 'dinner' | 'after-dinner' | 'ending' | 'completed' | 'greetings' | 'classroom' | 'masa-checkin' | 'stone-checkin' | 'ice-date' | 'stroll' | 'day2-diary' | 'free-time' | 'free-chat' | 'day2-complete' | 'month-free-time' | 'month-visit' | 'month-visit-complete' | 'month-free-chat' | 'month-diary' | 'next-month-intro' | 'next-month-invite-notification' | 'next-month-invite-picker' | 'next-month-invite' | 'next-month-invite-chat' | 'next-month-invite-date' | 'next-month-open-day' | 'next-month-open-day-picker' | 'next-month-open-day-visit' | 'next-month-open-day-visit-complete' | 'next-month-free-chat' | 'next-month-diary' | 'year-end-intro' | 'year-end-invite-notification' | 'year-end-invite-picker' | 'year-end-shopping-notification' | 'year-end-shopping-chat' | 'year-end-shopping' | 'year-end-fireworks' | 'year-end-new-year-notification' | 'year-end-new-year-chat' | 'year-end-free-chat' | 'year-end-free-chat-picker' | 'year-end-diary' | 'winter-exam-intro' | 'winter-exam-notification' | 'winter-exam-chat' | 'winter-exam-tutoring' | 'winter-break-practice' | 'winter-break-gig' | 'winter-break-pickup' | 'winter-break-bus-choice' | 'winter-break-bus' | 'winter-diary' | 'paused'
+type StoryStage = 'notification' | 'messages' | 'reply' | 'walk' | 'studio' | 'reunion' | 'reunion-chat' | 'nickname' | 'rehearsal' | 'dinner' | 'after-dinner' | 'ending' | 'completed' | 'greetings' | 'classroom' | 'masa-checkin' | 'stone-checkin' | 'ice-date' | 'stroll' | 'day2-diary' | 'free-time' | 'free-chat' | 'day2-complete' | 'month-free-time' | 'month-visit' | 'month-visit-complete' | 'month-free-chat' | 'month-diary' | 'next-month-intro' | 'next-month-invite-notification' | 'next-month-invite-picker' | 'next-month-invite' | 'next-month-invite-chat' | 'next-month-invite-date' | 'next-month-open-day' | 'next-month-open-day-picker' | 'next-month-open-day-visit' | 'next-month-open-day-visit-complete' | 'next-month-free-chat' | 'next-month-diary' | 'year-end-intro' | 'year-end-invite-notification' | 'year-end-invite-picker' | 'year-end-shopping-notification' | 'year-end-shopping-chat' | 'year-end-shopping' | 'year-end-fireworks' | 'year-end-new-year-notification' | 'year-end-new-year-chat' | 'year-end-free-chat' | 'year-end-free-chat-picker' | 'year-end-diary' | 'winter-exam-intro' | 'winter-exam-notification' | 'winter-exam-chat' | 'winter-exam-tutoring' | 'winter-break-practice' | 'winter-break-gig' | 'winter-break-pickup' | 'winter-break-bus-choice' | 'winter-break-bus' | 'winter-diary' | 'february-intro' | 'february-secret' | 'february-dinner' | 'february-table' | 'february-after-dinner-picker' | 'february-after-dinner' | 'february-diary' | 'paused'
 type ReplyKey = 'a' | 'b' | 'c'
 type ReunionReplyKey = 'a' | 'b' | 'c'
 type NicknameQuestionKey = 'a' | 'b' | 'c'
@@ -207,7 +221,7 @@ const storyStageLabels: Record<StoryStage, string> = {
   'day2-diary': '寫下第二篇日記', 'free-time': '自由活動', 'free-chat': '自由聊天',
   'day2-complete': '第二天結束', 'month-free-time': '一個月後・自由活動', 'month-visit': '一個月後・外出見面', 'month-visit-complete': '一個月後・見面結束', 'month-free-chat': '一個月後・自由對話', 'month-diary': '一個月後・私人日記',
   'next-month-intro': '又一個月後・校園開放日', 'next-month-invite-notification': '有人想約你', 'next-month-invite-picker': '看看是誰想約你', 'next-month-invite': '回覆邀約', 'next-month-invite-chat': '邀約簡訊', 'next-month-invite-date': '赴約', 'next-month-open-day': '椰風搖滾社・校園開放日', 'next-month-open-day-picker': '一起逛校園', 'next-month-open-day-visit': '校園散步', 'next-month-open-day-visit-complete': '校園開放日・見面結束', 'next-month-free-chat': '十二月・自由對話', 'next-month-diary': '十二月・私人日記',
-  'year-end-intro': '十二月三十一日・跨年篇', 'year-end-invite-notification': '收到年貨邀約', 'year-end-invite-picker': '選擇邀約對象', 'year-end-shopping-notification': '年貨邀約簡訊', 'year-end-shopping-chat': '回覆年貨邀約', 'year-end-shopping': '一起買年貨', 'year-end-fireworks': '七人跨年煙火', 'year-end-new-year-notification': '收到新年祝福', 'year-end-new-year-chat': '回覆新年祝福', 'year-end-free-chat': '新年自由聊天', 'year-end-free-chat-picker': '新年自由活動', 'year-end-diary': '1996 年最後一篇日記', 'winter-exam-intro': '一九九七年・期末考前一週', 'winter-exam-notification': '統計學補習提示', 'winter-exam-chat': '傳訊息給溫尚翊', 'winter-exam-tutoring': '圖書館・統計學補習', 'winter-break-practice': '寒假・諺明哥的練團室', 'winter-break-gig': '寒假・酒吧駐唱', 'winter-break-pickup': '諺明哥來接你', 'winter-break-bus-choice': '散場後・選擇同行的人', 'winter-break-bus': '一起走到公車站', 'winter-diary': '一九九七年・寒假日記', paused: '故事暫停',
+  'year-end-intro': '十二月三十一日・跨年篇', 'year-end-invite-notification': '收到年貨邀約', 'year-end-invite-picker': '選擇邀約對象', 'year-end-shopping-notification': '年貨邀約簡訊', 'year-end-shopping-chat': '回覆年貨邀約', 'year-end-shopping': '一起買年貨', 'year-end-fireworks': '七人跨年煙火', 'year-end-new-year-notification': '收到新年祝福', 'year-end-new-year-chat': '回覆新年祝福', 'year-end-free-chat': '新年自由聊天', 'year-end-free-chat-picker': '新年自由活動', 'year-end-diary': '1996 年最後一篇日記', 'winter-exam-intro': '一九九七年・期末考前一週', 'winter-exam-notification': '統計學補習提示', 'winter-exam-chat': '傳訊息給溫尚翊', 'winter-exam-tutoring': '圖書館・統計學補習', 'winter-break-practice': '寒假・諺明哥的練團室', 'winter-break-gig': '寒假・酒吧駐唱', 'winter-break-pickup': '諺明哥來接你', 'winter-break-bus-choice': '散場後・選擇同行的人', 'winter-break-bus': '一起走到公車站', 'winter-diary': '一九九七年・寒假日記', 'february-intro': '二月初・MAYDAY 的名字', 'february-secret': '練團室裡的小秘密', 'february-dinner': '一起吃晚餐', 'february-table': '餐桌上的小動作', 'february-after-dinner-picker': '飯後・選擇同行的人', 'february-after-dinner': '飯後單獨相處', 'february-diary': '二月初・私人日記', paused: '故事暫停',
 }
 const readSaveSlot = (slot: number): SaveSlotData | null => {
   try {
@@ -1728,6 +1742,7 @@ function App() {
     if (saved === 'completed' && localStorage.getItem('mayday-free-chat-complete') === 'true' && localStorage.getItem('mayday-month-visit-complete') !== 'true') return 'month-free-time'
     if (saved === 'completed' && localStorage.getItem('mayday-next-month-day-complete') === 'true' && localStorage.getItem('mayday-year-end-day-complete') !== 'true') return 'year-end-intro'
     if (saved === 'completed' && localStorage.getItem('mayday-year-end-day-complete') === 'true' && localStorage.getItem('mayday-winter-break-day-complete') !== 'true') return 'winter-exam-intro'
+    if (saved === 'completed' && localStorage.getItem('mayday-winter-break-day-complete') === 'true' && localStorage.getItem('mayday-february-day-complete') !== 'true') return 'february-intro'
     if (saved === 'completed' && localStorage.getItem('mayday-month-day-complete') === 'true' && localStorage.getItem('mayday-next-month-started') !== 'true') return 'next-month-intro'
     const savedMonthVisitTarget = localStorage.getItem('mayday-month-visit-target')
     if (saved === 'month-visit' && (!savedMonthVisitTarget || !monthVisitOrder.includes(savedMonthVisitTarget as RouteCharacterId))) return 'month-free-time'
@@ -1735,7 +1750,7 @@ function App() {
     const day2PlanChosen = localStorage.getItem('mayday-day2-after-ice-choice') === 'accept' || localStorage.getItem('mayday-day2-after-ice-choice') === 'decline'
     if (['free-time', 'free-chat', 'day2-complete'].includes(saved ?? '') && !day2PlanChosen) return 'ice-date'
     if (saved === 'free-time' && savedTarget && freeTimeOrder.includes(savedTarget as RouteCharacterId) && localStorage.getItem('mayday-free-chat-complete') !== 'true') return 'free-chat'
-    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete', 'month-free-time', 'month-visit', 'month-visit-complete', 'month-free-chat', 'month-diary', 'next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-chat', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete', 'next-month-free-chat', 'next-month-diary', 'year-end-intro', 'year-end-invite-notification', 'year-end-invite-picker', 'year-end-shopping-notification', 'year-end-shopping-chat', 'year-end-shopping', 'year-end-fireworks', 'year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary', 'winter-exam-intro', 'winter-exam-notification', 'winter-exam-chat', 'winter-exam-tutoring', 'winter-break-practice', 'winter-break-gig', 'winter-break-pickup', 'winter-break-bus-choice', 'winter-break-bus', 'winter-diary', 'paused']
+    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete', 'month-free-time', 'month-visit', 'month-visit-complete', 'month-free-chat', 'month-diary', 'next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-chat', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete', 'next-month-free-chat', 'next-month-diary', 'year-end-intro', 'year-end-invite-notification', 'year-end-invite-picker', 'year-end-shopping-notification', 'year-end-shopping-chat', 'year-end-shopping', 'year-end-fireworks', 'year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary', 'winter-exam-intro', 'winter-exam-notification', 'winter-exam-chat', 'winter-exam-tutoring', 'winter-break-practice', 'winter-break-gig', 'winter-break-pickup', 'winter-break-bus-choice', 'winter-break-bus', 'winter-diary', 'february-intro', 'february-secret', 'february-dinner', 'february-table', 'february-after-dinner-picker', 'february-after-dinner', 'february-diary', 'paused']
     return saved && valid.includes(saved as StoryStage) ? saved as StoryStage : 'notification'
   })
   const [studioStep, setStudioStep] = useState(() => Number(localStorage.getItem('mayday-studio-step') ?? '0'))
@@ -1761,7 +1776,7 @@ function App() {
   const [day2StrollAccepted, setDay2StrollAccepted] = useState(() => localStorage.getItem('mayday-day2-after-ice-choice') === 'accept')
   const [day2DiaryUnlocked, setDay2DiaryUnlocked] = useState(() => localStorage.getItem('mayday-day2-diary-unlocked') === 'true')
   const [monthDiaryUnlocked, setMonthDiaryUnlocked] = useState(() => localStorage.getItem('mayday-month-diary-unlocked') === 'true' || localStorage.getItem('mayday-month-day-complete') === 'true')
-  const [selectedDiaryDate, setSelectedDiaryDate] = useState<'1996-10-15' | '1996-10-16' | '1996-11-16' | '1996-12-14' | '1996-12-31' | '1997-01-22' | null>(null)
+  const [selectedDiaryDate, setSelectedDiaryDate] = useState<'1996-10-15' | '1996-10-16' | '1996-11-16' | '1996-12-14' | '1996-12-31' | '1997-01-22' | '1997-02-03' | null>(null)
   const [chatMessages, setChatMessages] = useState<Record<CharacterId, SmsMessage[]>>(() => {
     const saved = localStorage.getItem('mayday-chat-messages')
     if (saved) {
@@ -2060,6 +2075,39 @@ function App() {
       return saved && typeof saved.title === 'string' && Array.isArray(saved.sections) ? saved : null
     } catch { return null }
   })
+  const [februarySecretTarget, setFebruarySecretTarget] = useState<FebruaryCharacterId | null>(() => {
+    const saved = localStorage.getItem('mayday-february-secret-target')
+    return saved && ['wen', 'ashin', 'masa', 'stone', 'yanming'].includes(saved) ? saved as FebruaryCharacterId : null
+  })
+  const [februarySecretReply, setFebruarySecretReply] = useState<number | null>(() => {
+    const saved = Number(localStorage.getItem('mayday-february-secret-reply') ?? '-1')
+    return Number.isInteger(saved) && saved >= 0 && saved < februarySecretReplyChoices.length ? saved : null
+  })
+  const [februaryDinnerReply, setFebruaryDinnerReply] = useState<number | null>(() => {
+    const saved = Number(localStorage.getItem('mayday-february-dinner-reply') ?? '-1')
+    return Number.isInteger(saved) && saved >= 0 && saved < februaryDinnerChoices.length ? saved : null
+  })
+  const [februaryTableCharacter, setFebruaryTableCharacter] = useState<FebruaryCharacterId | null>(() => {
+    const saved = localStorage.getItem('mayday-february-table-character')
+    return saved && ['wen', 'ashin', 'masa', 'stone', 'yanming'].includes(saved) ? saved as FebruaryCharacterId : null
+  })
+  const [februaryAfterDinnerCharacter, setFebruaryAfterDinnerCharacter] = useState<FebruaryCharacterId | null>(() => {
+    const saved = localStorage.getItem('mayday-february-after-dinner-character')
+    return saved && ['wen', 'ashin', 'masa', 'stone', 'yanming'].includes(saved) ? saved as FebruaryCharacterId : null
+  })
+  const [februaryAfterDinnerReplies, setFebruaryAfterDinnerReplies] = useState<number[]>(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('mayday-february-after-dinner-replies') ?? '[]')
+      return Array.isArray(saved) ? saved.filter((value): value is number => Number.isInteger(value) && value >= 0 && value <= 2).slice(0, 3) : []
+    } catch { return [] }
+  })
+  const [februaryDiaryUnlocked, setFebruaryDiaryUnlocked] = useState(() => localStorage.getItem('mayday-february-diary-unlocked') === 'true')
+  const [februaryDiaryData, setFebruaryDiaryData] = useState<FebruaryDiaryData | null>(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('mayday-february-diary-data') ?? 'null') as FebruaryDiaryData | null
+      return saved && typeof saved.title === 'string' && typeof saved.text === 'string' ? saved : null
+    } catch { return null }
+  })
   const [routeAffection, setRouteAffection] = useState<Record<RouteCharacterId, number>>(() => {
     let saved: Partial<Record<RouteCharacterId, number>> = {}
     try { saved = JSON.parse(localStorage.getItem('mayday-route-affection') ?? '{}') as Partial<Record<RouteCharacterId, number>> } catch { saved = {} }
@@ -2112,7 +2160,7 @@ function App() {
   const [selectedProfile, setSelectedProfile] = useState<string | null>(null)
   const [resumeStage, setResumeStage] = useState<StoryStage>(() => {
     const saved = localStorage.getItem('mayday-resume-stage')
-    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete', 'month-free-time', 'month-visit', 'month-visit-complete', 'month-free-chat', 'month-diary', 'next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-chat', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete', 'next-month-free-chat', 'next-month-diary', 'year-end-intro', 'year-end-invite-notification', 'year-end-invite-picker', 'year-end-shopping-notification', 'year-end-shopping-chat', 'year-end-shopping', 'year-end-fireworks', 'year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary', 'winter-exam-intro', 'winter-exam-notification', 'winter-exam-chat', 'winter-exam-tutoring', 'winter-break-practice', 'winter-break-gig', 'winter-break-pickup', 'winter-break-bus-choice', 'winter-break-bus', 'winter-diary']
+    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete', 'month-free-time', 'month-visit', 'month-visit-complete', 'month-free-chat', 'month-diary', 'next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-chat', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete', 'next-month-free-chat', 'next-month-diary', 'year-end-intro', 'year-end-invite-notification', 'year-end-invite-picker', 'year-end-shopping-notification', 'year-end-shopping-chat', 'year-end-shopping', 'year-end-fireworks', 'year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary', 'winter-exam-intro', 'winter-exam-notification', 'winter-exam-chat', 'winter-exam-tutoring', 'winter-break-practice', 'winter-break-gig', 'winter-break-pickup', 'winter-break-bus-choice', 'winter-break-bus', 'winter-diary', 'february-intro', 'february-secret', 'february-dinner', 'february-table', 'february-after-dinner-picker', 'february-after-dinner', 'february-diary']
     return saved && valid.includes(saved as StoryStage) ? saved as StoryStage : 'reunion'
   })
   const messageScrollRef = useRef<HTMLDivElement>(null)
@@ -2123,7 +2171,7 @@ function App() {
         : storyStage === 'dinner' ? '19:10'
           : storyStage === 'after-dinner' ? '20:35'
             : storyStage === 'ending' || storyStage === 'greetings' ? '21:18'
-              : storyStage === 'completed' ? (localStorage.getItem('mayday-winter-break-day-complete') === 'true' ? '00:30' : localStorage.getItem('mayday-year-end-day-complete') === 'true' ? '00:40' : '21:18')
+              : storyStage === 'completed' ? (localStorage.getItem('mayday-february-day-complete') === 'true' ? '22:30' : localStorage.getItem('mayday-winter-break-day-complete') === 'true' ? '00:30' : localStorage.getItem('mayday-year-end-day-complete') === 'true' ? '00:40' : '21:18')
               : storyStage === 'classroom' || storyStage === 'masa-checkin' || storyStage === 'stone-checkin' ? '10:12'
                 : storyStage === 'ice-date' ? '16:20'
                   : storyStage === 'stroll' ? '17:05'
@@ -2146,16 +2194,24 @@ function App() {
                                                 : storyStage === 'winter-break-gig' ? '21:15'
                                                   : storyStage === 'winter-break-pickup' || storyStage === 'winter-break-bus-choice' || storyStage === 'winter-break-bus' ? '23:20'
                                                     : storyStage === 'winter-diary' ? '00:30'
-                                                      : '17:20'
+                                                      : storyStage === 'february-intro' ? '15:00'
+                                                        : storyStage === 'february-secret' ? '16:30'
+                                                          : storyStage === 'february-dinner' ? '18:30'
+                                                            : storyStage === 'february-table' ? '19:15'
+                                                              : storyStage === 'february-after-dinner-picker' ? '19:45'
+                                                                : storyStage === 'february-after-dinner' ? '20:00'
+                                                                  : storyStage === 'february-diary' ? '22:00'
+                                                                    : '17:20'
   const effectiveDateStage = storyStage === 'paused' ? resumeStage : storyStage
   const isSecondDay = ['classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete'].includes(effectiveDateStage)
   const isNextMonth = ['next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-chat', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete', 'next-month-free-chat', 'next-month-diary'].includes(effectiveDateStage) || localStorage.getItem('mayday-next-month-day-complete') === 'true'
   const isMonthLater = ['month-free-time', 'month-visit', 'month-visit-complete', 'month-free-chat', 'month-diary'].includes(effectiveDateStage) || localStorage.getItem('mayday-month-visit-complete') === 'true'
   const isWinterExam = ['winter-exam-intro', 'winter-exam-notification', 'winter-exam-chat', 'winter-exam-tutoring'].includes(effectiveDateStage)
-  const isWinterBreak = ['winter-break-practice', 'winter-break-gig', 'winter-break-pickup', 'winter-break-bus-choice', 'winter-break-bus', 'winter-diary'].includes(effectiveDateStage) || localStorage.getItem('mayday-winter-break-day-complete') === 'true'
+  const isFebruary = ['february-intro', 'february-secret', 'february-dinner', 'february-table', 'february-after-dinner-picker', 'february-after-dinner', 'february-diary'].includes(effectiveDateStage) || localStorage.getItem('mayday-february-day-complete') === 'true'
+  const isWinterBreak = ['winter-break-practice', 'winter-break-gig', 'winter-break-pickup', 'winter-break-bus-choice', 'winter-break-bus', 'winter-diary'].includes(effectiveDateStage) || isFebruary || localStorage.getItem('mayday-winter-break-day-complete') === 'true'
   const isYearEnd = ['year-end-intro', 'year-end-invite-notification', 'year-end-invite-picker', 'year-end-shopping-notification', 'year-end-shopping-chat', 'year-end-shopping', 'year-end-fireworks', 'year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary'].includes(effectiveDateStage) || localStorage.getItem('mayday-year-end-day-complete') === 'true'
   const isNewYear = ['year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary'].includes(effectiveDateStage) || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-year-end-day-complete') === 'true' && localStorage.getItem('mayday-winter-break-day-complete') !== 'true')
-  const saveGameDate = isWinterBreak ? '1997.01.22' : isWinterExam ? (effectiveDateStage === 'winter-exam-tutoring' ? '1997.01.08' : '1997.01.07') : isNewYear ? '1997.01.01' : isYearEnd ? '1996.12.31' : isNextMonth ? '1996.12.14' : isMonthLater ? '1996.11.16' : isSecondDay ? '1996.10.16' : '1996.10.15'
+  const saveGameDate = isFebruary ? '1997.02.03' : isWinterBreak ? '1997.01.22' : isWinterExam ? (effectiveDateStage === 'winter-exam-tutoring' ? '1997.01.08' : '1997.01.07') : isNewYear ? '1997.01.01' : isYearEnd ? '1996.12.31' : isNextMonth ? '1996.12.14' : isMonthLater ? '1996.11.16' : isSecondDay ? '1996.10.16' : '1996.10.15'
   const [calendarYear, calendarMonth, calendarDay] = saveGameDate.split('.')
   const calendarDate = new Date(Number(calendarYear), Number(calendarMonth) - 1, Number(calendarDay))
   const calendarWeekday = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'][calendarDate.getDay()]
@@ -2244,6 +2300,14 @@ function App() {
     put('mayday-winter-bus-stop-replies', JSON.stringify(winterBusStopReplies))
     put('mayday-winter-diary-unlocked', String(winterDiaryUnlocked))
     put('mayday-winter-diary-data', winterDiaryData ? JSON.stringify(winterDiaryData) : null)
+    put('mayday-february-secret-target', februarySecretTarget)
+    put('mayday-february-secret-reply', februarySecretReply === null ? null : String(februarySecretReply))
+    put('mayday-february-dinner-reply', februaryDinnerReply === null ? null : String(februaryDinnerReply))
+    put('mayday-february-table-character', februaryTableCharacter)
+    put('mayday-february-after-dinner-character', februaryAfterDinnerCharacter)
+    put('mayday-february-after-dinner-replies', JSON.stringify(februaryAfterDinnerReplies))
+    put('mayday-february-diary-unlocked', String(februaryDiaryUnlocked))
+    put('mayday-february-diary-data', februaryDiaryData ? JSON.stringify(februaryDiaryData) : null)
     put('mayday-route-affection', JSON.stringify(routeAffection))
     put('mayday-shared-experience-log', JSON.stringify(sharedExperienceLog))
     put('mayday-call-experience-context', callExperienceContext ? JSON.stringify(callExperienceContext) : null)
@@ -2340,7 +2404,21 @@ function App() {
     localStorage.setItem('mayday-winter-diary-unlocked', String(winterDiaryUnlocked))
     if (winterDiaryData) localStorage.setItem('mayday-winter-diary-data', JSON.stringify(winterDiaryData))
     else localStorage.removeItem('mayday-winter-diary-data')
-  }, [winterExamChatReplyChoice, winterExamChatClosingChoice, winterExamTutoringUnlocked, winterExamReplies, winterPracticeReplies, winterYanmingPickupAvailable, winterBusStopCharacter, winterBusStopReplies, winterDiaryUnlocked, winterDiaryData])
+    if (februarySecretTarget) localStorage.setItem('mayday-february-secret-target', februarySecretTarget)
+    else localStorage.removeItem('mayday-february-secret-target')
+    if (februarySecretReply === null) localStorage.removeItem('mayday-february-secret-reply')
+    else localStorage.setItem('mayday-february-secret-reply', String(februarySecretReply))
+    if (februaryDinnerReply === null) localStorage.removeItem('mayday-february-dinner-reply')
+    else localStorage.setItem('mayday-february-dinner-reply', String(februaryDinnerReply))
+    if (februaryTableCharacter) localStorage.setItem('mayday-february-table-character', februaryTableCharacter)
+    else localStorage.removeItem('mayday-february-table-character')
+    if (februaryAfterDinnerCharacter) localStorage.setItem('mayday-february-after-dinner-character', februaryAfterDinnerCharacter)
+    else localStorage.removeItem('mayday-february-after-dinner-character')
+    localStorage.setItem('mayday-february-after-dinner-replies', JSON.stringify(februaryAfterDinnerReplies))
+    localStorage.setItem('mayday-february-diary-unlocked', String(februaryDiaryUnlocked))
+    if (februaryDiaryData) localStorage.setItem('mayday-february-diary-data', JSON.stringify(februaryDiaryData))
+    else localStorage.removeItem('mayday-february-diary-data')
+  }, [winterExamChatReplyChoice, winterExamChatClosingChoice, winterExamTutoringUnlocked, winterExamReplies, winterPracticeReplies, winterYanmingPickupAvailable, winterBusStopCharacter, winterBusStopReplies, winterDiaryUnlocked, winterDiaryData, februarySecretTarget, februarySecretReply, februaryDinnerReply, februaryTableCharacter, februaryAfterDinnerCharacter, februaryAfterDinnerReplies, februaryDiaryUnlocked, februaryDiaryData])
 
   useEffect(() => {
     // Migration completion and player confirmation are separate flags.
@@ -4059,6 +4137,107 @@ function App() {
     setWinterDiaryUnlocked(true)
     setActiveApp(null)
     setSelectedSmsThread(null)
+    changeStage('february-intro')
+  }
+
+  const chooseFebruarySecretTarget = (character: FebruaryCharacterId) => {
+    if (februarySecretTarget !== null) return
+    setFebruarySecretTarget(character)
+    localStorage.setItem('mayday-february-secret-target', character)
+    addRouteAffection(character, 1)
+  }
+
+  const chooseFebruarySecretReply = (choiceIndex: number) => {
+    if (!februarySecretTarget || februarySecretReply !== null) return
+    const choice = februarySecretReplyChoices[choiceIndex]
+    if (!choice) return
+    setFebruarySecretReply(choiceIndex)
+    localStorage.setItem('mayday-february-secret-reply', String(choiceIndex))
+    if (choiceIndex !== 1) addRouteAffection(februarySecretTarget, 1)
+  }
+
+  const chooseFebruaryDinnerReply = (choiceIndex: number) => {
+    if (februaryDinnerReply !== null) return
+    const choice = februaryDinnerChoices[choiceIndex]
+    if (!choice) return
+    setFebruaryDinnerReply(choiceIndex)
+    localStorage.setItem('mayday-february-dinner-reply', String(choiceIndex))
+    const updatedAffection = { ...routeAffection }
+    Object.entries(choice.affection).forEach(([character, amount]) => {
+      if (amount) {
+        addRouteAffection(character as FebruaryCharacterId, amount)
+        updatedAffection[character as FebruaryCharacterId] += amount
+      }
+    })
+    const focusOrder: FebruaryCharacterId[] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
+    const best = focusOrder.reduce((current, character) => updatedAffection[character] > updatedAffection[current] ? character : current, focusOrder[0])
+    setFebruaryTableCharacter(best)
+    localStorage.setItem('mayday-february-table-character', best)
+  }
+
+  const chooseFebruaryAfterDinnerCharacter = (character: FebruaryCharacterId) => {
+    setFebruaryAfterDinnerCharacter(character)
+    setFebruaryAfterDinnerReplies([])
+    localStorage.setItem('mayday-february-after-dinner-character', character)
+    localStorage.setItem('mayday-february-after-dinner-replies', '[]')
+    changeStage('february-after-dinner')
+  }
+
+  const chooseFebruaryAfterDinnerReply = (choiceIndex: number) => {
+    if (!februaryAfterDinnerCharacter || februaryAfterDinnerReplies.length >= 3) return
+    const route = februaryAfterDinnerRoutes[februaryAfterDinnerCharacter]
+    const choice = route.rounds[februaryAfterDinnerReplies.length]?.choices[choiceIndex]
+    if (!choice) return
+    const nextReplies = [...februaryAfterDinnerReplies, choiceIndex]
+    setFebruaryAfterDinnerReplies(nextReplies)
+    localStorage.setItem('mayday-february-after-dinner-replies', JSON.stringify(nextReplies))
+    const affection = choice.affection[februaryAfterDinnerCharacter] ?? 0
+    if (affection) addRouteAffection(februaryAfterDinnerCharacter, affection)
+  }
+
+  const buildFebruaryDiaryData = (): FebruaryDiaryData => {
+    const secretTarget = februarySecretTarget ?? 'wen'
+    const tableTarget = februaryTableCharacter ?? 'wen'
+    const afterTarget = februaryAfterDinnerCharacter ?? 'wen'
+    const groupText = februaryDinnerReply === null ? '' : [
+      '我跟他們說：「當然會啊！我可是你們的忠實觀眾欸！」',
+      '我忍不住先擔心佑達，叫他到時候不要又突然加一堆鼓花。本人立刻抗議，瑪莎倒是笑得很開心。',
+      '我叫他們先把歌好好練熟，別到時候上台才發現還沒準備好。石頭和阿信都很認真地答應了。',
+    ][februaryDinnerReply]
+    const lastRound = februaryAfterDinnerRoutes[afterTarget].rounds[2]
+    const lastChoice = lastRound.choices[februaryAfterDinnerReplies[2] ?? 0]
+    const endingNote = lastChoice ? '最後他問起三月底的演出，我回了：「' + lastChoice.text.replace(/^「|」$/g, '') + '」' : ''
+    const text = [
+      '今天真的笑死我了。原本只是去練團室坐坐，結果差點因為 So Band 被笑到忘記正事。瑪莎居然是聽到阿信準備填報名表，才突然想到把名字倒過來念很像便所。溫尚翊笑得最大聲，佑達則是一臉「你們到底在說什麼」的表情。',
+      '後來佑達自告奮勇要取新名字，結果一口氣端出暗黑究極音波使徒、銀河終焉五芒星暴走團，還有地獄烈焰末日審判者。每一個都講得超認真，大家每吐槽一句，他就更努力解釋一次。我真的差點把飲料噴出來。最後還是瑪莎拿自己的 BBS 名字 Mayday 救場。看著溫尚翊把 MAYDAY 寫進報名表，突然覺得三月底好像真的近了。',
+      februarySecretDiaryText[secretTarget],
+      groupText,
+      februaryTableDiaryText[tableTarget],
+      februaryAfterDinnerDiaryText[afterTarget],
+      endingNote,
+      '不知道這個名字最後會走到哪裡，不過今天看他們為了一張報名表吵成這樣，反而覺得很踏實。希望三月底真的能站上那個舞台。到時候我一定要去。',
+    ].filter(Boolean).join('\n\n')
+    return { title: '二月初，MAYDAY', text }
+  }
+
+  const startFebruaryDiary = () => {
+    if (!februarySecretTarget || februarySecretReply === null || februaryDinnerReply === null || !februaryTableCharacter || !februaryAfterDinnerCharacter || februaryAfterDinnerReplies.length !== 3) return
+    const data = buildFebruaryDiaryData()
+    setFebruaryDiaryData(data)
+    setFebruaryDiaryUnlocked(true)
+    localStorage.setItem('mayday-february-diary-data', JSON.stringify(data))
+    localStorage.setItem('mayday-february-diary-unlocked', 'true')
+    setActiveApp(null)
+    setSelectedSmsThread(null)
+    changeStage('february-diary')
+  }
+
+  const finishFebruaryDiary = () => {
+    if (!februaryDiaryData) return
+    localStorage.setItem('mayday-february-day-complete', 'true')
+    setFebruaryDiaryUnlocked(true)
+    setActiveApp(null)
+    setSelectedSmsThread(null)
     changeStage('completed')
   }
 
@@ -4320,8 +4499,12 @@ function App() {
   const currentWinterExamRound = winterExamTutoringRounds[winterExamReplies.length] ?? null
   const currentWinterPracticeRound = winterBreakPracticeRounds[winterPracticeReplies.length] ?? null
   const currentWinterBusStopRound = winterBusStopCharacter ? winterBusStopRoutes[winterBusStopCharacter].rounds[winterBusStopReplies.length] ?? null : null
+  const currentFebruaryAfterDinnerRoute = februaryAfterDinnerCharacter ? februaryAfterDinnerRoutes[februaryAfterDinnerCharacter] : null
+  const currentFebruaryAfterDinnerRound = currentFebruaryAfterDinnerRoute?.rounds[februaryAfterDinnerReplies.length] ?? null
   const winterFocusOrder: WinterCharacterId[] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
   const winterGigFocusCharacter = winterFocusOrder.reduce((best, character) => routeAffection[character] > routeAffection[best] ? character : best, winterFocusOrder[0])
+  const februaryFocusOrder: FebruaryCharacterId[] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
+  const currentFebruaryHighestAffection = februaryFocusOrder.reduce((best, character) => routeAffection[character] > routeAffection[best] ? character : best, februaryFocusOrder[0])
   const currentGreetingRound = greetingChats[currentGreetingId][Math.min(greetingRound, greetingChats[currentGreetingId].length - 1)]
   const currentThreadMessages: SmsMessage[] = selectedSmsThread === 'wen'
     ? [...smsMessages, ...(chatMessages.wen ?? [])]
