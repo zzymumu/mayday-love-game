@@ -2031,7 +2031,18 @@ function App() {
       return Array.isArray(saved) ? saved.filter((value): value is number => Number.isInteger(value) && value >= 0 && value <= 2).slice(0, 1) : []
     } catch { return [] }
   })
-  const [winterYanmingPickupAvailable, setWinterYanmingPickupAvailable] = useState(() => localStorage.getItem('mayday-winter-yanming-pickup-available') === 'true')
+  const [winterYanmingPickupAvailable, setWinterYanmingPickupAvailable] = useState(() => {
+    if (localStorage.getItem('mayday-winter-yanming-pickup-available') === 'true') return true
+    const savedStage = localStorage.getItem('mayday-story-stage')
+    const stageToResume = savedStage === 'paused' ? localStorage.getItem('mayday-resume-stage') : savedStage
+    if (stageToResume !== 'winter-break-pickup' && stageToResume !== 'winter-break-bus-choice') return false
+    try {
+      const savedAffection = JSON.parse(localStorage.getItem('mayday-route-affection') ?? '{}') as Partial<Record<RouteCharacterId, number>> | null
+      return Number(savedAffection?.yanming ?? localStorage.getItem('mayday-affection-yanming') ?? '0') >= 40
+    } catch {
+      return Number(localStorage.getItem('mayday-affection-yanming') ?? '0') >= 40
+    }
+  })
   const [winterBusStopCharacter, setWinterBusStopCharacter] = useState<WinterCharacterId | null>(() => {
     const saved = localStorage.getItem('mayday-winter-bus-stop-character')
     return saved && ['wen', 'masa', 'ashin', 'stone', 'yanming'].includes(saved) ? saved as WinterCharacterId : null
@@ -5908,7 +5919,7 @@ function App() {
                         { kind: 'narration', text: '你回頭看向還站在騎樓下的諺明哥，先走過去跟他說一聲。' },
                         { kind: 'dialogue', speaker: '你', text: `諺明哥，我今晚想跟${winterBusStopRoutes[winterBusStopCharacter].label.replace(/^跟/, '').replace(/一起走$/, '')}一起走。謝謝你特地跑一趟。` },
                         { kind: 'dialogue', speaker: '劉諺明', text: '好啊，沒關係。妳跟朋友一起走也好，回去路上小心，到家記得傳個訊息。' },
-                        { kind: 'narration', text: '他朝你點點頭，沒有多留你，轉身沿著騎樓往另一頭走去。你這才回到選好的同行人身邊，和對方一起往公車站的方向走。' },
+                        { kind: 'narration', text: '他朝你點點頭，沒有多留你，轉身沿著騎樓往另一頭走去。你這才回到選好的同行人身邊。' },
                       ]} />
                     )}
                     <StoryBlocks blocks={winterBusStopRoutes[winterBusStopCharacter].blocks} />
