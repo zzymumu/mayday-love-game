@@ -4657,13 +4657,14 @@ function App() {
     const round = rounds[springSmsRound]
     const choice = round?.choices[choiceIndex]
     if (!choice) return
+    const nextReplies = [...springSmsReplies, choiceIndex]
+    const nextRounds = getSpringSmsRounds(springSmsTarget, context, nextReplies)
     const minute = 11 + springSmsRound * 3
     appendChatMessages(springSmsTarget, [
       { from: 'me', text: choice.text, time: '21:' + String(minute).padStart(2, '0') },
       ...choice.response.map((text, index) => ({ from: springSmsTarget, text, time: '21:' + String(minute + index + 1).padStart(2, '0') })),
-      ...(springSmsRound < 4 ? [{ from: springSmsTarget, text: rounds[springSmsRound + 1].incoming, time: '21:' + String(minute + choice.response.length + 1).padStart(2, '0') }] : []),
+      ...(springSmsRound < 4 ? [{ from: springSmsTarget, text: nextRounds[springSmsRound + 1].incoming, time: '21:' + String(minute + choice.response.length + 1).padStart(2, '0') }] : []),
     ], '1997年2月17日・晚上')
-    const nextReplies = [...springSmsReplies, choiceIndex]
     setSpringSmsReplies(nextReplies)
     localStorage.setItem('mayday-spring-sms-replies', JSON.stringify(nextReplies))
     addRouteAffection(springSmsTarget, choice.affection)
