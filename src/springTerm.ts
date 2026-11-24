@@ -1812,8 +1812,10 @@ const springNaturalMemberSmsRounds = (
   ]
 }
 
-export const getSpringSmsOpeners = (character: SpringCharacterId, context: SpringDayContext) => {
-  if (character !== 'yanming') return springNaturalMemberSmsOpeners(character, context)
+const shouldUseNaturalMemberSms = (character: SpringCharacterId): boolean => character !== 'yanming'
+
+export const getSpringSmsOpeners = (character: SpringCharacterId, context: SpringDayContext): { text: string; response: string; affection: number }[] => {
+  if (shouldUseNaturalMemberSms(character)) return springNaturalMemberSmsOpeners(character, context)
   const rehearsal: Record<SpringCharacterId, { text: string; response: string; affection: number }[]> = {
     wen: [
       { text: '「今天《轧車》最後一遍真的很帥！」', response: '「妳終於有講一句公道話了喔。」', affection: 2 },
@@ -2075,7 +2077,7 @@ const springStoreSmsFirstRound = (character: SpringCharacterId, context: SpringD
 }
 
 export const getSpringSmsRounds = (character: SpringCharacterId, context: SpringDayContext, smsReplies: number[] = []): SpringSmsRound[] => {
-  if (character !== 'yanming') return springNaturalMemberSmsRounds(character, context, smsReplies)
+  if (shouldUseNaturalMemberSms(character)) return springNaturalMemberSmsRounds(character, context, smsReplies)
   if (character === 'yanming' && context.storeCharacter !== 'yanming' && context.afterChoice !== 'yanming-dinner') return springYanmingOwnerSmsRounds(smsReplies)
   const rehearsal: Record<SpringCharacterId, SpringSmsRound[]> = {
     wen: [
