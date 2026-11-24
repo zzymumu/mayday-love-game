@@ -7156,6 +7156,25 @@ function App() {
                     </div>
                     <div className={activeApp === 'messages' ? 'app-window-content sms-mode' : activeApp === 'diary' ? 'app-window-content diary-mode' : activeApp === 'notes' ? 'app-window-content save-mode' : 'app-window-content'}>
                       {activeApp === 'messages' ? (
+                        storyStage === 'spring-free-chat-picker' && selectedSmsThread === null ? (
+                          <div className="free-time-picker">
+                            <div className="free-time-intro">
+                              <span className="profile-eyebrow">FREE MESSAGES · 1997</span>
+                              <strong>今天想找誰聊一聊？</strong>
+                              <p>每個人的回覆都會接著你們最近真正發生的事情，不會把沒一起經歷過的事當成回憶。</p>
+                            </div>
+                            {springCharacterOrder.map((id) => {
+                              const person = characterInfo.find((item) => item.id === id)!
+                              return (
+                                <button className="free-time-person" key={id} onClick={() => chooseSpringFreeChatTarget(id)}>
+                                  <span className="sms-avatar">{person.avatar}</span>
+                                  <span><strong>{person.name}</strong><small>{person.role}</small></span>
+                                  <ChevronRight size={15} />
+                                </button>
+                              )
+                            })}
+                          </div>
+                        ) : (
                         storyStage === 'free-time' && selectedSmsThread === null && !freeChatTarget ? (
                           <div className="free-time-picker">
                             <div className="free-time-intro">
@@ -7179,8 +7198,11 @@ function App() {
                           <div className="sms-inbox">
                             <div className="sms-inbox-heading">
                               <strong>訊息列表</strong>
-                              <span>收件匣 · 1996</span>
+                              <span>收件匣 · 1997</span>
                             </div>
+                            {localStorage.getItem('mayday-spring-day-complete') === 'true' && (
+                              <button className="story-primary-button" onClick={startSpringFreeChat}>自由聊天 <ChevronRight size={15} /></button>
+                            )}
                             {inboxThreads.map((thread) => (
                               <button className="sms-thread-row" key={thread.id} onClick={() => openSmsThread(thread.id)}>
                                 <span className="sms-avatar">{thread.avatar}</span>
@@ -7459,6 +7481,41 @@ function App() {
                                 <div className="sms-thread-actions">
                                   <div className="reply-note">五輪對話已經聊完。把手機收好，準備寫下今天的日記。</div>
                                   <button className="story-primary-button" onClick={finishNextMonthFreeChat}>收起手機，寫下今天的日記 <ChevronRight size={15} /></button>
+                                </div>
+                              )}
+
+                              {(storyStage === 'spring-sms-chat' || storyStage === 'spring-free-chat') && springSmsTarget && selectedSmsThread === springSmsTarget && !springSmsOpeningSent && (
+                                <div className="choice-area">
+                                  <div className="choice-heading">先傳一則訊息給{characterNames[springSmsTarget]}</div>
+                                  {currentSpringSmsOpeners.map((choice, index) => (
+                                    <button className="reply-choice" key={index} onClick={() => chooseSpringSmsOpening(index)}>
+                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                    </button>
+                                  ))}
+                                  <small>先由你開啟對話。</small>
+                                </div>
+                              )}
+                              {(storyStage === 'spring-sms-chat' || storyStage === 'spring-free-chat') && springSmsTarget && selectedSmsThread === springSmsTarget && springSmsOpeningSent && !springSmsReplied && (
+                                <div className="choice-area">
+                                  <div className="choice-heading">{springSmsMode === 'free' ? '自由聊天' : '回家後的簡訊'}・第 {springSmsRound + 1}/5 輪</div>
+                                  {currentSpringSmsRounds[springSmsRound]?.choices.map((choice, index) => (
+                                    <button className="reply-choice" key={index} onClick={() => chooseSpringSmsReply(index)}>
+                                      <span>{choice.text}</span><ChevronRight size={15} />
+                                    </button>
+                                  ))}
+                                  <small>每一輪都由你親自回覆，對話會依照今天的真實經歷延續。</small>
+                                </div>
+                              )}
+                              {storyStage === 'spring-sms-chat' && springSmsTarget && selectedSmsThread === springSmsTarget && springSmsReplied && (
+                                <div className="sms-thread-actions">
+                                  <div className="reply-note">聊到這裡，今天的訊息也該收好了。</div>
+                                  <button className="story-primary-button" onClick={startSpringDiary}>收起手機，寫下今天的日記 <ChevronRight size={15} /></button>
+                                </div>
+                              )}
+                              {storyStage === 'spring-free-chat' && springSmsTarget && selectedSmsThread === springSmsTarget && springSmsReplied && (
+                                <div className="sms-thread-actions">
+                                  <div className="reply-note">這段聊天會保留在訊息紀錄裡。想聊的話，之後還可以再開啟新的對話。</div>
+                                  <button className="story-primary-button" onClick={finishSpringFreeChat}>結束聊天 <ChevronRight size={15} /></button>
                                 </div>
                               )}
 
