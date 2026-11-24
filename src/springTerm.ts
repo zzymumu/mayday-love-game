@@ -975,7 +975,6 @@ const springDailySmsOpeners: Record<SpringCharacterId, { text: string; response:
     { text: "「我洗完衣服發現襪子只剩一隻。」\n「另一隻不知道跑去哪了，整個房間都找過了！」", response: "「洗衣機開始收租了喔。」", affection: 2 },
     { text: "「諺明哥，我明明寫了購物清單。」\n「結果買了一堆東西，偏偏忘記雞蛋。」", response: "「妳那張清單今天有出勤嗎？」", affection: 3 },
   ],
-  ],
 }
 
 const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
@@ -1347,12 +1346,7 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
     ],
     tracks: [
       [
-        springDailySmsRound("「怎麼不回去問老闆？」", [
-        { text: "「我就是覺得回去很丟臉嘛……」", response: "「不會啦，店家一天要遇到幾十個忘東忘西的人。\n妳又不是第一個。」" },
-        { text: "「我怕老闆覺得我怎麼連筷子都忘記。」", response: "「不會啦，店家每天都會遇到這種事，妳不用想那麼多。」" },
-        { text: "「我真的差點想直接用手吃了。」", response: "「先不要啦，便當是無辜的，還是回去拿一下比較好。」" },
-      ]),
-        springDailySmsRound("「我以前也有過類似的事，買完便當走到一半才發現少拿東西。」", [
+                springDailySmsRound("「我以前也有過類似的事，買完便當走到一半才發現少拿東西。」", [
         { text: "「你講得好像很有經驗。」", response: "「有啊，我以前拿著便當走到一半，才發現自己根本沒拿湯匙。\n回去拿的時候，老闆還問我是不是又來補考。」" },
         { text: "「你到底去補考幾次啦？」", response: "「沒有很多次啦，只是老闆記性太好，看到我就知道我要幹嘛。」" },
         { text: "「所以你也是站在店門口發呆的人？」", response: "「我沒有站那麼久啦，至少有走回去拿。」" },
@@ -1374,12 +1368,7 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
       ]),
       ],
       [
-        springDailySmsRound("「一次收一隻。」", [
-        { text: "「我真的把整桶衣服都翻過了！」", response: "「我以前也找過。\n最後是在褲管裡找到，還以為自己買了一雙新襪子。」" },
-        { text: "「我連洗衣籃都翻了，還是沒看到。」", response: "「我那次也是找半天，結果它就卡在褲管裡，完全沒發現。」" },
-        { text: "「我看它是跟其他襪子私奔了！」", response: "「這個說法倒是滿合理的，失蹤案又多一件。」" },
-      ]),
-        springDailySmsRound("「我那時候拿出來還看了半天，想說這雙襪子是哪來的。」", [
+                springDailySmsRound("「我那時候拿出來還看了半天，想說這雙襪子是哪來的。」", [
         { text: "「？？？？你怎麼會連這個都搞錯啦！」", response: "「因為那雙襪子本來就長得很普通。\n放在那邊完全沒有存在感。」" },
         { text: "「你是不是找太久，已經不認識自己的襪子了？」", response: "「有可能欸，看久了真的會覺得每一雙都很陌生。」" },
         { text: "「所以你還以為自己多買了一雙喔？」", response: "「對啊，還想說什麼時候買的，後來才發現是失蹤人口。」" },
@@ -1401,12 +1390,7 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
       ]),
       ],
       [
-        springDailySmsRound("「放在口袋裡好好的？」", [
-        { text: "「有啊！放在口袋裡好好的。」", response: "「那它比雞蛋還有存在感。」" },
-        { text: "「有帶啦，只是我逛到最後完全忘記要看。」", response: "「清單都跟著妳出門了，結果還是沒被派上用場。」" },
-        { text: "「我甚至還拿出來看過，然後轉頭就忘了。」", response: "「這個比較厲害欸，清單本人都提醒妳了還是漏掉。」" },
-      ]),
-        springDailySmsRound("「妳本來想拿雞蛋回去做什麼？」", [
+                springDailySmsRound("「妳本來想拿雞蛋回去做什麼？」", [
         { text: "「我本來想回家煎蛋的，現在計畫全亂了。」", response: "「我上次也差不多。\n買了醬油跟蔥，回家才發現忘記買麵。」" },
         { text: "「想做蛋餅啦，現在只能改天了。」", response: "「那就改天再做，材料沒買齊真的很難煮。」" },
         { text: "「本來想煮個簡單的晚餐，結果最重要的東西沒買。」", response: "「這種最麻煩，其他東西都準備好了，就差那一樣。」" },
@@ -1428,7 +1412,8 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
       ]),
       ]
     ],
-  },}
+  },
+}
 
 export const getSpringSmsOpeners = (
   character: SpringCharacterId,
