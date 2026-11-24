@@ -4510,6 +4510,7 @@ function App() {
   const currentWinterBusStopRound = winterBusStopCharacter ? winterBusStopRoutes[winterBusStopCharacter].rounds[winterBusStopReplies.length] ?? null : null
   const currentFebruaryAfterDinnerRoute = februaryAfterDinnerCharacter ? februaryAfterDinnerRoutes[februaryAfterDinnerCharacter] : null
   const currentFebruaryAfterDinnerRound = currentFebruaryAfterDinnerRoute?.rounds[februaryAfterDinnerReplies.length] ?? null
+  const currentFebruaryHighestAffection: FebruaryCharacterId = (['wen', 'ashin', 'masa', 'stone', 'yanming'] as FebruaryCharacterId[]).reduce((best, character) => routeAffection[character] > routeAffection[best] ? character : best, 'wen')
   const winterFocusOrder: WinterCharacterId[] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
   const winterGigFocusCharacter = winterFocusOrder.reduce((best, character) => routeAffection[character] > routeAffection[best] ? character : best, winterFocusOrder[0])
   const currentGreetingRound = greetingChats[currentGreetingId][Math.min(greetingRound, greetingChats[currentGreetingId].length - 1)]
