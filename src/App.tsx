@@ -4677,9 +4677,9 @@ function App() {
     appendChatMessages(springSmsTarget, [
       { from: 'me', text: opening.text, time: '21:08' },
       { from: springSmsTarget, text: opening.response, time: '21:09' },
-      ...(firstRound.outgoing ? [{ from: 'me', text: firstRound.outgoing, time: '21:10' }] : []),
+      ...(firstRound.outgoing ? [{ from: 'me' as const, text: firstRound.outgoing, time: '21:10' }] : []),
       ...firstRoundIncoming.map((text, index) => ({
-        from: springSmsTarget,
+        from: springSmsTarget as CharacterId,
         text,
         time: '21:' + String(firstRoundStartMinute + index).padStart(2, '0'),
       })),
@@ -4720,7 +4720,7 @@ function App() {
         time: '21:' + String(minute + choice.response.length + 1).padStart(2, '0'),
       }] : []),
       ...nextRoundIncoming.map((text, index) => ({
-        from: springSmsTarget,
+        from: springSmsTarget as CharacterId,
         text,
         time: '21:' + String(minute + choice.response.length + (nextRound.outgoing ? 2 : 1) + index).padStart(2, '0'),
       })),
