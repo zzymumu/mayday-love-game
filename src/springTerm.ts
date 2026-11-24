@@ -934,8 +934,6 @@ const springSmsRound = (incoming: string, choices: SpringSmsChoice[]): SpringSms
 const springYanmingOwnerSmsRounds = (replies: number[]): SpringSmsRound[] => {
   const r0 = replies[0] ?? 0
   const r1 = replies[1] ?? 0
-  const r2 = replies[2] ?? 0
-  const r3 = replies[3] ?? 0
   return [
     springSmsRound('對了，妳下次要來練團室，先傳個訊息給我吧。有時候我在裡面忙，怕妳站在外面等。', [
       springSmsChoice('「我哪有等很久啦，我可以自己找地方坐。」', ['「妳是可以啊，不過妳每次都客氣地說沒關係，我還是怕妳白等。」'], 3),
@@ -988,23 +986,13 @@ const springYanmingOwnerSmsRounds = (replies: number[]): SpringSmsRound[] => {
               springSmsChoice('「那你快回家，不要又留下來找事情做。」', ['「好，這次不拖了。」'], 3),
               springSmsChoice('「我下次去再聽你講今天遇到什麼客人。」', ['「好啊，有些事當面講比較有趣。」'], 3),
             ]),
-    springSmsRound(
-      r2 === 0
-        ? '妳剛才說先整理好比較安心，我也覺得。事情一件件收好，腦袋才不會一直掛著。'
-        : r2 === 1
-          ? '妳說手機放旁邊就看得到，這個方法還真的有用，剛剛又收到一個改時間的訊息。'
-          : '妳說下次來再聽我講客人的事，我先記著，有些真的當面講比較有趣。',
+    springSmsRound('店裡安靜下來以後，才發現今天過得滿快的。每天都差不多忙，偶爾有人來聊幾句，感覺也不錯。',
       [
       springSmsChoice('「所以我去找你聊天，算是幫你調劑生活嗎？」', ['「算啊，不過妳不要因此要求加薪。」'], 3),
       springSmsChoice('「你平常都自己顧店，不會覺得無聊嗎？」', ['「忙起來不會，安靜下來偶爾會。有人說說話也很好。」'], 3),
       springSmsChoice('「那我以後常去，免得你太無聊。」', ['「好啊，來之前傳訊息就好，我幫妳留時間。」'], 4),
     ]),
-    springSmsRound(
-      r3 === 0
-        ? '好啦，今天就先不談工作了。妳也早點休息，明天還有自己的事要忙。'
-        : r3 === 1
-          ? '我準備回去了，到了再跟妳說一聲。妳不用等訊息等到太晚。'
-          : '妳說下次來不准我裝忙，我記住了。到時候我先把時間空出來。',
+    springSmsRound('我把門鎖好了，現在真的可以把店裡的事放一邊。明天再處理就好。',
       [
       springSmsChoice('「晚安諺明哥，回去好好休息！」', ['「好，妳也是。明天見。」'], 3),
       springSmsChoice('「下次不准又把自己排得滿滿的喔。」', ['「知道了，我會留一點空檔。」'], 3),
