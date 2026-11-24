@@ -7152,7 +7152,10 @@ function App() {
                         springLessonCharacter === 'wen' ? '溫尚翊' : springLessonCharacter === 'ashin' ? '陳信宏' : springLessonCharacter === 'masa' ? '瑪莎' : '石錦航',
                         springLessonRoutes[springLessonCharacter].touchChoices[0].response,
                       ),
-                      { kind: 'narration', text: springLessonRoutes[springLessonCharacter].touchNarration },
+                      ...springResponseBlocks(
+                        springLessonCharacter === 'wen' ? '溫尚翊' : springLessonCharacter === 'ashin' ? '陳信宏' : springLessonCharacter === 'masa' ? '瑪莎' : '石錦航',
+                        springLessonRoutes[springLessonCharacter].touchNarration,
+                      ),
                     ]} />
                     {springLessonReply === null ? (
                       <div className="choice-area">
