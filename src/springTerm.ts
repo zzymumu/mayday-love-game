@@ -936,7 +936,29 @@ const springYanmingOwnerSmsRounds = (replies: number[]): SpringSmsRound[] => {
   const reply2 = replies[2] ?? 0
   const reply3 = replies[3] ?? 0
 
-  const round1Incoming = '那件事處理完，我才發現櫃檯那杯茶已經涼了。今天好像一直在忙這些小事。'
+  const round1Incoming = [
+    '說起來，最容易忘的反而是我自己的東西。桌上的茶放到涼了，才想起來還沒喝。',
+    '他拿到外套後還一直跟我道謝，我倒有點不好意思，這種小事本來就是順手而已。',
+    '妳那個提醒的主意我先記下來，明天找張紙貼在門口，省得再追出去。',
+  ]
+
+  const round1Choices = [
+    [
+      springSmsChoice('「你自己也要記得照顧好，別只顧著店裡。」', ['「我會注意，事情忙完也得留點時間給自己。」'], 3),
+      springSmsChoice('「你也會忙到忘記喝茶喔？」', ['「有時候一忙就顧著手邊的事，抬頭才發現整杯都涼了。」'], 2),
+      springSmsChoice('「下次我去要提醒你先把茶喝完。」', ['「那我就先把杯子放在最顯眼的地方。」'], 3),
+    ],
+    [
+      springSmsChoice('「他應該鬆一口氣吧，不然還得再跑一趟。」', ['「是啊，少跑一趟就好。」'], 2),
+      springSmsChoice('「你還特地送到門口，真的很周到。」', ['「東西就在手邊，順手拿過去而已。」'], 3),
+      springSmsChoice('「他有沒有說你人很好？」', ['「沒有啦，只是一直道謝，客氣得很。」'], 2),
+    ],
+    [
+      springSmsChoice('「這個主意不錯，至少下次不用追出去。」', ['「我也覺得，省得客人走遠才發現。」'], 3),
+      springSmsChoice('「你會真的去貼嗎？」', ['「會啊，等我找張紙寫得清楚一點。」'], 2),
+      springSmsChoice('「我幫你想標語，但可能會很搞笑。」', ['「那我得先審稿，免得客人只記得笑。」'], 3),
+    ],
+  ]
 
   const round2Incoming = [
     '我剛才重新泡了一杯，這次先喝完才回來整理。',
@@ -998,11 +1020,7 @@ const springYanmingOwnerSmsRounds = (replies: number[]): SpringSmsRound[] => {
       springSmsChoice('「他有沒有回頭跟你拿？」', ['「有，還特地跑回來說謝謝，倒讓我有點不好意思。」'], 2),
       springSmsChoice('「下次乾脆在門口貼張『離開前檢查隨身物品』。」', ['「這個主意不錯，我可以真的貼一張。」'], 3),
     ]),
-    springSmsRound(round1Incoming, [
-      springSmsChoice('「你自己也要記得照顧好，別只顧著店裡。」', ['「我會注意，事情忙完也得留點時間給自己。」'], 3),
-      springSmsChoice('「這些小事你都記得，難怪店裡不容易亂。」', ['「習慣了，東西放回原位，後面就不容易找不到。」'], 2),
-      springSmsChoice('「我下次去要看看你有沒有真的照做。」', ['「妳還真會記得這種事。好，讓妳檢查。」'], 3),
-    ]),
+    springSmsRound(round1Incoming[replies[0] ?? 0], round1Choices[replies[0] ?? 0]),
     springSmsRound(round2Incoming[reply1], round2Choices[reply1]),
     springSmsRound(round3Incoming[reply2], [
       springSmsChoice('「你這樣安排，就不會一忙起來什麼都忘了。」', ['「對，先排好順序，事情就不會擠成一團。」'], 3),
