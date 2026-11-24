@@ -4650,48 +4650,59 @@ function App() {
   }
 
   const buildSpringDiaryData = () => {
-    const storeNote = springStoreCharacter
-      ? '下午是' + ({ wen: '溫尚翊', ashin: '阿信', masa: '瑪莎', stone: '石頭', yanming: '諺明哥' } as Record<SpringCharacterId, string>)[springStoreCharacter] + '約我去樂器行。' + ({
-          wen: '他本來說只是看效果器，結果自己先被一把電吉他吸引，還把撥片塞給我試。嘴上一直嫌我手勢不對，倒是很認真地幫我調好。',
-          ashin: '阿信帶我看木吉他，還讓我試著抱琴、撥弦。第一次彈出比較清楚的聲音時，他比我還開心。',
-          masa: '瑪莎一路研究 Bass 和配件的價格，嘴上嫌貴，卻每把都要試。最後還是忍不住問我哪把好看。',
-          stone: '石頭陪我慢慢看吉他配件，還讓我試背帶和木吉他，完全不催我。',
-          yanming: '諺明哥陪我看鼓棒和器材，還示範不同重量拿起來的差別。',
-        } as Record<SpringCharacterId, string>)[springStoreCharacter]
-      : '下午沒有收到超過門檻的邀約，我自己去了練團室。'
-    const storeChoiceNote = springStoreCharacter
-      ? [springStoreReply, springStoreSecondReply, springStoreThirdReply]
-          .map((selected, index) => selected === null
-            ? ''
-            : '我在店裡回他：「' + stripCornerQuotes(springStoreRoutes[springStoreCharacter].rounds[index].choices[selected].text) + '」' + springStoreRoutes[springStoreCharacter].rounds[index].choices[selected].response)
-          .filter(Boolean)
-          .join(' ')
-      : ''
-    const afterNote = springAfterChoice === 'yanming-dinner'
-      ? '練團結束後，我跟諺明哥去吃飯。' + (springDinnerReply === null ? '' : '我回答：「' + springYanmingDinnerChoices[springDinnerReply].text.replace(/^「|」$/g, '') + '」' + springYanmingDinnerChoices[springDinnerReply].response)
+    const characterNamesForDiary: Record<SpringCharacterId, string> = {
+      wen: '溫尚翊',
+      ashin: '阿信',
+      masa: '瑪莎',
+      stone: '石頭',
+      yanming: '諺明哥',
+    }
+    const storeMemories: Record<SpringCharacterId, string> = {
+      wen: '下午跟溫尚翊去樂器行，原本只是想看看效果器，結果他自己先被一把電吉他吸走。最有印象的是那片撥片，明明嫌我拿得歪，還是很認真地幫我調好。這個人嘴巴真的很忙。',
+      ashin: '下午跟阿信去看木吉他，我一開始彈出來的聲音簡直像幾根弦在吵架，他倒是笑得比我還開心。被他這樣鼓勵，突然覺得自己好像也沒有那麼笨。',
+      masa: '下午跟瑪莎逛 Bass 區，他每一把都要試，嘴上嫌價格，手卻完全沒停過。更好笑的是，挑到後來還要我幫他看哪把順眼，這人真的很會嘴硬。',
+      stone: '下午跟石頭慢慢逛樂器行。他不會一直催，也不會急著替我決定，連看個配件都能陪我研究半天。跟他待在一起，時間好像會自己放慢。',
+      yanming: '下午跟諺明哥看鼓棒和器材，他連重量差一點點都拿起來比較。果然是很仔細的人，連逛個樂器行都讓人有種事情一定會被安排妥當的安心感。',
+    }
+    const lessonMemories: Record<Exclude<SpringCharacterId, 'yanming'>, string> = {
+      wen: '後來留下來學電吉他，手指痛得我差點想跟琴弦絕交。偏偏溫尚翊手上的繭就在眼前，我一時好奇問出口，摸到的時候才發現真的比看起來粗。最可疑的是他明明有點不自在，還硬要裝沒事，突然把弦刷得超大聲。拜託，誰看不出來啦。',
+      ashin: '阿信教木吉他真的很有耐心，我的手指一直不聽使喚，他也沒有催我。後來摸到他指尖那層薄繭，才發現那些痕跡都是一點一點練出來的。他整個人又很自然，反而害我不知道該把手放哪裡。',
+      masa: '瑪莎教 Bass 的時候嘴巴還是一樣不饒人，我差點每隔三十秒就想反擊一次。可是手指一喊痛，他馬上就停下來；連摸個繭都能被他說成檢查，這人真的是連溫柔都要包裝成吐槽。',
+      stone: '石頭教得很慢，也很細心，連我手指按得太用力都看得出來。摸到他指尖的繭時，才發現平常看起來溫溫和和的人，手上也有這些練出來的痕跡。跟他相處不用急著裝厲害，這點很舒服。',
+    }
+    const storeMemory = springStoreCharacter ? storeMemories[springStoreCharacter] : ''
+    const rehearsalMemory = '《轧車》一開下去，整間練團室像要被掀掉。佑達今天特別亢奮，第一遍就自己加了一串鼓花，瑪莎那個快翻白眼的表情我現在想到還想笑；溫尚翊不但沒阻止，還在旁邊跟著起鬨。最誇張的是最後一遍突然又帥得很整齊，前面還像一群小學生在吵架，音樂一進來卻又默契得不得了。'
+    const afterMemory = springAfterChoice === 'yanming-dinner'
+      ? '散場後才發現諺明哥已經先出去了。我背起包走到樓下找了一圈，才在外面的騎樓看到他。那家小店他很熟，連老闆都認識；吃飯時也不用刻意找話題，水杯被推到手邊、筷子遞過來，全都自然得不得了。跟他吃飯有種很踏實的舒服。'
       : springAfterChoice === 'home'
-        ? '練團結束後，我沒有再安排其他活動，收拾東西自己回家了。'
+        ? '今天散場後沒有續攤，我背起包自己回家。走出練團室才發現外面安靜得有點不習慣，耳朵裡卻還在轟轟作響。走到一半想到佑達那串亂七八糟的鼓花，又自己笑出來，路人可能覺得我怪怪的。'
         : springLessonCharacter
-          ? '練團結束後，我留下來跟' + ({ wen: '溫尚翊', ashin: '阿信', masa: '瑪莎', stone: '石頭' } as Record<Exclude<SpringCharacterId, 'yanming'>, string>)[springLessonCharacter] + '學樂器。' + springLessonRoutes[springLessonCharacter].blocks.filter((block) => block.speaker === '你').map((block) => block.text).join(' ') + (springLessonTouchChoice === null ? '' : '我注意到他手上的茧子，便問：「' + springLessonRoutes[springLessonCharacter].touchChoices[springLessonTouchChoice].text.replace(/^「|」$/g, '') + '」' + springLessonRoutes[springLessonCharacter].touchChoices[springLessonTouchChoice].response + springLessonRoutes[springLessonCharacter].touchNarration) + (springLessonReply === null ? '' : '摸完之後我又說：「' + springLessonRoutes[springLessonCharacter].choices[springLessonReply].text.replace(/^「|」$/g, '') + '」' + springLessonRoutes[springLessonCharacter].choices[springLessonReply].response)
+          ? lessonMemories[springLessonCharacter]
           : ''
-    const rehearsalNote = springStoreCharacter
-      ? '逛完樂器行後，我跟' + ({ wen: '溫尚翊', ashin: '阿信', masa: '瑪莎', stone: '石頭', yanming: '諺明哥' } as Record<SpringCharacterId, string>)[springStoreCharacter] + '一起進了練團室。'
-      : '到了練團室，大家已經準備好要開始練習了。'
-    const opener = springSmsTarget ? getSpringSmsOpeners(springSmsTarget, {
-      storeCharacter: springStoreCharacter, afterChoice: springAfterChoice, lessonCharacter: springLessonCharacter, dinnerChoice: springDinnerReply,
-    })[springSmsOpeningChoice ?? 0]?.text ?? '' : ''
-    const firstReply = springSmsTarget ? getSpringSmsRounds(springSmsTarget, {
-      storeCharacter: springStoreCharacter, afterChoice: springAfterChoice, lessonCharacter: springLessonCharacter, dinnerChoice: springDinnerReply,
-    })[0]?.choices[springSmsReplies[0] ?? 0]?.text ?? '' : ''
+    const chatMemory = springSmsTarget
+      ? '回家後又和' + characterNamesForDiary[springSmsTarget] + '聊了一會兒。其實也沒什麼驚天動地的大事，手機放下以後，心情卻還是好了一點。'
+      : ''
+    const title = springAfterChoice === 'yanming-dinner'
+      ? '散場後，還得出去找諺明哥'
+      : springAfterChoice === 'home'
+        ? '《轧車》的鼓聲一路跟回家'
+        : springLessonCharacter === 'wen'
+          ? '今天最燙手的不是琴弦'
+          : springLessonCharacter === 'ashin'
+            ? '木吉他和一雙很有耐心的手'
+            : springLessonCharacter === 'masa'
+              ? 'Bass 很難，瑪莎更難搞'
+              : springLessonCharacter === 'stone'
+                ? '今天有人比我還怕我手痛'
+                : '開學第一天，練團室還是很吵'
     const text = [
-      '過年一下子就過去了，開學第一天居然還挺有意思的。',
-      storeNote + (storeChoiceNote ? ' ' + storeChoiceNote : ''),
-      rehearsalNote + ' 他們今天練《轧車》，真的吵到不行。佑達每次都想加自己的鼓花，瑪莎就一直吐槽他，溫尚翊也跟著起鬨。偏偏最後一遍又真的練得很順，害我笑到差點忘記自己原本只是去看熱鬧。',
-      afterNote,
-      springSmsTarget ? '回家後我傳訊息給' + ({ wen: '溫尚翊', ashin: '阿信', masa: '瑪莎', stone: '石頭', yanming: '諺明哥' } as Record<SpringCharacterId, string>)[springSmsTarget] + '。我先傳了：「' + opener.replace(/^「|」$/g, '') + '」' + (firstReply ? '，他接著問我：「' + firstReply.replace(/^「|」$/g, '') + '」' : '') : '',
-      '今天好像真的開始有點懂他們為什麼這麼喜歡音樂了。下次再去練團室，不知道又會聽到什麼新花樣。',
-    ].filter(Boolean).join('\n\n')
-    return { title: '開學後，還是忍不住往練團室跑', text }
+      '過完年回來上課，第一天就被練團室的聲音吵到腦袋嗡嗡響。嗯，這學期看來不會太安靜。',
+      storeMemory,
+      rehearsalMemory,
+      afterMemory,
+      chatMemory,
+    ].filter(Boolean).join('\\n\\n')
+    return { title, text }
   }
 
   const startSpringDiary = () => {
@@ -4763,6 +4774,17 @@ function App() {
       const refreshed = buildWinterDiaryData()
       setWinterDiaryData(refreshed)
       localStorage.setItem('mayday-winter-diary-data', JSON.stringify(refreshed))
+    }
+    localStorage.setItem(rewriteKey, 'true')
+  }, [])
+
+  useEffect(() => {
+    const rewriteKey = 'mayday-spring-diary-narrative-rewrite-v1'
+    if (localStorage.getItem(rewriteKey) === 'true') return
+    if (springDiaryUnlocked && springDiaryData && springAfterChoice) {
+      const refreshed = buildSpringDiaryData()
+      setSpringDiaryData(refreshed)
+      localStorage.setItem('mayday-spring-diary-data', JSON.stringify(refreshed))
     }
     localStorage.setItem(rewriteKey, 'true')
   }, [])
@@ -7130,7 +7152,7 @@ function App() {
                     <div className="story-kicker">AFTER REHEARSAL</div><h2 className="story-scene-title">{springAfterChoice === 'lesson' ? '想跟誰學一點東西？' : '晚上想做什麼？'}</h2>
                     <StoryBlocks blocks={springAfterChoice === 'lesson'
                       ? [{ kind: 'narration', text: '佑達已經先走了，其他人還在收拾器材。瑪莎把 Bass 放回琴袋，溫尚翊和石頭整理吉他，阿信把麥克風收好。你忽然想趁大家還在，多學一點。' }]
-                      : [{ kind: 'narration', text: '佑達已經先走了。大家還在收拾器材，諺明哥看了看時間，問你要不要一起去吃點東西；另一邊，幾個人也問你要不要留下來學樂器。你看了看時間，今晚也可以不再安排行程，收拾東西直接回家。' }]} />
+                      : [{ kind: 'narration', text: '佑達已經先走了，其他人還在練團室裡收拾器材。諺明哥剛才先一步出去了；如果想跟他吃飯，就收好東西到外面找他。想留下來學樂器的話，裡面還有人在；今晚也可以什麼都不安排，直接回家。' }]} />
                     {springAfterChoice !== 'lesson' ? (
                       <div className="spring-after-choice-list">
                         <div className="spring-after-choice-heading">選擇今晚的安排</div>
