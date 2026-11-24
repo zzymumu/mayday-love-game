@@ -440,7 +440,7 @@ export const springStoreRoutes: Record<SpringCharacterId, SpringStoreRoute> = {
   },
 }
 export const springRehearsalBlocks: SpringBlock[] = [
-  { kind: 'dialogue', speaker: '錢佑達', text: '欸欸欸！今天練《轧車》對不對？' },
+  { kind: 'dialogue', speaker: '錢佑達', text: '欸欸欸！今天練《軋車》對不對？' },
   { kind: 'dialogue', speaker: '溫尚翊', text: '對啊，怎麼了？' },
   { kind: 'dialogue', speaker: '錢佑達', text: '那我今天要認真打！' },
   { kind: 'dialogue', speaker: '瑪莎', text: '你哪一天不認真？認真把大家帶跑。' },
@@ -864,7 +864,7 @@ export const springYanmingDinnerRounds: SpringStoreRound[] = [
       { kind: 'narration', text: '菜一道道送上桌，熱氣混著香味冒起來。諺明把湯碗往桌子中間挪了挪，又把筷子遞給你。你們才剛動筷，剛才練團室裡那陣亂七八糟的鼓聲就又被提了起來。' },
       { kind: 'dialogue', speaker: '劉諺明', text: '佑達今天真的打得很起勁，第一遍那個鼓花連我自己都差點笑出來。' },
     ],
-    prompt: '想到剛才練《轧車》的場面，你怎麼接話？',
+    prompt: '想到剛才練《軋車》的場面，你怎麼接話？',
     choices: [
       { text: '「我真的以為他要把整套鼓拆掉了！」', response: '「哈哈哈，沒有那麼誇張啦。」諺明笑著搖頭，「他一興奮就會想加東西，大家有時候要把他拉回來。」', affection: 3 },
       { text: '「瑪莎那個表情才好笑吧，他真的快受不了了。」', response: '「瑪莎嘴上嫌歸嫌，其實也很享受啦。」他說完自己先笑了，「不然第二遍也不會跟得那麼起勁。」', affection: 2 },
@@ -1218,7 +1218,7 @@ const springNaturalMemberSmsOpeners = (character: SpringMemberSmsId, context: Sp
   ]
   if (character === 'masa') return [
     { text: '「你今天吐槽佑達的速度比Bass還快。」', response: '「那是因為他提供的素材太多了，怪我喔？」', affection: 2 },
-    { text: '「佑達今天根本想把《轧車》改成個人秀。」', response: '「我差點把他的鼓棒沒收，真的。還好最後有把歌救回來。」', affection: 2 },
+    { text: '「佑達今天根本想把《軋車》改成個人秀。」', response: '「我差點把他的鼓棒沒收，真的。還好最後有把歌救回來。」', affection: 2 },
     { text: '「我現在還覺得地板在震，耳朵也在震。」', response: '「那是妳笑到腳軟，不要什麼都怪音箱。」', affection: 2 },
   ]
   return [
@@ -1690,7 +1690,7 @@ const springNaturalRehearsalSmsRounds = (
 ]
 
   if (character === 'masa') return [
-    springSmsRound('我剛才差點把佑達的鼓棒沒收。那個人把《轧車》當成自己個人秀是不是？', [
+    springSmsRound('我剛才差點把佑達的鼓棒沒收。那個人把《軋車》當成自己個人秀是不是？', [
       springSmsChoice('「他今天真的玩瘋了，連我都不知道該看哪裡。」', ['「看我啊，Bass就在這裡，謝謝。」'], 2),
       springSmsChoice('「你明明也一直在旁邊吐槽，根本共犯。」', ['「我那叫維護團隊秩序，跟共犯差很多。」'], 2),
       springSmsChoice('「可是最後一遍真的很帥，你也有功勞啦。」', ['「喔，終於有人發現Bass不是背景音了。」'], 3),
