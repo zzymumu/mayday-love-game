@@ -480,6 +480,13 @@ export const getSpringSmsRounds = (character: SpringCharacterId, context: Spring
       { text: '「我覺得你們感情很好欸。」', response: ['「……妳不要亂下結論。」'], affection: 2 },
     ] }
   }
+  if (character === 'ashin' && learned && !wentStore) {
+    rounds[0] = { ...rounds[0], choices: [
+      { text: '「今天真的謝謝你教我木吉他！」', response: ['「不客氣啦，妳今天很認真馁。」'], affection: 2 },
+      { text: '「我的手指現在還有一點酸。」', response: ['「那就先休息，明天不要急著練。」'], affection: 1 },
+      { text: '「下次還想再跟你學一點。」', response: ['「好啊，我們慢慢來。」'], affection: 2 },
+    ] }
+  }
   if (character === 'ashin' && !learned) {
     if (!wentStore) {
       rounds[0] = { ...rounds[0], choices: [
@@ -495,6 +502,13 @@ export const getSpringSmsRounds = (character: SpringCharacterId, context: Spring
         { text: '「下次還想再試一次！」', response: ['「好啊，下次再去看看。」'], affection: 2 },
       ] }
     }
+  }
+  if (character === 'stone' && learned && !wentStore) {
+    rounds[0] = { ...rounds[0], choices: [
+      { text: '「今天謝謝你慢慢教我，真的有比較懂了。」', response: ['「有進步就好，今天不用再練太晚。」'], affection: 2 },
+      { text: '「我剛剛摸到你的茧子，還是覺得很神奇。」', response: ['「哈哈，練久了就會有，妳不用急著也練成這樣。」'], affection: 2 },
+      { text: '「下次還要你教我喔。」', response: ['「好啊，妳想學就來。」'], affection: 2 },
+    ] }
   }
   if (character === 'stone' && !learned) {
     if (!wentStore) {
