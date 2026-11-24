@@ -1396,12 +1396,7 @@ const springNaturalLessonSmsRounds = (
         springSmsChoice('「我會偷偷練，等你嚇一跳。」', ['「那我就期待一下。不要把自己逼太緊喔。」'], 3),
         springSmsChoice('「你也可以有不會的地方啊，我又不會笑你。」', ['「那我先把這句記下來，以後真的有不會的再問妳。」'], 4),
       ]),
-    springSmsRound('時間不早了，今天真的很開心。妳回去好好休息，手指明天應該會有點抗議。', [
-      springSmsChoice('「晚安！下次再一起玩音樂。」', ['「好啊，晚安。今天謝謝妳來。」'], 3),
-      springSmsChoice('「你也不要彈到忘記睡覺喔。」', ['「好啦，我等等就收。妳也早點睡。」'], 3),
-      springSmsChoice('「下次換我彈給你聽。」', ['「我會很認真聽的，說好了喔。」'], 4),
-    ]),
-  ]
+]
 
   if (character === 'masa') return [
     springSmsRound(
@@ -1479,12 +1474,7 @@ const springNaturalLessonSmsRounds = (
         springSmsChoice('「好啦，我下次會先把他抓去旁邊談判。」', ['「拜託妳了，談判成功我請妳吃東西。」'], 3),
         springSmsChoice('「你居然會關心我的手指喔？」', ['「我是不想下次又要等妳休息半天，進度很慢欸。」'], 3),
       ]),
-    springSmsRound('我先去洗澡了。今天辛苦妳的耳朵跟手指，兩個都差不多該下班。', [
-      springSmsChoice('「晚安啦，Bass老師。」', ['「晚安，明天不要突然說要組團出道。」'], 2),
-      springSmsChoice('「你也早點休息，不准再吐槽佑達。」', ['「那要看他明天會不會繼續提供素材。」'], 2),
-      springSmsChoice('「下次我要讓你心服口服！」', ['「好啊，我等著看。先睡啦。」'], 3),
-    ]),
-  ]
+]
 
   return [
     springSmsRound(
@@ -1550,12 +1540,7 @@ const springNaturalLessonSmsRounds = (
         springSmsChoice('「那我下次要認真挑一個讓你驚艷的。」', ['「我相信妳，至少今天的眼光就不錯。」'], 3),
         springSmsChoice('「按摩明明是額外服務，要另外收費！」', ['「好，這個價目表我先不問，怕太貴。」'], 3),
       ]),
-    springSmsRound('今天謝謝妳一起待到最後。回去早點休息，手指也讓它休息一下。', [
-      springSmsChoice('「晚安石頭，下次再一起玩音樂！」', ['「晚安，說好了，下次見。」'], 3),
-      springSmsChoice('「你也不要忙到太晚，記得照顧自己。」', ['「好，我會記得。妳也是。」'], 3),
-      springSmsChoice('「下次換我彈給你聽，不准嫌棄。」', ['「我會很認真聽的，放心。」'], 4),
-    ]),
-  ]
+]
 }
 
 
@@ -1634,12 +1619,7 @@ const springNaturalRehearsalSmsRounds = (
         springSmsChoice('「放心，我會幫你保密，收費而已。」', ['「蛤？還要收費喔，妳真的很會做生意。」'], 3),
         springSmsChoice('「你根本也很期待下次吧。」', ['「……有啦。好了，這句不要再拿出來講。」'], 4),
       ]),
-    springSmsRound('我先去收東西了。妳今天笑得很大聲，回家記得喝水，別明天喉嚨痛又怪我。', [
-      springSmsChoice('「明明是你們害我笑的！」', ['「好啦好啦，算我們的。晚安。」'], 2),
-      springSmsChoice('「晚安團長，下次見！」', ['「晚安，回去小心。」'], 3),
-      springSmsChoice('「下次我還要坐第一排看你彈。」', ['「位置留給妳啦，先說好不要只顧著看佑達。」'], 4),
-    ]),
-  ]
+]
 
   if (character === 'ashin') return [
     springSmsRound('剛才最後一遍收住的時候，整間練團室突然很有氣勢。我自己唱完也有點起雞皮疙瘩。', [
@@ -1707,12 +1687,7 @@ const springNaturalRehearsalSmsRounds = (
         springSmsChoice('「那你就多開心一下，不用偷偷。」', ['「好，那我就不藏了。謝謝妳。」'], 4),
         springSmsChoice('「我已經想好歌了，先不告訴你。」', ['「還賣關子喔？好啦，我等妳公布。」'], 3),
       ]),
-    springSmsRound('今天真的很開心。妳回去好好休息，手指如果還酸就不要勉強自己。晚安喔。', [
-      springSmsChoice('「晚安！下次見面再聽你唱。」', ['「好啊，晚安，路上小心。」'], 3),
-      springSmsChoice('「你也早點睡，不准又練到很晚。」', ['「知道啦，我等等就休息。」'], 3),
-      springSmsChoice('「我今天有把你唱歌的樣子記下來。」', ['「那我今天就更值得了。晚安。」'], 4),
-    ]),
-  ]
+]
 
   if (character === 'masa') return [
     springSmsRound('我剛才差點把佑達的鼓棒沒收。那個人把《轧車》當成自己個人秀是不是？', [
@@ -1780,12 +1755,7 @@ const springNaturalRehearsalSmsRounds = (
         springSmsChoice('「我才不會逃，我還要檢查你有沒有亂買。」', ['「好，這個職位就交給妳了，記得負責到底。」'], 3),
         springSmsChoice('「你也知道我耳朵很辛苦喔？」', ['「不然呢，妳今天笑那麼大聲，我都替妳喉嚨擔心。」'], 3),
       ]),
-    springSmsRound('我先去洗澡了。今天就到這裡，晚安啦。', [
-      springSmsChoice('「晚安，毒舌老師。」', ['「晚安，明天不要突然說要組團出道。」'], 2),
-      springSmsChoice('「你也早點睡，不准再吐槽佑達。」', ['「那要看他明天會不會繼續提供素材。」'], 2),
-      springSmsChoice('「下次我要讓你心服口服！」', ['「好啊，我等著看。先睡啦。」'], 3),
-    ]),
-  ]
+]
 
   return [
     springSmsRound(
@@ -1851,12 +1821,7 @@ const springNaturalRehearsalSmsRounds = (
         springSmsChoice('「那我下次要認真挑一個讓你驚艷的。」', ['「我相信妳，至少今天的眼光就不錯。」'], 3),
         springSmsChoice('「按摩明明是額外服務，要另外收費！」', ['「好，這個價目表我先不問，怕太貴。」'], 3),
       ]),
-    springSmsRound('今天謝謝妳一起待到最後。回去早點休息，手指也讓它休息一下。', [
-      springSmsChoice('「晚安石頭，下次再一起玩音樂！」', ['「晚安，說好了，下次見。」'], 3),
-      springSmsChoice('「你也不要忙到太晚，記得照顧自己。」', ['「好，我會記得。妳也是。」'], 3),
-      springSmsChoice('「下次換我彈給你聽，不准嫌棄。」', ['「我會很認真聽的，放心。」'], 4),
-    ]),
-  ]
+]
 }
 
 
