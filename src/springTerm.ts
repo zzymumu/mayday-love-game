@@ -4,7 +4,7 @@ export type SpringChoice = { text: string; response: string; affection: number }
 export type SpringRoute = { title: string; blocks: SpringBlock[]; prompt: string; choices: SpringChoice[] }
 export type SpringStoreRound = { scene: SpringBlock[]; prompt: string; choices: SpringChoice[] }
 export type SpringStoreRoute = { title: string; blocks: SpringBlock[]; rounds: SpringStoreRound[]; endingBlocks: SpringBlock[] }
-export type SpringLessonRoute = SpringRoute & { touchChoices: SpringChoice[]; touchNarration: string }
+export type SpringLessonRoute = SpringRoute & { touchChoices: SpringChoice[]; touchNarration: string; touchBlocks: SpringBlock[]; promptBlocks?: SpringBlock[] }
 export type SpringInviteChoice = { text: string; response: string[]; affection: number; accepted?: boolean }
 export type SpringInviteRound = { incoming: string[]; choices: SpringInviteChoice[] }
 export type SpringSmsChoice = { text: string; response: string[]; affection: number; nextIncoming?: string }
@@ -446,6 +446,13 @@ export const springLessonRoutes: Record<Exclude<SpringCharacterId, 'yanming'>, S
       { text: '欸，你手上這個繭……可以摸摸看嗎？', response: '話一出口，你才發現自己問得太直接，伸出去的手停在半空，連忙想縮回來。溫尚翊看著你那隻進退兩難的手，先愣了半秒，隨即挑起眉。「不是妳自己說想摸的？現在又不敢了喔？」他故意用平常鬥嘴的口氣逗你，卻把左手往你面前送近一些，掌心朝上。「來啦，給妳摸。輕一點就好。」', affection: 2 },
     ],
     touchNarration: '你終於伸出手，指腹輕輕碰上他左手常按弦的位置。那層薄繭比看起來硬一些，沿著指腹摸過去時，能感覺到一點粗糙。溫尚翊原本還撐著一副沒什麼的樣子，直到你的指尖真的停在他指腹上，他的手指才不受控制地蜷了一下。你抬起眼，正好撞上他的目光；他也看著你，卻只停了一瞬，就像突然想起什麼似的把視線挪開。他清了清喉嚨，立刻把手收回去，伸手撈起旁邊的撥片，在指間轉了兩圈。像是怕空氣安靜得太明顯，他把吉他重新抱穩，故意刷出一串清脆的和弦，音量比剛才大了一點。「好啦，檢查完了喔？」他沒等你回答，又接著彈了兩下，裝作只是在示範。「來，換妳。剛剛那個和弦再試一次，我看看妳到底是哪根手指不聽話。」說著，他把椅子往你這邊挪近一點，伸手指了指琴頸，像是剛才那幾秒根本沒發生過。',
+    touchBlocks: [
+      { kind: 'narration', text: '你終於伸出手，指腹輕輕碰上他左手常按弦的位置。那層薄繭比看起來硬一些，沿著指腹摸過去時，能感覺到一點粗糙。溫尚翊原本還撐著一副沒什麼的樣子，直到你的指尖真的停在他指腹上，他的手指才不受控制地蜷了一下。你抬起眼，正好撞上他的目光；他也看著你，卻只停了一瞬，就像突然想起什麼似的把視線挪開。他清了清喉嚨，立刻把手收回去，伸手撈起旁邊的撥片，在指間轉了兩圈。像是怕空氣安靜得太明顯，他把吉他重新抱穩，故意刷出一串清脆的和弦，音量比剛才大了一點。' },
+      { kind: 'dialogue', speaker: '溫尚翊', text: '好啦，檢查完了喔？' },
+      { kind: 'narration', text: '他沒等你回答，又接著彈了兩下，裝作只是在示範。' },
+      { kind: 'dialogue', speaker: '溫尚翊', text: '來，換妳。剛剛那個和弦再試一次，我看看妳到底是哪根手指不聽話。' },
+      { kind: 'narration', text: '說著，他把椅子往你這邊挪近一點，伸手指了指琴頸，像是剛才那幾秒根本沒發生過。' },
+    ],
     prompt: '他把琴頸轉向你，撥片在弦上輕輕敲了兩下，催你再試一次。明明裝得很像在認真教學，耳根卻還沒完全退紅。你想怎麼接他的話？',
     choices: [
       { text: '你剛剛是不是故意彈那麼大聲？', response: '「哪有，剛好想試一下音啦。」他回得飛快，低頭又刷了一下弦，這次音量倒是乖乖小了下來。你還沒來得及笑，他就把撥片往你手裡一放：「笑什麼，換妳彈。」', affection: 2 },
@@ -475,7 +482,14 @@ export const springLessonRoutes: Record<Exclude<SpringCharacterId, 'yanming'>, S
       { text: '欸，你手上這個繭……可以摸摸看嗎？', response: '話一出口，你自己先愣住，手停在半空。你這才意識到，剛才問的不是琴、不是指法，而是要碰他的手，臉頰一下子熱了起來。阿信看見你想把手縮回去，沒有笑你，只輕輕把手掌翻過來。「可以啊，當然可以。」他把左手放到你面前，聲音也跟著放輕。「妳慢慢摸，不用急。」', affection: 2 },
     ],
     touchNarration: '你用指腹輕輕碰上他指尖那層薄繭。阿信的手掌微微收了一下，很快又放鬆，還配合著把手指轉向你看得清楚的位置。他低頭看著你，沒有催促，只在你抬眼時溫柔地笑了一下。',
-    prompt: '阿信的指尖還留在你手邊，他低聲問：「是不是比妳想像中硬？」你怎麼回答？',
+    touchBlocks: [
+      { kind: 'narration', text: '你用指腹輕輕碰上他指尖那層薄繭。阿信的手掌微微收了一下，很快又放鬆，還配合著把手指轉向你看得清楚的位置。他低頭看著你，沒有催促，只在你抬眼時溫柔地笑了一下。' },
+    ],
+    promptBlocks: [
+      { kind: 'narration', text: '阿信的指尖還留在你手邊，他低聲問：' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '是不是比妳想像中硬？' },
+    ],
+    prompt: '你怎麼回答？',
     choices: [
       { text: '有欸，跟看起來不太一樣。', response: '「哈哈，真的喔？」他看著你認真比較的樣子，笑意更深。「我以前也沒注意過，都是彈久了才變這樣。」', affection: 2 },
       { text: '你剛剛怎麼一點都不驚訝？', response: '「有一點啊。」他笑了笑，手卻沒有收回去。「只是怕我一笑，妳就不好意思摸了。」', affection: 2 },
@@ -505,7 +519,16 @@ export const springLessonRoutes: Record<Exclude<SpringCharacterId, 'yanming'>, S
       { text: '欸，你手上這個繭……可以摸摸看嗎？', response: '你話才出口就發現自己問得太直接，手停在半空，耳朵先熱了。瑪莎看著你，眉毛慢慢挑起來，像是抓到什麼把柄。「欸？妳剛剛是不是沒經過大腦就問了？」他故意把左手伸過來，指尖在你面前晃了晃。「來啦，檢查員，摸完要寫報告喔。」', affection: 2 },
     ],
     touchNarration: '你才剛碰到，他就低頭盯著你看，故意一動也不動。你想裝作很認真地研究，他卻偏偏在你快要抬頭時問：「欸，怎麼突然這麼安靜？」你一抬眼，他笑得一臉得逞，手指卻很配合地攤著，沒有躲開。',
-    prompt: '瑪莎故意晃了晃手指：「報告寫好了沒？還是妳要再檢查一次？」你怎麼回？',
+    touchBlocks: [
+      { kind: 'narration', text: '你才剛碰到，他就低頭盯著你看，故意一動也不動。你想裝作很認真地研究，他卻偏偏在你快要抬頭時問：' },
+      { kind: 'dialogue', speaker: '瑪莎', text: '欸，怎麼突然這麼安靜？' },
+      { kind: 'narration', text: '你一抬眼，他笑得一臉得逞，手指卻很配合地攤著，沒有躲開。' },
+    ],
+    promptBlocks: [
+      { kind: 'narration', text: '瑪莎故意晃了晃手指，笑得一臉得逞：' },
+      { kind: 'dialogue', speaker: '瑪莎', text: '報告寫好了沒？還是妳要再檢查一次？' },
+    ],
+    prompt: '你怎麼回？',
     choices: [
       { text: '我哪有！我只是認真研究！', response: '「好喔，研究員。那妳摸出心得沒？」他把手伸到你面前，真的等著聽評語。', affection: 2 },
       { text: '你不要一直講啦！', response: '「我又沒怎樣，是妳自己先開口的欸。」他笑著把手收回去，還故意在你面前晃了晃。', affection: 2 },
@@ -534,7 +557,14 @@ export const springLessonRoutes: Record<Exclude<SpringCharacterId, 'yanming'>, S
       { text: '欸，你手上這個繭……可以摸摸看嗎？', response: '話一出口，你才發現自己好像太直接，手指停在半空，連眼神都不知道該往哪裡放。石頭看見你突然僵住，沒有笑你，只把手掌放得更平，輕聲說：「可以啊，妳想摸就摸。」他頓了一下，又補了一句：「如果不好意思，也沒關係。」', affection: 2 },
     ],
     touchNarration: '你指尖輕輕碰上他指腹那層薄繭。石頭沒有動，只把手安穩地放在你面前，讓你能慢慢看清楚。你摸到一半抬起頭，正好撞上他的目光；他沒有躲開，只很輕地笑了一下，像是怕驚動這個安靜的瞬間。',
-    prompt: '石頭看著你，語氣仍舊溫柔：「是不是比想像中硬？」你想怎麼回答？',
+    touchBlocks: [
+      { kind: 'narration', text: '你指尖輕輕碰上他指腹那層薄繭。石頭沒有動，只把手安穩地放在你面前，讓你能慢慢看清楚。你摸到一半抬起頭，正好撞上他的目光；他沒有躲開，只很輕地笑了一下，像是怕驚動這個安靜的瞬間。' },
+    ],
+    promptBlocks: [
+      { kind: 'narration', text: '石頭看著你，語氣仍舊溫柔：' },
+      { kind: 'dialogue', speaker: '石錦航', text: '是不是比想像中硬？' },
+    ],
+    prompt: '你想怎麼回答？',
     choices: [
       { text: '原來真的摸得到耶，好神奇。', response: '「哈哈，妳剛剛不是還嫌手痛？現在反而對這個比較有興趣。」他笑著把手往回收了一點，卻沒有完全抽走。', affection: 2 },
       { text: '你以前剛開始練的時候也會這麼痛嗎？', response: '「會啊，所以我知道妳現在的感覺。」他把琴往你這邊挪了挪。「等一下我再陪妳練，慢慢來就好。」', affection: 2 },
