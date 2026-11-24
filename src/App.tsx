@@ -1819,6 +1819,19 @@ function App() {
   const [monthDiaryUnlocked, setMonthDiaryUnlocked] = useState(() => localStorage.getItem('mayday-month-diary-unlocked') === 'true' || localStorage.getItem('mayday-month-day-complete') === 'true')
   const [selectedDiaryDate, setSelectedDiaryDate] = useState<'1996-10-15' | '1996-10-16' | '1996-11-16' | '1996-12-14' | '1996-12-31' | '1997-01-22' | '1997-02-03' | '1997-02-17' | null>(null)
   const [chatMessages, setChatMessages] = useState<Record<CharacterId, SmsMessage[]>>(() => {
+    // The spring SMS content is being replaced wholesale with a new everyday-chat set.
+    // Remove only the old 17 February SMS exchange; keep every other historical message.
+    const resetSpringSmsHistory = localStorage.getItem('mayday-spring-sms-content-version') !== 'daily-chat-v1'
+    if (resetSpringSmsHistory) {
+      localStorage.setItem('mayday-spring-sms-content-version', 'daily-chat-v1')
+      localStorage.removeItem('mayday-spring-sms-target')
+      localStorage.setItem('mayday-spring-sms-round', '0')
+      localStorage.setItem('mayday-spring-sms-replied', 'false')
+      localStorage.setItem('mayday-spring-sms-opening-sent', 'false')
+      localStorage.removeItem('mayday-spring-sms-opening-choice')
+      localStorage.setItem('mayday-spring-sms-replies', '[]')
+      localStorage.setItem('mayday-spring-sms-mode', 'day')
+    }
     const saved = localStorage.getItem('mayday-chat-messages')
     if (saved) {
       try {
@@ -1834,8 +1847,14 @@ function App() {
               : message),
             masa: removeDuplicateMasaErrandLine(parsed.masa),
           }
-          if (JSON.stringify(migrated) !== JSON.stringify(parsed)) localStorage.setItem('mayday-chat-messages', JSON.stringify(migrated))
-          return migrated
+          const refreshed: Record<CharacterId, SmsMessage[]> = resetSpringSmsHistory
+            ? Object.fromEntries(Object.entries(migrated).map(([id, messages]) => [
+                id,
+                messages.filter((message) => message.date !== '1997年2月17日・晚上'),
+              ])) as Record<CharacterId, SmsMessage[]>
+            : migrated
+          if (JSON.stringify(refreshed) !== JSON.stringify(parsed)) localStorage.setItem('mayday-chat-messages', JSON.stringify(refreshed))
+          return refreshed
         }
       } catch {
         // Rebuild the new contact threads if saved chat data is malformed.
