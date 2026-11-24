@@ -1779,7 +1779,7 @@ function App() {
   const [storyStage, setStoryStage] = useState<StoryStage>(() => {
     const saved = localStorage.getItem('mayday-story-stage')
     const savedSpringStage = saved === 'paused' ? localStorage.getItem('mayday-resume-stage') : saved
-    if (localStorage.getItem('mayday-spring-sms-content-version') !== 'daily-chat-v2') {
+    if (localStorage.getItem('mayday-spring-sms-content-version') !== 'daily-chat-v3') {
       if (savedSpringStage === 'spring-sms-chat') return 'spring-sms-picker'
       if (savedSpringStage === 'spring-free-chat') return 'spring-free-chat-picker'
     }
@@ -1826,9 +1826,9 @@ function App() {
   const [chatMessages, setChatMessages] = useState<Record<CharacterId, SmsMessage[]>>(() => {
     // The spring SMS content is being refreshed with coherent, character-specific everyday conversations.
     // Remove only the previous 17 February free-chat exchange; keep every other historical message.
-    const resetSpringSmsHistory = localStorage.getItem('mayday-spring-sms-content-version') !== 'daily-chat-v2'
+    const resetSpringSmsHistory = localStorage.getItem('mayday-spring-sms-content-version') !== 'daily-chat-v3'
     if (resetSpringSmsHistory) {
-      localStorage.setItem('mayday-spring-sms-content-version', 'daily-chat-v2')
+      localStorage.setItem('mayday-spring-sms-content-version', 'daily-chat-v3')
       localStorage.removeItem('mayday-spring-sms-target')
       localStorage.setItem('mayday-spring-sms-round', '0')
       localStorage.setItem('mayday-spring-sms-replied', 'false')
