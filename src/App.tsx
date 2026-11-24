@@ -1837,6 +1837,20 @@ function App() {
       localStorage.setItem('mayday-spring-sms-replies', '[]')
       localStorage.setItem('mayday-spring-sms-mode', 'day')
     }
+    // Refresh only Wen's 17 February thread; preserve the other characters' saved conversations.
+    const resetWenSpringSmsHistory = localStorage.getItem('mayday-spring-wen-sms-content-version') !== 'hot-cocoa-v1'
+    if (resetWenSpringSmsHistory) {
+      localStorage.setItem('mayday-spring-wen-sms-content-version', 'hot-cocoa-v1')
+      if (localStorage.getItem('mayday-spring-sms-target') === 'wen') {
+        localStorage.removeItem('mayday-spring-sms-target')
+        localStorage.setItem('mayday-spring-sms-round', '0')
+        localStorage.setItem('mayday-spring-sms-replied', 'false')
+        localStorage.setItem('mayday-spring-sms-opening-sent', 'false')
+        localStorage.removeItem('mayday-spring-sms-opening-choice')
+        localStorage.setItem('mayday-spring-sms-replies', '[]')
+        localStorage.setItem('mayday-spring-sms-mode', 'day')
+      }
+    }
     const saved = localStorage.getItem('mayday-chat-messages')
     if (saved) {
       try {
@@ -1852,10 +1866,14 @@ function App() {
               : message),
             masa: removeDuplicateMasaErrandLine(parsed.masa),
           }
-          const refreshed: Record<CharacterId, SmsMessage[]> = resetSpringSmsHistory
+          const refreshed: Record<CharacterId, SmsMessage[]> = resetSpringSmsHistory || resetWenSpringSmsHistory
             ? Object.fromEntries(Object.entries(migrated).map(([id, messages]) => [
                 id,
-                messages.filter((message) => message.date !== '1997年2月17日・晚上'),
+                messages.filter((message) => {
+                  if (message.date !== '1997年2月17日・晚上') return true
+                  if (resetSpringSmsHistory) return false
+                  return !(resetWenSpringSmsHistory && id === 'wen')
+                }),
               ])) as Record<CharacterId, SmsMessage[]>
             : migrated
           if (JSON.stringify(refreshed) !== JSON.stringify(parsed)) localStorage.setItem('mayday-chat-messages', JSON.stringify(refreshed))
