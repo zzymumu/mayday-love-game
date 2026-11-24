@@ -26,8 +26,8 @@ export const springInvites: Record<SpringCharacterId, string[]> = {
   wen: ['欸，妳今天下課了嗎？', '我等一下想去樂器行看個效果器。', '要不要一起去？'],
   ashin: ['欸～妳今天有空嗎？', '我想去樂器行看看木吉他，順便試幾把。', '妳要不要一起來？'],
   masa: ['欸，我等一下要去樂器行。', '有東西要買，順便幫我看看哪個比較划算。', '有空就一起來啦。'],
-  stone: ['今天下午有空嗎？', '我想去樂器行看看吉他配件。', '如果妳沒事的話，可以一起走走。'],
-  yanming: ['妳今天下課了嗎？', '我下午想去樂器行看看一些器材。', '有空的話一起去吧。'],
+  stone: ['今天上午有空嗎？', '我想去樂器行看看吉他配件。', '如果妳沒事的話，可以一起走走。'],
+  yanming: ['妳上午有空嗎？', '我想去樂器行看看一些器材。', '有空的話一起去吧。'],
 }
 
 export const springInviteRounds: Record<SpringCharacterId, SpringInviteRound[]> = {
@@ -42,8 +42,8 @@ export const springInviteRounds: Record<SpringCharacterId, SpringInviteRound[]> 
       { text: '「你還記得我說過喔？」', response: ['「有啦，這種小事有什麼好忘的。」', '「妳不要突然問得這麼奇怪。」'], affection: 3 },
       { text: '「那你買之前先問問我的意見。」', response: ['「妳是要當採購喔？」', '「好啦，會問妳。」'], affection: 1 },
     ]},
-    { incoming: ['「所以妳今天有空嗎？」', '「我大概三點過去，妳要不要一起？」'], choices: [
-      { text: '「好啊，三點見！」', response: ['「好，那三點。妳下課慢慢來，不用趕。」'], affection: 3, accepted: true },
+    { incoming: ['「所以妳今天有空嗎？」', '「我大概上午十點過去，妳要不要一起？」'], choices: [
+      { text: '「好啊，上午十點見！」', response: ['「好，那上午十點。妳慢慢來，不用趕。」'], affection: 3, accepted: true },
       { text: '「可以啊，但你要先答應不准嫌我不懂。」', response: ['「我哪有要嫌妳，亂講。」', '「三點見啦。」'], affection: 2, accepted: true },
       { text: '「今天不行，我還有事情要忙。」', response: ['「好啦，那妳先忙，不用趕。」', '「下次有空再一起去。」'], affection: 1, accepted: false },
     ]},
@@ -60,7 +60,7 @@ export const springInviteRounds: Record<SpringCharacterId, SpringInviteRound[]> 
       { text: '「我比較想自己抱抱看，木吉他看起來好大。」', response: ['「可以啊，我幫妳拿，妳慢慢試。」'], affection: 2 },
     ]},
     { incoming: ['「如果妳今天有空的話……」', '「要不要一起去？我覺得妳應該會喜歡那把琴。」'], choices: [
-      { text: '「好啊，我想跟你一起去！」', response: ['「太好了，那我們三點左右在校門口碰面。」'], affection: 3, accepted: true },
+      { text: '「好啊，我想跟你一起去！」', response: ['「太好了，那我們上午十點左右在校門口碰面。」'], affection: 3, accepted: true },
       { text: '「可以！但你要教我怎麼聽木吉他的音色。」', response: ['「好啊，我們可以慢慢聽，不用急。」'], affection: 2, accepted: true },
       { text: '「今天真的不行，我還有事情要處理。」', response: ['「沒關係啦，妳先忙自己的事。」', '「下次有空再一起去也可以。」'], affection: 1, accepted: false },
     ]},
@@ -76,8 +76,8 @@ export const springInviteRounds: Record<SpringCharacterId, SpringInviteRound[]> 
       { text: '「你是不是早就有喜歡的，只是在等我幫你背書？」', response: ['「……妳不要把我講得這麼心機好不好。」', '「但妳等一下真的要幫我看一下。」'], affection: 3 },
       { text: '「你可以自己決定啊，我又不懂。」', response: ['「蛤？那我找妳來幹嘛？」', '「算了，妳至少幫我吐槽店員。」'], affection: -1 },
     ]},
-    { incoming: ['「好啦，講正事。」', '「下午要不要一起去？我請妳吃個東西，省得妳說我只會使喚人。」'], choices: [
-      { text: '「好啊，走！我倒要看看你要買什麼。」', response: ['「這才像話。三點，校門口不要遲到。」'], affection: 3, accepted: true },
+    { incoming: ['「好啦，講正事。」', '「上午要不要一起去？我請妳吃個東西，省得妳說我只會使喚人。」'], choices: [
+      { text: '「好啊，走！我倒要看看你要買什麼。」', response: ['「這才像話。上午十點，校門口不要遲到。」'], affection: 3, accepted: true },
       { text: '「可以，但買完你要請我吃東西喔。」', response: ['「妳還真的很會談條件欸。」', '「好啦，買完再說。」'], affection: 2, accepted: true },
       { text: '「今天不想陪你比價，哈哈哈。」', response: ['「……妳真的很欠揍欸。」', '「好啦，不勉強妳，我自己去。」'], affection: -1, accepted: false },
     ]},
@@ -93,15 +93,15 @@ export const springInviteRounds: Record<SpringCharacterId, SpringInviteRound[]> 
       { text: '「那我要先試背，不能只聽你說。」', response: ['「當然啊，妳試過比較準，我幫妳拿著琴。」'], affection: 2 },
       { text: '「你怎麼連這個都幫我想好了？」', response: ['「剛好看到就想到妳了，沒有特別啦。」'], affection: 3 },
     ]},
-    { incoming: ['「我大概三點會到那附近。」', '「妳如果有空，要不要一起走過去？慢慢看就好。」'], choices: [
-      { text: '「好啊，我們一起去。」', response: ['「好，那我三點在校門口等妳。」'], affection: 3, accepted: true },
+    { incoming: ['「我上午十點左右會到那附近。」', '「妳如果有空，要不要一起走過去？慢慢看就好。」'], choices: [
+      { text: '「好啊，我們一起去。」', response: ['「好，那我上午十點在校門口等妳。」'], affection: 3, accepted: true },
       { text: '「可以，你等我一下，我下課就過去。」', response: ['「不急，妳下課再傳訊息給我就好。」'], affection: 2, accepted: true },
       { text: '「今天想先回家，改天再一起去吧。」', response: ['「好啊，沒關係，回家路上小心。」'], affection: 1, accepted: false },
     ]},
   ],
   yanming: [
     { incoming: springInvites.yanming, choices: [
-      { text: '「下課後還沒有安排，怎麼了？」', response: ['「練團室有幾樣器材需要補，我下午想去店裡確認一下。」'], affection: 2 },
+      { text: '「下課後還沒有安排，怎麼了？」', response: ['「練團室有幾樣器材需要補，我上午想去店裡確認一下。」'], affection: 2 },
       { text: '「你要買什麼？我可以陪你一起挑。」', response: ['「主要是一些配件和耗材，有人一起看會比較周全。」'], affection: 3 },
       { text: '「我可能要先整理一下課堂筆記，晚一點呢？」', response: ['「可以，時間不急，我先把要買的東西列好。」'], affection: 1 },
     ]},
@@ -110,8 +110,8 @@ export const springInviteRounds: Record<SpringCharacterId, SpringInviteRound[]> 
       { text: '「那我幫你看外觀，規格就交給你。」', response: ['「好啊，這樣分工剛剛好。」'], affection: 3 },
       { text: '「我只負責陪逛，不負責做功課喔。」', response: ['「哈哈，沒問題，規格我會先確認好。」'], affection: 1 },
     ]},
-    { incoming: ['「我大概三點出發，妳如果方便的話……」', '「要不要一起去？買完也可以順路走走。」'], choices: [
-      { text: '「好啊，三點一起出發。」', response: ['「好，那我在校門口等妳，妳下課再過來就可以。」'], affection: 3, accepted: true },
+    { incoming: ['「我大概上午十點出發，妳如果方便的話……」', '「要不要一起去？買完也可以順路走走。」'], choices: [
+      { text: '「好啊，上午十點一起出發。」', response: ['「好，那我在校門口等妳，妳不用趕，到了再傳訊息給我就可以。」'], affection: 3, accepted: true },
       { text: '「可以，我也想看看你們平常用的器材。」', response: ['「好，到了我再慢慢跟妳介紹。」'], affection: 2, accepted: true },
       { text: '「今天不太方便，改天再陪你去。」', response: ['「沒關係，妳先忙，改天有空再一起去。」'], affection: 1, accepted: false },
     ]},
@@ -1316,6 +1316,8 @@ const springYanmingSharedSmsRounds = (context: SpringDayContext, replies: number
     ]),
   ]
 
+  if (context.afterChoice === 'home') return springYanmingOwnerSmsRounds(replies, openingChoice)
+
   if (wentStore) return [
     springSmsRound('今天在鼓棒那邊，妳拿起來比了好幾支，最後挑的那支重量剛好。妳的眼光其實不錯。', [
       springSmsChoice('「我只是怕挑錯，回去還要被你退貨。」', ['「不會啦，尺寸和重量都合適，這次挑得很好。」'], 2),
@@ -1360,6 +1362,7 @@ const springYanmingSmsOpeners = (context: SpringDayContext): { text: string; res
       { text: '「下次換我帶你去吃我喜歡的店！」', response: '「好啊，那我就等妳推薦了。」', affection: 3 },
     ]
   }
+  if (context.afterChoice === 'home') return springHomeSmsOpeners.yanming
   if (context.storeCharacter === 'yanming') return [
     { text: '「今天陪你去看器材還滿有趣的，原來你連鼓棒都要比較半天。」', response: '「習慣了，東西要合用才行。不過有妳一起看，確實快很多。」', affection: 2 },
     { text: '「我回家才發現自己好像也學會看一點規格了。」', response: '「那很好啊，下次再去就知道要注意哪些地方了。」', affection: 2 },
@@ -1424,6 +1427,8 @@ const springNaturalMemberSmsOpeners = (character: SpringMemberSmsId, context: Sp
         ]
   }
 
+  if (context.afterChoice === 'home') return springHomeSmsOpeners[character]
+
   if (wentStore) {
     if (character === 'wen') return [
       { text: '「你不是說只是看看？結果在效果器那邊蹲到差點忘記我。」', response: '「欸，我哪有忘記妳？妳不是也踩得很開心，還踩第二次。」', affection: 2 },
@@ -1441,7 +1446,7 @@ const springNaturalMemberSmsOpeners = (character: SpringMemberSmsId, context: Sp
       { text: '「下次再去，我要負責挑東西，你負責不要吐槽。」', response: '「這個分工有點困難，我盡量啦。」', affection: 3 },
     ]
     return [
-      { text: '「你最後選的那條背帶，我越想越覺得很適合你。」', response: '「謝謝，妳剛剛幫我看了好幾次，我自己也比較放心。」', affection: 2 },
+      { text: '「你最後選的那條背帶，我越想越覺得很適合你。」', response: '「謝謝，妳上午幫我看了好幾次，我自己也比較放心。」', affection: 2 },
       { text: '「今天才知道，原來挑一條背帶也要看這麼多細節。」', response: '「背起來舒服最重要，外型再慢慢挑就好。」', affection: 2 },
       { text: '「下次我還想再試試看那把展示琴。」', response: '「好啊，下次有空再一起去，不用急。」', affection: 3 },
     ]
@@ -1478,26 +1483,26 @@ const springNaturalStoreOnlySmsRounds = (
   const r0 = replies[0] ?? 0
 
   if (character === 'wen') return [
-    springSmsRound('欸，妳剛剛踩那顆效果器時明明往後縮了一下，下一秒又自己跑回去再踩一次。', [
-      springSmsChoice('「第一次真的有被嚇到，第二次就知道怎麼玩了。」', ['「我就知道妳還會再踩一次，剛剛眼睛都亮了。」'], 2),
+    springSmsRound('欸，上午妳踩那顆效果器時明明往後縮了一下，下一秒又自己跑回去再踩一次。', [
+      springSmsChoice('「第一次真的有被嚇到，第二次就知道怎麼玩了。」', ['「我就知道妳還會再踩一次，上午眼睛都亮了。」'], 2),
       springSmsChoice('「我才沒有被嚇到，我是在確認效果！」', ['「好啦，確認效果。妳說什麼就是什麼。」'], 2),
       springSmsChoice('「下次換你踩，我要看你會不會也縮一下。」', ['「我踩過幾百次了，妳還是先顧好自己吧。」'], 3),
     ]),
     springSmsRound(
       r0 === 0 ? '妳第二次踩下去就沒縮了，還站在那邊聽了好一會兒。'
         : r0 === 1 ? '嘴巴說沒被嚇到，手倒是一直想再按一次，這個我有看到。'
-          : '我剛剛試音時還在等妳會不會又突然踩下去。',
+          : '上午試音時，我還在等妳會不會又突然踩下去。',
       [
         springSmsChoice('「那顆真的很好玩，我想再聽一次不同的音色。」', ['「好啊，下次讓妳自己試，我不搶。」'], 3),
         springSmsChoice('「你明明一直在旁邊偷看我。」', ['「我是在看妳有沒有把音箱關掉，少自作多情。」'], 3),
         springSmsChoice('「你就承認你也覺得我玩得很開心嘛。」', ['「有啦，看得出來。這樣總可以了吧？」'], 2),
       ]),
-    springSmsRound('我把妳剛剛喜歡的那顆型號記下來了，下次去不用從頭找。', [
+    springSmsRound('我把妳上午喜歡的那顆型號記下來了，下次去不用從頭找。', [
       springSmsChoice('「你居然有記得喔？」', ['「妳講了好幾次，我想忘記也難。」'], 3),
       springSmsChoice('「我只是有認真聽你彈啦。」', ['「知道啦，沒有說妳不認真。」'], 2),
       springSmsChoice('「下次我還要自己試，不准搶先按。」', ['「好，這次讓妳當主控，別又踩太早。」'], 3),
     ]),
-    springSmsRound('剛剛店員還問妳是不是也玩樂器的，我差點替妳回答。', [
+    springSmsRound('上午店員還問妳是不是也玩樂器的，我差點替妳回答。', [
       springSmsChoice('「你敢亂講我就當場拆穿你。」', ['「我本來想說妳是來監督我不要亂買的。」'], 2),
       springSmsChoice('「那你怎麼回答？」', ['「我說妳是效果器試聽員，還滿專業的。」'], 2),
       springSmsChoice('「我以後學會了再去，讓你刮目相看。」', ['「好啊，我等著看。先別急著買一整排。」'], 3),
@@ -1515,12 +1520,12 @@ const springNaturalStoreOnlySmsRounds = (
       springSmsChoice('「你幫我調背帶的時候，我有一點緊張。」', ['「啊？我只是怕妳抱得太辛苦，沒有別的意思啦。」'], 3),
       springSmsChoice('「我其實很喜歡你剛剛彈給我聽的聲音。」', ['「那就好，我自己也滿喜歡那把琴的音色。」'], 3),
     ]),
-    springSmsRound('我剛剛把兩把琴的型號寫下來了，免得下次想再試，還要重新找半天。', [
+    springSmsRound('我回去後把上午試的兩把琴型號寫下來了，免得下次想再試，還要重新找半天。', [
       springSmsChoice('「你真的有寫喔？我還以為你只是在記心裡。」', ['「有啊，寫下來比較不會忘。妳想聽哪一把都可以。」'], 2),
       springSmsChoice('「第一把那個比較厚的聲音，我還是最喜歡。」', ['「我也喜歡那把，聽起來很溫暖。」'], 3),
       springSmsChoice('「下次我想自己抱起來試，這次比較不會手忙腳亂了。」', ['「好啊，下次我先幫妳調好，妳就慢慢試。」'], 3),
     ]),
-    springSmsRound('妳剛剛聽我彈的時候，還跟著節奏輕輕晃了一下，我有看到。', [
+    springSmsRound('妳上午聽我彈的時候，還跟著節奏輕輕晃了一下，我有看到。', [
       springSmsChoice('「有嗎？我自己都沒發現欸。」', ['「有啊，很自然。看得出來妳是真的喜歡那個聲音。」'], 3),
       springSmsChoice('「因為那段真的很好聽嘛。」', ['「謝謝妳，妳這樣說我會有點不好意思。」'], 3),
       springSmsChoice('「你不要一直注意我啦，我會分心。」', ['「好啦，那我下次假裝沒看到。」'], 2),
@@ -1543,12 +1548,12 @@ const springNaturalStoreOnlySmsRounds = (
       springSmsChoice('「我是在幫你省錢，你還嫌我喔？」', ['「我哪有嫌，這不是有把妳的意見聽進去嗎。」'], 3),
       springSmsChoice('「下次我帶計算機來，幫你算到一毛不差。」', ['「拜託不要，買個琴弦不用開董事會。」'], 2),
     ]),
-    springSmsRound('妳剛剛在旁邊幫我看琴弦價差，還真的比我自己一個人快多了。', [
+    springSmsRound('妳上午在旁邊幫我看琴弦價差，還真的比我自己一個人快多了。', [
       springSmsChoice('「我只是想確保你不要買錯嘛。」', ['「知道啦，這次算妳有幫上忙。」'], 3),
       springSmsChoice('「顧問費可以用請吃飯抵喔。」', ['「妳這個人真的很會安排。」'], 3),
       springSmsChoice('「我下次改帶紙筆，不會嚇到店員。」', ['「不用啦，正常一點就好。」'], 2),
     ]),
-    springSmsRound('店員剛才把兩包琴弦的規格拿來時，妳還幫我一起確認粗細和價差，這次真的有幫上忙。', [
+    springSmsRound('上午店員把兩包琴弦的規格拿來時，妳還幫我一起確認粗細和價差，這次真的有幫上忙。', [
       springSmsChoice('「你敢說我是來監督你花錢的，我就承認。」', ['「那我還真沒說錯，妳今天眼睛都長在價目表上。」'], 2),
       springSmsChoice('「你到底怎麼回答？」', ['「我說妳是來幫我抓預算的，聽起來很專業吧。」'], 2),
       springSmsChoice('「我現在不會，以後可以學啊。」', ['「先把興趣留著，別一下子連器材都買齊。」'], 3),
@@ -1567,14 +1572,14 @@ const springNaturalStoreOnlySmsRounds = (
 
   return [
     springSmsRound('妳替我看背帶時，拿起來比了好幾次，最後還特地確認肩膀那邊會不會磨。那時候我覺得妳比我還認真。', [
-      springSmsChoice('「當然要看仔細一點，背起來舒服比較重要。」', ['「對啊，妳剛剛提醒我之後，我也覺得那條比較合適。」'], 3),
+      springSmsChoice('「當然要看仔細一點，背起來舒服比較重要。」', ['「對啊，妳上午提醒我之後，我也覺得那條比較合適。」'], 3),
       springSmsChoice('「我怕你買回去才發現不舒服，還要再跑一趟。」', ['「謝謝妳替我想到這些，我自己有時候會只顧著看外型。」'], 3),
       springSmsChoice('「我只是想多跟你待一下，所以才看得那麼仔細。」', ['「……那今天好像逛得還不夠久。」'], 4),
     ]),
     springSmsRound('我最後還是選了那條比較簡單的，背起來舒服，平常練團也方便。', [
       springSmsChoice('「那條真的很適合你，簡單又耐看。」', ['「謝謝，妳這樣說我就放心了。」'], 3),
       springSmsChoice('「下次換我挑東西，你只要負責試用。」', ['「好啊，我也想看看妳會怎麼挑。」'], 3),
-      springSmsChoice('「你剛剛其實猶豫很久，我有看出來。」', ['「被妳看出來了。我平常挑東西會想比較久。」'], 2),
+      springSmsChoice('「你上午其實猶豫很久，我有看出來。」', ['「被妳看出來了。我平常挑東西會想比較久。」'], 2),
     ]),
     springSmsRound('我把今天看到的幾樣配件記下來了，之後有需要就不用重新找。', [
       springSmsChoice('「你真的很仔細，連這種小東西都記下來。」', ['「習慣了，喜歡的東西就會想好好整理。」'], 2),
@@ -1605,7 +1610,7 @@ const springNaturalMemberSmsRounds = (
   const learned = context.lessonCharacter === character
   const r0 = replies[0] ?? 0
 
-  if (wentStore && !learned) return springNaturalStoreOnlySmsRounds(character, replies)
+  if (wentStore && !learned && context.afterChoice !== 'home') return springNaturalStoreOnlySmsRounds(character, replies)
 
   if (learned) {
     if (character === 'wen') return [
