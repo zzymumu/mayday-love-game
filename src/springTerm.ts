@@ -229,6 +229,13 @@ export const springYanmingDinnerChoices = [
 ]
 
 const springContextLine = (character: SpringCharacterId, context: SpringDayContext): string => {
+  if (context.storeCharacter === character && context.lessonCharacter === character) {
+    if (character === 'wen') return '今天先陪妳去樂器行，後來又留下來練吉他，妳的手指還痛嗎？'
+    if (character === 'ashin') return '今天木吉他從樂器行一路練到練團室，妳回家有沒有再試那幾個和弦？'
+    if (character === 'masa') return '今天先在店裡看 Bass，後來又真的留下來練，手指有沒有還在抗議？'
+    if (character === 'stone') return '今天一起看了配件，後來又練了和弦，妳手指還好嗎？'
+  }
+  if (context.storeCharacter === 'yanming' && character === 'yanming' && context.afterChoice === 'yanming-dinner') return '今天先一起逛了器材，後來又去吃飯，妳有沒有覺得行程排得很剛好？'
   if (context.storeCharacter === character) {
     if (character === 'wen') return '今天陪妳去樂器行，妳最後有沒有把那個撥片收好？'
     if (character === 'ashin') return '今天去樂器行試木吉他還滿好玩的，妳後來手指還會酸嗎？'
