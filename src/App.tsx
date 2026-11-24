@@ -7195,7 +7195,7 @@ function App() {
                               )
                             })}
                           </div>
-                        ) : (
+                        ) :
                         storyStage === 'free-time' && selectedSmsThread === null && !freeChatTarget ? (
                           <div className="free-time-picker">
                             <div className="free-time-intro">
