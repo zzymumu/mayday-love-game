@@ -2,6 +2,8 @@ export type SpringCharacterId = 'wen' | 'ashin' | 'masa' | 'stone' | 'yanming'
 export type SpringBlock = { kind: 'narration' | 'dialogue' | 'aside'; speaker?: string; text: string }
 export type SpringChoice = { text: string; response: string; affection: number }
 export type SpringRoute = { title: string; blocks: SpringBlock[]; prompt: string; choices: SpringChoice[] }
+export type SpringStoreRound = { scene: SpringBlock[]; prompt: string; choices: SpringChoice[] }
+export type SpringStoreRoute = { title: string; blocks: SpringBlock[]; rounds: SpringStoreRound[]; endingBlocks: SpringBlock[] }
 export type SpringLessonRoute = SpringRoute & { touchPrompt: string; touchChoices: SpringChoice[]; touchNarration: string }
 export type SpringInviteChoice = { text: string; response: string[]; affection: number; accepted?: boolean }
 export type SpringInviteRound = { incoming: string[]; choices: SpringInviteChoice[] }
@@ -113,21 +115,55 @@ export const springInviteRounds: Record<SpringCharacterId, SpringInviteRound[]> 
   ],
 }
 
-export const springStoreRoutes: Record<SpringCharacterId, SpringRoute> = {
+export const springStoreRoutes: Record<SpringCharacterId, SpringStoreRoute> = {
   wen: {
     title: '溫尚翊・樂器行',
     blocks: [
       { kind: 'narration', text: '溫尚翊一進店就熟門熟路地往效果器那一區走，嘴上還說今天只是來看看，結果不到半分鐘，注意力就被一把剛上架的電吉他勾走了。' },
       { kind: 'dialogue', speaker: '溫尚翊', text: '欸，妳過來聽一下，這把聲音還不錯。' },
-      { kind: 'narration', text: '他插上音箱試了幾個音，越彈越起勁。你站在旁邊看，他忽然把撥片遞過來，讓你也試試。' },
+      { kind: 'narration', text: '他插上音箱，先試了幾個乾淨的和弦，接著踩下效果器，音色一下變得厚實許多。他越彈越起勁，還不忘回頭看你有沒有在聽。' },
+      { kind: 'dialogue', speaker: '溫尚翊', text: '有聽出來差在哪裡喔？不是每一顆效果器都一樣啦。' },
+      { kind: 'narration', text: '你站在旁邊看，他忽然把撥片遞過來。你接過去試了兩下，聲音歪歪斜斜，他忍了兩秒，還是笑出來，伸手替你把撥片角度調正。' },
       { kind: 'dialogue', speaker: '溫尚翊', text: '拿好啦。手腕放鬆，不要一副要跟琴弦打架的樣子。' },
-      { kind: 'narration', text: '你試著撥了兩下，聲音歪歪斜斜。他忍了兩秒，還是笑出來，伸手替你把撥片角度調正。' },
     ],
-    prompt: '他把撥片留在你手裡，你想怎麼回？',
-    choices: [
-      { text: '「你剛剛那段再彈一次給我聽嘛！」', response: '「蛤？妳是來聽我彈琴的喔？……好啦，再一次。」他嘴上嫌你，手卻已經重新接上音箱。', affection: 2 },
-      { text: '「我剛剛是不是有一點點厲害？」', response: '「一點點啦。」他故意停了一下，又補一句：「第一次這樣已經可以了啦。」', affection: 1 },
-      { text: '「這個撥片送我好不好？」', response: '「那本來就是拿給妳試的啊。」他看你把撥片收好，笑著搖了搖頭。', affection: 2 },
+    rounds: [
+      {
+        scene: [],
+        prompt: '他把撥片留在你手裡，你想怎麼回？',
+        choices: [
+          { text: '「你剛剛那段再彈一次給我聽嘛！」', response: '「蛤？妳是來聽我彈琴的喔？……好啦，再一次。」他嘴上嫌你，手卻已經重新接上音箱。', affection: 2 },
+          { text: '「我剛剛是不是有一點點厲害？」', response: '「一點點啦。」他故意停了一下，又補一句：「第一次這樣已經可以了啦。」', affection: 1 },
+          { text: '「這個撥片送我好不好？」', response: '「那本來就是拿給妳試的啊。」他看你把撥片收好，笑著搖了搖頭。', affection: 2 },
+        ],
+      },
+      {
+        scene: [
+          { kind: 'narration', text: '店員又拿來另一顆效果器，說這顆的破音比較溫和。溫尚翊接上去試了幾個音，還故意把同一段旋律彈了兩種版本，最後把手從琴弦上移開，等你發表意見。' },
+          { kind: 'dialogue', speaker: '溫尚翊', text: '這次有沒有比較聽得出來？妳覺得哪個比較好聽？' },
+        ],
+        prompt: '你想怎麼回答他？',
+        choices: [
+          { text: '剛剛乾淨的那個比較耐聽，我喜歡那種清清亮亮的聲音。', response: '「喔，妳喜歡比較乾淨的喔。」他又試了一次，點點頭：「這樣也不錯，聽久比較不會膩。」', affection: 2 },
+          { text: '後面那個比較帥！一聽就很像要衝上台了。', response: '「哈哈，這個形容是怎樣啦。」他忍不住笑，卻又把效果器踩回去：「好啦，再讓妳聽一次。」', affection: 2 },
+          { text: '我比較喜歡你剛剛隨手彈的那一段。', response: '「……我是在問效果器欸。」他低頭轉了轉旋鈕，嘴角卻藏不住笑意。', affection: 3 },
+        ],
+      },
+      {
+        scene: [
+          { kind: 'narration', text: '試完幾顆效果器，他把琴放回架上，店員又拿出一盒不同厚度的撥片。溫尚翊挑了兩片放在櫃檯上，轉頭問你要不要也挑一個。' },
+          { kind: 'dialogue', speaker: '溫尚翊', text: '妳剛剛拿的那個太薄了，這幾個比較好拿。要不要試試看？' },
+        ],
+        prompt: '他把幾片撥片推到你面前，你想怎麼選？',
+        choices: [
+          { text: '我要剛剛那個，這樣下次聽你彈還可以用。', response: '「妳還真的記得喔。」他把那片撥片挑出來，順手放進小紙袋：「好啦，拿去。」', affection: 3 },
+          { text: '你幫我挑一個好了，我相信你的專業。', response: '「這有什麼好相信的啦。」他嘴上這樣說，還是認真比了比厚度，挑了一片放到你手心。', affection: 2 },
+          { text: '我才不要，免得你說我拿走你的東西。', response: '「欸，我有這麼小氣喔？」他把紙袋往你面前推了推：「拿啦，這個本來就可以送妳。」', affection: 2 },
+        ],
+      },
+    ],
+    endingBlocks: [
+      { kind: 'narration', text: '溫尚翊把試過的器材交還給店員，還站在櫃檯旁問了幾句價錢和保固。走出店門時，他低頭看了一眼你手裡的小紙袋。' },
+      { kind: 'dialogue', speaker: '溫尚翊', text: '收好了喔？不要等一下又忘在店裡。走啦，去練團室。' },
     ],
   },
   ashin: {
@@ -136,14 +172,47 @@ export const springStoreRoutes: Record<SpringCharacterId, SpringRoute> = {
       { kind: 'narration', text: '阿信沒有急著逛其他區，一進門就先去看木吉他。他拿起一把原木色的琴，坐在試琴椅上，慢慢撥了幾個和弦。' },
       { kind: 'dialogue', speaker: '陳信宏', text: '欸，這把聲音滿溫的耶。妳聽聽看。' },
       { kind: 'narration', text: '他把琴遞給你，先教你怎麼抱穩琴身，再示範最簡單的撥弦。你一撥，幾根弦卻一起悶住，聲音像打了個結。' },
-      { kind: 'dialogue', speaker: '陳信宏', text: '哈哈哈哈，沒關係啦，第一次都會這樣。妳先不要急著每根弦都要很大聲。' },
-      { kind: 'narration', text: '他坐到你旁邊，重新把琴擺正，讓你照著他的手勢試一次。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '哈哈，沒關係啦，第一次都會這樣。妳先不要急，慢慢試就好。' },
+      { kind: 'narration', text: '他坐到你旁邊，重新把琴擺正，讓你照著他的手勢試一次。這回有幾個音總算清楚地響了出來，他笑得眼睛都彎起來。' },
     ],
-    prompt: '你終於彈出比較清楚的聲音，想怎麼回？',
-    choices: [
-      { text: '「欸！有聲音了！我是不是很有天分？」', response: '「有有有，天分先保留，至少今天有進步馁。」他笑得眼睛都彎起來。', affection: 2 },
-      { text: '「你坐近一點啦，我看不清楚。」', response: '「這樣有比較清楚嗎？」他往你旁邊挪了一點，聲音也跟著放輕。', affection: 2 },
-      { text: '「我手指好像開始痛了……」', response: '「那先休息一下，不要硬撐啦。」他把琴接回去，還真的停下來等你。', affection: 1 },
+    rounds: [
+      {
+        scene: [],
+        prompt: '你終於彈出比較清楚的聲音，想怎麼回？',
+        choices: [
+          { text: '「欸！有聲音了！我是不是很有天分？」', response: '「有有有，天分先保留，至少今天有進步耶。」他笑得眼睛都彎起來。', affection: 2 },
+          { text: '「你坐近一點啦，我看不清楚。」', response: '「這樣有比較清楚嗎？」他往你旁邊挪了一點，聲音也跟著放輕。', affection: 2 },
+          { text: '「我手指好像開始痛了……」', response: '「那先休息一下，不要硬撐啦。」他把琴接回去，還真的停下來等你。', affection: 1 },
+        ],
+      },
+      {
+        scene: [
+          { kind: 'narration', text: '阿信把琴放回架上，又挑了另一把琴身比較小的木吉他。他先彈了一小段，再把兩把琴的聲音接著彈給你聽，像是怕你只憑外觀不好比較。' },
+          { kind: 'dialogue', speaker: '陳信宏', text: '這把比較亮一點，剛剛那把比較暖。妳自己聽聽看，哪個比較喜歡？' },
+        ],
+        prompt: '你比較喜歡哪一種音色？',
+        choices: [
+          { text: '剛剛那把，聲音比較溫柔，聽起來很舒服。', response: '「我也比較喜歡那把。」他把琴輕輕靠回架上：「有時候不用很亮，聽起來舒服就很好了。」', affection: 2 },
+          { text: '這把比較清楚，感覺唱歌的時候會很合。', response: '「對啊，這把的聲音比較往前。」他又彈了幾個和弦，還哼了兩句旋律給你聽。', affection: 2 },
+          { text: '我兩把都喜歡，選不出來啦。', response: '「哈哈，那就先不要選。」他沒有催你，反而把椅子讓給你：「妳可以再聽一次，慢慢來。」', affection: 2 },
+        ],
+      },
+      {
+        scene: [
+          { kind: 'narration', text: '你又聽了一會兒，阿信才把琴放回原位。櫃檯旁擺著一小盒木吉他用的撥片，他拿起其中一片，在指間轉了轉，然後遞到你面前。' },
+          { kind: 'dialogue', speaker: '陳信宏', text: '這個厚度比較適合剛開始試的人。妳要不要留一片？下次來也可以用。' },
+        ],
+        prompt: '你想怎麼回他？',
+        choices: [
+          { text: '那我先收著，下次來還要找你教我。', response: '「好啊，妳下次來我再陪妳慢慢試。」他把撥片放進你掌心，笑著說：「不過今天已經很厲害了。」', affection: 3 },
+          { text: '你先留著好了，我怕我回去就不知道放哪裡。', response: '「也可以啊，我幫妳收著。」他把撥片放回小盒子，還特地記住了你剛剛挑的顏色。', affection: 2 },
+          { text: '我想再聽你彈剛剛那段。', response: '「可以啊。」他重新抱起木吉他，這次沒有急著彈完，慢慢把那段旋律又彈了一遍。', affection: 2 },
+        ],
+      },
+    ],
+    endingBlocks: [
+      { kind: 'narration', text: '阿信把琴交還給店員，還回頭看了一眼剛才試過的那把原木色吉他。你們走到門口時，他很自然地替你扶住玻璃門。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '走吧，等等還要去練團室。路上如果想到剛剛哪個聲音，再跟我說喔。' },
     ],
   },
   masa: {
@@ -153,13 +222,46 @@ export const springStoreRoutes: Record<SpringCharacterId, SpringRoute> = {
       { kind: 'dialogue', speaker: '瑪莎', text: '這個價格是怎樣？琴弦是用金子做的喔？' },
       { kind: 'dialogue', speaker: '你', text: '你不是很喜歡音樂嗎？怎麼一直在看價錢？' },
       { kind: 'dialogue', speaker: '瑪莎', text: '喜歡音樂跟喜歡花錢是兩回事好不好。' },
-      { kind: 'narration', text: '他拿起一把 Bass 試了幾個音，低沉的聲音從音箱裡傳出來。接著把琴稍微轉向你，示意你聽聽看。' },
+      { kind: 'narration', text: '他拿起一把 Bass 試了幾個音，低沉的聲音從音箱裡傳出來。接著把琴稍微轉向你，示意你聽聽看，還故意彈了兩個很誇張的滑音。' },
     ],
-    prompt: '他問你哪一把比較好看，你怎麼回答？',
-    choices: [
-      { text: '「最貴那把啊，跟你比較配。」', response: '「……妳是來幫店家衝業績的喔？」他嘴上嫌棄，還是忍不住笑了。', affection: 1 },
-      { text: '「這把啦，顏色很像你會選的。」', response: '「妳怎麼知道？」他低頭看了看琴身，居然真的又試了幾個音。', affection: 2 },
-      { text: '「我覺得都好看，你自己挑啦。」', response: '「這種答案跟沒回答一樣欸。」他把琴放回架上，卻把你剛指過的那把又拿起來看了一遍。', affection: 1 },
+    rounds: [
+      {
+        scene: [],
+        prompt: '他問你哪一把比較好看，你怎麼回答？',
+        choices: [
+          { text: '「最貴那把啊，跟你比較配。」', response: '「……妳是來幫店家衝業績的喔？」他嘴上嫌棄，還是忍不住笑了。', affection: 1 },
+          { text: '「這把啦，顏色很像你會選的。」', response: '「妳怎麼知道？」他低頭看了看琴身，居然真的又試了幾個音。', affection: 2 },
+          { text: '「我覺得都好看，你自己挑啦。」', response: '「這種答案跟沒回答一樣欸。」他把琴放回架上，卻把你剛指過的那把又拿起來看了一遍。', affection: 1 },
+        ],
+      },
+      {
+        scene: [
+          { kind: 'narration', text: '店員拿來兩組不同規格的琴弦，瑪莎一邊看包裝，一邊把剛才那把 Bass 接回音箱。他換了幾個音，還特地讓你聽低音的厚度差別。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '這組比較厚，聲音比較沉；另一組比較好推。妳覺得哪個比較適合我？' },
+        ],
+        prompt: '你想怎麼幫他挑？',
+        choices: [
+          { text: '你平常彈得那麼用力，選比較耐用的啦。', response: '「欸，妳是在說我粗魯是不是？」他嘴上反駁，手卻把耐用的那組拿起來看了看。', affection: 2 },
+          { text: '我喜歡剛剛比較沉的那個聲音。', response: '「這個我也有考慮。」他又試了幾個音，點點頭：「好啦，這組先留下來。」', affection: 2 },
+          { text: '你自己最清楚手感吧，我相信你。', response: '「突然這麼信任我喔？」他挑眉笑了一下，還是把兩組都放在櫃檯上比較。', affection: 1 },
+        ],
+      },
+      {
+        scene: [
+          { kind: 'narration', text: '瑪莎拿著兩包琴弦站到櫃檯前，嘴裡還在算哪一組比較划算。店員提醒他有組合價，他立刻把兩包翻來覆去看了三遍。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '妳幫我看一下啦，我是不是被這個折扣騙了？' },
+        ],
+        prompt: '你要怎麼回他？',
+        choices: [
+          { text: '你看這麼久，店員都快背起你的資料了。', response: '「我這叫謹慎消費。」他把其中一包放回去：「好啦，今天先買需要的就好。」', affection: 2 },
+          { text: '買你真的用得到的，不要為了折扣亂買。', response: '「……這句倒是有道理。」他把價錢記下來，終於不再跟標籤過不去。', affection: 2 },
+          { text: '我覺得你兩個都想買，只是在找理由。', response: '「妳不要把我看得這麼透好不好！」他笑著把包裝放回架上。', affection: 2 },
+        ],
+      },
+    ],
+    endingBlocks: [
+      { kind: 'narration', text: '瑪莎最後只買了真正需要的那組琴弦，走出店門還在念剛剛那個折扣到底划不划算。' },
+      { kind: 'dialogue', speaker: '瑪莎', text: '走啦，等一下練團遲到，妳就要負責幫我跟他們解釋。' },
     ],
   },
   stone: {
@@ -171,11 +273,44 @@ export const springStoreRoutes: Record<SpringCharacterId, SpringRoute> = {
       { kind: 'dialogue', speaker: '石錦航', text: '欸，這個顏色好像滿適合妳的。' },
       { kind: 'narration', text: '後來你又在一把木吉他前停了很久，他看出來了，便幫你把琴取下來，讓你試著背背看。' },
     ],
-    prompt: '石頭問你是不是喜歡這個顏色，你怎麼回答？',
-    choices: [
-      { text: '「喜歡啊，很亮眼！」', response: '「那就記住這個顏色，下次再來看也不遲。」他把背帶放回架上，沒有催你。', affection: 2 },
-      { text: '「你覺得適合我就好。」', response: '「那我覺得滿適合的。」他說完才意識到這句話有點像在替你挑東西，笑著移開視線。', affection: 2 },
-      { text: '「我只是看看啦，買東西要想很久。」', response: '「嗯，慢慢挑就好。喜歡的東西不用急著決定。」', affection: 1 },
+    rounds: [
+      {
+        scene: [],
+        prompt: '石頭問你是不是喜歡這個顏色，你怎麼回答？',
+        choices: [
+          { text: '「喜歡啊，很亮眼！」', response: '「那就記住這個顏色，下次再來看也不遲。」他把背帶放回架上，沒有催你。', affection: 2 },
+          { text: '「你覺得適合我就好。」', response: '「那我覺得滿適合的。」他說完才意識到這句話有點像在替你挑東西，笑著移開視線。', affection: 2 },
+          { text: '「我只是看看啦，買東西要想很久。」', response: '「嗯，慢慢挑就好。喜歡的東西不用急著決定。」', affection: 1 },
+        ],
+      },
+      {
+        scene: [
+          { kind: 'narration', text: '石頭又從架上拿了兩條材質不同的背帶，讓你分別摸摸看。他把比較柔軟的那條搭在你肩上，站到一旁看長度是不是剛好。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '這條比較輕，背久一點肩膀不會那麼累。妳覺得哪個比較舒服？' },
+        ],
+        prompt: '你想怎麼回答？',
+        choices: [
+          { text: '這條比較軟，背起來也比較舒服。', response: '「我也覺得這條比較適合妳。」他替你把背帶取下來，仔細摺好放回架上。', affection: 2 },
+          { text: '我喜歡剛剛那個顏色，這條看起來比較好看。', response: '「那就先記住顏色，之後再慢慢找同樣的款式。」他沒有急著要你決定。', affection: 2 },
+          { text: '你幫我挑的話，我可能會選不出來。', response: '「哈哈，那我先不幫妳決定。」他把兩條背帶都放在你看得到的地方，讓你再比較一下。', affection: 2 },
+        ],
+      },
+      {
+        scene: [
+          { kind: 'narration', text: '你們又在吉他架前停了一會兒。石頭把剛才那把木吉他取下來，確認背帶扣環都扣好，才讓你試著背起來。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '這樣會不會太重？如果不舒服就先放下來。' },
+        ],
+        prompt: '你想怎麼回他？',
+        choices: [
+          { text: '還好欸，背起來比我想像中輕。', response: '「那就好。」他扶了一下琴身，等你站穩才鬆開手。', affection: 2 },
+          { text: '有一點重，不過我還想再試一下。', response: '「好啊，不急。」他站在旁邊等你調整好位置，沒有催促。', affection: 2 },
+          { text: '我覺得背帶比較好看，琴我先不碰了。', response: '「哈哈，可以啊。今天慢慢看就好，不用每樣都試。」', affection: 1 },
+        ],
+      },
+    ],
+    endingBlocks: [
+      { kind: 'narration', text: '石頭把背帶和吉他都放回原位，跟店員道謝後才陪你走到門口。' },
+      { kind: 'dialogue', speaker: '石錦航', text: '下次如果還想看，我們可以再來。走吧，大家應該已經在練團室等了。' },
     ],
   },
   yanming: {
@@ -187,15 +322,47 @@ export const springStoreRoutes: Record<SpringCharacterId, SpringRoute> = {
       { kind: 'dialogue', speaker: '劉諺明', text: '哈哈，習慣了啦。用起來順手比較重要。' },
       { kind: 'narration', text: '你拿起一副鼓棒，試著在掌心轉了一圈，差點沒接住。他伸手幫你扶了一下，順勢把鼓棒放回你手裡。' },
     ],
-    prompt: '你看著他手裡的鼓棒，忍不住問了一句。',
-    choices: [
-      { text: '「你平常是不是也會幫大家挑器材？」', response: '「偶爾啦，他們有時候忙著練習，這些小東西就順手幫忙看一下。」', affection: 2 },
-      { text: '「你剛剛接得也太快了吧！」', response: '「哈哈，怕妳真的把它摔壞了。」他把鼓棒收好，還是笑著看了你一眼。', affection: 2 },
-      { text: '「下次我還想跟你來逛。」', response: '「好啊，下次有要買的東西再一起來。」他答得很自然，卻沒有立刻轉身走。', affection: 2 },
+    rounds: [
+      {
+        scene: [],
+        prompt: '你看著他手裡的鼓棒，忍不住問了一句。',
+        choices: [
+          { text: '「你平常是不是也會幫大家挑器材？」', response: '「偶爾啦，他們有時候忙著練習，這些小東西就順手幫忙看一下。」', affection: 2 },
+          { text: '「你剛剛接得也太快了吧！」', response: '「哈哈，怕妳真的把它摔壞了。」他把鼓棒收好，還是笑著看了你一眼。', affection: 2 },
+          { text: '「下次我還想跟你來逛。」', response: '「好啊，下次有要買的東西再一起來。」他答得很自然，卻沒有立刻轉身走。', affection: 2 },
+        ],
+      },
+      {
+        scene: [
+          { kind: 'narration', text: '諺明哥把鼓棒放回架上，轉去看鼓皮和導線。他拿起兩種不同厚度的鼓皮，跟店員確認尺寸，又回頭把差別說給你聽。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '這個比較耐打，另一個聲音會亮一點。練團用的東西，還是要看大家平常怎麼用。' },
+        ],
+        prompt: '你想怎麼接話？',
+        choices: [
+          { text: '你連這些細節都記得，好厲害喔。', response: '「用久了就會記得。」他笑了一下：「不然臨時要換，大家都會等著。」', affection: 2 },
+          { text: '所以你平常都幫大家把這些事情記下來？', response: '「差不多吧，能先處理的就先處理，大家練習比較順。」', affection: 2 },
+          { text: '我聽起來覺得兩個都差不多耶。', response: '「哈哈，沒關係，這個本來就要用過才知道。」他沒有考你，反而把兩個包裝都放回架上。', affection: 1 },
+        ],
+      },
+      {
+        scene: [
+          { kind: 'narration', text: '店員把挑好的鼓棒和小配件裝進紙袋。諺明哥確認了一遍數量，才把袋子交到你手上，自己又順手把收據折好放進口袋。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '可以幫我拿一下嗎？我把收據收好，等等回去才不會漏掉。' },
+        ],
+        prompt: '你接過紙袋，想怎麼回？',
+        choices: [
+          { text: '你真的很像大家的總務欸，什麼都記得。', response: '「哈哈，總要有人記得啊。」他接回紙袋，語氣很輕鬆。', affection: 2 },
+          { text: '好啊，這個又不重。', response: '「謝謝妳。」他接過袋子，還確認了一下你手上沒有被紙袋勒到。', affection: 2 },
+          { text: '那我是不是也有幫忙採購的功勞？', response: '「當然有，等一下回去讓他們謝謝妳。」他笑著替你拉開店門。', affection: 2 },
+        ],
+      },
+    ],
+    endingBlocks: [
+      { kind: 'narration', text: '諺明哥把紙袋提好，離開前又跟店員確認了下次補貨的時間。你們走到騎樓下，他才看了看時間。' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '走吧，先回練團室，免得他們又等到亂猜我們去哪裡了。' },
     ],
   },
 }
-
 export const springRehearsalBlocks: SpringBlock[] = [
   { kind: 'dialogue', speaker: '錢佑達', text: '欸欸欸！今天練《轧車》對不對？' },
   { kind: 'dialogue', speaker: '溫尚翊', text: '對啊，怎麼了？' },
@@ -239,7 +406,6 @@ export const springRehearsalBlocks: SpringBlock[] = [
   { kind: 'dialogue', speaker: '瑪莎', text: '她可能在想我們是不是每天都這麼吵。' },
   { kind: 'dialogue', speaker: '錢佑達', text: '本來就是啊！' },
   { kind: 'narration', text: '練團室又是一陣笑聲。' },
-  { kind: 'aside', text: '第五幕：佑達先走了' },
   { kind: 'narration', text: '練習結束，大家開始收拾器材。' },
   { kind: 'narration', text: '佑達剛把鼓棒放進袋子，突然看了一眼手錶。' },
   { kind: 'dialogue', speaker: '錢佑達', text: '靠，我差點忘記！' },
@@ -301,7 +467,7 @@ export const springLessonRoutes: Record<Exclude<SpringCharacterId, 'yanming'>, S
       { kind: 'dialogue', speaker: '陳信宏', text: '妳先按這裡，指尖靠近品絲一點點，這樣聲音比較不會悶掉。' },
       { kind: 'dialogue', speaker: '你', text: '這樣嗎？' },
       { kind: 'narration', text: '他坐得比剛才近一點，低頭跟你一起看琴頸。你一撥，幾根弦還是悶住了，他沒有笑，只把自己的手放到你旁邊示範一次。' },
-      { kind: 'dialogue', speaker: '陳信宏', text: '沒關係，妳看我的手就好，我慢慢來馁。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '沒關係，妳看我的手就好，我慢慢來，妳不用急。' },
       { kind: 'narration', text: '你照著他的手勢再試，終於有幾個音乾淨地跑出來。阿信抬起頭，笑得像是比你還高興。' },
       { kind: 'dialogue', speaker: '陳信宏', text: '有了耶！就是這個聲音。' },
       { kind: 'dialogue', speaker: '你', text: '欸，可是按到後面手指真的好痛喔。' },
@@ -436,7 +602,7 @@ export const getSpringSmsOpeners = (character: SpringCharacterId, context: Sprin
       { text: '「你今天有沒有覺得我很認真？」', response: '「有啦，至少沒有一直喊累。」', affection: 2 },
     ],
     ashin: [
-      { text: '「今天真的很開心，謝謝你。」', response: '「哈哈，我也覺得今天滿好玩的馁。」', affection: 2 },
+      { text: '「今天真的很開心，謝謝你。」', response: '「哈哈，我也覺得今天滿好玩的耶。」', affection: 2 },
       { text: '「我回家還一直想到今天那段旋律。」', response: '「那首很容易讓人一直哼欸。」', affection: 1 },
       { text: '「下次有空還想再跟你去逛逛。」', response: '「好啊，有看到喜歡的琴再一起去。」', affection: 2 },
     ],
@@ -464,16 +630,16 @@ export const getSpringSmsOpeners = (character: SpringCharacterId, context: Sprin
   if (wentStore && learnedTogether) {
     choices[0] = { text: '「今天從樂器行一路待到練團室，真的好充實！」', response: '「哈哈，妳今天很認真欸。手指後來還好嗎？」', affection: 2 }
   } else if (wentStore) {
-    choices[0] = { text: '「今天一起逛樂器行真的很好玩！」', response: character === 'wen' ? '「是喔？妳最後那個撥片有收好吧。」' : character === 'ashin' ? '「我也覺得啊，木吉他那區可以逛很久馁。」' : character === 'masa' ? '「妳今天挑東西的眼光還滿敢的嘛。」' : character === 'stone' ? '「妳有喜歡就好，下次還可以慢慢看。」' : '「哈哈，今天逛得還算仔細吧。」', affection: 2 }
+    choices[0] = { text: '「今天一起逛樂器行真的很好玩！」', response: character === 'wen' ? '「是喔？妳最後那個撥片有收好吧。」' : character === 'ashin' ? '「我也覺得啊，木吉他那區可以逛很久。」' : character === 'masa' ? '「妳今天挑東西的眼光還滿敢的嘛。」' : character === 'stone' ? '「妳有喜歡就好，下次還可以慢慢看。」' : '「哈哈，今天逛得還算仔細吧。」', affection: 2 }
   } else if (learnedTogether) {
-    choices[0] = { text: '「今天留下來學樂器真的很好玩！」', response: character === 'wen' ? '「有玩到就好，手指還痛不痛？」' : character === 'ashin' ? '「妳今天學得很認真馁，和弦有記住嗎？」' : character === 'masa' ? '「哈哈，現在知道 Bass 沒那麼好惹了吧。」' : '「妳今天學得滿認真的，回家有沒有再練？」', affection: 2 }
+    choices[0] = { text: '「今天留下來學樂器真的很好玩！」', response: character === 'wen' ? '「有玩到就好，手指還痛不痛？」' : character === 'ashin' ? '「妳今天學得很認真耶，和弦有記住嗎？」' : character === 'masa' ? '「哈哈，現在知道 Bass 沒那麼好惹了吧。」' : '「妳今天學得滿認真的，回家有沒有再練？」', affection: 2 }
   } else if (ateTogether) {
     choices[0] = { text: '「今天謝謝你陪我吃飯，真的很開心！」', response: '「不客氣，妳喜歡那家店就好。」', affection: 2 }
   } else {
-    choices[0] = { text: '「今天《轧車》練得好熱鬧，我回家還在笑。」', response: character === 'wen' ? '「哈哈，妳是不是又在笑佑達？」' : character === 'ashin' ? '「他今天真的很有精神馁，差點害我唱錯。」' : character === 'masa' ? '「妳也有看到吧？我真的忍他很久了。」' : character === 'stone' ? '「哈哈，他們兩個每次都這樣。」' : '「哈哈，他們一練起來就會忘記時間。」', affection: 1 }
+    choices[0] = { text: '「今天《轧車》練得好熱鬧，我回家還在笑。」', response: character === 'wen' ? '「哈哈，妳是不是又在笑佑達？」' : character === 'ashin' ? '「他今天真的超有精神，差點害我唱錯。」' : character === 'masa' ? '「妳也有看到吧？我真的忍他很久了。」' : character === 'stone' ? '「哈哈，他們兩個每次都這樣。」' : '「哈哈，他們一練起來就會忘記時間。」', affection: 1 }
   }
 
-  if (character === 'ashin' && !wentStore) choices[2] = { text: '「下次還想聽你彈木吉他。」', response: '「好啊，有空再彈給妳聽馁。」', affection: 2 }
+  if (character === 'ashin' && !wentStore) choices[2] = { text: '「下次還想聽你彈木吉他。」', response: '「好啊，有空再彈給妳聽啊。」', affection: 2 }
   if (character === 'masa' && !learnedTogether) choices[1] = { text: '「今天《轧車》的 Bass 聽起來特別有勁！」', response: '「那當然，Bass 可不是站在旁邊裝飾的。」', affection: 2 }
   if (character === 'stone' && !learnedTogether) choices[1] = { text: '「今天最後一遍真的很順欸！」', response: '「對啊，大家終於接在一起了。」', affection: 1 }
   if (character === 'stone' && !wentStore) choices[2] = { text: '「下次還想聽你們練團。」', response: '「好啊，妳有空就過來。」', affection: 2 }
@@ -514,29 +680,29 @@ export const getSpringSmsRounds = (character: SpringCharacterId, context: Spring
     ],
     ashin: [
       { incoming: firstIncoming, choices: [
-        { text: '「我還想再練一下，今天好像有進步。」', response: ['「有啊，妳今天已經比剛開始順很多了馁。」'], affection: 2 },
+        { text: '「我還想再練一下，今天好像有進步。」', response: ['「有啊，妳今天已經比剛開始順很多了耶。」'], affection: 2 },
         { text: '「我的手指有點酸，明天再練好了。」', response: ['「對啦，先休息，手指要慢慢適應。」'], affection: 1 },
         { text: '「今天跟你一起逛真的很開心。」', response: ['「我也是啊，下次再一起去。」'], affection: 2 },
       ] },
       { incoming: '妳剛剛那個和弦後來有沒有記住？', choices: [
         { text: '「我有偷偷記在紙上！」', response: ['「哈哈，這麼認真喔？」'], affection: 2 },
-        { text: '「沒有欸，明天可能又忘了。」', response: ['「沒關係，下次我再教妳一次馁。」'], affection: 1 },
+        { text: '「沒有欸，明天可能又忘了。」', response: ['「沒關係，下次我再教妳一次啊。」'], affection: 1 },
         { text: '「你要不要再傳一次指法給我？」', response: ['「好啊，我找一下畫給妳。」'], affection: 2 },
       ] },
       { incoming: '今天練《轧車》的時候，佑達真的很有精神欸。', choices: [
-        { text: '「他差點把整首歌打成另一首！」', response: ['「哈哈哈哈，瑪莎剛剛臉都皺起來了馁。」'], affection: 1 },
+        { text: '「他差點把整首歌打成另一首！」', response: ['「哈哈哈哈，瑪莎剛剛臉都皺起來了，超好笑。」'], affection: 1 },
         { text: '「可是最後一次真的很順！」', response: ['「對啊，大家一起進去的時候很過癮。」'], affection: 2 },
         { text: '「你唱到一半是不是也笑了？」', response: ['「有啦，我差點真的唱不下去。」'], affection: 2 },
       ] },
       { incoming: '下次如果妳還想練木吉他，可以再找我。', choices: [
         { text: '「說好了喔，不可以嫌我笨。」', response: ['「不會啦，妳明明就很認真。」'], affection: 2 },
         { text: '「那我要從頭開始學。」', response: ['「好啊，我們慢慢來。」'], affection: 1 },
-        { text: '「那你要準備好當老師了。」', response: ['「哈哈，這個老師有點不專業馁。」'], affection: 1 },
+        { text: '「那你要準備好當老師了。」', response: ['「哈哈，這個老師有點不專業啦。」'], affection: 1 },
       ] },
       { incoming: '好啦，今天先這樣，妳早點休息。', choices: [
-        { text: '「晚安阿信，今天謝謝你。」', response: ['「晚安～今天很開心馁。」'], affection: 2 },
+        { text: '「晚安阿信，今天謝謝你。」', response: ['「晚安～今天真的很開心。」'], affection: 2 },
         { text: '「你也不要太晚睡！」', response: ['「好啦，我等等就收。」'], affection: 1 },
-        { text: '「下次見！」', response: ['「下次見馁。」'], affection: 1 },
+        { text: '「下次見！」', response: ['「下次見喔。」'], affection: 1 },
       ] },
     ],
     masa: [
@@ -670,14 +836,14 @@ export const getSpringSmsRounds = (character: SpringCharacterId, context: Spring
   if (character === 'ashin' && !learned) {
     if (!wentStore) {
       rounds[0] = { ...rounds[0], choices: [
-        { text: '「你唱到一半差點笑場，我有看到！」', response: ['「哈哈，真的差點唱不下去馁。」'], affection: 2 },
+        { text: '「你唱到一半差點笑場，我有看到！」', response: ['「哈哈，真的差點唱不下去啦。」'], affection: 2 },
         { text: '「今天最後一次大家接得很順欸。」', response: ['「對啊，大家一起進去的時候很過癮。」'], affection: 2 },
         { text: '「下次還想聽你們練團。」', response: ['「好啊，妳有空就來。」'], affection: 2 },
       ] }
       rounds[1] = { ...rounds[1], incoming: '妳剛剛有聽清楚最後那段嗎？我自己覺得這次接得滿順的。' }
     } else {
       rounds[1] = { ...rounds[1], incoming: '今天在店裡試的那把木吉他，妳覺得聲音怎麼樣？', choices: [
-        { text: '「很溫柔欸，我很喜歡。」', response: ['「我也覺得，那把音色滿舒服的馁。」'], affection: 2 },
+        { text: '「很溫柔欸，我很喜歡。」', response: ['「我也覺得，那把音色滿舒服的啊。」'], affection: 2 },
         { text: '「我比較喜歡你坐在旁邊教我的時候。」', response: ['「哈哈，妳怎麼突然講這個啦。」'], affection: 2 },
         { text: '「下次還想再試一次！」', response: ['「好啊，下次再去看看。」'], affection: 2 },
       ] }
