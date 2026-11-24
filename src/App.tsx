@@ -1705,10 +1705,32 @@ const createInitialChatMessages = (): Record<CharacterId, SmsMessage[]> => {
   return empty
 }
 
+const stripCornerQuotes = (value: string): string =>
+  value.trim().replace(/^「/, '').replace(/」$/, '').trim()
+
+const springResponseBlocks = (speaker: string, response: string): StoryBlock[] => {
+  const blocks: StoryBlock[] = []
+  const quotedSpeech = /「([^」]*)」/g
+  let cursor = 0
+  let match: RegExpExecArray | null
+
+  while ((match = quotedSpeech.exec(response)) !== null) {
+    const action = response.slice(cursor, match.index).trim()
+    if (action) blocks.push({ kind: 'narration', text: action })
+    if (match[1].trim()) blocks.push({ kind: 'dialogue', speaker, text: match[1].trim() })
+    cursor = quotedSpeech.lastIndex
+  }
+
+  const trailingAction = response.slice(cursor).trim()
+  if (trailingAction) blocks.push({ kind: 'narration', text: trailingAction })
+  if (!blocks.length) blocks.push({ kind: 'dialogue', speaker, text: stripCornerQuotes(response) })
+  return blocks
+}
+
 function MessageBubble({ mine, text }: { mine: boolean; text: string }) {
   return (
     <div className={mine ? 'message-row mine' : 'message-row'}>
-      <div className={mine ? 'message-bubble mine' : 'message-bubble'}>{text}</div>
+      <div className={mine ? 'message-bubble mine' : 'message-bubble'}>{stripCornerQuotes(text)}</div>
     </div>
   )
 }
@@ -1721,11 +1743,11 @@ function StoryBlocks({ blocks }: { blocks: StoryBlock[] }) {
           return (
             <div className="narrative-dialogue" key={index}>
               <span>{block.speaker}</span>
-              <p>「{block.text}」</p>
+              <p>{stripCornerQuotes(block.text)}</p>
             </div>
           )
         }
-        return <p className={block.kind === 'aside' ? 'narrative-aside' : 'narrative-paragraph'} key={index}>{block.text}</p>
+        return <p className={block.kind === 'aside' ? 'narrative-aside' : 'narrative-paragraph'} key={index}>{stripCornerQuotes(block.text)}</p>
       })}
     </div>
   )
@@ -6985,14 +7007,17 @@ function App() {
                     {springStoreReply === null ? (
                       <div className="choice-area"><div className="choice-heading">{springStoreRoutes[springStoreCharacter].prompt}</div>
                         {springStoreRoutes[springStoreCharacter].choices.map((choice, index) => (
-                          <button className="reply-choice" key={index} onClick={() => chooseSpringStoreReply(index)}><span>{choice.text}</span><ChevronRight size={15} /></button>
+                          <button className="reply-choice" key={index} onClick={() => chooseSpringStoreReply(index)}><span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} /></button>
                         ))}
                       </div>
                     ) : (
                       <>
                         <StoryBlocks blocks={[
-                          { kind: 'dialogue', speaker: '你', text: springStoreRoutes[springStoreCharacter].choices[springStoreReply].text.replace(/^「|」$/g, '') },
-                          { kind: 'dialogue', speaker: springStoreCharacter === 'wen' ? '溫尚翊' : springStoreCharacter === 'ashin' ? '陳信宏' : springStoreCharacter === 'masa' ? '瑪莎' : springStoreCharacter === 'stone' ? '石錦航' : '劉諺明', text: springStoreRoutes[springStoreCharacter].choices[springStoreReply].response },
+                          { kind: 'dialogue', speaker: '你', text: stripCornerQuotes(springStoreRoutes[springStoreCharacter].choices[springStoreReply].text) },
+                          ...springResponseBlocks(
+                            springStoreCharacter === 'wen' ? '溫尚翊' : springStoreCharacter === 'ashin' ? '陳信宏' : springStoreCharacter === 'masa' ? '瑪莎' : springStoreCharacter === 'stone' ? '石錦航' : '劉諺明',
+                            springStoreRoutes[springStoreCharacter].choices[springStoreReply].response,
+                          ),
                         ]} />
                         <div className="story-action-bar"><button className="story-primary-button" onClick={() => changeStage('spring-rehearsal')}>一起去練團室 <ChevronRight size={15} /></button></div>
                       </>
@@ -7049,28 +7074,34 @@ function App() {
                       <div className="choice-area">
                         <div className="choice-heading">{springLessonRoutes[springLessonCharacter].touchPrompt}</div>
                         {springLessonRoutes[springLessonCharacter].touchChoices.map((choice, index) => (
-                          <button className="reply-choice" key={index} onClick={() => chooseSpringLessonTouchChoice(index)}><span>{choice.text}</span><ChevronRight size={15} /></button>
+                          <button className="reply-choice" key={index} onClick={() => chooseSpringLessonTouchChoice(index)}><span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} /></button>
                         ))}
                       </div>
                     ) : (
                       <>
                         <StoryBlocks blocks={[
-                          { kind: 'dialogue', speaker: '你', text: springLessonRoutes[springLessonCharacter].touchChoices[springLessonTouchChoice].text.replace(/^「|」$/g, '') },
-                          { kind: 'dialogue', speaker: springLessonCharacter === 'wen' ? '溫尚翊' : springLessonCharacter === 'ashin' ? '陳信宏' : springLessonCharacter === 'masa' ? '瑪莎' : '石錦航', text: springLessonRoutes[springLessonCharacter].touchChoices[springLessonTouchChoice].response },
+                          { kind: 'dialogue', speaker: '你', text: stripCornerQuotes(springLessonRoutes[springLessonCharacter].touchChoices[springLessonTouchChoice].text) },
+                          ...springResponseBlocks(
+                            springLessonCharacter === 'wen' ? '溫尚翊' : springLessonCharacter === 'ashin' ? '陳信宏' : springLessonCharacter === 'masa' ? '瑪莎' : '石錦航',
+                            springLessonRoutes[springLessonCharacter].touchChoices[springLessonTouchChoice].response,
+                          ),
                           { kind: 'narration', text: springLessonRoutes[springLessonCharacter].touchNarration },
                         ]} />
                         {springLessonReply === null ? (
                           <div className="choice-area">
                             <div className="choice-heading">{springLessonRoutes[springLessonCharacter].prompt}</div>
                             {springLessonRoutes[springLessonCharacter].choices.map((choice, index) => (
-                              <button className="reply-choice" key={index} onClick={() => chooseSpringLessonReply(index)}><span>{choice.text}</span><ChevronRight size={15} /></button>
+                              <button className="reply-choice" key={index} onClick={() => chooseSpringLessonReply(index)}><span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} /></button>
                             ))}
                           </div>
                         ) : (
                           <>
                             <StoryBlocks blocks={[
-                              { kind: 'dialogue', speaker: '你', text: springLessonRoutes[springLessonCharacter].choices[springLessonReply].text.replace(/^「|」$/g, '') },
-                              { kind: 'dialogue', speaker: springLessonCharacter === 'wen' ? '溫尚翊' : springLessonCharacter === 'ashin' ? '陳信宏' : springLessonCharacter === 'masa' ? '瑪莎' : '石錦航', text: springLessonRoutes[springLessonCharacter].choices[springLessonReply].response },
+                              { kind: 'dialogue', speaker: '你', text: stripCornerQuotes(springLessonRoutes[springLessonCharacter].choices[springLessonReply].text) },
+                              ...springResponseBlocks(
+                                springLessonCharacter === 'wen' ? '溫尚翊' : springLessonCharacter === 'ashin' ? '陳信宏' : springLessonCharacter === 'masa' ? '瑪莎' : '石錦航',
+                                springLessonRoutes[springLessonCharacter].choices[springLessonReply].response,
+                              ),
                             ]} />
                             <div className="story-action-bar"><button className="story-primary-button" onClick={() => changeStage('spring-sms-picker')}>收拾東西，回家 <ChevronRight size={15} /></button></div>
                           </>
