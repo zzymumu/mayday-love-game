@@ -474,6 +474,11 @@ export const getSpringSmsRounds = (character: SpringCharacterId, context: Spring
     ] }
   }
   if (character === 'masa' && !learned) {
+    rounds[3] = { ...rounds[3], incoming: '下次有空再來練團室聽我們練啊。', choices: [
+      { text: '「好啊！但你們不可以再吵到把歌帶去隔壁棚。」', response: ['「那妳要先叫佑達安分一點。」'], affection: 2 },
+      { text: '「我想再聽一次你彈 Bass。」', response: ['「這個簡單，下次彈給妳聽。」'], affection: 2 },
+      { text: '「看你表現囉。」', response: ['「妳要求還真多。」'], affection: 1 },
+    ] }
     rounds[1] = { ...rounds[1], incoming: '今天看妳在旁邊笑得那麼開心，我差點也忘記要彈 Bass 了。', choices: [
       { text: '「還不是因為你一直吐槽佑達！」', response: ['「那是他真的很好吐槽。」'], affection: 1 },
       { text: '「你們兩個根本是固定搭檔。」', response: ['「誰跟他固定搭檔啊？」'], affection: 2 },
@@ -502,6 +507,13 @@ export const getSpringSmsRounds = (character: SpringCharacterId, context: Spring
         { text: '「下次還想再試一次！」', response: ['「好啊，下次再去看看。」'], affection: 2 },
       ] }
     }
+  }
+  if (character === 'stone' && !learned) {
+    rounds[3] = { ...rounds[3], incoming: '今天最後那遍的吉他接得還不錯，妳有聽出來嗎？', choices: [
+      { text: '「有啊！你跟溫尚翊接得很漂亮。」', response: ['「謝謝，這次真的比較順了。」'], affection: 2 },
+      { text: '「有，我還在回想那段聲音。」', response: ['「哈哈，那就好。」'], affection: 1 },
+      { text: '「下次我還要坐近一點聽。」', response: ['「好啊，幫妳留個位置。」'], affection: 2 },
+    ] }
   }
   if (character === 'stone' && learned && !wentStore) {
     rounds[0] = { ...rounds[0], choices: [
