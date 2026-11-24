@@ -951,29 +951,29 @@ const springDailySmsRound = (incoming: string, choices: SpringDailySmsChoiceData
 // so the player's reply always answers the message immediately above it.
 const springDailySmsOpeners: Record<SpringCharacterId, { text: string; response: string; affection: number }[]> = {
   wen: [
-    { text: '「欸，你現在有空喔？我有件事要跟你講，真的很扯。」', response: '「有啦，剛好停一下。妳先說，這次又怎麼了？」', affection: 2 },
-    { text: '「我剛剛看到一個東西，第一個就想到你，哈哈。」', response: '「蛤？什麼東西，妳不要只講一半啦。」', affection: 2 },
-    { text: '「溫尚翊！快點借我一點注意力！」', response: '「有啦有啦，耳朵在。妳不要隔著手機喊那麼大聲。」', affection: 3 },
+    { text: '「欸，你現在有空喔？我有件事要跟你講，真的很扯。」', response: '「有啦，剛好停一下。」', affection: 2 },
+    { text: '「我剛剛看到一個東西，第一個就想到你，哈哈。」', response: '「蛤？聽起來有鬼喔。」', affection: 2 },
+    { text: '「溫尚翊！快點借我一點注意力！」', response: '「有啦有啦，耳朵在，妳不要喊那麼大聲。」', affection: 3 },
   ],
   ashin: [
-    { text: '「欸～你現在有空嗎？我有件小事想跟你說。」', response: '「有啊，怎麼啦？」', affection: 2 },
-    { text: '「我今天遇到一件很好笑的事，忍到現在才想到要跟你講。」', response: '「哈哈，妳這樣講我有點好奇喔。」', affection: 3 },
-    { text: '「你猜我今天做了什麼蠢事？」', response: '「欸？這麼神祕喔，快講啦。」', affection: 2 },
+    { text: '「欸～你現在有空嗎？我有件小事想跟你說。」', response: '「有啊。」', affection: 2 },
+    { text: '「我今天遇到一件很好笑的事，忍到現在才想到要跟你講。」', response: '「哈哈，妳這樣講很神祕欸。」', affection: 3 },
+    { text: '「你猜我今天做了什麼蠢事？」', response: '「欸？妳先不要賣關子啦。」', affection: 2 },
   ],
   masa: [
-    { text: '「瑪莎，我要跟你投訴一件事！」', response: '「先講清楚，這次是誰的問題？妳自己的也算喔。」', affection: 2 },
-    { text: '「我今天真的快被一個東西氣死。」', response: '「好，給妳三十秒，講重點。」', affection: 2 },
-    { text: '「欸，我現在需要一個人陪我吐槽。」', response: '「妳找對人了，但我不保證會站妳這邊。」', affection: 2 },
+    { text: '「瑪莎，我要跟你投訴一件事！」', response: '「喔？投訴單先拿來，我看看。」', affection: 2 },
+    { text: '「我今天真的快被一個東西氣死。」', response: '「先別氣，妳說。」', affection: 2 },
+    { text: '「欸，我現在需要一個人陪我吐槽。」', response: '「可以啊，今天我心情好，聽妳講。」', affection: 2 },
   ],
   stone: [
-    { text: '「石頭，你在嗎？我想跟你講個小插曲。」', response: '「在啊，怎麼了？慢慢說。」', affection: 2 },
-    { text: '「我今天碰到一件事，現在想起來還是覺得很好笑。」', response: '「真的假的，聽妳這樣說我也想知道了。」', affection: 3 },
-    { text: '「你現在有空嗎？我想找人聊一下。」', response: '「有空，妳說。我在。」', affection: 2 },
+    { text: '「石頭，你在嗎？我想跟你講個小插曲。」', response: '「在，我看到了。」', affection: 2 },
+    { text: '「我今天碰到一件事，現在想起來還是覺得很好笑。」', response: '「哈哈，聽起來有意思喔。」', affection: 3 },
+    { text: '「你現在有空嗎？我想找人聊一下。」', response: '「有空，妳慢慢打。」', affection: 2 },
   ],
   yanming: [
-    { text: '「諺明哥，你忙完了嗎？我今天有點事想跟你分享。」', response: '「剛忙完，妳說吧。」', affection: 2 },
-    { text: '「我今天又忘東忘西了，先跟你報告一下。」', response: '「哈哈，這次又漏了什麼？」', affection: 2 },
-    { text: '「你現在有空嗎？我有個問題想問你。」', response: '「有，妳問。是生活上的問題，還是又要我幫忙想辦法？」', affection: 3 },
+    { text: '「諺明哥，你忙完了嗎？我今天有點事想跟你分享。」', response: '「剛忙完，正好可以喘口氣。」', affection: 2 },
+    { text: '「我今天又忘東忘西了，先跟你報告一下。」', response: '「哈哈，妳先講，我猜不到啦。」', affection: 2 },
+    { text: '「你現在有空嗎？我有個問題想問你。」', response: '「有，今天不忙。」', affection: 3 },
   ],
 }
 
