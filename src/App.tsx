@@ -4420,6 +4420,7 @@ function App() {
     if (springInviteFinalChoice.accepted) {
       setSpringStoreCharacter(character)
       localStorage.setItem('mayday-spring-store-character', character)
+      addRouteAffection(character, 1)
       setSpringStoreReply(null)
       localStorage.removeItem('mayday-spring-store-reply')
       setSpringInviteTarget(null)
