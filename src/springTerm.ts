@@ -1412,7 +1412,6 @@ export const getSpringSmsRounds = (character: SpringCharacterId, context: Spring
         springSmsChoice('「我觉得很神奇，原来练琴会留下这些痕迹。」', ['「都是慢慢累積的，不用急著也練成這樣。」'], 2),
         springSmsChoice('「我回家会记得先休息，不会硬练。」', ['「這樣就對了，手指不舒服就停一下。」'], 2),
       ])
-}
   }
 
   return rounds
