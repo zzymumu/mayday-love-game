@@ -510,7 +510,6 @@ export const winterBusStopRoutes: Record<WinterCharacterId, WinterBusStopRoute> 
         ],
       },
       {
-      {
         sceneBlocks: [
           { kind: 'narration', text: '公車站的燈光落在路面上，下一班車還有幾分鐘。你想起下午在練團室看他們練團時，大家把鼓棒遞給諺明哥的畫面，忍不住轉頭看他。' },
           { kind: 'dialogue', speaker: '你', text: '諺明哥，我有點好奇欸。' },
