@@ -1886,7 +1886,7 @@ function App() {
   const [monthFreeChatReplies, setMonthFreeChatReplies] = useState<number[]>(() => {
     try {
       const saved = JSON.parse(localStorage.getItem('mayday-month-free-chat-replies') ?? '[]')
-      return Array.isArray(saved) ? saved.filter((value): value is number => Number.isInteger(value) && value >= 0 && value <= 2).slice(0, 5) : []
+      return Array.isArray(saved) ? saved.filter((value): value is number => Number.isInteger(value) && value >= 0 && value <= 2).slice(0, 6) : []
     } catch { return [] }
   })
   const [nextMonthInviteCandidates, setNextMonthInviteCandidates] = useState<RouteCharacterId[]>(() => {
@@ -7208,12 +7208,12 @@ function App() {
 
               {storyStage === 'spring-lesson' && springLessonCharacter && (
                 <div className="story-screen-overlay">
-                  <div className="story-screen-head"><div className="chapter-mark">練團室・留下來一下</div><div className="story-contact-title"><strong>{springLessonRoutes[springLessonCharacter].title}</strong><small>五輪親自互動・每句都由你決定</small></div><span className="story-head-spacer" /></div>
+                  <div className="story-screen-head"><div className="chapter-mark">練團室・留下來一下</div><div className="story-contact-title"><strong>{springLessonRoutes[springLessonCharacter].title}</strong><small>每輪親自互動・摸茧後也由你接話</small></div><span className="story-head-spacer" /></div>
                   <div className="story-narrative-scroll">
                     <div className="story-kicker">A LITTLE CLOSER</div><h2 className="story-scene-title">從第一個和弦開始</h2>
                     <StoryBlocks blocks={springLessonRoutes[springLessonCharacter].blocks} />
                     {springLessonRoutes[springLessonCharacter].rounds.map((round, index) => (
-                      index > springLessonReplies.length ? null : (
+                      index > springLessonReplies.length || (index === 5 && springLessonReplies[4] !== 0) ? null : (
                         <div className="lesson-interaction-round" key={index}>
                           {round.scene.length > 0 ? <StoryBlocks blocks={round.scene} /> : null}
                           {index < springLessonReplies.length ? (
@@ -7226,7 +7226,7 @@ function App() {
                             ]} />
                           ) : (
                             <div className="choice-area">
-                              <div className="choice-heading">第 {index + 1}/5 輪・{round.prompt}</div>
+                              <div className="choice-heading">{index === 5 ? round.prompt : `第 ${index + 1}/5 輪・${round.prompt}`}</div>
                               {round.choices.map((choice, choiceIndex) => (
                                 <button className="reply-choice" key={choiceIndex} onClick={() => chooseSpringLessonRoundReply(index, choiceIndex)}><span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} /></button>
                               ))}
@@ -7235,7 +7235,7 @@ function App() {
                         </div>
                       )
                     ))}
-                    {springLessonReplies.length === springLessonRoutes[springLessonCharacter].rounds.length ? (
+                    {(springLessonReplies.length === 6 || (springLessonReplies.length === 5 && springLessonReplies[4] !== 0)) ? (
                       <>
                         <StoryBlocks blocks={springLessonRoutes[springLessonCharacter].endingBlocks} />
                         <div className="story-action-bar"><button className="story-primary-button" onClick={() => changeStage('spring-sms-picker')}>收拾東西，回家 <ChevronRight size={15} /></button></div>
