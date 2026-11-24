@@ -6846,7 +6846,7 @@ function App() {
                   <div className="story-narrative-scroll">
                     <div className="story-kicker">MAYDAY REHEARSAL</div><h2 className="story-scene-title">轧車！</h2>
                     <StoryBlocks blocks={[
-                      { kind: 'narration', text: springStoreCharacter ? characterNames[springStoreCharacter] + '陪你一路走到練團室。你們一起推開門，裡面立刻傳來佑達敲鼓的聲音。' : '你自己走到練團室，推開門時，裡面已經傳出佑達敲鼓的聲音。' },
+                      { kind: 'narration', text: springStoreCharacter ? characterNames[springStoreCharacter] + '陪你一路走到練團室。你們一起推開門，佑達正坐在鼓組旁邊轉著鼓棒。' : '你自己走到練團室，推開門時，佑達正坐在鼓組旁邊轉著鼓棒。' },
                       ...springRehearsalBlocks,
                     ]} />
                   </div>
@@ -6860,8 +6860,8 @@ function App() {
                   <div className="story-narrative-scroll">
                     <div className="story-kicker">AFTER REHEARSAL</div><h2 className="story-scene-title">{springAfterChoice === 'lesson' ? '想跟誰學一點東西？' : '晚上想做什麼？'}</h2>
                     <StoryBlocks blocks={springAfterChoice === 'lesson'
-                      ? [{ kind: 'narration', text: '佑達說和朋友約好要去拿東西，拎起包包先走了。其他人還在收拾器材。瑪莎把 Bass 放回琴袋，溫尚翊和石頭整理吉他，阿信把麥克風收好。你忽然想趁大家還在，多學一點。' }]
-                      : [{ kind: 'narration', text: '佑達說和朋友約好要去拿東西，拎起包包先走了。大家還在收拾器材，諺明哥看了看時間，問你要不要一起去吃點東西。另一邊，幾個人也問你要不要留下來學樂器。' }]} />
+                      ? [{ kind: 'narration', text: '佑達已經先走了，其他人還在收拾器材。瑪莎把 Bass 放回琴袋，溫尚翊和石頭整理吉他，阿信把麥克風收好。你忽然想趁大家還在，多學一點。' }]
+                      : [{ kind: 'narration', text: '佑達已經先走了。大家還在收拾器材，諺明哥看了看時間，問你要不要一起去吃點東西。另一邊，幾個人也問你要不要留下來學樂器。' }]} />
                     {springAfterChoice !== 'lesson' ? (
                       <div className="choice-area"><div className="choice-heading">選擇今晚的安排</div>
                         <button className="reply-choice" onClick={() => chooseSpringAfterChoice('yanming-dinner')}><span><strong>跟諺明哥去吃飯</strong><small>附近有家他常去的小店。</small></span><ChevronRight size={15} /></button>
