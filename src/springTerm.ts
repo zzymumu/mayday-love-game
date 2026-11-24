@@ -158,7 +158,7 @@ export const springStoreRoutes: Record<SpringCharacterId, SpringStoreRoute> = {
         springStoreDialogue('溫尚翊', '放心啦，我在這裡。'),
       ], '你看著他腳邊的開關，決定怎麼幫忙。', [
         springStoreChoice('「好！我来控制，你负责弹！」', '你興致勃勃地站到他旁邊，第一次卻踩得太早。「欸欸欸！還沒好啦！」他笑得肩膀都抖了，重新把吉他抱穩。「好啦，再一次。這次聽我喊。」第二次總算配合得剛剛好，他還很認真地朝你比了個讚。', 3),
-        springStoreChoice('「你先教我，我不想搞砸。」', '「好啦，妳看喔。」他蹲下來指給你看開關的位置，耐心說明什麼時候踩。你照著試了一次，他在旁邊點點頭。「不錯嘛，學得很快欸。」', 3),
+        springStoreChoice('「你先教我，我不想搞砸。」', '「好啦，妳看喔。」他蹲下來指給你看開關的位置，耐心說明什麼時候踩。「這個不用怕，妳踩下去就好了。」你照著試了一次，他在旁邊點點頭。「不錯嘛，學得很快欸。」', 3),
         springStoreChoice('「我觉得你就是想找个人帮你干活！」', '「哈哈哈哈哈，被妳講中了。」他一點也不心虛，甚至重新把吉他背好，還把腳邊的位置讓給你。「不然咧？我一個人又要彈又要踩，很忙欸。」', 2),
       ]),
       springStoreRound([
@@ -173,7 +173,7 @@ export const springStoreRoutes: Record<SpringCharacterId, SpringStoreRoute> = {
         springStoreNarration('他先把展示琴取下來，確認背帶長度，再扶著琴身交到你手上。你低頭看著琴頸，手指懸在半空，不知道該先放哪裡；他站在旁邊看著，沒有催你。'),
       ], '你抱著吉他，抬頭看向他。', [
         springStoreChoice('「如果我真的想学，你会教我吗？」', '「妳真的想學喔？」他看了你兩秒，隨後笑了一下。「可以啊，先來練團室試試看。」他把琴身扶穩，語氣帶著一點故意的嚴肅。「不過我教得很嚴格喔，不准偷懶。」', 3),
-        springStoreChoice('「你先弹给我听嘛！」', '「好啊，想聽什麼？」他接過琴，隨手彈了一段輕快的旋律。彈完還故意抬眼看你，嘴角帶著笑。「是不是突然更想學了？」', 3),
+        springStoreChoice('「你先弹给我听嘛！」', '「好啊，想聽什麼？」他接過琴，隨手彈了一段輕快的旋律。「這樣可以嗎？」彈完還故意抬眼看你，嘴角帶著笑。「是不是突然更想學了？」', 3),
         springStoreChoice('「我怕我没有天分，学不会。」', '「妳都還沒學就在擔心這個喔？」他把琴放回展示架，語氣裡帶著一點笑意。「哪有人一開始就會的啦。先玩玩看，不喜歡再說啊。」', 2),
       ]),
     ],
@@ -1151,7 +1151,21 @@ export const getSpringSmsOpeners = (character: SpringCharacterId, context: Sprin
     return rehearsal.yanming
   }
   if (context.storeCharacter === character && context.lessonCharacter === character) return storeAndLesson[character]
-  if (context.storeCharacter === character) return storeOnly[character]
+  if (context.storeCharacter === character) {
+    const choices = storeOnly[character].map((choice) => ({ ...choice }))
+    const thirdStoreReply = context.storeReplies?.[2] ?? null
+    if (character === 'wen') {
+      if (thirdStoreReply === 0) choices[2] = { text: '「你说会教我吉他，记得喔。」', response: '「有啦，妳來練團室找我就好。」', affection: 2 }
+      else if (thirdStoreReply === 1) choices[2] = { text: '「我还想再听你弹刚刚那段旋律。」', response: '「好啊，下次再彈給妳聽。」', affection: 2 }
+      else if (thirdStoreReply === 2) choices[2] = { text: '「我今天说没天分，你不会真的觉得我学不会吧？」', response: '「妳都還沒學，哪來的學不會啦。」', affection: 2 }
+    }
+    if (character === 'ashin') {
+      if (thirdStoreReply === 0) choices[2] = { text: '「你说下次去练团室要教我和弦，记得喔。」', response: '「當然啊，我會找一把木吉他給妳。」', affection: 2 }
+      else if (thirdStoreReply === 1) choices[2] = { text: '「我还是有点怕按弦会痛。」', response: '「先慢慢來，不用練太久。」', affection: 2 }
+      else if (thirdStoreReply === 2) choices[2] = { text: '「我今天还是觉得看你们弹比较轻松。」', response: '「哈哈，也可以啊，下次再彈給妳聽。」', affection: 2 }
+    }
+    return choices
+  }
   if (context.lessonCharacter === character) return lessonOnly[character]
   return rehearsal[character]
 }
@@ -1196,10 +1210,10 @@ export const getSpringSmsRounds = (character: SpringCharacterId, context: Spring
         springSmsChoice('「瑪莎是不是快被他氣死了？」', ['「哈哈，他們兩個平常就很會互相吐槽。」'], 2),
         springSmsChoice('「我覺得你們最後一起收住那一下很帥。」', ['「謝謝～那一下大家有抓到同一個點。」'], 2),
       ]),
-      springSmsRound('下次如果妳還想練木吉他，可以再找我。', [
-        springSmsChoice('「說好了喔，不可以嫌我笨。」', ['「不會啦，妳明明就很認真。」'], 2),
-        springSmsChoice('「那我要從頭開始學。」', ['「好啊，我們慢慢來。」'], 1),
-        springSmsChoice('「那你要準備好當老師了。」', ['「哈哈，這個老師有點不專業啦。」'], 1),
+      springSmsRound('下次有空也可以再來聽我們練團啊，今天妳聽得滿認真的。', [
+        springSmsChoice('「好啊，我還想再聽一次《轧車》。」', ['「好啊，下次再讓妳聽完整一點。」'], 2),
+        springSmsChoice('「你們練團真的很有趣，尤其佑達。」', ['「哈哈，他今天真的很有精神。」'], 2),
+        springSmsChoice('「那你要幫我留個位置喔。」', ['「沒問題，幫妳留靠前面一點。」'], 2),
       ]),
       springSmsRound('妳剛剛有聽清楚最後那段嗎？我自己覺得這次接得滿順的。', [
         springSmsChoice('「有啊！最後一次大家一起進來的時候很有氣勢。」', ['「對啊，那一下真的很過癮，前面亂成那樣還好最後有接起來。」'], 2),
