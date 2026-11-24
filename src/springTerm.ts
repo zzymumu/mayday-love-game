@@ -1163,7 +1163,7 @@ const springNaturalMemberSmsOpeners = (character: SpringMemberSmsId, context: Sp
     wen: [
       { text: '「你剛剛還說只是看看，結果效果器一顆一顆試得比誰都認真。」', response: '「妳不是也踩得很開心？不要把責任都推給我。」', affection: 2 },
       { text: '「我現在還記得那個音色突然變厚的聲音。」', response: '「那顆效果器確實不錯，拿來表演很有存在感。」', affection: 2 },
-      { text: '「下次換我自己試，你不准先幫我按。」', response: '「好啦，讓妳自己玩，這次我站旁邊看。」', affection: 3 },
+      { text: '「下次換我自己試，你不準先幫我按。」', response: '「好啦，讓妳自己玩，這次我站旁邊看。」', affection: 3 },
     ],
     ashin: [
       { text: '「今天那兩把木吉他的聲音，我到現在還分得出來。」', response: '「妳耳朵滿仔細的，兩把的音色真的不太一樣。」', affection: 2 },
@@ -1264,7 +1264,7 @@ const springNaturalStoreOnlySmsRounds = (
         [
           springSmsChoice('「你居然有記得喔？」', ['「妳講了好幾次，我想忘記也難。」'], 3),
           springSmsChoice('「我只是有認真聽你彈啦。」', ['「知道啦，沒有說妳不認真。」'], 2),
-          springSmsChoice('「下次我還要自己試，不准搶先按。」', ['「好，這次讓妳當主控，別又踩太早。」'], 3),
+          springSmsChoice('「下次我還要自己試，不準搶先按。」', ['「好，這次讓妳當主控，別又踩太早。」'], 3),
         ]),
       springSmsRound(
         r2 === 0 ? '今天那顆效果器先記著，下次有空再試別的音色，不用一次玩完。'
@@ -1352,7 +1352,7 @@ const springNaturalStoreOnlySmsRounds = (
         [
           springSmsChoice('「我現在還不會，但以後可以學啊。」', ['「先把興趣留著，別一下子買一堆東西。」'], 3),
           springSmsChoice('「我至少是很認真的觀眾吧。」', ['「這個倒是，妳看得比我還仔細。」'], 2),
-          springSmsChoice('「你差點怎麼回答？不准亂說喔。」', ['「我說妳是來監督我不要亂花錢的。」'], 3),
+          springSmsChoice('「你差點怎麼回答？不準亂說喔。」', ['「我說妳是來監督我不要亂花錢的。」'], 3),
         ]),
       springSmsRound(
         r2 === 0 ? '下次妳再來，我可以讓妳試試Bass，不過先說好，手忙腳亂我還是會吐槽。'
@@ -1407,7 +1407,7 @@ const springNaturalStoreOnlySmsRounds = (
     springSmsRound('今天先這樣吧，謝謝妳陪我跑一趟。回去路上小心，晚安。', [
       springSmsChoice('「不客氣，今天跟你一起逛很開心。」', ['「我也是，晚安。」'], 3),
       springSmsChoice('「你也早點休息，背帶記得收好。」', ['「好，我會記得。妳也晚安。」'], 2),
-      springSmsChoice('「下次再一起去，不准忘記喔。」', ['「不會忘記，說好了。」'], 3),
+      springSmsChoice('「下次再一起去，不準忘記喔。」', ['「不會忘記，說好了。」'], 3),
     ]),
   ]
 }
@@ -1449,7 +1449,7 @@ const springNaturalMemberSmsRounds = (
             ? [
                 springSmsChoice('「我哪有喊很大聲，是你先笑出來的！」', ['「我那是被妳嚇到，突然喊那麼大聲。」'], 2),
                 springSmsChoice('「那下次還要再讓我成功一次。」', ['「先把今天這個練熟啦，別急著升級。」'], 3),
-                springSmsChoice('「我第一次彈出來欸，不准笑我。」', ['「我哪有笑妳，是替妳高興好不好。」'], 3),
+                springSmsChoice('「我第一次彈出來欸，不準笑我。」', ['「我哪有笑妳，是替妳高興好不好。」'], 3),
               ]
             : r0 === 1
               ? [
@@ -1486,13 +1486,13 @@ const springNaturalMemberSmsRounds = (
           ]),
         springSmsRound(
           r3 === 0
-            ? '好了，今天就到這裡。妳手指先放假，不准回家又偷偷練到半夜。'
+            ? '好了，今天就到這裡。妳手指先放假，不準回家又偷偷練到半夜。'
             : r3 === 1
               ? '我把妳喜歡的那顆效果器型號寫下來了，下次去不用重新找。'
               : '今天還滿好玩的。下次再帶妳去逛，不過這次先把和弦練熟。',
           [
             springSmsChoice('「知道啦，吉他老師管好多。」', ['「我不管妳，明天手痛又要怪我。晚安啦。」'], 2),
-            springSmsChoice('「你也不要練到太晚，不准只管我。」', ['「好啦，知道了。晚安，撥片收好。」'], 3),
+            springSmsChoice('「你也不要練到太晚，不準只管我。」', ['「好啦，知道了。晚安，撥片收好。」'], 3),
             springSmsChoice('「晚安，今天真的很好玩。」', ['「嗯，今天不錯。下次見。」'], 3),
           ]),
       ]
@@ -1596,7 +1596,7 @@ const springNaturalMemberSmsRounds = (
           [
             springSmsChoice('「你居然會稱讚人，我要記下來。」', ['「少來，這種事不用特地公告。」'], 3),
             springSmsChoice('「你是不是偷偷覺得我有天分？」', ['「我只說妳有進步，妳不要自己加那麼多。」'], 3),
-            springSmsChoice('「好啊，到時候不准反悔。」', ['「知道啦，我講話算話。」'], 2),
+            springSmsChoice('「好啊，到時候不準反悔。」', ['「知道啦，我講話算話。」'], 2),
           ]),
         springSmsRound(
           r3 === 0
@@ -1712,7 +1712,7 @@ const springNaturalMemberSmsRounds = (
       springSmsRound('好啦，今天就這樣。妳早點休息，別躺在床上還一直重播佑達那個鼓花。', [
         springSmsChoice('「我才沒有，我現在腦袋裡是你彈吉他的聲音。」', ['「……妳今天很會講欸。晚安啦。」'], 3),
         springSmsChoice('「晚安，團長大人，今天辛苦啦。」', ['「少來，快去睡。晚安。」'], 2),
-        springSmsChoice('「你也早點休息，不准偷偷練到半夜。」', ['「知道啦，妳也是。晚安。」'], 2),
+        springSmsChoice('「你也早點休息，不準偷偷練到半夜。」', ['「知道啦，妳也是。晚安。」'], 2),
       ]),
     ]
   }
