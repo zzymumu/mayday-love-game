@@ -319,7 +319,7 @@ export const springLessonRoutes: Record<Exclude<SpringCharacterId, 'yanming'>, S
     choices: [
       { text: '好啊！這次我想把和弦按好。', response: '「好啊，我陪妳慢慢來。這次手指不要太用力，按穩就好。」他把琴往你這邊調了一點，手掌仍扶著琴身。', affection: 2 },
       { text: '你坐這麼近，我反而有點緊張。', response: '「啊？那我坐開一點……」他往旁邊挪了半個位置，卻還是笑著看你。「這樣看得清楚嗎？」', affection: 2 },
-      { text: '我還想再聽你彈一小段。', response: '「好啊，那我彈慢一點給妳聽。」他低頭試了幾個和弦，抬眼時還在等你的反應。', affection: 2 },
+      { text: '我還想再聽你彈一小段。', response: '「好啊，那我彈慢一點給妳聽。」他低頭試了幾個和弦，抬眼時還在等你的反應。', affection: 1 },
     ],
   },
   masa: {
