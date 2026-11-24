@@ -1100,6 +1100,11 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
         { text: "「可以！不過我可能會先去買自己想吃的。」", response: "「那我是不是要早點出門，不然妳就自己跑掉了。」", affection: 2 },
         { text: "「我們兩個根本需要一個生活管理員。」", response: "「好像真的有一點……不過應該會很有趣啦。」", affection: 2 },
       ]),
+        springDailySmsRound("「我下次應該把錢包放在包包最外層，免得又在櫃檯前面翻找。」", [
+        { text: "「你最好真的記得，不然我下次幫你在額頭貼一張提醒。」", response: "「不要啦，這樣我走在路上會被大家看見。」", affection: 2 },
+        { text: "「那你明天早餐吃什麼？先練習回答看看。」", response: "「先不要考我啦，我現在已經想好要點什麼了。」", affection: 2 },
+        { text: "「好啊，我負責檢查錢包，你負責幫我拿早餐。」", response: "「這個分工可以欸，感覺我比較不會出錯。」", affection: 2 },
+      ]),
       ],
       [
         springDailySmsRound("「我有時候買筆也是這樣，明明已經有很多支了。可是看到新的顏色，還是會忍不住拿起來試寫。」", [
@@ -1117,6 +1122,11 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
         { text: "「我保證！我發誓！」", response: "「妳每次講保證，我都覺得事情不太單純馁。」", affection: 2 },
         { text: "「你怎麼這麼不相信我啦！」", response: "「沒有啦，我是怕自己也忍不住，最後兩個人一起破功。」", affection: 2 },
       ]),
+        springDailySmsRound("「我突然想到，妳今天雖然沒買到筆，但貼紙是不是買得很開心？」", [
+        { text: "「超開心！我已經想好要貼在哪裡了。」", response: "「那就好，至少今天不是空手而回嘛。」", affection: 2 },
+        { text: "「買完才發現有幾張根本不知道要貼什麼。」", response: "「那先留著啊，總有一天會找到適合它的位置。」", affection: 2 },
+        { text: "「你要不要挑一張？送你當作文具店紀念品。」", response: "「真的喔？那我想挑一張不要太可愛的，怕被妳笑。」", affection: 2 },
+      ]),
       ],
       [
         springDailySmsRound("「最麻煩的是那種階梯教室，坐進去以後才發現不對勁。要出去還得經過一整排的人。」", [
@@ -1133,6 +1143,11 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
         { text: "「好啦，我回去就改！」", response: "「乖，記得改喔，不要又忘記。」", affection: 2 },
         { text: "「你幫我記嘛，我的腦袋今天休假。」", response: "「什麼啦，怎麼連這個都要交給我。」", affection: 2 },
         { text: "「我覺得我需要一個專屬導航員。」", response: "「可以啊，不過妳要先告訴我自己到底要去哪裡馁。」", affection: 2 },
+      ]),
+        springDailySmsRound("「不過妳今天這樣一講，我也想起自己以前走錯教室的事了，現在看到門牌都會多看一眼。」", [
+        { text: "「那我們以後互相檢查，誰都不准再走錯！」", response: "「好啊，互相提醒比較保險，妳不要嫌我囉嗦就好。」", affection: 2 },
+        { text: "「你先把自己的課表看好啦，還想管我。」", response: "「欸，我有在看啦，只是偶爾眼睛會自動跳過門牌。」", affection: 2 },
+        { text: "「下次走錯就當作去別系交流一下。」", response: "「這個理由好像不錯欸，不過還是不要常常交流好了。」", affection: 2 },
       ]),
       ]
     ],
@@ -1172,6 +1187,11 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
         { text: "「不要，我寧願相信自己！」", response: "「那我就祝妳好運，跟妳的講義相親相愛。」", affection: 2 },
         { text: "「你就是想看我出糗！」", response: "「不然咧？妳平常也沒少看我出糗啊，公平一點嘛。」", affection: 2 },
       ]),
+        springDailySmsRound("「反正妳下次拿講義先看封面，別再把別人的東西帶回家。」", [
+        { text: "「知道啦！你才要先看印表機設定。」", response: "「我會看，妳先把講義看好。」", affection: 2 },
+        { text: "「你真的很適合當我的監考老師。」", response: "「不敢當，妳這種學生我管不動。」", affection: 2 },
+        { text: "「不然下次我們一起去，誰拿錯誰請飲料！」", response: "「這個賭注可以，妳最好先把東西拿對。」", affection: 2 },
+      ]),
       ],
       [
         springDailySmsRound("「我剛剛買完東西把錢包收起來，走到門口才發現手機還放在櫃檯。又折回去拿，店員已經準備幫我保管了。」", [
@@ -1189,6 +1209,11 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
         { text: "「我覺得你欠我一杯飲料賠罪。」", response: "「蛤？我連現場都沒去，怎麼就欠錢了？」", affection: 2 },
         { text: "「因為你嘲笑我！精神損失費！」", response: "「那我是不是也可以跟妳申請被妳煩的補償金？」", affection: 2 },
       ]),
+        springDailySmsRound("「我剛剛想了一下，妳那顆滾到櫃檯底下的硬幣，最後有撿到嗎？」", [
+        { text: "「有啦！我還趴下去找，差點跟地板親密接觸。」", response: "「妳為了一塊錢付出的努力，我會記住的。」", affection: 2 },
+        { text: "「沒有，我決定放它自由了。」", response: "「很大方嘛，硬幣應該會感謝妳的成全。」", affection: 2 },
+        { text: "「有！但老闆一直看我，我覺得我像在做壞事。」", response: "「妳只是撿自己的錢，不用那麼心虛吧。」", affection: 2 },
+      ]),
       ],
       [
         springDailySmsRound("「我還記得那天回家，脫鞋的時候真的有種重獲自由的感覺。那一刻覺得拖鞋才是人類文明的巔峰。」", [
@@ -1205,6 +1230,11 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
         { text: "「你確定你有這個能力？」", response: "「當然，我的審美比妳穩定多了。」", affection: 2 },
         { text: "「我才不要，你一定會故意挑最醜的給我！」", response: "「被妳發現了。本來還想推薦妳一雙很有特色的。」", affection: 2 },
         { text: "「那你負責買單，我就相信你！」", response: "「妳倒是很會做生意欸，算盤都打到我身上了。」", affection: 2 },
+      ]),
+        springDailySmsRound("「不過妳那雙鞋如果真的磨得太嚴重，就別硬穿了，漂亮也不能拿來走路。」", [
+        { text: "「我知道啦，先讓它冷靜幾天。」", response: "「鞋子需要冷靜，妳也需要休息一下。」", affection: 2 },
+        { text: "「你是不是其實很關心我的腳？」", response: "「我是不想下次又聽妳抱怨走不了路，謝謝。」", affection: 2 },
+        { text: "「那你下次陪我去買，這次不准只挑好看的。」", response: "「好啊，這次先看合不合腳，妳不要又被外表騙走。」", affection: 2 },
       ]),
       ]
     ],
@@ -1244,6 +1274,11 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
         { text: "「你要不要幫我檢查？我怕我漏掉。」", response: "「可以啊，不過妳要先把衣服拿來，我又不能隔空檢查。」", affection: 2 },
         { text: "「算了，我覺得我還是自己努力好了。」", response: "「嗯，這樣比較實際。加油，清潔隊長。」", affection: 2 },
       ]),
+        springDailySmsRound("「妳那件黑色衣服現在應該差不多清乾淨了吧？紙屑真的很會黏。」", [
+        { text: "「差不多了！我現在看到衛生紙都會有陰影。」", response: "「這個陰影應該會持續到下一次洗衣服。」", affection: 2 },
+        { text: "「還有一點點，我決定等它自己掉下來。」", response: "「也可以啦，不過可能要等到下次穿的時候。」", affection: 2 },
+        { text: "「我把口袋翻出來了，現在它們都很安全！」", response: "「很好，這樣洗衣機今天就沒有新任務了。」", affection: 2 },
+      ]),
       ],
       [
         springDailySmsRound("「而且有些螺絲長得很像，差一點點就裝不進去。我有時候會把它們全部排在桌上，一個一個比。」", [
@@ -1261,6 +1296,11 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
         { text: "「下次我要挑戰更難的！」", response: "「先把這次的螺絲收好再說。」", affection: 2 },
         { text: "「你下次可以來幫我，我負責遞工具！」", response: "「可以啊，不過妳不要遞錯工具給我就好。」", affection: 2 },
       ]),
+        springDailySmsRound("「那兩顆多出來的螺絲妳先收好，說不定哪天拆開還用得到。」", [
+        { text: "「我已經放進抽屜了，還貼了標籤！」", response: "「妳這次很有條理欸，沒有隨手亂放。」", affection: 2 },
+        { text: "「我怕我下次找不到，乾脆直接黏在架子下面。」", response: "「這個方法滿特別的，希望妳以後拆的時候記得它們在哪。」", affection: 2 },
+        { text: "「要不然你幫我保管？我怕我弄丟。」", response: "「可以啊，不過妳要先把它們裝進袋子，不然我也會搞混。」", affection: 2 },
+      ]),
       ],
       [
         springDailySmsRound("「我前幾天還翻到以前寫的一張購物清單。上面寫著牛奶、麵包，還有一個我完全看不懂的東西。」", [
@@ -1277,6 +1317,11 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
         { text: "「留著啊！裡面還有好多奇怪的塗鴉。」", response: "「那就留著吧，以後看到應該會覺得滿有趣的。」", affection: 2 },
         { text: "「我想把它拿出來繼續畫，反正空白的地方還很多。」", response: "「可以啊，不過妳不要把整本都畫滿了。」", affection: 2 },
         { text: "「不行，我要把它變成我的秘密漫畫本！」", response: "「那我以後是不是可以申請看一下？」", affection: 2 },
+      ]),
+        springDailySmsRound("「妳那本筆記要是繼續畫下去，說不定真的會變成一本漫畫。」", [
+        { text: "「對啊！我還想幫每個小人安排角色。」", response: "「那妳要不要先決定誰是主角？我有點好奇。」", affection: 2 },
+        { text: "「不行，畫到最後可能整本都變成亂七八糟的塗鴉。」", response: "「那也沒關係啊，反正是妳自己的筆記。」", affection: 2 },
+        { text: "「可以啊！不過你要當第一個讀者。」", response: "「好啊，我可以先看，不過不要叫我寫讀後感喔。」", affection: 2 },
       ]),
       ]
     ],
