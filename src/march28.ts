@@ -180,9 +180,9 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "你把桌上的尺和剪刀放回原位。溫尚翊從完成的海報裡抽出一張，沒有立刻遞過來，先低頭把背面的紙屑拍掉，才交到你手上。"
+            "text": "你把桌上的尺和剪刀放回原位。溫尚翊把完成的海報疊好，從裡面抽出一張，拍掉背面的紙屑後遞給你。"
           },
-          { kind: 'narration', text: "桌面清出一小塊空位後，他把剩下的紙屑掃進掌心，順手把那張留給你的海報放到最上面，還特地把折到的角壓平。" },
+          { kind: 'narration', text: "他把剩下的海報分成兩疊，一疊放進紙袋，另一疊留在桌邊，準備明天帶去現場。" },
           {
             "kind": "dialogue",
             "speaker": "温尚翊",
@@ -789,7 +789,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
             "kind": "narration",
             "text": "練習告一段落，小女孩把琴譜合起來，看看你，又看看瑪莎，忽然像想到什麼似的開口。"
           },
-          { kind: 'narration', text: "瑪莎手裡的鉛筆停在半空。他清了清喉嚨，忽然低頭把琴譜邊緣對齊，像是那幾張紙突然變得很重要。" },
+          { kind: 'narration', text: "瑪莎手裡的鉛筆停在半空，視線在你和小女孩之間來回了一下，像是不知道該先回答誰。" },
           {
             "kind": "dialogue",
             "speaker": "小女孩",
@@ -865,7 +865,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
     "endingBlocks": [
             {
         "kind": "narration",
-        "text": "玛莎把琴谱交回柜台，临走前还特地确认了小女孩的练习页有没有夹好。走出乐器行时，他又开始抱怨数学作业。"
+        "text": "瑪莎把琴凳推回原位，確認桌面沒有遺漏的文具，這才背起書包走出樂器行。走到門口，他又開始抱怨數學作業。"
       },
       {
         "kind": "dialogue",
