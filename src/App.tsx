@@ -2325,7 +2325,7 @@ function App() {
   const [march28ParkStayReplies, setMarch28ParkStayReplies] = useState<number[]>(() => {
     try {
       const saved = JSON.parse(localStorage.getItem('mayday-march28-park-stay-replies') ?? '[]')
-      return Array.isArray(saved) ? saved.filter((value): value is number => Number.isInteger(value) && value >= 0 && value < 3).slice(0, 6) : []
+      return Array.isArray(saved) ? saved.filter((value): value is number => Number.isInteger(value) && value >= 0 && value < 3).slice(0, 7) : []
     } catch { return [] }
   })
   const [march28DiaryUnlocked, setMarch28DiaryUnlocked] = useState(() => localStorage.getItem('mayday-march28-park-choice') !== 'stay' && localStorage.getItem('mayday-march28-diary-unlocked') === 'true')
@@ -2440,7 +2440,7 @@ function App() {
                                                                        : storyStage === 'march28-visit' ? '13:20'
                                                                          : storyStage === 'march28-end' ? '20:20'
                                                                          : storyStage === 'march28-park' ? '20:40'
-                                                                           : storyStage === 'march28-park-stay' ? (march28ParkStayReplies.length >= 6 ? '05:40' : march28ParkStayReplies.length >= 5 ? '02:10' : march28ParkStayReplies.length >= 4 ? '00:20' : march28ParkStayReplies.length >= 3 ? '23:10' : march28ParkStayReplies.length >= 2 ? '22:20' : '21:10')
+                                                                           : storyStage === 'march28-park-stay' ? (march28ParkStayReplies.length >= 7 ? '05:40' : march28ParkStayReplies.length >= 6 ? '02:10' : march28ParkStayReplies.length >= 5 ? '00:20' : march28ParkStayReplies.length >= 4 ? '23:10' : march28ParkStayReplies.length >= 3 ? '22:20' : march28ParkStayReplies.length >= 2 ? '22:00' : '21:10')
                                                                              : storyStage === 'march28-diary' ? '22:00'
                                                                                : '17:20'
   const effectiveDateStage = storyStage === 'paused' ? resumeStage : storyStage
@@ -7767,7 +7767,7 @@ function App() {
                   <div className="story-screen-head"><div className="chapter-mark">3 月 28 日・夜晚</div><div className="story-contact-title"><strong>一起守到天亮</strong><small>大安森林公園・只有你們兩個</small></div><span className="story-head-spacer" /></div>
                   <div className="story-narrative-scroll">
                     <div className="story-kicker">A LITTLE LONGER TOGETHER</div>
-                    <h2 className="story-scene-title">再坐一下就好</h2>
+                    <h2 className="story-scene-title">夜色慢慢變深</h2>
                     <StoryBlocks blocks={march28ParkStayIntroBlocks} />
                     {march28ParkStayRounds.map((round, index) => (
                       index > march28ParkStayReplies.length ? null : (
