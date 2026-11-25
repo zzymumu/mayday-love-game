@@ -193,7 +193,7 @@ function handsomeReactionBlocks(character: March29Character): March29Block[] {
     { kind: 'narration', text: '你故意嘆了口氣，想看看他還能得意到什麼程度。' },
     { kind: 'dialogue', speaker: '溫尚翊', text: '不行！' },
     { kind: 'narration', text: '他幾乎立刻接話，伸手朝你比了個叉，惹得大家又笑成一團。' },
-    { kind: 'dialogue', speaker: '陳信宏', text: '可是我覺得怪獸今天真的滿帥的啊。' },
+    { kind: 'dialogue', speaker: '陳信宏', text: '不過妳剛剛有沒有看到最後那段？他彈得很認真欸。' },
     { kind: 'narration', text: '阿信笑著看了看溫尚翊，又轉過頭來問你，語氣裡還帶著一點替朋友高興的認真。' },
     { kind: 'dialogue', speaker: '你', text: '有啊！我有看到！' },
     { kind: 'narration', text: '你回答得很大聲，阿信聽完笑了起來。' },
