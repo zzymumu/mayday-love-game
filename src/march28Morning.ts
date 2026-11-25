@@ -26,7 +26,7 @@ export const getMarch28MorningVisitorIntroBlocks = (
     { kind: 'narration', text: '對方提著早餐袋走近幾步，紙袋窸窣作響。' },
     { kind: 'dialogue', speaker: name, text: '喏，買了飯糰。你應該還沒吃早餐吧？' },
     { kind: 'dialogue', speaker: '陳信宏', text: '哇，謝謝欸。' },
-    { kind: 'narration', text: '你聽見熟悉的聲音，才意識到有人來了。外套底下，你悄悄把臉露出來一點。' },
+    { kind: 'narration', text: '外套底下，你悄悄把臉露出來一點。' },
     { kind: 'dialogue', speaker: '你', text: '……早。' },
     { kind: 'narration', text: '原本正提著早餐袋的人，動作頓了一下。他低頭看向長椅，這才發現阿信旁邊還坐著一個人。你的頭髮有些凌亂，肩上披著一件明顯不是自己的外套。' },
     { kind: 'dialogue', speaker: name, text: '……妳怎麼也在？' },
