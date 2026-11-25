@@ -955,9 +955,28 @@ const springDailySmsRound = (
 // Five people, five genuinely different ways of chatting.
 // The first reply selects one everyday topic; every later prompt stays on that topic,
 // so the player's reply always answers the message immediately above it.
-const springDailySmsOpeners: Record<SpringCharacterId, { text: string; response: string; affection: number }[]> = {
+type SpringDailySmsOpener = {
+  text: string
+  response: string
+  affection: number
+  textMessages?: string[]
+  responseMessages?: string[]
+}
+const springDailySmsOpeners: Record<SpringCharacterId, SpringDailySmsOpener[]> = {
   wen: [
-    { text: '「欸溫尚翊，我剛剛泡了一杯熱可可，結果第一口喝太急，差點把舌頭燙到……現在講話都有點不利索了哈哈哈哈。」', response: '「妳是有多急啦？熱的東西也不知道先吹一下喔。」', affection: 2 },
+    {
+      text: '「我刚刚泡了杯热可可，结果第一口喝太急，差点把舌头烫到了……」',
+      response: '「妳是有多急啦？」',
+      textMessages: [
+        '「我刚刚泡了杯热可可，结果第一口喝太急，差点把舌头烫到了……」',
+        '「现在讲话都有点不利索了哈哈哈哈。」',
+      ],
+      responseMessages: [
+        '「妳是有多急啦？」',
+        '「熱的東西也不知道先吹一下喔。」',
+      ],
+      affection: 2,
+    },
   ],
   ashin: [
     { text: "「阿信！！我今天買早餐差點遲到！\n前面那個人點東西點超久，我站在後面都快急死了。」", response: "「欸，真的喔？\n妳是不是已經看了好幾次手錶了啦。\n這種時候真的會很想說，老闆，我可以先點嗎……」", affection: 2 },
@@ -984,47 +1003,56 @@ const springDailySmsOpeners: Record<SpringCharacterId, { text: string; response:
 const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
   wen: {
     openings: [
-      springDailySmsRound('「所以妳現在是先把它放涼，還是還想跟它拚輸贏？」', [
+      springDailySmsRound('', [
         { text: '「我哪有！我只是太想喝了嘛。」', response: '「最好是啦，連喝個東西都等不了。」' },
-        { text: '「那你下次要記得提醒我。」', response: '「蛤？喝個東西還要我提醒喔？……好啦，下次我盯著妳。」', affection: 3 },
+        { text: '「那你下次要記得提醒我。」', response: '「蛤？喝東西還要我提醒喔？……好啦，下次記得先吹涼。」', affection: 3 },
         { text: '「你不要講我，你自己肯定也會這樣！」', response: '「我才不會咧，至少我知道燙的東西要先放一下。」' },
       ]),
     ],
     tracks: [
       [
-        springDailySmsRound('「你平常是不是也很喜歡吃甜的？」', [
-          { text: '「想看看你有沒有什麼私藏的好吃店。」', response: '「喔，原來是想找我當美食地圖喔？可以啊，我知道幾家不錯的。」', affection: 3 },
-          { text: '「因為我發現你還挺懂吃的嘛。」', response: '「我哪有很懂，吃得多而已啦。」', affection: 2 },
-          { text: '「沒什麼，我只是想找個人陪我吃東西。」', response: '「妳這個理由倒是很直接欸。想吃就講啊，又不會不陪妳去。」', affection: 4 },
-        ]),
-        springDailySmsRound('「會啊，練到一半肚子叫很正常吧。」', [
-          { text: '「那你是不是經常餓著肚子練團？」', response: '「也沒有那麼誇張啦，有空還是會吃。」' },
-          { text: '「我覺得你應該隨身帶一包零食。」', response: '「妳以為我是小學生喔，還要帶零食。」' },
-          { text: '「下次我給你帶吃的好了。」', response: '「真的喔？那我先說好，不可以拿不好吃的東西來敷衍我。」', affection: 4 },
+        springDailySmsRound('', [
+          { text: '「想看看你有没有什么私藏的好吃店。」', response: '「喔，原來是想找我當美食地圖喔？可以啊，我知道幾家不錯的。」', affection: 3 },
+          { text: '「因为我发现你还挺懂吃的嘛。」', response: '「我哪有很懂，吃得多而已啦。」', affection: 2 },
+          { text: '「没什么，我只是想找个人陪我吃东西。」', response: '「妳這個理由倒是很直接欸。想吃就講啊，又不會不陪妳去。', affection: 4 },
         ], {
-          outgoing: '「對了，你平常練團的時候會不會突然很想吃東西？」',
+          outgoing: '「你平常是不是也很喜欢吃甜的？」',
           incomingMessages: [
-            '「會啊，練到一半肚子叫很正常吧。」',
-            '「有時候一忙起來，根本忘記時間。」',
+            '「还好吧，看吃什么。」',
+            '「怎么突然问这个？」',
           ],
         }),
-        springDailySmsRound('「妳現在是在說我喔？」', [
-          { text: '「有啊！剛剛還叫我吃慢一點。」', response: '「那是因為妳吃太快，正常人都會提醒吧。」' },
-          { text: '「那你幹嘛一直記得我頭痛？」', response: '「……我只是剛好記得而已，有什麼好奇怪的。」', affection: 4 },
-          { text: '「好啦好啦，你最沒有管我了。」', response: '「知道就好，不要一天到晚給我亂扣帽子。」' },
+        springDailySmsRound('', [
+          { text: '「那你是不是经常饿着肚子练团？」', response: '「也没有那么夸张啦，有空还是会吃。」' },
+          { text: '「我觉得你应该随身带一包零食。」', response: '「妳以為我是小學生喔，還要帶零食。」' },
+          { text: '「下次我给你带吃的好了。」', response: '「真的喔？那我先说好，不可以拿不好吃的东西来敷衍我。」', affection: 4 },
         ], {
-          outgoing: '「你講話真的很像那種嘴上嫌棄別人，實際上又什麼都會管的人。」',
+          outgoing: '「对了，你平常练团的时候会不会突然很想吃东西？」',
           incomingMessages: [
-            '「妳現在是在說我喔？」',
+            '「会啊，练到一半肚子叫很正常吧。」',
+            '「有时候一忙起来，根本忘记时间。」',
+          ],
+        }),
+        springDailySmsRound('', [
+          { text: '「有啊！刚刚还叫我吃慢一点。」', response: '「那是因为妳吃太快，正常人都会提醒吧。」' },
+          { text: '「那你干嘛一直记得我头痛？」', response: '「……我只是刚好记得而已，有什么好奇怪的。」', affection: 4 },
+          { text: '「好啦好啦，你最没有管我了。」', response: '「知道就好，不要一天到晚给我乱扣帽子。」' },
+        ], {
+          outgoing: '「你讲话真的很像那种嘴上嫌弃别人，实际上又什么都会管的人。」',
+          incomingMessages: [
+            '「妳现在是在说我喔？」',
             '「我哪有管妳，妳不要亂講。」',
           ],
         }),
-        springDailySmsRound('「快去啦，手機不要拿進浴室。」', [
-          { text: '「知道啦！溫老師晚安。」', response: '「誰是老師啦。晚安，手機放下去。」' },
-          { text: '「你怎麼突然這麼像我媽？」', response: '「蛤？我有那麼囉嗦喔？妳才是要早點睡的那個。」' },
-          { text: '「那你也早點睡，不要又熬夜。」', response: '「知道啦，妳也是。晚安。」' },
+        springDailySmsRound('', [
+          { text: '「知道啦！温老师晚安。」', response: '「誰是老師啦。晚安，手機放下去。」' },
+          { text: '「你怎么突然这么像我妈？」', response: '「蛤？我有那麼囉嗦喔？妳才是要早點睡的那個。」' },
+          { text: '「那你也早点睡，不要又熬夜。」', response: '「知道啦，妳也是。晚安。」' },
         ], {
-          outgoing: '「好啦，不鬧你了，我要去洗澡了。」',
+          outgoing: '「好啦，不闹你了，我要去洗澡了。」',
+          incomingMessages: [
+            '「快去啦，手機不要拿進浴室。」',
+          ],
         }),
       ],
     ],
@@ -1382,7 +1410,7 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
 export const getSpringSmsOpeners = (
   character: SpringCharacterId,
   context: SpringDayContext,
-): { text: string; response: string; affection: number }[] => {
+): SpringDailySmsOpener[] => {
   void context
   return springDailySmsOpeners[character]
 }
