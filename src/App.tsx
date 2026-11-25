@@ -2324,11 +2324,12 @@ function App() {
   const [march28ParkStayReplies, setMarch28ParkStayReplies] = useState<number[]>(() => {
     try {
       const saved = JSON.parse(localStorage.getItem('mayday-march28-park-stay-replies') ?? '[]')
-      return Array.isArray(saved) ? saved.filter((value): value is number => Number.isInteger(value) && value >= 0 && value < 3).slice(0, 2) : []
+      return Array.isArray(saved) ? saved.filter((value): value is number => Number.isInteger(value) && value >= 0 && value < 3).slice(0, 6) : []
     } catch { return [] }
   })
-  const [march28DiaryUnlocked, setMarch28DiaryUnlocked] = useState(() => localStorage.getItem('mayday-march28-diary-unlocked') === 'true')
+  const [march28DiaryUnlocked, setMarch28DiaryUnlocked] = useState(() => localStorage.getItem('mayday-march28-park-choice') !== 'stay' && localStorage.getItem('mayday-march28-diary-unlocked') === 'true')
   const [march28DiaryData, setMarch28DiaryData] = useState<March28DiaryData | null>(() => {
+    if (localStorage.getItem('mayday-march28-park-choice') === 'stay') return null
     try {
       const saved = JSON.parse(localStorage.getItem('mayday-march28-diary-data') ?? 'null') as Partial<March28DiaryData> | null
       return saved && typeof saved.title === 'string' && typeof saved.text === 'string' ? { title: saved.title, text: saved.text } : null
@@ -2438,7 +2439,7 @@ function App() {
                                                                        : storyStage === 'march28-visit' ? '13:20'
                                                                          : storyStage === 'march28-end' ? '20:20'
                                                                          : storyStage === 'march28-park' ? '20:40'
-                                                                           : storyStage === 'march28-park-stay' ? '21:10'
+                                                                           : storyStage === 'march28-park-stay' ? (march28ParkStayReplies.length >= 6 ? '05:40' : march28ParkStayReplies.length >= 5 ? '02:10' : march28ParkStayReplies.length >= 4 ? '00:20' : march28ParkStayReplies.length >= 3 ? '23:10' : march28ParkStayReplies.length >= 2 ? '22:20' : '21:10')
                                                                              : storyStage === 'march28-diary' ? '22:00'
                                                                                : '17:20'
   const effectiveDateStage = storyStage === 'paused' ? resumeStage : storyStage
@@ -4991,7 +4992,7 @@ function App() {
     changeStage('march28-end')
   }
 
-  const startMarch28Diary = (choice: 'skip' | 'return' | 'stay') => {
+  const startMarch28Diary = (choice: 'skip' | 'return') => {
     if (!march28VisitCharacter || march28VisitReplies.length !== 5) return
     setMarch28ParkChoice(choice)
     localStorage.setItem('mayday-march28-park-choice', choice)
@@ -4999,19 +5000,13 @@ function App() {
     const afternoonCharacter = characterNames[march28VisitCharacter]
     const eveningText = choice === 'skip'
       ? '吃完晚飯後，本來有點想去大安森林公園走走，想想又覺得今天跑了一整天，還是算了。明天就要演出了，早點回房間整理東西、睡飽比較實在。'
-      : choice === 'return'
-        ? '吃完晚飯突然很想去大安森林公園晃一下，結果真的遇到阿信在顧器材。他看見我還站在那裡，就一直提醒我明天要早起，叫我先回家。明明只聊了一小會兒，回來路上卻還是一直想到他坐在器材箱旁邊的樣子。'
-        : '吃完晚飯突然很想去大安森林公園晃一下，沒想到阿信真的在那裡顧器材。我本來只想陪他一下，最後竟然坐在旁邊待了好久。公園的蚊子很不客氣，我跟他輪流拍，還是被叮了幾個包。後來聊到以後，他說想做一個讓人願意多待一會兒的空間，也想一直唱歌。聽他講那些還沒實現的事，忽然覺得他眼睛亮亮的樣子很可愛。希望他以後真的都能試試看。'
+      : '吃完晚飯突然很想去大安森林公園晃一下，沒想到真的遇到阿信在顧器材。他一個人坐在樹下，旁邊堆著明天要用的音箱和器材箱，說怕晚上被人偷走，所以得守著。聊了一會兒，他還是勸我先回家。雖然只待了一下下，回來路上卻一直想到他坐在那裡的樣子。'
     const data: March28DiaryData = {
-      title: choice === 'stay'
-        ? '被蚊子叮了好幾包，還是有點捨不得回家。'
-        : choice === 'return'
-          ? '吃完飯跑去公園晃了一下。'
-          : '明天就要去看野台開唱了。',
+      title: choice === 'return' ? '吃完飯跑去公園晃了一下。' : '明天就要去看野台開唱了。',
       text: [
         `今天下午去了${afternoonPlace}，和${afternoonCharacter}待了一會兒。明明只是平常的一個下午，卻因為明天有演出，連收拾東西都讓人有點期待。`,
         eveningText,
-        choice === 'stay' ? '現在才發現，原來有些話真的要在很晚、很安靜的時候才會說出口。好啦，不寫了，再寫下去明天起不來。' : '明天要早起，先睡好了。希望明天不要下雨！',
+        '明天要早起，先睡好了。希望明天不要下雨！',
       ].join('\\n\\n'),
     }
     setMarch28DiaryData(data)
@@ -5046,6 +5041,10 @@ function App() {
     localStorage.setItem('mayday-march28-park-choice', 'stay')
     setMarch28ParkStayReplies([])
     localStorage.setItem('mayday-march28-park-stay-replies', '[]')
+    setMarch28DiaryUnlocked(false)
+    setMarch28DiaryData(null)
+    localStorage.removeItem('mayday-march28-diary-unlocked')
+    localStorage.removeItem('mayday-march28-diary-data')
     addRouteAffection('ashin', 2)
     changeStage('march28-park-stay')
   }
@@ -5061,7 +5060,19 @@ function App() {
   }
 
   const finishMarch28Day = () => {
-    if (!march28VisitCharacter || march28VisitReplies.length !== 5 || !march28DiaryData) return
+    if (!march28VisitCharacter || march28VisitReplies.length !== 5) return
+    if (march28ParkChoice === 'stay') {
+      if (march28ParkStayReplies.length !== march28ParkStayRounds.length) return
+      setMarch28DiaryUnlocked(false)
+      setMarch28DiaryData(null)
+      localStorage.removeItem('mayday-march28-diary-unlocked')
+      localStorage.removeItem('mayday-march28-diary-data')
+      setMarch28DayComplete(true)
+      localStorage.setItem('mayday-march28-day-complete', 'true')
+      changeStage('completed')
+      return
+    }
+    if (!march28DiaryData) return
     setMarch28DayComplete(true)
     localStorage.setItem('mayday-march28-day-complete', 'true')
     changeStage('completed')
@@ -7752,7 +7763,7 @@ function App() {
 
               {storyStage === 'march28-park-stay' && (
                 <div className="story-screen-overlay">
-                  <div className="story-screen-head"><div className="chapter-mark">3 月 28 日・夜晚</div><div className="story-contact-title"><strong>器材旁的夜風</strong><small>大安森林公園・和阿信一起守著</small></div><span className="story-head-spacer" /></div>
+                  <div className="story-screen-head"><div className="chapter-mark">3 月 28 日・夜晚</div><div className="story-contact-title"><strong>一起守到天亮</strong><small>大安森林公園・只有你們兩個</small></div><span className="story-head-spacer" /></div>
                   <div className="story-narrative-scroll">
                     <div className="story-kicker">A LITTLE LONGER TOGETHER</div>
                     <h2 className="story-scene-title">再坐一下就好</h2>
@@ -7768,7 +7779,7 @@ function App() {
                             ]} />
                           ) : (
                             <div className="choice-area">
-                              <div className="choice-heading">第 {index + 1}/2 輪・{round.prompt}</div>
+                              <div className="choice-heading">第 {index + 1}/{march28ParkStayRounds.length} 輪・{round.prompt}</div>
                               {round.choices.map((choice, choiceIndex) => (
                                 <button className="reply-choice" key={choiceIndex} onClick={() => chooseMarch28ParkStayReply(index, choiceIndex)}><span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} /></button>
                               ))}
@@ -7780,13 +7791,13 @@ function App() {
                     {march28ParkStayReplies.length === march28ParkStayRounds.length ? (
                       <>
                         <StoryBlocks blocks={march28ParkStayEndingBlocks} />
-                        <div className="reunion-pause-note">夜已經深了，把這段意外多出來的時間，也一起寫進今天的日記吧。</div>
+                        <div className="reunion-pause-note">你們沒有回家，就這樣在公園裡陪著彼此，直到天色慢慢亮起。</div>
                       </>
                     ) : null}
                   </div>
                   {march28ParkStayReplies.length === march28ParkStayRounds.length && (
                     <div className="story-action-bar">
-                      <button className="story-primary-button" onClick={() => startMarch28Diary('stay')}>回家，寫下今天的日記 <ChevronRight size={15} /></button>
+                      <button className="story-primary-button" onClick={finishMarch28Day}>天亮了，今天的演出要開始了 <ChevronRight size={15} /></button>
                     </div>
                   )}
                 </div>
