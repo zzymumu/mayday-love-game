@@ -35,11 +35,6 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
       {
         "scene": [
           {
-            "kind": "narration",
-            "text": "你把资料放到旁边，走过去看了一眼。桌上的海报已经剪了好几张，只有最上面那张的边缘明显不太直。"
-          },
-          { kind: 'narration', text: "桌上那把美工刀的刀片只推出一小截，尺卻被他壓得歪了一點。你看著那條不太服貼的切線，差點當場笑出聲；他像是察覺你的視線，手掌往海報上一蓋，假裝什麼都沒發生。" },
-          {
             "kind": "dialogue",
             "speaker": "温尚翊",
             "text": "「欸，妳來得正好。」"
@@ -48,7 +43,8 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
             "kind": "dialogue",
             "speaker": "温尚翊",
             "text": "「幫我看一下，這張是不是有比較好了？」"
-          }
+          },
+          { kind: 'narration', text: "桌上那把美工刀的刀片只推出一小截，尺卻被他壓得歪了一點。你看著那條不太服貼的切線，差點當場笑出聲；他像是察覺你的視線，手掌往海報上一蓋，假裝什麼都沒發生。" }
         ],
         "prompt": "剪得很有自信",
         "choices": [
