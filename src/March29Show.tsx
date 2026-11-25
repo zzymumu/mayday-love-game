@@ -129,25 +129,25 @@ const routes: Record<March29Character, March29Route> = {
       {
         prompt: '你看了看被背帶壓住的衣領。',
         choices: [
-          { text: '你把吉他扶穩，我幫你弄。', response: '不用啦，我扶著就好。妳快一點，不然等一下又要重新調音了。', affection: 2 },
-          { text: '你低一點啦，我看不到。', response: '蛤？我已經很低了欸。', affection: 1 },
-          { text: '你這件衣服再皺下去就不能上台了。', response: '妳是來幫忙還是來嫌我的？快點啦。', affection: 2 },
+          { text: '你把吉他扶穩，我幫你弄。', response: '不用啦，我扶著就好。妳快一點，不然等一下又要重新調音了。', afterResponse: '他把琴頸往懷裡穩了穩，還是把肩膀往你這邊側過來。', affection: 2 },
+          { text: '你低一點啦，我看不到。', response: '蛤？我已經很低了欸。', afterResponse: '他嘴上抱怨，卻還是乖乖彎下腰。', affection: 1 },
+          { text: '你這件衣服再皺下去就不能上台了。', response: '妳是來幫忙還是來嫌我的？快點啦。', afterResponse: '他低頭瞥了眼皺起來的衣角，把吉他扶穩，還故意把背挺直。', affection: 2 },
         ],
       },
       {
         prompt: '你伸手把衣領從背帶底下拉出來，指尖不經意擦過他的後頸。他原本還在看琴弦，肩膀卻明顯僵了一下。',
         choices: [
-          { text: '我又不會把你弄壞。', response: '誰知道妳會不會亂弄……欸，好啦，妳弄就妳弄。', affection: 2 },
+          { text: '我又不會把你弄壞。', response: '誰知道妳會不會亂弄……欸，好啦，妳弄就妳弄。', afterResponse: '他嘴上嫌歸嫌，肩膀卻沒再躲，反而稍稍往你這邊靠了一點。', affection: 2 },
           { text: '你是不是怕癢？', response: '哪有！妳不要亂碰就好了啦。', afterResponse: '他說完才發現自己講得有點奇怪，趕緊低頭看琴。', affection: 1 },
-          { text: '你剛剛明明就抖了一下。', response: '……妳眼睛是有這麼尖喔？快點啦。', affection: 3 },
+          { text: '你剛剛明明就抖了一下。', response: '……妳眼睛是有這麼尖喔？快點啦。', afterResponse: '他耳根微微發熱，立刻把視線移回琴弦，手指在弦上輕輕撥了一下。', affection: 3 },
         ],
       },
       {
         prompt: '你把最後一處皺褶撫平，往後退了一點，重新看了看他的衣服。',
         choices: [
-          { text: '今天一定要帥一點喔。', response: '我哪一天不帥？', affection: 2 },
-          { text: '等一下我會站前面看你。', response: '那妳站穩一點，不要被擠到。聽到沒有？', affection: 3 },
-          { text: '如果彈錯了我就笑你。', response: '妳敢！……算了，妳笑就笑，反正妳又不會彈。', affection: 1 },
+          { text: '今天一定要帥一點喔。', response: '我哪一天不帥？', afterResponse: '他揚了揚眉毛，嘴角卻忍不住翹起來。', affection: 2 },
+          { text: '等一下我會站前面看你。', response: '那妳站穩一點，不要被擠到。聽到沒有？', afterResponse: '他抬手朝舞台前方比了比，眉頭微微皺著，像是已經替你挑好了不會被擠到的位置。', affection: 3 },
+          { text: '如果彈錯了我就笑你。', response: '妳敢！……算了，妳笑就笑，反正妳又不會彈。', afterResponse: '他把撥片在指間一轉，故意朝你晃了晃琴頭，一副等著看你笑話的樣子。', affection: 1 },
         ],
       },
     ],
@@ -170,25 +170,25 @@ const routes: Record<March29Character, March29Route> = {
       {
         prompt: '你走到他身前，準備替他把勾住的衣領整理好。',
         choices: [
-          { text: '你低頭一點，我幫你弄。', response: '好，這樣可以嗎？', affection: 2 },
-          { text: '你怎麼連衣服都不會整理啦？', response: '不是不會啦……後面真的看不到嘛。', affection: 1 },
-          { text: '你是不是故意找我幫忙的？', response: '欸，沒有啦！真的卡住了。', affection: 3 },
+          { text: '你低頭一點，我幫你弄。', response: '好，這樣可以嗎？', afterResponse: '他真的乖乖低下頭，還把肩膀放鬆了一點，讓你比較好整理。', affection: 2 },
+          { text: '你怎麼連衣服都不會整理啦？', response: '不是不會啦……後面真的看不到嘛。', afterResponse: '他抬手指了指自己的後頸，語氣有點無奈，還朝你露出求助似的笑。', affection: 1 },
+          { text: '你是不是故意找我幫忙的？', response: '欸，沒有啦！真的卡住了。', afterResponse: '他摸了摸耳後，視線飄到一旁，像是怕被你看穿似的。', affection: 3 },
         ],
       },
       {
         prompt: '你把勾住衣領的線輕輕撥開，再把翻進去的布料整理好。阿信一直很安靜，直到你收回手才慢慢抬起頭。',
         choices: [
-          { text: '這下總算整齊了。', response: '真的欸，妳很厲害耶。我剛剛弄半天都弄不好。', affection: 2 },
-          { text: '你剛剛怎麼都不敢動？', response: '因為妳在弄啊，我怕我一動又弄亂了。', affection: 3 },
-          { text: '你是不是有點緊張？', response: '有一點吧……不過好像也不全是因為等一下要表演。', affection: 2 },
+          { text: '這下總算整齊了。', response: '真的欸，妳很厲害耶。我剛剛弄半天都弄不好。', afterResponse: '他抬手摸了摸剛整理好的衣領，低頭確認了一眼，笑意慢慢浮上來。', affection: 2 },
+          { text: '你剛剛怎麼都不敢動？', response: '因為妳在弄啊，我怕我一動又弄亂了。', afterResponse: '他說完才像意識到兩個人靠得有點近，眼神停了一瞬，隨即低頭理起線材。', affection: 3 },
+          { text: '你是不是有點緊張？', response: '有一點吧……不過好像也不全是因為等一下要表演。', afterResponse: '他笑了一下，拇指輕輕摩挲著麥克風線，沒有立刻看你。', affection: 2 },
         ],
       },
       {
         prompt: '他低頭看了看衣領，伸手把麥克風線重新理好。',
         choices: [
-          { text: '我會幫你大聲加油。', response: '那我應該聽得到吧？妳不要站太遠喔。', affection: 2 },
-          { text: '你不要緊張，唱錯也沒關係。', response: '妳這樣講，我反而更有壓力了啦。', affection: 1 },
-          { text: '我會一直看著你。', response: '……那我等一下可能真的會更緊張欸。', affection: 3 },
+          { text: '我會幫你大聲加油。', response: '那我應該聽得到吧？妳不要站太遠喔。', afterResponse: '他把麥克風拿到嘴邊試了試音，說完又朝你這邊看了一眼。', affection: 2 },
+          { text: '你不要緊張，唱錯也沒關係。', response: '妳這樣講，我反而更有壓力了啦。', afterResponse: '他故意鼓起臉頰，隨即自己先笑出聲，肩膀也跟著放鬆下來。', affection: 1 },
+          { text: '我會一直看著你。', response: '……那我等一下可能真的會更緊張欸。', afterResponse: '他垂下眼睛笑了一下，手指在麥克風柄上輕輕敲了兩下。', affection: 3 },
         ],
       },
     ],
@@ -211,25 +211,25 @@ const routes: Record<March29Character, March29Route> = {
       {
         prompt: '你看著他被背帶卷住的衣角。',
         choices: [
-          { text: '你轉過去，我幫你弄。', response: '好啊，今天我的造型就交給妳了。', affection: 2 },
-          { text: '你怎麼連衣服都能穿成這樣？', response: '這叫個人風格好不好，妳不懂啦。', affection: 1 },
-          { text: '你自己弄不行嗎？', response: '可以啊，但我現在有更方便的人力資源，不用白不用嘛。', affection: 2 },
+          { text: '你轉過去，我幫你弄。', response: '好啊，今天我的造型就交給妳了。', afterResponse: '他乾脆把背對你站好，還稍稍側過頭等你檢查。', affection: 2 },
+          { text: '你怎麼連衣服都能穿成這樣？', response: '這叫個人風格好不好，妳不懂啦。', afterResponse: '他回頭朝你挑眉，還故意把捲起的衣角往後藏了藏。', affection: 1 },
+          { text: '你自己弄不行嗎？', response: '可以啊，但我現在有更方便的人力資源，不用白不用嘛。', afterResponse: '他把貝斯往身前托穩，還真的站定不動，笑得一臉理所當然。', affection: 2 },
         ],
       },
       {
         prompt: '你伸手把卷進背帶下面的衣角拉出來，順手把後腰的布料撫平。瑪莎故意站得筆直，還不忘回頭偷看你弄好了沒。',
         choices: [
-          { text: '再動我就不幫你了。', response: '好啦好啦，妳今天怎麼這麼有威嚴。', affection: 2 },
-          { text: '你到底有沒有在聽話？', response: '有啊，我現在不是乖乖站著嗎？', affection: 1 },
-          { text: '你是不是故意的？', response: '欸，我只是想確認妳有沒有認真工作欸。', affection: 3 },
+          { text: '再動我就不幫你了。', response: '好啦好啦，妳今天怎麼這麼有威嚴。', afterResponse: '他立刻收住動作，雙手攤開表示自己不動了，嘴角還掛著笑。', affection: 2 },
+          { text: '你到底有沒有在聽話？', response: '有啊，我現在不是乖乖站著嗎？', afterResponse: '他挺直腰背，故意站得像軍訓一樣，眼睛卻偷偷往你手上瞄。', affection: 1 },
+          { text: '你是不是故意的？', response: '欸，我只是想確認妳有沒有認真工作欸。', afterResponse: '他側過臉來看你，眼尾帶笑，偏偏腳下還故意挪了半步。', affection: 3 },
         ],
       },
       {
         prompt: '你終於把最後一處皺褶整理好，往後退了一點。',
         choices: [
-          { text: '等一下好好表現喔。', response: '放心啦，我可不想被妳嫌。', affection: 2 },
-          { text: '我會在台下幫你打拍子。', response: '那妳記得打準一點，不然我會以為自己彈錯。', affection: 3 },
-          { text: '你最好不要彈錯。', response: '蛤？妳現在是在給我壓力喔？等一下就讓妳看看。', affection: 1 },
+          { text: '等一下好好表現喔。', response: '放心啦，我可不想被妳嫌。', afterResponse: '他抱著貝斯晃了晃，低頭確認背帶，像是真的把你的評價放在心上。', affection: 2 },
+          { text: '我會在台下幫你打拍子。', response: '那妳記得打準一點，不然我會以為自己彈錯。', afterResponse: '他伸手在空中比了個拍子，還朝你點點頭，像是把你當成了節拍器。', affection: 3 },
+          { text: '你最好不要彈錯。', response: '蛤？妳現在是在給我壓力喔？等一下就讓妳看看。', afterResponse: '他用手指勾了勾背帶，故意挺起胸口，擺出一副要證明自己的樣子。', affection: 1 },
         ],
       },
     ],
@@ -251,25 +251,25 @@ const routes: Record<March29Character, March29Route> = {
       {
         prompt: '他稍稍側過身，把肩膀往你這邊放低了一點。',
         choices: [
-          { text: '你站好，我幫你弄。', response: '好，妳慢慢來。今天的造型就交給妳了。', affection: 2 },
-          { text: '你怎麼跟怪獸一樣笨手笨腳的？', response: '欸，這樣不公平吧！我明明比他好很多。', affection: 3 },
-          { text: '你把肩膀放低一點啦。', response: '好好好，妳說了算。', affection: 1 },
+          { text: '你站好，我幫你弄。', response: '好，妳慢慢來。今天的造型就交給妳了。', afterResponse: '他把吉他稍稍往身前挪，站得穩穩的，還很配合地低下頭。', affection: 2 },
+          { text: '你怎麼跟怪獸一樣笨手笨腳的？', response: '欸，這樣不公平吧！我明明比他好很多。', afterResponse: '他轉頭朝怪獸那邊努了努嘴，像要找人當場對質，自己倒先笑了。', affection: 3 },
+          { text: '你把肩膀放低一點啦。', response: '好好好，妳說了算。', afterResponse: '他聽話地把肩膀放低，還抬眼看了你一下，笑著等你動手。', affection: 1 },
         ],
       },
       {
         prompt: '你伸手把背帶下方的布料拉平，又把翻進去的袖口一點點整理出來。石頭很配合地站著，卻還是忍不住低頭偷看。',
         choices: [
-          { text: '你再動我就弄不好了。', response: '好，我不動。妳慢慢來，不然等一下真的要被妳罵了。', affection: 2 },
-          { text: '你是不是故意的？', response: '我哪有？我只是想看看妳有沒有認真工作。', affection: 3 },
-          { text: '你們幾個真的很難照顧欸。', response: '那妳辛苦了，尤其怪獸那個真的比較難搞。', affection: 1 },
+          { text: '你再動我就弄不好了。', response: '好，我不動。妳慢慢來，不然等一下真的要被妳罵了。', afterResponse: '他果真站著不動，嘴巴抿著忍笑，連呼吸都放輕了些。', affection: 2 },
+          { text: '你是不是故意的？', response: '我哪有？我只是想看看妳有沒有認真工作。', afterResponse: '他微微側頭，故意從眼角看你，臉上掛著藏不住的笑。', affection: 3 },
+          { text: '你們幾個真的很難照顧欸。', response: '那妳辛苦了，尤其怪獸那個真的比較難搞。', afterResponse: '他忍不住笑出聲，還抬手朝怪獸那邊指了一下，像是準備把責任全推給他。', affection: 1 },
         ],
       },
       {
         prompt: '你把最後一處皺褶撫平，伸手拍了拍他的肩膀。',
         choices: [
-          { text: '現在帥多了。', response: '本來就不差吧？不過妳整理完，好像真的有比較好看。', affection: 2 },
-          { text: '等一下記得好好表現喔。', response: '知道啦，不然妳這個造型師不是白忙了？', affection: 1 },
-          { text: '我會在下面看著你的。', response: '那妳可要看仔細一點，不能只顧著看怪獸喔。', affection: 3 },
+          { text: '現在帥多了。', response: '本來就不差吧？不過妳整理完，好像真的有比較好看。', afterResponse: '他低頭看了看衣角，又抬起頭朝你露出一個得意的笑。', affection: 2 },
+          { text: '等一下記得好好表現喔。', response: '知道啦，不然妳這個造型師不是白忙了？', afterResponse: '他朝你比了個 OK，隨即把吉他背帶重新調正。', affection: 1 },
+          { text: '我會在下面看著你的。', response: '那妳可要看仔細一點，不能只顧著看怪獸喔。', afterResponse: '他眉毛一揚，嘴角帶著笑意，伸手輕輕點了點你的肩膀，像是在提醒你記得他的存在。', affection: 3 },
         ],
       },
     ],
@@ -292,25 +292,25 @@ const routes: Record<March29Character, March29Route> = {
       {
         prompt: '他笑著看了一眼台上的鼓組，手指還在腿上輕輕敲著。',
         choices: [
-          { text: '那你現在看他們，會不會有點像看以前的自己？', response: '有一點吧。只是現在站在旁邊，反而會注意到更多以前自己沒空注意的事。', affection: 3 },
-          { text: '你是不是也很想上去打兩下？', response: '哈哈，有一點。不過今天先讓佑達好好表現，不然他等一下要跟我算帳了。', affection: 2 },
-          { text: '你以前上台前也這麼忙嗎？', response: '比他們好不到哪裡去啦。以前也是一下找這個、一下找那個，常常到最後一刻才發現少東西。', affection: 1 },
+          { text: '那你現在看他們，會不會有點像看以前的自己？', response: '有一點吧。只是現在站在旁邊，反而會注意到更多以前自己沒空注意的事。', afterResponse: '他望著舞台，手指在膝上停了停，語氣裡帶著一點懷念，卻沒有失落。', affection: 3 },
+          { text: '你是不是也很想上去打兩下？', response: '哈哈，有一點。不過今天先讓佑達好好表現，不然他等一下要跟我算帳了。', afterResponse: '他笑著朝鼓組方向抬了抬下巴，手指還是忍不住跟著節奏敲了兩下。', affection: 2 },
+          { text: '你以前上台前也這麼忙嗎？', response: '比他們好不到哪裡去啦。以前也是一下找這個、一下找那個，常常到最後一刻才發現少東西。', afterResponse: '他說著自己也笑了，抬手推了推眼鏡，像是想起以前的糗事。', affection: 1 },
         ],
       },
       {
         prompt: '舞台上換場的工作人員搬走一個器材箱。諺明往旁邊讓了一步，視線卻還是跟著台上的鼓組。',
         choices: [
-          { text: '你現在會不會有點懷念？', response: '會啊，不過也不是一直想回去。現在看著他們好好表演，我也覺得很過癮。', affection: 3 },
-          { text: '所以你以前也常常手忙腳亂喔？', response: '當然啊，誰一開始就什麼都會。那時候還不是大家互相幫忙。', affection: 2 },
-          { text: '你現在當觀眾，反而可以看他們出糗欸。', response: '哈哈，這倒是真的。不過我應該還是會先替他們緊張。', affection: 1 },
+          { text: '你現在會不會有點懷念？', response: '會啊，不過也不是一直想回去。現在看著他們好好表演，我也覺得很過癮。', afterResponse: '他看著台上的人，眼神柔和下來，手掌輕輕拍了兩下。', affection: 3 },
+          { text: '所以你以前也常常手忙腳亂喔？', response: '當然啊，誰一開始就什麼都會。那時候還不是大家互相幫忙。', afterResponse: '他笑著點頭，抬手比了個當年一起搬器材的姿勢。', affection: 2 },
+          { text: '你現在當觀眾，反而可以看他們出糗欸。', response: '哈哈，這倒是真的。不過我應該還是會先替他們緊張。', afterResponse: '他搖頭笑了笑，視線又回到舞台邊緣，像是在留意每個人有沒有準備好。', affection: 1 },
         ],
       },
       {
         prompt: '台下的掌聲響起，諺明轉過頭看你，笑著問你想站在哪裡。',
         choices: [
-          { text: '等一下我們站近一點吧。', response: '好啊，等人潮再多一點就不好走了，我們早點過去。', affection: 2 },
-          { text: '你也要跟著拍手，不要裝鎮定。', response: '好啦，我又沒有說不拍。妳等一下不要拍到手痛就好。', affection: 2 },
-          { text: '今天你就負責跟我一起喊。', response: '哈哈，好。那妳可不要喊到最後只剩我一個人在喊。', affection: 3 },
+          { text: '等一下我們站近一點吧。', response: '好啊，等人潮再多一點就不好走了，我們早點過去。', afterResponse: '他先側身替你讓出一條路，手掌朝人群比較空的方向示意了一下。', affection: 2 },
+          { text: '你也要跟著拍手，不要裝鎮定。', response: '好啦，我又沒有說不拍。妳等一下不要拍到手痛就好。', afterResponse: '他抬起兩隻手給你看，像是先保證自己會拍，接著笑著把手放下。', affection: 2 },
+          { text: '今天你就負責跟我一起喊。', response: '哈哈，好。那妳可不要喊到最後只剩我一個人在喊。', afterResponse: '他笑著搖搖頭，抬手比了個加油的姿勢，神情難得有些孩子氣。', affection: 3 },
         ],
       },
     ],
