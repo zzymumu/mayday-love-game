@@ -2244,7 +2244,7 @@ function App() {
     try {
       const saved = JSON.parse(localStorage.getItem('mayday-spring-lesson-replies') ?? '[]') as unknown
       return Array.isArray(saved)
-        ? saved.filter((value): value is number => Number.isInteger(value) && value >= 0 && value < 3).slice(0, 5)
+        ? saved.filter((value): value is number => Number.isInteger(value) && value >= 0 && value < 3).slice(0, 6)
         : []
     } catch {
       return []
@@ -4969,7 +4969,7 @@ function App() {
     if (localStorage.getItem(rewriteKey) === 'true') return
     if (springDiaryUnlocked && springDiaryData) {
       if (!springAfterChoice || !springSmsTarget || springSmsOpeningChoice === null || springSmsReplies.length !== 5) return
-      if (springAfterChoice === 'lesson' && (!springLessonCharacter || springLessonReplies.length < 5)) return
+      if (springAfterChoice === 'lesson' && (!springLessonCharacter || springLessonReplies.length < 5 || (springLessonReplies[4] === 0 && springLessonReplies.length < 6))) return
       const refreshed = buildSpringDiaryData()
       setSpringDiaryData(refreshed)
       localStorage.setItem('mayday-spring-diary-data', JSON.stringify(refreshed))
