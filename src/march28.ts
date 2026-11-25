@@ -242,10 +242,6 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
       {
         "scene": [
           {
-            "kind": "narration",
-            "text": "他朝你伸出手，示意想看看清單。你遞過去時，紙角還皺在指間；他接過後用指腹把摺痕撫平，順著書名往下看，看到其中一行時輕輕「喔」了一聲，抬眼望向書架深處。"
-          },
-          {
             "kind": "dialogue",
             "speaker": "陈信宏",
             "text": "「妳在找什麼呀？」"
@@ -260,7 +256,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "choices": [
           {
             "text": "「我在找老师指定的书，快找疯了。」",
-            "response": "「哪一本？我看看。」\n他低头看了眼清单：「喔，這本我好像有印象。」\n「走啦，我陪妳找，不然妳等一下又要繞回原地。」",
+            "response": "「哪一本？我看看。」\n他朝你伸出手，示意想看看清單。你遞過去時，紙角還皺在指間；他接過後用指腹把摺痕撫平，順著書名往下看，視線在其中一行停住。\n「喔，這本我好像有印象。」\n他抬眼望向書架深處。\n「走啦，我陪妳找，不然妳等一下又要繞回原地。」",
             "affection": 2
           },
           {
