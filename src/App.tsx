@@ -1838,9 +1838,9 @@ function App() {
       localStorage.setItem('mayday-spring-sms-mode', 'day')
     }
     // Refresh only Wen's 17 February thread; preserve the other characters' saved conversations.
-    const resetWenSpringSmsHistory = localStorage.getItem('mayday-spring-wen-sms-content-version') !== 'hot-cocoa-v2'
+    const resetWenSpringSmsHistory = localStorage.getItem('mayday-spring-wen-sms-content-version') !== 'hot-cocoa-v3'
     if (resetWenSpringSmsHistory) {
-      localStorage.setItem('mayday-spring-wen-sms-content-version', 'hot-cocoa-v2')
+      localStorage.setItem('mayday-spring-wen-sms-content-version', 'hot-cocoa-v3')
       if (localStorage.getItem('mayday-spring-sms-target') === 'wen') {
         localStorage.removeItem('mayday-spring-sms-target')
         localStorage.setItem('mayday-spring-sms-round', '0')
@@ -4672,16 +4672,35 @@ function App() {
     const opening = getSpringSmsOpeners(springSmsTarget, context)[choiceIndex]
     const firstRound = getSpringSmsRounds(springSmsTarget, context, [], choiceIndex)[0]
     if (!opening || !firstRound) return
-    const firstRoundIncoming = firstRound.incomingMessages?.length ? firstRound.incomingMessages : [firstRound.incoming]
-    const firstRoundStartMinute = firstRound.outgoing ? 11 : 10
+    const openingTextMessages = opening.textMessages?.length ? opening.textMessages : [opening.text]
+    const openingResponseMessages = opening.responseMessages?.length ? opening.responseMessages : [opening.response]
+    const openingEntries = [
+      ...openingTextMessages.map((text, index) => ({
+        from: 'me' as const,
+        text,
+        time: '21:' + String(8 + index).padStart(2, '0'),
+      })),
+      ...openingResponseMessages.map((text, index) => ({
+        from: springSmsTarget as CharacterId,
+        text,
+        time: '21:' + String(8 + openingTextMessages.length + index).padStart(2, '0'),
+      })),
+    ]
+    const firstRoundIncoming = firstRound.incomingMessages?.length
+      ? firstRound.incomingMessages
+      : firstRound.incoming ? [firstRound.incoming] : []
+    const firstRoundStartMinute = 8 + openingEntries.length
     appendChatMessages(springSmsTarget, [
-      { from: 'me', text: opening.text, time: '21:08' },
-      { from: springSmsTarget, text: opening.response, time: '21:09' },
-      ...(firstRound.outgoing ? [{ from: 'me' as const, text: firstRound.outgoing, time: '21:10' }] : []),
+      ...openingEntries,
+      ...(firstRound.outgoing ? [{
+        from: 'me' as const,
+        text: firstRound.outgoing,
+        time: '21:' + String(firstRoundStartMinute).padStart(2, '0'),
+      }] : []),
       ...firstRoundIncoming.map((text, index) => ({
         from: springSmsTarget as CharacterId,
         text,
-        time: '21:' + String(firstRoundStartMinute + index).padStart(2, '0'),
+        time: '21:' + String(firstRoundStartMinute + (firstRound.outgoing ? 1 : 0) + index).padStart(2, '0'),
       })),
     ], '1997年2月17日・晚上')
     addRouteAffection(springSmsTarget, opening.affection)
