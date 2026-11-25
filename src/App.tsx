@@ -7548,7 +7548,7 @@ function App() {
                 <div className="story-screen-overlay">
                   <div className="story-screen-head"><div className="chapter-mark">開學後・私人日記</div><div className="story-contact-title"><strong>寫給今天的自己</strong><small>1997 年 2 月 17 日・夜晚</small></div><span className="story-head-spacer" /></div>
                   <div className="story-narrative-scroll">
-                    <div className="story-kicker">1997 · SPRING SEMESTER</div><h2 className="story-scene-title">{springDiaryData.title}</h2>
+                    <div className="story-kicker">1997 · SPRING SEMESTER</div>
                     <div className="diary-paper story-diary-paper"><span className="diary-date">1997 年 2 月 17 日</span><h2>{springDiaryData.title}</h2><DiarySection label="日記" text={springDiaryData.text} /></div>
                     <div className="reunion-pause-note">這篇日記會保留在日記列表裡，之後可以隨時重讀。</div>
                   </div>
