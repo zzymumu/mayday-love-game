@@ -7,7 +7,7 @@ type March29Block =
   | { kind: 'narration'; text: string }
   | { kind: 'dialogue'; speaker: string; text: string }
 
-type March29Choice = { text: string; response: string; affection: number }
+type March29Choice = { text: string; response: string; affection: number; afterResponse?: string }
 type March29Round = { prompt: string; choices: March29Choice[] }
 type March29Route = {
   name: string
@@ -138,7 +138,7 @@ const routes: Record<March29Character, March29Route> = {
         prompt: '你伸手把衣領從背帶底下拉出來，指尖不經意擦過他的後頸。他原本還在看琴弦，肩膀卻明顯僵了一下。',
         choices: [
           { text: '我又不會把你弄壞。', response: '誰知道妳會不會亂弄……欸，好啦，妳弄就妳弄。', affection: 2 },
-          { text: '你是不是怕癢？', response: '哪有！妳不要亂碰就好了啦。', affection: 1 },
+          { text: '你是不是怕癢？', response: '哪有！妳不要亂碰就好了啦。', afterResponse: '他說完才發現自己講得有點奇怪，趕緊低頭看琴。', affection: 1 },
           { text: '你剛剛明明就抖了一下。', response: '……妳眼睛是有這麼尖喔？快點啦。', affection: 3 },
         ],
       },
@@ -555,6 +555,7 @@ export function March29Show({
                   <span>{selectedRoute.name}</span>
                   <p>{'「' + selectedChoice.response + '」'}</p>
                 </div>
+                {selectedChoice.afterResponse && <p className="narrative-paragraph">{selectedChoice.afterResponse}</p>}
                 {progress.roundIndex === 2 && <March29Blocks blocks={selectedRoute.ending} />}
                 <div className="story-action-bar story-inline-action">
                   <button className="story-primary-button" onClick={continueInteraction}>
