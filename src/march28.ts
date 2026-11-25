@@ -284,7 +284,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
           },
           {
             "kind": "narration",
-            "text": "厚厚的書落進你手裡，重量比想像中沉。你把書抱在胸前翻開目錄，密密麻麻的章節讓眉頭越皺越緊。阿信站在旁邊看了一會兒，沒有把書拿走，只伸手指了指目錄裡比較短的那一章。"
+            "text": "厚厚的書落進你手裡，重量比想像中沉。你把書抱在胸前翻開目錄，密密麻麻的章節讓眉頭越皺越緊。阿信湊近看了一眼，伸手指向其中一個篇幅比較短的章節。" 
           },
           {
             "kind": "dialogue",
@@ -301,7 +301,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "choices": [
           {
             "text": "「老师说要写心得，我现在已经开始后悔了。」",
-            "response": "「哈哈，妳先不要急著後悔啦。」\n他指了指你手上的目錄，沒有把書拿走：「先挑妳比較有興趣的章節看嘛。」\n「不然一開始就硬讀，真的很容易睡著。」",
+            "response": "「哈哈，妳先不要急著後悔啦。」\n他指了指目錄上的其中一個章節：「先挑妳比較有興趣的看嘛。」\n「不然一開始就硬讀，真的很容易睡著。」",
             "affection": 2
           },
           {
@@ -359,7 +359,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
             "kind": "narration",
             "text": "結帳隊伍慢慢往前移。你抱著指定的書，阿信則把自己的室內設計書放上櫃檯。他這才想起清單還在自己手裡，便從書裡抽出來遞還給你。"
           },
-          { kind: 'narration', text: "你把書換到另一隻手時，清單從指間滑下去。阿信伸手替你接住，低頭看見上頭密密麻麻的書名，忍不住抬眼看你：「妳今天是打算把整間書店搬回去喔？」" },
+          { kind: 'narration', text: "你把書換到另一隻手，清單從指間滑下去。阿信伸手替你接住，低頭掃過上頭密密麻麻的書名，抬眼看你時忍不住笑了。" },
           {
             "kind": "dialogue",
             "speaker": "陈信宏",
