@@ -114,3 +114,18 @@ export const march28MorningAshinRoute: March28MorningRoute = {
   rounds: [march28MorningAshinRound1, march28MorningAshinRound2, march28MorningAshinRound3],
   endingBlocks: march28MorningAshinEnding,
 }
+
+
+const march28MorningWenRound1: March28MorningRound = {
+  scene: [
+    { kind: 'narration', text: '溫尚翊眉毛一下子抬了起來。他看看你，又看看阿信，手裡的紙袋被捏得沙沙響。' },
+    { kind: 'dialogue', speaker: '溫尚翊', text: '蛤？一整晚？' },
+    { kind: 'dialogue', speaker: '溫尚翊', text: '妳怎麼還在這裡？' },
+  ],
+  prompt: '溫尚翊聽見你留了一整晚，會怎麼回應？',
+  choices: [
+    { text: '昨天太晚了，我就留下來陪阿信。', response: '溫尚翊眉毛又抬了一下。「妳還真的留到現在喔？」他像想說什麼，最後只吐出一口氣：「至少也要睡一下吧。」', affection: 1 },
+    { text: '怎麼，看到我很意外喔？', response: '他被你問得一頓，視線立刻挪開。「沒有啊，誰意外了？」他抬手摸了摸鼻子：「我只是沒想到妳這麼能熬而已。」', affection: 3 },
+    { text: '不然你以為我去哪了？', response: '他皺起眉頭。「我又沒那個意思，妳兇什麼啦。」紙袋在他手裡沙沙響了一聲。', affection: -1 },
+  ],
+}
