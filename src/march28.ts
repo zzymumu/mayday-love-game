@@ -42,7 +42,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
           {
             "kind": "dialogue",
             "speaker": "温尚翊",
-            "text": "「喂，妳來得正好。」"
+            "text": "「欸，妳來得正好。」"
           },
           {
             "kind": "dialogue",
