@@ -7556,6 +7556,83 @@ function App() {
                 </div>
               )}
 
+              {storyStage === 'march28-intro' && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head"><div className="chapter-mark">1997 年・三月</div><div className="story-contact-title"><strong>野台開唱前一天</strong><small>3 月 28 日・星期五</small></div><span className="story-head-spacer" /></div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">ONE MONTH LATER</div><h2 className="story-scene-title">三月一下子就過去了</h2>
+                    <StoryBlocks blocks={[
+                      { kind: 'narration', text: '二月十七日之後，日子像被人偷偷按了快轉。你每天在台大上課、抄筆記、跑總圖找資料，為了報告在影印店排隊，跟同學約在小福吃飯，偶爾還得趕著去系上幫忙。課表排得滿滿的，真正能喘口氣的時候，通常是走回教室的那幾分鐘。' },
+                      { kind: 'narration', text: '三月的台北忽冷忽熱，早上出門還得套外套，中午又熱得想把袖子捲起來。你和同學交換課堂筆記、在 BBS 上留言、為了小組報告分工，也開始習慣把週末留一點時間給自己。' },
+                      { kind: 'narration', text: march28MonthRecap[currentMarch28HighestAffection] },
+                      { kind: 'narration', text: '瑪莎和石頭因為之前留級，今年仍然是高三生。白天要回學校上課、考試和交作業，放學後才趕去打工或練團；有時候你聽他們抱怨考卷，才想起大家雖然走在不同的生活節奏裡，卻都忙得差不多。' },
+                      { kind: 'narration', text: '五月天也為明天的演出忙了好一陣子。器材、線材、曲目和排練一樣都不能少。今天是三月二十八日，明天就是大安森林公園的野台開唱。' },
+                    ]} />
+                    <div className="reunion-pause-note">這個月和你互動最多、目前好感度最高的是：{characterNames[currentMarch28HighestAffection]}。這段回憶會依照你的實際好感度變化。</div>
+                    <div className="spring-after-choice-list">
+                      <div className="spring-after-choice-heading">白天想去哪裡？選一個地方逛逛</div>
+                      {march28CharacterOrder.map((character) => (
+                        <button className="spring-after-choice-button" key={character} onClick={() => chooseMarch28VisitCharacter(character)}>
+                          <span className="spring-after-choice-copy"><strong>{march28Routes[character].place}</strong><small>遇見{characterNames[character]}・{march28Routes[character].subtitle}</small></span>
+                          <ChevronRight size={17} />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'march28-visit' && march28VisitCharacter && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head"><div className="chapter-mark">3 月 28 日・白天</div><div className="story-contact-title"><strong>{march28Routes[march28VisitCharacter].title}</strong><small>{march28Routes[march28VisitCharacter].place}</small></div><span className="story-head-spacer" /></div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">A DAY BEFORE THE GIG</div><h2 className="story-scene-title">{march28Routes[march28VisitCharacter].subtitle}</h2>
+                    <StoryBlocks blocks={march28Routes[march28VisitCharacter].blocks} />
+                    {march28Routes[march28VisitCharacter].rounds.map((round, index) => (
+                      index > march28VisitReplies.length ? null : (
+                        <div className="lesson-interaction-round" key={index}>
+                          {round.scene.length > 0 ? <StoryBlocks blocks={round.scene} /> : null}
+                          {index < march28VisitReplies.length ? (
+                            <StoryBlocks blocks={[
+                              { kind: 'dialogue', speaker: '你', text: stripCornerQuotes(round.choices[march28VisitReplies[index]].text) },
+                              ...springResponseBlocks(characterNames[march28VisitCharacter], round.choices[march28VisitReplies[index]].response),
+                            ]} />
+                          ) : (
+                            <div className="choice-area">
+                              <div className="choice-heading">第 {index + 1}/5 輪・{round.prompt}</div>
+                              {round.choices.map((choice, choiceIndex) => (
+                                <button className="reply-choice" key={choiceIndex} onClick={() => chooseMarch28VisitReply(index, choiceIndex)}><span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} /></button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )
+                    ))}
+                    {march28VisitReplies.length === 5 ? (
+                      <>
+                        <StoryBlocks blocks={march28Routes[march28VisitCharacter].endingBlocks} />
+                        <div className="story-action-bar"><button className="story-primary-button" onClick={finishMarch28Visit}>收拾東西，準備回家 <ChevronRight size={15} /></button></div>
+                      </>
+                    ) : null}
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'march28-end' && march28VisitCharacter && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head"><div className="chapter-mark">3 月 28 日・傍晚</div><div className="story-contact-title"><strong>明天見</strong><small>大安森林公園・野台開唱</small></div><span className="story-head-spacer" /></div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">THE NIGHT BEFORE</div><h2 className="story-scene-title">明天就要上場了</h2>
+                    <StoryBlocks blocks={[
+                      { kind: 'narration', text: '離開' + march28Routes[march28VisitCharacter].place + '時，天色已經慢慢暗下來。你回家把明天要帶的東西先整理好，水、錢包和外套都放進包裡，還特地確認了一次鬧鐘。' },
+                      { kind: 'narration', text: '今天遇見' + characterNames[march28VisitCharacter] + '的那幾句話，偶爾又從腦袋裡冒出來。你一邊整理東西，一邊想著明天的現場會是什麼樣子。' },
+                      { kind: 'narration', text: '1997 年 3 月 29 日，大安森林公園。野台開唱。' },
+                    ]} />
+                  </div>
+                  <div className="story-action-bar"><button className="story-primary-button" onClick={finishMarch28Day}>收起今天，明天見 <ChevronRight size={15} /></button></div>
+                </div>
+              )}
+
               {storyStage === 'paused' && (
                 <div className="paused-story-banner">
                   <div>
