@@ -888,7 +888,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
     "rounds": [
       {
         "scene": [
-          { kind: 'narration', text: "他把器材箱往牆邊挪了些，替你留出站的位置。旁邊放著幾卷不同顏色的膠帶和一疊標籤紙，他看了眼清單，像是想到可以請你搭把手。" },
+          { kind: 'narration', text: "他把器材箱往牆邊挪了些，替你留出站的位置。旁邊放著幾卷不同顏色的膠帶和一疊標籤紙，他低頭核對了一眼清單。" },
           {
             "kind": "dialogue",
             "speaker": "劉諺明",
