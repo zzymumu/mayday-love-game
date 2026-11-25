@@ -1003,7 +1003,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
           {
             "kind": "dialogue",
             "speaker": "劉諺明",
-            "text": "「明天要搬出去的器材不少。」"
+            "text": "「今晚要搬去現場的器材不少。」"
           },
           {
             "kind": "dialogue",
@@ -1036,7 +1036,6 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
             "kind": "narration",
             "text": "剩下的導線依長短收進收納袋，配件也一件件放回箱裡。確認沒有漏掉東西後，他蓋上器材箱，拿起桌角那包未拆封的耳塞，轉手遞給你。"
           },
-          { kind: 'narration', text: "你收好耳塞，他又檢查了一遍音箱旁的線材，確認沒有被箱子壓住。忙了一晚，練團室總算清爽不少，地上只剩幾張用過的標籤紙。" },
           {
             "kind": "dialogue",
             "speaker": "劉諺明",
@@ -1046,7 +1045,8 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
             "kind": "dialogue",
             "speaker": "劉諺明",
             "text": "「現場聲音會比這裡大很多。」"
-          }
+          },
+          { kind: 'narration', text: "你接過耳塞收進包裡。他又確認了一遍箱扣和收納袋，將今晚要搬去現場的器材分好，方便等一下裝車。忙了一晚，練團室總算清爽不少，地上只剩幾張用過的標籤紙。" }
         ],
         "prompt": "耳塞和明天",
         "choices": [
@@ -1057,12 +1057,12 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
           },
           {
             "text": "「你明天也別忙到忘記吃飯喔。」",
-            "response": "「不會啦，器材清單我都核對好了，明天交接給他們就行。」\n他笑着看你：「妳倒是記得吃東西，現場站久了會餓。」\n「不要只顧著看表演，連晚餐都忘了。」",
+            "response": "「不會啦，今晚裝車前再核對一次就好，搬到現場交給工作人員就行。」\n他笑着看你：「妳倒是記得吃東西，現場站久了會餓。」\n「不要只顧著看表演，連晚餐都忘了。」",
             "affection": 2
           },
           {
-            "text": "「看我明天能不能准时起床。」",
-            "response": "「那妳今晚鬧鐘先設好。」\n他一本正经地说完，自己也笑了。\n「不然明天我可沒辦法去妳家叫妳起床。」",
+            "text": "「你連耳塞都準備好了，也太周到了吧？」",
+            "response": "「這個最好先準備起來。」\n他一本正经地说完，自己也笑了。\n「現場聲音一大，臨時找不到就麻煩了。」",
             "affection": 2
           }
         ]
@@ -1085,7 +1085,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
       },
       {
         "kind": "narration",
-        "text": "你走出練團室，裡頭的燈仍亮著，整理好的器材靠牆排得整整齊齊。明天就要演出了，今晚忙的這一輪，總算都派得上用場。"
+        "text": "你走出練團室，裡頭的燈仍亮著，整理好的器材靠牆排得整整齊齊。今晚要搬去現場的器材總算整理好了，等一下裝車送過去，明天就不用再手忙腳亂。"
       },
     ]
   }
