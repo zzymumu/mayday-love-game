@@ -283,7 +283,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
             "kind": "narration",
             "text": "他陪你往書架裡面走，照著清單上的分類一排排找過去，最後在靠牆那排停下。"
           },
-          { kind: 'narration', text: "找到書後，他把書抽出來，翻到目錄頁用指尖點了點幾個章節。書頁有點厚，他一手托著書脊，另一手小心地把翹起來的頁角壓平。" },
+          { kind: 'narration', text: "找到那本書後，他伸手從架上抽下來，先核對了一遍封面，才轉身遞給你。你把書接過來抱在手裡，他又翻開目錄，用指尖點了點幾個章節；書頁有點厚，他一手托著書脊，另一手小心地把翹起來的頁角壓平。" },
           {
             "kind": "dialogue",
             "speaker": "陈信宏",
