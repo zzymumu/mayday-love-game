@@ -694,7 +694,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "choices": [
           {
             "text": "「哈哈哈哈，你怎么还被小朋友欺负啊？」",
-            "response": "「妳笑得很開心嘛。」\n「不然妳來教，看看妳有沒有辦法。」\n他把琴凳旁边的位置让出来：「来啊，老师换妳当。」",
+            "response": "「妳笑得很開心嘛。」\n「不然妳來教，看看妳有沒有辦法。」\n他把琴凳旁邊的位置讓出來，自己往旁邊一坐：「來啊，老師換妳當。我在旁邊看妳怎麼教。」",
             "affection": 2
           },
           {
@@ -704,7 +704,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
           },
           {
             "text": "「我先声明，我不会弹钢琴，你不要找我。」",
-            "response": "「誰要找妳彈了？」\n「妳坐旁邊就好，至少幫我看著她，不要讓她亂跑。」\n他小声补了一句：「拜託啦，我快沒耐心了。」",
+            "response": "「誰要找妳彈了？」\n「妳坐旁邊幫我看著拍子就好，至少不要讓她又從頭亂彈。」\n他壓低聲音補了一句：「拜託啦，我快沒耐心了。」",
             "affection": 2
           }
         ]
@@ -809,7 +809,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "choices": [
           {
             "text": "「你干嘛回答那么快？」",
-            "response": "「不然我要想多久？」\n他把琴谱往你这边推：「妳不要趁機在旁邊加戲啦。」\n「小朋友還在欸，給我一點面子好不好。」",
+            "response": "「不然我要想多久？」\n他把琴譜往小女孩那邊推回去，轉頭瞪你：「妳不要趁機在旁邊加戲啦。」\n「小朋友還在欸，給我一點面子好不好。」",
             "affection": 2
           },
           {
@@ -846,7 +846,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "choices": [
           {
             "text": "「明天换我看你被大家围观！」",
-            "response": "「妳明天最好不要笑太大聲。」\n他把书包往肩上一甩：「我如果在台上看到妳笑，等一下就知道了。」\n「到時候不要怪我喔。」",
+            "response": "「妳明天最好不要笑太大聲。」\n他把書包往肩上一甩，故意瞪你一眼：「我如果在台上看到妳笑，等一下就知道了。」\n「到時候不要怪我喔。」",
             "affection": 2
           },
           {
@@ -925,7 +925,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
           },
           {
             "text": "「我是不是来得不是时候？」",
-            "response": "「不會，剛好缺一雙手。」\n他把旁边的折叠椅拉出来：「妳先坐一下也可以。」\n「不過如果願意幫忙，我會更感謝。」",
+            "response": "「不會，剛好缺一雙手。」\n他把旁邊的折疊椅稍微拉開：「妳先坐一下也可以，等一下可能還要麻煩妳幫我貼標籤。」",
             "affection": 2
           }
         ]
@@ -1031,12 +1031,12 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
           },
           {
             "text": "「我看完这张表就想下班了。」",
-            "response": "「哈哈，這張是給我自己看的。」\n他把最后一项圈起来：「妳不用全部背起來。」\n「今天已經幫很多忙了。」",
+            "response": "「哈哈，這張是給我自己看的。」\n他拿筆把最後一項圈起來，將清單轉向自己：「妳不用全部背起來。」\n「今天已經幫很多忙了。」",
             "affection": 2
           },
           {
             "text": "「如果明天真的出问题，你是不是也能马上救场？」",
-            "response": "「能處理的就先處理。」\n他把工具放回箱子里：「真的遇到沒辦法的，就大家一起想辦法。」\n「不用什麼事情都一個人扛。」",
+            "response": "「能處理的就先處理。」\n他把工具放回箱子裡，語氣仍舊平穩：「真的遇到沒辦法的，就大家一起想辦法。」\n「不用什麼事情都一個人扛。」",
             "affection": 2
           }
         ]
