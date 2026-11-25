@@ -283,7 +283,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
           },
           {
             "kind": "narration",
-            "text": "你抱著書翻開目錄，眉頭越看越皺。阿信仍把自己的書夾在臂彎，微微俯身跟著你的視線看了幾行。他沒有急著替你決定，只伸出指尖點了點其中一節，隨即收回手，像是怕打斷你正在看的地方。" 
+            "text": "你抱著書翻開目錄，眉頭越看越皺。阿信仍把自己的書夾在臂彎，微微俯身跟著你的視線看了幾行。" 
           },
           {
             "kind": "dialogue",
