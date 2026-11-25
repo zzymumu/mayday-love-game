@@ -509,7 +509,7 @@ export function March29Show({
   const currentBand = watchScenes[progress.watchIndex]
 
   if (progress.phase === 'aftershow') {
-    return <March29AfterShow affection={affection} onAddAffection={onAddAffection} onClockChange={onClockChange} />
+    return <March29AfterShow onAddAffection={onAddAffection} onClockChange={onClockChange} />
   }
 
   return (
