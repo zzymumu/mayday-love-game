@@ -62,3 +62,24 @@ const march28MorningAshinRound1: March28MorningRound = {
     { text: '真的不用特地跑啦，我吃點別的也可以。', response: '阿信搖搖頭。「沒關係啦，我自己也要吃啊。妳坐著等我一下就好。」他說得很自然，像是早就決定好了。', affection: 1 },
   ],
 }
+
+
+const march28MorningAshinRound2: March28MorningRound = {
+  scene: [
+    { kind: 'narration', text: '他先彎腰檢查器材箱，手指沿著箱扣逐一按過去，又確認旁邊的線材箱都放在原來的位置。確定沒有問題後，他才起身往公園出口走。' },
+    { kind: 'narration', text: '走出幾步，他忽然又回過頭。' },
+    { kind: 'dialogue', speaker: '陳信宏', text: '妳不要亂跑喔。' },
+    { kind: 'dialogue', speaker: '你', text: '知道啦！我又不是小朋友。' },
+    { kind: 'dialogue', speaker: '陳信宏', text: '好啦，知道妳不是。等我一下喔。' },
+    { kind: 'narration', text: '他的身影沿著步道慢慢走遠。你重新把外套拉好，坐在長椅上看著旁邊的器材箱。沒過多久，遠處就傳來熟悉的腳步聲。阿信提著一個紙袋回來，袋子裡裝著兩份剛買好的蛋餅，隔著紙袋都能聞到煎蛋的香味。' },
+    { kind: 'dialogue', speaker: '陳信宏', text: '來，這個給妳。' },
+    { kind: 'dialogue', speaker: '你', text: '你真的買蛋餅回來啦？' },
+    { kind: 'dialogue', speaker: '陳信宏', text: '不然咧？我剛剛都答應妳了。' },
+  ],
+  prompt: '阿信把熱騰騰的蛋餅遞給你。你怎麼回應？',
+  choices: [
+    { text: '你真的很守信用欸。', response: '阿信笑著把紙袋往你手邊推近一點。「這種事當然要說到做到啊。」他看著你接過早餐，眼神也跟著柔和下來。', affection: 2 },
+    { text: '聞起來好香，我現在就想吃！', response: '他看你迫不及待的樣子，忍不住笑起來。「那妳快吃啊，還熱著。」他把紙袋口替你折開一些，方便你拿。', affection: 3 },
+    { text: '你買了多久啊，我都快等不及了。', response: '阿信笑了一聲。「有這麼誇張喔？我才出去一下下欸。」他抬手比了個很短的距離，像是在替自己辯解。', affection: 1 },
+  ],
+}
