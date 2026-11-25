@@ -48,8 +48,6 @@ export const march28ParkStayIntroBlocks: March28Block[] = [
   { kind: 'dialogue', speaker: '你', text: '「那正好啊，我可以陪你一起打蚊子。」' },
   { kind: 'narration', text: '阿信肩膀終於鬆下來，眉眼間的倦意也淡了些。他把身邊的位置讓給你，等你坐下來，才稍稍往旁邊挪了挪。長椅沒有多寬，你們的手臂隔著一點點距離，偶爾隨著動作輕輕碰到。' },
   { kind: 'dialogue', speaker: '陳信宏', text: '「好啦，那妳坐這邊。只是等一下真的睏了要跟我說喔，不要硬撐。」' },
-  { kind: 'dialogue', speaker: '你', text: '「你剛剛是不是快睡著了？」' },
-  { kind: 'dialogue', speaker: '陳信宏', text: '「有一點點啦。」' },
   { kind: 'narration', text: '他說完便低下頭，用鞋尖輕輕碰了碰地上的小石子。過了幾秒，他才又抬起眼。' },
   { kind: 'dialogue', speaker: '陳信宏', text: '「本來以為今晚要一個人坐到天亮了。妳來了，好像就沒那麼難熬了。」' },
   { kind: 'narration', text: '他說完沒有看你，只把手邊那瓶水往自己腳邊挪了挪，拇指沿著瓶身標籤來回刮了兩下，半天沒再接話。你看在眼裡，忽然覺得他有點可愛。' },
