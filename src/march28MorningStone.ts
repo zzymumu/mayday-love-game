@@ -7,7 +7,7 @@ export const march28MorningStoneRoute: March28MorningRoute = {
       scene: [
         { kind: 'dialogue', speaker: '石頭', text: '早啊，阿信。' },
         { kind: 'narration', text: '石頭提著早餐袋走近，先朝阿信點了點頭，隨後才注意到長椅另一側的你。' },
-        { kind: 'dialogue', speaker: '石頭', text: '咦？妳也在。' },
+        { kind: 'narration', text: '石頭的目光在你肩上的外套停了一瞬，隨後才看向阿信。' },
         { kind: 'dialogue', speaker: '石頭', text: '那你們應該一整晚都沒怎麼休息吧？' },
       ],
       prompt: '石頭發現你也留了一整晚。你怎麼回答？',
