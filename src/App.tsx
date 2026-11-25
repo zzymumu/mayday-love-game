@@ -4727,7 +4727,7 @@ function App() {
     if (!choice) return
     const nextReplies = [...springSmsReplies, choiceIndex]
     const nextRounds = getSpringSmsRounds(springSmsTarget, context, nextReplies, springSmsOpeningChoice)
-    const minute = 11 + springSmsRound * (springSmsTarget === 'wen' ? 7 : 3)
+    const minute = (springSmsTarget === 'wen' ? 12 : 11) + springSmsRound * (springSmsTarget === 'wen' ? 7 : 3)
     const nextRound = springSmsRound < 4 ? nextRounds[springSmsRound + 1] : null
     const nextRoundIncoming = nextRound
       ? (nextRound.incomingMessages?.length ? nextRound.incomingMessages : nextRound.incoming ? [nextRound.incoming] : [])
