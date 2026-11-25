@@ -44,7 +44,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
             "speaker": "温尚翊",
             "text": "「幫我看一下，這張是不是有比較好了？」"
           },
-          { kind: 'narration', text: "他把海報往你面前推近一點，食指點了點右上角：「妳看這裡，這樣有沒有比較順？」說得一本正經，眼神卻一直在偷看你的反應。" }
+          { kind: 'narration', text: "他把剪刀放到桌邊，掌心壓住海報一角，轉了個方向讓你看清楚那條切線。明明右上角還是有點歪，他卻把下巴微微抬起來，一副等著你稱讚的樣子。" }
         ],
         "prompt": "剪得很有自信",
         "choices": [
