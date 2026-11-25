@@ -26,12 +26,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
     "title": "溫尚翊・系辦的海報",
     "place": "台大社會學系系辦",
     "subtitle": "从熟悉的斗嘴开始，慢慢发现两个人已经有点习惯彼此了。",
-    "blocks": [
-      { kind: 'narration', text: '下午兩點多，你抱著要整理的資料走到社會學系系辦。走廊的窗戶開著，三月的風把門邊貼著的公告吹得微微翹起；裡頭只有電風扇慢慢轉動的聲音，幾疊文件和剪刀、膠帶散在桌面上。' },
-      { kind: 'narration', text: '你先把資料放到窗邊，正想找個空位坐下，才發現對面桌有人。溫尚翊正拿著尺壓住一張海報，剪刀咔嚓咔嚓響了半天，剪出來的邊還是歪了一點。他低頭比了比，又把紙轉了個方向，像是完全沒注意到有人進來。' },
-      { kind: 'narration', text: '直到你把椅子拉開，他才抬起頭。看清楚是你，他立刻用腳把旁邊另一張椅子勾開。' },
-      { kind: 'dialogue', speaker: '溫尚翊', text: '欸，妳來得正好。過來幫我看一下啦，這張到底有沒有歪？' },
-    ],
+    "blocks": [],
     "rounds": [
       {
         "scene": [
@@ -215,11 +210,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
       }
     ],
     "endingBlocks": [
-      {
-        "kind": "narration",
-        "text": "*结尾*"
-      },
-      {
+            {
         "kind": "narration",
         "text": "走出系办时，温尚翊还留在里面整理最后几张海报。你走到楼梯口，听见他在后面喊了一声。"
       },
@@ -238,11 +229,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
     "title": "陳信宏・書店偶遇",
     "place": "校門附近的書店",
     "subtitle": "温柔、俏皮，有一点小小的试探。他不是一直哄你，而是会故意逗你。",
-    "blocks": [
-      { kind: 'narration', text: '你把老師開的指定閱讀清單折成四分之一，夾在課本裡走進校門附近的書店。門上的小鈴鐺響了一聲，冷氣迎面吹來，混著新書的油墨味和舊書頁淡淡的紙味。你照著清單上的書名找了兩排，先是看錯作者，又在文學區和社會科學區之間繞了一趟，手裡那張紙被翻得起了毛邊。' },
-      { kind: 'narration', text: '你踮起腳，從最上層抽下一本書，翻到封底確認出版社。靠窗那排書架旁，有人正側著身看一本薄薄的散文集，指尖停在某一頁，像是讀到一半捨不得合起來。你往旁邊挪了一步，紙袋輕輕擦過書架，那人才抬起頭。看清楚是你，阿信眼睛亮了一下，隨即把書籤夾回頁縫裡。' },
-      { kind: 'dialogue', speaker: '陳信宏', text: '欸，好巧。妳也來找書喔？' },
-    ],
+    "blocks": [],
     "rounds": [
       {
         "scene": [
@@ -426,11 +413,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
       }
     ],
     "endingBlocks": [
-      {
-        "kind": "narration",
-        "text": "*结尾*"
-      },
-      {
+            {
         "kind": "narration",
         "text": "阿信陪你走到骑楼下，才朝另一边走去。走出几步，他又回头提醒你别忘了书店买的书。"
       },
@@ -450,11 +433,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
     "title": "石錦航・茶舍打工",
     "place": "學校附近的茶舍",
     "subtitle": "温柔但不刻意。他有自己的生活，忙着打工、读书，也会在忙碌中留意你。",
-    "blocks": [
-      { kind: 'narration', text: '茶舍的玻璃門上貼著今日特調的手寫紙牌，你推門時，小鈴鐺清脆地響了兩聲。店裡的茶香混著煮茶桶冒出的熱氣，櫃台旁有人剛把冰塊倒進不鏽鋼杯，叮叮噹噹響了一陣。' },
-      { kind: 'narration', text: '石頭站在櫃台後擦杯子，身上還穿著高中制服，袖口捲起來，外面套著深色圍裙；書包就擱在櫃台底下，拉鍊沒有完全拉上，露出一角講義。他聽見鈴聲抬起頭，看見是你時明顯怔了一下，接著把抹布放到一旁，先用手背擦掉指尖的水珠，才朝你笑了笑。' },
-      { kind: 'dialogue', speaker: '石錦航', text: '妳怎麼會跑來這裡？要喝點什麼嗎？' },
-    ],
+    "blocks": [],
     "rounds": [
       {
         "scene": [
@@ -633,11 +612,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
       }
     ],
     "endingBlocks": [
-      {
-        "kind": "narration",
-        "text": "*结尾*"
-      },
-      {
+            {
         "kind": "narration",
         "text": "石头从柜台后绕出来，替你拉开玻璃门。外面的风吹进来，他下意识扶了一下门，等你走出去才松开手。"
       },
@@ -657,13 +632,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
     "title": "瑪莎・樂器行的鋼琴課",
     "place": "樂器行",
     "subtitle": "童年玩伴式的熟悉感，互相拆台、没大没小。偶尔因为一句话突然安静，才发现好像有点不一样。",
-    "blocks": [
-      { kind: 'narration', text: '樂器行的玻璃門被推開又闔上，門鈴聲混在鋼琴斷斷續續的音階裡。木頭、琴弦和一點灰塵的味道混在空氣中；鋼琴區那一小節已經重來好幾遍，一個小女孩每次彈到第四個音，就很有自信地按到最旁邊那顆鍵。' },
-      { kind: 'narration', text: '瑪莎坐在她旁邊，校服外套掛在椅背上，袖子捲到手腕，手裡的鉛筆一下下敲著節拍。他看起來比平常有耐心，直到小女孩又按錯一次，他才吸了口氣，準備重新示範。' },
-      { kind: 'dialogue', speaker: '瑪莎', text: '不是這顆啦，妳剛剛才彈對，怎麼現在又跑去按隔壁的？' },
-      { kind: 'narration', text: '小女孩鼓起臉頰，兩隻手還放在琴鍵上，堅持說一定是琴鍵自己偷偷換了位置。瑪莎閉了閉眼，像是在心裡數到三才忍住吐槽，正要把手放回琴鍵示範，餘光卻瞥見你站在門邊。他抬起頭，表情立刻從耐心老師切回平常那副欠揍的樣子。' },
-      { kind: 'dialogue', speaker: '瑪莎', text: '妳站那邊多久了？要看熱鬧就進來啊。' },
-    ],
+    "blocks": [],
     "rounds": [
       {
         "scene": [
@@ -860,11 +829,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
       }
     ],
     "endingBlocks": [
-      {
-        "kind": "narration",
-        "text": "*结尾*"
-      },
-      {
+            {
         "kind": "narration",
         "text": "玛莎把琴谱交回柜台，临走前还特地确认了小女孩的练习页有没有夹好。走出乐器行时，他又开始抱怨数学作业。"
       },
@@ -883,11 +848,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
     "title": "劉諺明・練團室的器材清單",
     "place": "練團室",
     "subtitle": "安稳、自然，但不是单纯的长辈式照顾。他会记得你，也会有一点不想让你太快离开的私心。",
-    "blocks": [
-      { kind: 'narration', text: '練團室裡比平常安靜，地上卻比平常熱鬧。導線從音箱旁一路繞到控制台，幾個支架靠著牆排好，器材箱蓋子全都打開；窗邊還放著明天要帶走的清單和一捲沒用完的膠帶。諺明哥蹲在地上，正把一個接頭轉過來又轉回去，仔細確認是不是接觸不良。' },
-      { kind: 'narration', text: '你推門時不小心碰到門邊的鼓袋，發出一聲悶響。諺明哥抬頭看見你，先笑著點了點頭，隨即把手裡那條線往旁邊收好，還用手指了指地上，提醒你腳邊有一段沒收起來的導線。' },
-      { kind: 'dialogue', speaker: '劉諺明', text: '先等一下喔，這條線接上去會有雜音，我找一下是哪裡出問題。' },
-    ],
+    "blocks": [],
     "rounds": [
       {
         "scene": [
@@ -1076,11 +1037,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
       }
     ],
     "endingBlocks": [
-      {
-        "kind": "narration",
-        "text": "*结尾*"
-      },
-      {
+            {
         "kind": "narration",
         "text": "谚明哥把资料夹收好，又帮你把椅子推回桌边。你走到门口时，他正好提起工具箱。"
       },
