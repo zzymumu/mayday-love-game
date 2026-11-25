@@ -7562,17 +7562,20 @@ function App() {
                   <div className="story-narrative-scroll">
                     <div className="story-kicker">ONE MONTH LATER</div><h2 className="story-scene-title">三月一下子就過去了</h2>
                     <StoryBlocks blocks={[
-                      { kind: 'narration', text: '二月十七日之後，寒假像被誰啪一聲收進抽屜。開學第一週，你把課表抄進筆記本，隔天就差點把教室記錯；早八前在校門口買的飯糰還燙著，走到教室只剩最後一口。社會學的講義一週比一週厚，總圖影印機前總有人抱著一疊紙排隊。你本來只想趁空堂補完筆記，常常一抬頭，窗外的光都已經從白亮變成橘色。' },
-                      { kind: 'narration', text: '三月的台北一下涼一下熱。早上出門把外套拉到下巴，中午又只能把它搭在椅背上。小福午餐時間吵得聽不清楚，朋友隔著桌子把最後一塊薯餅夾走，你追著筷子抗議；報告討論說好半小時，最後總拖到上課鐘響才匆匆收書。回去整理書包，常會摸出揉皺的收據、影印店的紙條，還有不知道什麼時候塞進去的糖果紙。' },
+                      { kind: 'narration', text: '三月好像一下子就要結束了。' },
+                      { kind: 'narration', text: '開學後的日子過得比想像中快。課表漸漸排滿，報告、社團活動，還有偶爾被朋友臨時抓去幫忙的小事，日子倒也沒什麼特別的規律。' },
+                      { kind: 'narration', text: '有時候下課趕著去吃飯，有時候在圖書館待到忘記時間。天氣慢慢暖起來，校園裡的樹也冒出了新葉子。午餐時間的小福照樣熱鬧，走廊上常有人抱著講義匆匆跑過；偶爾坐在窗邊整理筆記，一抬頭才發現下午已經過了一大半。' },
+                      { kind: 'narration', text: '這一個月裡，你和某個人似乎比以前熟悉了一些。' },
                       { kind: 'narration', text: march28MonthRecap[currentMarch28HighestAffection] },
                       { kind: 'narration', text: '瑪莎和石頭因為留級，今年還是高三。白天得穿著制服坐在教室裡考試、交作業，放學後才各自趕去忙。瑪莎有時一邊抱怨考卷太難，一邊又在樂器行教小朋友彈琴；石頭則把講義塞在書包裡，茶舍客人少下來時，就趁空檔翻兩頁。你們的生活時刻表不太一樣，偶爾碰上面，總有種大家都在跟時間賽跑的感覺。' },
-                      { kind: 'narration', text: '練團室這陣子總是很晚才熄燈。偶爾門一打開，吉他聲先衝出來，接著是有人笑到拍鼓、有人嫌剛才那一段又跑掉，沒過多久，音樂又從頭響起。器材箱靠牆排成一列，海報一張張剪好，連平常最愛鬧的人也開始反覆確認明天要帶的東西。今天是三月二十八日；明天，大安森林公園，野台開唱。' },
+                      { kind: 'narration', text: '練團室這陣子總是很晚才熄燈。吉他聲、鼓聲和笑鬧聲常常混在一起，某一段才剛停下來，就有人嚷著重來一次。器材箱靠牆排成一列，海報一張張剪好，連平常最愛鬧的人也開始反覆確認明天要帶的東西。今天是三月二十八日；明天，大安森林公園，野台開唱。' },
+                      { kind: 'narration', text: '今天沒有排滿的課程。上午處理完自己的事情，你看了看時間，決定出門走走。反正下午還有時間，去哪里逛逛好呢？' },
                     ]} />
                     <div className="spring-after-choice-list">
                       <div className="spring-after-choice-heading">白天想去哪裡？選一個地方逛逛</div>
                       {march28CharacterOrder.map((character) => (
                         <button className="spring-after-choice-button" key={character} onClick={() => chooseMarch28VisitCharacter(character)}>
-                          <span className="spring-after-choice-copy"><strong>{march28Routes[character].place}</strong><small>遇見{characterNames[character]}・{march28Routes[character].subtitle}</small></span>
+                          <span className="spring-after-choice-copy"><strong>{march28Routes[character].place}</strong><small>下午去這裡走走</small></span>
                           <ChevronRight size={17} />
                         </button>
                       ))}
