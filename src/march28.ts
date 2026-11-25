@@ -44,7 +44,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
             "speaker": "温尚翊",
             "text": "「幫我看一下，這張是不是有比較好了？」"
           },
-          { kind: 'narration', text: "他把海報轉向你，掌心仍壓著紙角，右上角那道歪斜的切線就這麼露在眼前。" }
+          { kind: 'narration', text: "他把海報往你這邊轉了半圈，指腹還壓在紙角上，像是想把那道歪掉的切線藏起來；偏偏一鬆手，紙邊又翹了起來。" }
         ],
         "prompt": "剪得很有自信",
         "choices": [
@@ -69,9 +69,9 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "你按住海報一角，他拿尺沿著邊線比了比，發現角度偏了些，便俯身過來調整；你們的手指幾乎碰在一起。"
+            "text": "你依言按住海報一角。他把尺貼著紙邊慢慢挪，眼睛沿著刻度往下看，發現偏了一點，又俯身把尺推回去；他的袖口擦過你的手背，兩個人的指尖只差一點就碰上。"
           },
-          { kind: 'narration', text: "他挪尺時手肘碰落幾條紙屑，低頭看了一眼，又把尺重新貼回紙邊。" },
+          { kind: 'narration', text: "他手肘碰得桌上的紙屑滑了一地，連尺都跟著偏開。他嘖了一聲，伸手把尺按住，這才重新對準邊線。" },
           {
             "kind": "dialogue",
             "speaker": "温尚翊",
@@ -106,9 +106,9 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "你拿起海報，指尖不小心蹭到還沒乾的藍色油墨。溫尚翊看見了，抽了張紙巾遞給你。"
+            "text": "你捏住海報邊緣往上拿，指尖卻在藍色油墨上拖出一道淺淺的痕。溫尚翊瞄見了，立刻從桌邊抽出紙巾遞過來。"
           },
-          { kind: 'narration', text: "他把沾到油墨的海報移到一旁，墊上廢紙，免得桌面也染藍。" },
+          { kind: 'narration', text: "他把那張海報捏著沒沾色的邊角挪開，底下墊了張廢紙，還特地用尺壓住翹起來的另一角。" },
           {
             "kind": "dialogue",
             "speaker": "温尚翊",
@@ -143,9 +143,9 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "最後一張海報剪好後，溫尚翊翻過來確認日期沒有被裁掉，這才把筆蓋扣上。"
+            "text": "最後一張剪完，他把海報舉到眼前，沿著邊緣看了一圈，確認日期完整才呼了口氣，順手把筆蓋「啪」一聲扣上。"
           },
-          { kind: 'narration', text: "他把海報分成兩疊，先將要帶去現場的那疊收進紙袋。" },
+          { kind: 'narration', text: "他把剪好的海報在桌面上磕齊，分成兩疊；要帶去現場的那疊塞進紙袋時，還用手掌把露出的角一張張推平。" },
           {
             "kind": "dialogue",
             "speaker": "温尚翊",
@@ -180,9 +180,9 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "你把尺和剪刀放回桌邊。溫尚翊從完成的海報裡抽出一張，遞到你面前。"
+            "text": "你把尺和剪刀放回桌邊，金屬碰到桌面，發出清脆的一聲。溫尚翊從最上面抽出一張海報，拇指抹掉背面的紙屑，才遞到你面前。"
           },
-          { kind: 'narration', text: "他低頭把剩下的海報收整齊，折好紙袋口，才抬眼看你。" },
+          { kind: 'narration', text: "他低頭把剩下的海報一張張對齊，紙袋口折了兩次才壓平；再抬眼時，嘴角還掛著一點沒收乾淨的得意。" },
           {
             "kind": "dialogue",
             "speaker": "温尚翊",
@@ -244,7 +244,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "他朝你手裡的清單伸出手，接過來低頭看了一眼。"
+            "text": "他朝你攤開手掌，等你把清單放上來，才低頭沿著那幾行小字看過去，眉毛微微挑了一下。"
           },
           {
             "kind": "dialogue",
@@ -280,11 +280,11 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "你們沿著書架找了一會兒，陳信宏踮起腳，從高處抽出那本書，核對封面後翻到目錄，替你找指定的章節。"
+            "text": "你們沿著書架找了一排，阿信忽然停在高處那格，踮起腳抽出一本書。他先看封面，又翻到目錄，用指尖沿著頁碼往下找，找到後才把書轉向你。"
           },
           {
             "kind": "narration",
-            "text": "你接過書，兩手托著沉甸甸的書脊，翻到目錄時不自覺皺了皺眉。"
+            "text": "你把書接過來，厚厚的書脊往手臂一沉。翻開目錄，密密麻麻的章節排了好幾頁，你忍不住把眉頭皺了起來。"
           },
           {
             "kind": "dialogue",
@@ -320,9 +320,9 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "文具區掛著一排書籤。你拿起兩個比較半天，阿信聽見你的嘀咕，從旁邊探過頭來。"
+            "text": "文具區那排書籤晃在架子上。你左右手各拿一個，翻過來看背面又翻回正面，嘴裡小聲念著；阿信原本在旁邊看筆記本，聽見了才探頭過來。"
           },
-          { kind: 'narration', text: "他看了看你左右手各拿著一個，沒有替你作主，只站在旁邊等你選。" },
+          { kind: 'narration', text: "他低頭看了看你手裡那兩個，視線在圖案間來回一趟，最後只是抿著笑，把手插回口袋，等你自己決定。" },
           {
             "kind": "dialogue",
             "speaker": "陈信宏",
@@ -357,9 +357,9 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "隊伍往前挪了一格，阿信先把自己的書放上櫃檯。你低頭整理手裡的清單，紙角已經被捏得有些皺。"
+            "text": "結帳隊伍慢慢往前移，阿信把自己的書放上櫃檯。你低頭把清單折好，才發現紙角已經被自己捏出一道皺痕。"
           },
-          { kind: 'narration', text: "他替你把快滑落的清單按在櫃檯上，目光掃過上頭密密麻麻的書名。" },
+          { kind: 'narration', text: "清單從你指間滑下去一截，阿信伸手替你按住，順勢瞄見上頭密密麻麻的書名，目光停了一下。" },
           {
             "kind": "dialogue",
             "speaker": "陈信宏",
@@ -394,9 +394,9 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "店員把書裝進紙袋，阿信接過袋子，視線落在櫃檯旁明天演出的傳單上。"
+            "text": "店員把書袋遞過來，阿信接住時，目光剛好落在櫃檯旁那張明天演出的傳單上。他伸手把傳單邊角壓平，像是突然想起什麼。"
           },
-          { kind: 'narration', text: "你接過紙袋走出店門，阿信伸手替你扶住玻璃門。騎樓下的風吹過來，他才轉頭看你。" },
+          { kind: 'narration', text: "你抱著紙袋推開門，門上的鈴鐺跟著晃了兩聲。阿信伸手替你扶住玻璃門，等你走到騎樓下，才把手收回去轉頭看你。" },
           {
             "kind": "dialogue",
             "speaker": "陈信宏",
@@ -451,17 +451,17 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
     "subtitle": "温柔但不刻意。他有自己的生活，忙着打工、读书，也会在忙碌中留意你。",
     "blocks": [
       { kind: 'narration', text: "午後的茶舍裡飄著淡淡的茶香，門口的小鈴鐺不時被進出的客人碰響。你本來只是想找個地方坐一下，便推開了玻璃門。" },
-      { kind: 'narration', text: "石錦航穿著圍裙，正低頭擦杯子。聽見門鈴，他照例抬頭招呼，認出是你時，手上的動作頓了一下；看見後面還有客人在等，他朝靠窗的位置示意你先坐。" },
-      { kind: 'narration', text: "你在靠窗的位置坐下，店裡的點單聲和杯盤聲交錯著；石頭忙完手邊的客人，才終於有空朝你走來。" }
+      { kind: 'narration', text: "石頭繫著圍裙站在櫃檯後，手裡的布沿著杯口慢慢轉。門鈴一響，他抬頭招呼，認出你時眼神明顯亮了一下；後頭客人正等著點單，他只來得及朝靠窗的位置抬抬下巴，示意你先坐。" },
+      { kind: 'narration', text: "你挑了靠窗的位置坐下。玻璃外的陽光落在桌沿，店裡點單聲、杯盤碰撞聲混在一起；石頭一邊記單一邊替客人端茶，忙了好一陣才把空下來的菜單拿到你桌邊。" }
     ],
     "rounds": [
       {
         "scene": [
           {
             "kind": "narration",
-            "text": "石頭拿著菜單走到你桌邊，先把菜單放下，正要開口，外場又有人喊他。"
+            "text": "石頭把菜單放到你面前，手指才剛碰到椅背，外場就有人喊了他的名字。他回頭看了一眼，腳步停在桌旁。"
           },
-          { kind: 'narration', text: "他回頭應了一聲，朝你歉然笑笑，先轉身去處理客人的點單。" },
+          { kind: 'narration', text: "他朝外場應了聲「來了」，又回頭朝你露出抱歉的笑，圍裙口袋裡的筆已經被他順手抽了出來。" },
           {
             "kind": "dialogue",
             "speaker": "石锦航",
@@ -496,9 +496,9 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "你還在兩杯飲料之間猶豫，石頭把菜單轉向你們中間，指尖停在其中一杯的品項旁。"
+            "text": "你把菜單往左翻了翻，又翻回右頁，還是拿不定主意。石頭沒有催你，只把菜單輕輕轉到兩人中間，指尖停在其中一杯旁邊。"
           },
-          { kind: 'narration', text: "他看著你還拿不定主意，嘴角先彎了起來，像是想起自己上次試茶時鬧出的笑話。" },
+          { kind: 'narration', text: "看你盯著菜單半天，他忍不住笑了，眼睛彎起來，像是想起上次自己試茶時那副苦到皺成一團的表情。" },
           {
             "kind": "dialogue",
             "speaker": "石锦航",
@@ -533,9 +533,9 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "他端著托盤走到你桌邊，隔壁桌的杯子忽然被碰歪，他立刻伸手扶住，先替客人穩住桌上的杯子。"
+            "text": "他端著托盤走近，隔壁桌忽然傳來一聲杯底刮過桌面的刺響。石頭手腕一轉，先把托盤擱穩，另一隻手及時扶住快倒的杯子。"
           },
-          { kind: 'narration', text: "處理好隔壁桌的狀況，他才把飲料放到你面前，低頭看了眼旁邊的課本和紙袋。" },
+          { kind: 'narration', text: "等隔壁桌安頓好，他才把飲料放到你面前，杯底輕輕落在桌上。他看見你的課本和紙袋擺得近，便把杯子往外挪了些。" },
           {
             "kind": "dialogue",
             "speaker": "石锦航",
@@ -570,9 +570,9 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "客人少下來後，石頭才從書包裡抽出數學講義，攤在櫃檯內側，趁空檔寫了幾行。"
+            "text": "店裡終於空了一點，石頭把抹布掛回架上，從櫃檯下拿出書包。數學講義被折得有些軟，他攤開來，趁下一桌客人進門前寫了幾行。"
           },
-          { kind: 'narration', text: "筆尖在一道算式旁停了好一會兒，他拿橡皮擦掉其中一步，重新算起來。" },
+          { kind: 'narration', text: "他咬著筆桿盯著那道算式，寫了兩筆又停住，最後拿橡皮擦掉其中一步，紙面留下淡淡的灰痕。" },
           {
             "kind": "dialogue",
             "speaker": "石锦航",
@@ -607,9 +607,9 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "你背起包包起身，石頭剛好送走最後一桌客人，抬頭看見你，便把抹布掛回櫃檯旁。"
+            "text": "你把椅子往後推，肩上的包帶滑了一下。石頭剛送走最後一桌客人，聽見椅腳聲便抬起頭，把手裡的抹布掛回櫃檯旁。"
           },
-          { kind: 'narration', text: "他走過來接走空杯，順手把椅子推回桌下。" },
+          { kind: 'narration', text: "他走過來收走空杯，另一手把你剛才坐的椅子推回桌下，動作熟得像每天都在收拾這張桌子。" },
           {
             "kind": "dialogue",
             "speaker": "石锦航",
@@ -667,9 +667,9 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "小女孩又彈錯同一個音，瑪莎用指節敲了敲琴譜，示意她先看清楚拍子。"
+            "text": "小女孩又在同一個音上停住，手指懸在琴鍵上不敢落下。瑪莎用指節敲了敲琴譜，示意她先看清楚拍子。"
           },
-          { kind: 'narration', text: "他把那一小節放慢示範，指尖落在琴鍵上，一拍一拍帶她走過去。" },
+          { kind: 'narration', text: "瑪莎把速度放慢，先用右手彈了一遍，指尖落下時還配合著輕輕數拍；彈完又抬眼確認小女孩有沒有跟上。" },
           {
             "kind": "dialogue",
             "speaker": "瑪莎",
@@ -713,9 +713,9 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "小女孩把鉛筆遞給你，瑪莎往旁邊讓了些位置，讓你看得到她面前的琴譜。"
+            "text": "小女孩把鉛筆遞過來時，瑪莎往琴凳另一側挪了挪，膝蓋碰到琴凳邊緣，替你空出看譜的位置。"
           },
-          { kind: 'narration', text: "他坐在琴凳另一側，手指在膝上輕敲拍子，等小女孩重新把手放回琴鍵。" },
+          { kind: 'narration', text: "他坐在琴凳另一側，手指在膝頭敲出穩定的四拍，目光跟著小女孩的手指走，等她重新把手放回琴鍵。" },
           {
             "kind": "dialogue",
             "speaker": "瑪莎",
@@ -750,9 +750,9 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "最後一個音落下，小女孩抬起頭看你們，手指還停在琴鍵上，像是在等一句評語。"
+            "text": "最後一個音落下，小女孩的手還停在琴鍵上，先看看瑪莎，又偷偷瞄你一眼，眼神裡全是等著被誇的期待。"
           },
-          { kind: 'narration', text: "瑪莎用指尖點了點琴譜上那一小節，讓她看清楚剛才彈對的位置。" },
+          { kind: 'narration', text: "瑪莎把琴譜往她面前推近一點，指尖落在那一小節旁邊，這次沒有急著糾正，只讓她自己看見剛才做對的地方。" },
           {
             "kind": "dialogue",
             "speaker": "瑪莎",
@@ -787,9 +787,9 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "練習告一段落，小女孩闔上琴譜，看看你，又看看瑪莎，像是忽然想到什麼。"
+            "text": "練習告一段落，小女孩把琴譜合起來，鉛筆在指間轉了半圈。她先看看你，又看看瑪莎，像是有個問題憋了一會兒。"
           },
-          { kind: 'narration', text: "瑪莎剛拿起鉛筆，聽見她的問題，手便停在半空。" },
+          { kind: 'narration', text: "瑪莎剛把鉛筆拿起來，聽見她開口，筆尖停在紙面上方，眼神慢慢轉了過去。" },
           {
             "kind": "dialogue",
             "speaker": "小女孩",
@@ -802,7 +802,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
           },
           {
             "kind": "narration",
-            "text": "話一出口，他才像意識到自己答得太快，低頭把琴譜收攏，避開你的視線。"
+            "text": "話才出口，他像是這時才聽見自己說了什麼，手忙著把琴譜疊齊，耳根微微發熱，視線就是不往你這邊看。"
           }
         ],
         "prompt": "女朋友？",
@@ -828,9 +828,9 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "家長來接小女孩，瑪莎簡單交代完今天的練習進度，等她跟家人離開後，才伸手拿起自己的書包。"
+            "text": "家長來接小女孩時，瑪莎把今天練到哪裡、回家要練哪一小節交代清楚。等門口的說話聲遠了，他才把琴譜疊好，伸手去拿自己的書包。"
           },
-          { kind: 'narration', text: "數學講義從書包側袋露出一角，他抽出來看了一眼，忍不住嘆了口氣。" },
+          { kind: 'narration', text: "書包側袋露出半張數學講義，他抽出來翻到折角那頁，盯著題目看了兩秒，肩膀跟著垮下來。" },
           {
             "kind": "dialogue",
             "speaker": "瑪莎",
@@ -892,9 +892,9 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "諺明哥正把清單夾在工具箱上核對器材，聽見你走近才抬起頭，朝你笑了笑。"
+            "text": "諺明哥半蹲在工具箱旁，清單夾在箱蓋上，筆尖一項一項往下勾。聽見腳步聲，他先把筆停住，抬頭看見你才笑了笑。"
           },
-          { kind: 'narration', text: "他把工具箱往旁邊挪開，讓出一小塊位置，靠牆的膠帶和標籤就在你手邊。" },
+          { kind: 'narration', text: "他用膝蓋把工具箱往旁邊推了些，騰出一塊不會被導線絆到的位置；靠牆的膠帶和標籤也剛好在你伸手可及的地方。" },
           {
             "kind": "dialogue",
             "speaker": "劉諺明",
@@ -934,9 +934,9 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "諺明哥把幾條導線攤開，將剪好的標籤放到你手邊，清單則留在自己膝上。"
+            "text": "諺明哥把導線一條條理順，接頭朝同一個方向排好，再把剪好的標籤放到你手邊；清單仍攤在他膝上，方便逐項核對。"
           },
-          { kind: 'narration', text: "他把清單移到你們中間，指尖點了點第一條導線，等你看清標籤上的編號。" },
+          { kind: 'narration', text: "他把清單往你這邊轉了些，指尖在第一條導線旁停住，等你對上標籤上的編號，才接著往下核對。" },
           {
             "kind": "dialogue",
             "speaker": "劉諺明",
@@ -971,9 +971,9 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "標籤貼妥後，諺明哥接上音箱電源，請你站到練團室另一頭聽試音。"
+            "text": "標籤都貼妥，他把導線接上音箱，先確認插頭卡緊，才朝練團室另一頭示意你過去聽。"
           },
-          { kind: 'narration', text: "他沒有離開音箱旁，只伸手慢慢調高音量，側耳聽著第一聲傳出來的聲音。" },
+          { kind: 'narration', text: "他留在音箱旁，手掌搭著旋鈕一點點往上調。第一聲傳出來時，他微微偏過頭，等那陣聲音穩定下來。" },
           {
             "kind": "dialogue",
             "speaker": "劉諺明",
@@ -1008,9 +1008,9 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "諺明哥蹲下來把鬆掉的接頭壓緊，示意你再聽一次。雜音消失後，他才回到桌邊，在清單上打了個勾。"
+            "text": "諺明哥蹲下去檢查接頭，指腹摸過插頭邊緣，找到鬆動的位置後重新壓緊。他抬頭朝你比了個手勢；等你確認雜音消失，才回桌邊打勾。"
           },
-          { kind: 'narration', text: "他在清單背面補上明天要先搬的兩件器材，寫完才抬頭看了眼時鐘。" },
+          { kind: 'narration', text: "他把清單翻到背面，筆尖在紙上沙沙寫下明天要先搬的兩件器材。寫到最後一項，他才抬頭看了眼牆上的時鐘。" },
           {
             "kind": "dialogue",
             "speaker": "劉諺明",
@@ -1045,9 +1045,9 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "最後一條導線收進袋子，工具箱也扣好了。諺明哥看見桌角的耳塞，拿起來遞給你。"
+            "text": "最後一條導線繞好收進袋子，諺明哥把工具箱扣上，金屬扣環喀地合起來。桌角那包耳塞還沒收，他看見了，便拿起來遞給你。"
           },
-          { kind: 'narration', text: "他看著你接過耳塞，才又看了一眼旁邊的音箱。" },
+          { kind: 'narration', text: "他等你把耳塞收好，才朝旁邊的音箱看了一眼，像是又想起明天現場的音量。" },
           {
             "kind": "dialogue",
             "speaker": "劉諺明",
