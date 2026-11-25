@@ -201,41 +201,73 @@ export const march28ParkStayEndingBlocks: March28Block[] = [
 ]
 
 
-export const march28MorningAshinBlocks: March28Block[] = [
-  { kind: 'narration', text: '太陽已經完全升起來了，陽光照在臉上有些刺眼。你把阿信的外套拉起來蓋住臉，只露出一點頭髮。' },
-  { kind: 'dialogue', speaker: '陳信宏', text: '「欸，妳還在睡喔？」' },
-  { kind: 'dialogue', speaker: '你', text: '「沒有啦，太陽好刺眼……」' },
-  { kind: 'narration', text: '他順著你的動作看了一眼，忍不住彎了彎嘴角。' },
-  { kind: 'dialogue', speaker: '陳信宏', text: '「那妳再躲一下好了。」' },
-  { kind: 'narration', text: '你肚子不爭氣地叫了一聲。' },
-  { kind: 'dialogue', speaker: '陳信宏', text: '「餓了喔？」' },
-  { kind: 'dialogue', speaker: '你', text: '「有一點……坐到現在才發現真的好餓。」' },
-  { kind: 'narration', text: '阿信低頭看了看時間，又看了看你。' },
-  { kind: 'dialogue', speaker: '陳信宏', text: '「那妳等我一下，我去買早餐。」' },
-  { kind: 'dialogue', speaker: '你', text: '「你要去哪裡？」' },
-  { kind: 'dialogue', speaker: '陳信宏', text: '「外面有早餐店啊。」' },
-  { kind: 'dialogue', speaker: '陳信宏', text: '「我去買蛋餅給妳吃，好不好？」' },
-  { kind: 'dialogue', speaker: '你', text: '「可是你不是還要顧器材嗎？」' },
-  { kind: 'dialogue', speaker: '陳信宏', text: '「器材箱我先確認好，妳幫我看一下嘛，我很快就回來。」' },
-  { kind: 'narration', text: '他把器材箱重新檢查了一遍，確認箱扣都扣好，才起身往公園出口走。走出幾步，又回過頭來。' },
-  { kind: 'dialogue', speaker: '陳信宏', text: '「妳不要亂跑喔。」' },
-  { kind: 'dialogue', speaker: '你', text: '「知道啦！我又不是小朋友。」' },
-  { kind: 'dialogue', speaker: '陳信宏', text: '「好啦，知道妳不是。」' },
-  { kind: 'dialogue', speaker: '陳信宏', text: '「等我一下喔。」' },
-  { kind: 'narration', text: '沒過多久，他就提著一個紙袋回來了。袋子裡裝著兩份剛買好的蛋餅，隔著紙袋都能聞到煎蛋的香味。' },
-  { kind: 'dialogue', speaker: '陳信宏', text: '「來，這個給妳。」' },
-  { kind: 'dialogue', speaker: '你', text: '「你真的買蛋餅回來啦？」' },
-  { kind: 'dialogue', speaker: '陳信宏', text: '「不然咧？我剛剛都答應妳了。」' },
-  { kind: 'narration', text: '他把其中一份遞給你，自己也在長椅上坐下來，拆開另一份。' },
-  { kind: 'dialogue', speaker: '你', text: '「你怎麼知道我想吃蛋餅？」' },
-  { kind: 'dialogue', speaker: '陳信宏', text: '「不知道啊，剛好看到那間早餐店開了，就想說買這個給妳。」' },
-  { kind: 'dialogue', speaker: '陳信宏', text: '「而且妳昨天陪我坐到現在，總不能連早餐都讓妳自己想辦法吧。」' },
-  { kind: 'dialogue', speaker: '你', text: '「那你呢？你也一晚上沒吃東西吧？」' },
-  { kind: 'dialogue', speaker: '陳信宏', text: '「我也有啊，妳看。」' },
-  { kind: 'narration', text: '他晃了晃自己手裡的紙袋。' },
-  { kind: 'dialogue', speaker: '陳信宏', text: '「快吃啦，趁熱比較好吃。」' },
-  { kind: 'narration', text: '你咬了一口蛋餅，外皮煎得微微酥脆，裡面的雞蛋還軟軟的。阿信坐在旁邊，終於能好好吃上一頓早餐。' },
-  { kind: 'narration', text: '他偶爾轉過頭問你一句好不好吃，得到肯定的回答後，才繼續低頭吃自己的那份。' },
+export type March28MorningRound = {
+  scene: March28Block[]
+  prompt: string
+  speaker: string
+  choices: March28Choice[]
+}
+
+const morningN = (text: string): March28Block => ({ kind: 'narration', text })
+const morningD = (speaker: string, text: string): March28Block => ({ kind: 'dialogue', speaker, text })
+const morningC = (text: string, response: string, affection: number): March28Choice => ({ text, response, affection })
+const morningR = (speaker: string, prompt: string, scene: March28Block[], choices: March28Choice[]): March28MorningRound => ({ speaker, prompt, scene, choices })
+
+export const march28MorningAshinRounds: March28MorningRound[] = [
+  morningR('陳信宏', '他問妳想不想吃蛋餅', [
+    morningN('太陽已經完全升起來了，陽光穿過樹葉，落在你的臉上，有些刺眼。你皺了皺眉，把阿信的外套往上拉，蓋住半張臉，只露出一點亂糟糟的頭髮。'),
+    morningN('阿信坐在旁邊，手裡還拿著昨晚整理的器材清單。聽見你窸窸窣窣的動靜，他轉過頭來，看見你把自己裹得嚴嚴實實的樣子，忍不住彎起嘴角。'),
+    morningD('陳信宏', '「欸，妳還在睡喔？」'),
+    morningD('你', '「沒有啦，太陽好刺眼……」'),
+    morningD('陳信宏', '「那妳再躲一下好了。」'),
+    morningN('你才剛想把外套往下拉一點，肚子卻突然不爭氣地叫了一聲。你下意識伸手按住肚子，阿信先是愣了一下，接著低下頭，肩膀輕輕抖了兩下，明顯是在忍笑。'),
+    morningD('陳信宏', '「餓了喔？」'),
+    morningD('你', '「有一點……坐到現在才發現真的好餓。」'),
+    morningN('阿信低頭看了看時間，又看了看你。他把手裡的清單放到一旁，抬手揉了揉有些發酸的眼睛。'),
+    morningD('陳信宏', '「那妳等我一下，我去買早餐。」'),
+    morningD('你', '「你要去哪裡？」'),
+    morningD('陳信宏', '「外面有早餐店啊。」'),
+    morningD('陳信宏', '「我去買蛋餅給妳吃，好不好？」'),
+  ], [
+    morningC('「好啊！我要吃蛋餅！」', '「好，那我去買。」\n他看你終於有了精神，笑著點點頭，順手把器材清單拿起來：「妳等我一下，很快就回來。」', 2),
+    morningC('「你也要買一份，不准只買我的。」', '「知道啦，兩份，這樣可以了吧？」\n他聽完愣了一下，隨即笑出聲，還故意朝你比了個二：「我也有想到自己啦。」', 3),
+    morningC('「可是你不是還要顧器材嗎？」', '「器材箱我先確認好，妳幫我看一下嘛，我很快就回來。」\n他低頭把清單收好，又朝器材箱看了一眼，像是怕自己漏掉什麼。', 2),
+  ]),
+  morningR('陳信宏', '接過他買回來的早餐', [
+    morningN('他把器材箱重新檢查了一遍，手指沿著箱扣逐一按過，又確認旁邊的線材箱都放在原來的位置。確定沒有問題後，他才起身往公園出口走。走出幾步，又回過頭來。'),
+    morningD('陳信宏', '「妳不要亂跑喔。」'),
+    morningD('你', '「知道啦！我又不是小朋友。」'),
+    morningD('陳信宏', '「好啦，知道妳不是。」'),
+    morningD('陳信宏', '「等我一下喔。」'),
+    morningN('他的身影沿著步道慢慢走遠。你重新把外套拉好，坐在長椅上看著旁邊的器材箱。沒過多久，遠處就傳來熟悉的腳步聲。阿信提著一個紙袋回來，袋子裡裝著兩份剛買好的蛋餅，隔著紙袋都能聞到煎蛋的香味。'),
+    morningD('陳信宏', '「來，這個給妳。」'),
+  ], [
+    morningC('「你真的買蛋餅回來啦？」', '「不然咧？我剛剛都答應妳了。」\n他把其中一份遞到你手裡，自己那份仍好好地放在紙袋裡，沒有急著拆開。', 2),
+    morningC('「聞起來好香，我現在就想吃！」', '「那妳快吃啊，還熱著。」\n他看你迫不及待的樣子，眼睛彎了起來，又把紙袋往你手邊挪近一點，讓你拿得穩。', 3),
+    morningC('「你還真的記得我剛才說想吃蛋餅喔？」', '「妳剛剛都餓到肚子叫了，我怎麼可能忘記啦。」\n他笑著把早餐遞給你，自己那份還留在紙袋裡。', 2),
+  ]),
+  morningR('陳信宏', '發現他自己的蛋餅還沒拆開', [
+    morningN('你接過蛋餅，阿信仍坐在你旁邊，卻沒有立刻拆自己的那一份。他看著你手裡的早餐，像是想確認你有沒有拿穩。'),
+    morningD('你', '「你怎麼知道我想吃蛋餅？」'),
+    morningD('陳信宏', '「不知道啊，剛好看到那間早餐店開了，就想說買這個給妳。」'),
+    morningD('陳信宏', '「而且妳昨天陪我坐到現在，總不能連早餐都讓妳自己想辦法吧。」'),
+    morningD('你', '「那你呢？你也一晚上沒吃東西吧？」'),
+    morningD('陳信宏', '「我也有啊，妳看。」'),
+    morningN('他把紙袋裡另一份蛋餅拿起來，在你面前晃了晃。包裝還完整地握在他手裡，連封口都沒有拆。'),
+    morningD('陳信宏', '「快吃啦，趁熱比較好吃。」'),
+  ], [
+    morningC('「那你也快吃啦，不然等一下就涼了。」', '「好啦，我本來就要吃了。」\n他低頭看了看手裡的包裝，指尖捏住封口，卻還是先抬眼看了你一下。', 2),
+    morningC('「你是不是一直等我先吃？」', '「有一點啦。」\n他笑著低下頭，手指沿著包裝邊緣輕輕折了一下：「想先知道妳喜不喜歡嘛。」', 3),
+    morningC('「你怎麼只顧著看我，自己都還沒吃？」', '「我哪有一直看妳啦。」\n他說完自己先笑了，抬手抓了抓後腦勺：「好啦，我現在就吃。」', 2),
+  ]),
+]
+
+export const march28MorningAshinEndingBlocks: March28Block[] = [
+  morningN('你咬了一口蛋餅，外皮煎得微微酥脆，裡面的雞蛋還軟軟的。阿信這才拆開自己的那份，低頭咬了一口，總算也好好吃上早餐。'),
+  morningN('他嚥下嘴裡那口，轉過頭來看你，眼神裡帶著一點期待。'),
+  morningD('陳信宏', '「好吃嗎？」'),
+  morningN('你點點頭。他看見你的反應，嘴角才慢慢揚起來，這才放心地繼續吃自己的那份。'),
+  morningN('你們並肩坐在長椅上，偶爾交換幾句話。阿信吃到一半，還是會轉過頭確認你有沒有吃完；等你把最後一口吞下去，他才把紙袋折好，收拾起早餐包裝。'),
 ]
 
 const march28MorningVisitorNames: Record<Exclude<March28CharacterId, 'ashin'>, string> = {
@@ -245,133 +277,201 @@ const march28MorningVisitorNames: Record<Exclude<March28CharacterId, 'ashin'>, s
   yanming: '諺明',
 }
 
-const march28MorningVisitorBranches: Record<Exclude<March28CharacterId, 'ashin'>, March28Block[]> = {
+export const getMarch28MorningVisitorIntroBlocks = (character: Exclude<March28CharacterId, 'ashin'>): March28Block[] => {
+  const visitor = march28MorningVisitorNames[character]
+  return [
+    morningN('太陽漸漸升起來，陽光穿過樹葉，斑駁地落在長椅上。你原本還想再閉一會兒眼睛，結果一束陽光正好落在臉上，刺得你直皺眉。'),
+    morningN('你把阿信的外套往上拉，乾脆蓋住半張臉，整個人往長椅裡縮了縮。'),
+    morningN('不遠處傳來腳步聲。'),
+    morningD(visitor, '「阿信！」'),
+    morningD('陳信宏', '「欸？你怎麼來了？」'),
+    morningD(visitor, '「想說你應該還在這裡啊，昨天就沒看你回去。」'),
+    morningN('紙袋窸窣作響，對方走近幾步。'),
+    morningD(visitor, '「喏，買了飯糰。你應該還沒吃早餐吧？」'),
+    morningD('陳信宏', '「哇，謝謝欸。」'),
+    morningN('你聽見熟悉的聲音，才意識到有人來了。外套底下，你悄悄把臉露出來一點。'),
+    morningD('你', '「……早。」'),
+    morningN('原本正在把飯糰遞給阿信的人，動作頓了一下。他低頭看向長椅，這才發現阿信旁邊還坐著一個人。你的頭髮有些凌亂，肩上披著一件明顯不是自己的外套。'),
+    morningD(visitor, '「……妳怎麼也在？」'),
+    morningN('阿信看了你一眼，伸手把你肩上的外套往上拉了拉。'),
+    morningD('陳信宏', '「她昨天留下來陪我啊，坐到現在了。」'),
+    morningN('這句話說得很自然，倒是來的人沒有馬上接話。'),
+  ]
+}
+
+export const march28MorningVisitorRounds: Record<Exclude<March28CharacterId, 'ashin'>, March28MorningRound[]> = {
   wen: [
-    { kind: 'dialogue', speaker: '溫尚翊', text: '「蛤？一整晚？」' },
-    { kind: 'narration', text: '他看看你，又看看阿信，手裡的紙袋被捏得沙沙響。' },
-    { kind: 'dialogue', speaker: '你', text: '「對啊，昨天後來太晚了，就沒回去。」' },
-    { kind: 'dialogue', speaker: '溫尚翊', text: '「妳也真的是……」' },
-    { kind: 'narration', text: '他像是想說什麼，最後只把視線轉向阿信。' },
-    { kind: 'dialogue', speaker: '溫尚翊', text: '「你是不會叫她回去喔？」' },
-    { kind: 'dialogue', speaker: '陳信宏', text: '「我有叫她回去啊，是她自己說要留下來的。」' },
-    { kind: 'dialogue', speaker: '溫尚翊', text: '「喔，是喔。」' },
-    { kind: 'narration', text: '他應了一聲，把紙袋放到長椅上。' },
-    { kind: 'dialogue', speaker: '溫尚翊', text: '「那你還真的給她留到天亮喔。」' },
-    { kind: 'dialogue', speaker: '陳信宏', text: '「不然咧？她都說要陪我了。」' },
-    { kind: 'narration', text: '溫尚翊瞥了一眼你身上的外套。' },
-    { kind: 'dialogue', speaker: '溫尚翊', text: '「那件也是你的喔？」' },
-    { kind: 'dialogue', speaker: '陳信宏', text: '「對啊，早上有點冷，就借她穿了。」' },
-    { kind: 'dialogue', speaker: '溫尚翊', text: '「……你倒是滿會照顧人的嘛，連外套都提供。」' },
-    { kind: 'dialogue', speaker: '陳信宏', text: '「哪有啦，就剛好借她一下。」' },
-    { kind: 'dialogue', speaker: '溫尚翊', text: '「我又沒說什麼。」' },
-    { kind: 'dialogue', speaker: '你', text: '「你今天怎麼這麼早就來了？」' },
-    { kind: 'dialogue', speaker: '溫尚翊', text: '「我來送東西啊，不然咧？」' },
-    { kind: 'narration', text: '他從袋子裡拿出一個飯糰，遞給阿信。' },
-    { kind: 'dialogue', speaker: '溫尚翊', text: '「快吃啦，等一下還要忙。」' },
-    { kind: 'narration', text: '他又看了看你。' },
-    { kind: 'dialogue', speaker: '溫尚翊', text: '「妳也趕快吃點東西，臉都快被外套蓋住了。」' },
-    { kind: 'dialogue', speaker: '陳信宏', text: '「她剛剛在睡覺啦，太陽太刺眼了。」' },
-    { kind: 'dialogue', speaker: '溫尚翊', text: '「我又沒問你。」' },
-    { kind: 'narration', text: '阿信抬頭看他，你忍不住想笑。' },
-    { kind: 'narration', text: '溫尚翊拉開長椅另一邊的位置坐下，拆開自己的早餐包裝，嘴上沒再說什麼，卻一直記得把紙袋往你們中間推近一點。' },
+    morningR('溫尚翊', '溫尚翊又確認了一次', [
+      morningD('溫尚翊', '「蛤？一整晚？」'),
+      morningN('溫尚翊眉毛一下子抬了起來。他看看你，又看看阿信，手裡的紙袋被捏得沙沙響。'),
+      morningD('你', '「對啊，昨天後來太晚了，就沒回去。」'),
+      morningD('溫尚翊', '「妳也真的是……」'),
+      morningN('他像是想說什麼，最後只把視線轉向阿信，眉頭微微皺起。'),
+      morningD('溫尚翊', '「你是不會叫她回去喔？」'),
+      morningD('陳信宏', '「我有叫她回去啊，是她自己說要留下來的。」'),
+      morningD('溫尚翊', '「喔，是喔。」'),
+      morningN('他應了一聲，目光又回到你身上，像是還有話想問。'),
+      morningD('溫尚翊', '「那妳真的就這樣坐到天亮喔？」'),
+    ], [
+      morningC('「昨天後來真的太晚了，而且我也想陪阿信。」', '「妳還挺有義氣的嘛。」\n他說完又皺了皺眉：「不過一整晚都不睡，還是很誇張欸。」', 2),
+      morningC('「怎麼，看到我很意外喔？」', '「沒有啊，誰意外了？」\n他立刻把視線挪開，嘴上還是忍不住：「只是沒想到妳這麼能熬。」', 3),
+      morningC('「不然你以為我去哪了？」', '「我又沒說妳去哪，妳幹嘛這麼衝啦。」\n他抿了抿嘴，手裡的紙袋又響了一下。', -1),
+    ]),
+    morningR('溫尚翊', '溫尚翊又看了一眼妳身上的外套', [
+      morningN('溫尚翊的視線不經意地落在你肩上的外套，停了一瞬，又很快移開。'),
+      morningD('溫尚翊', '「那件也是你的喔？」'),
+      morningD('陳信宏', '「對啊，早上有點冷，就借她穿了。」'),
+      morningD('溫尚翊', '「……你倒是滿會照顧人的嘛，連外套都提供。」'),
+      morningD('陳信宏', '「哪有啦，就剛好借她一下。」'),
+      morningD('溫尚翊', '「我又沒說什麼。」'),
+      morningN('他嘴上說沒什麼，眼睛卻又往外套瞄了一下，手指捏著紙袋邊緣。'),
+    ], [
+      morningC('「他只是借我穿一下啦。」', '「喔，好啊。」\n他點了點頭，卻還是把視線挪開：「有衣服穿就好，早上還是有點涼。」', 1),
+      morningC('「怎麼，你也想借我外套？」', '「蛤？妳在講什麼啦！」\n他立刻清了清嗓子，抬手扯了扯自己的衣領：「我又不是沒有外套。」', 3),
+      morningC('「你管我穿誰的啦！」', '「好啊，妳愛穿誰的就穿誰的。」\n他把臉轉開，低頭去翻紙袋，語氣硬得很，連看都沒再看你。', -2),
+    ]),
+    morningR('溫尚翊', '溫尚翊把飯糰遞給妳', [
+      morningN('溫尚翊把紙袋放在長椅旁，從裡面拿出兩個飯糰，一個先遞給阿信，另一個拿在手裡，朝你遞了過來。'),
+      morningD('溫尚翊', '「妳也趕快吃點東西，臉都快被外套蓋住了。」'),
+      morningD('陳信宏', '「她剛剛在睡覺啦，太陽太刺眼了。」'),
+      morningD('溫尚翊', '「我又沒問你。」'),
+      morningN('阿信抬頭看了他一眼，忍不住笑了一聲。溫尚翊沒理他，只把手裡的飯糰往你面前送近一點。'),
+    ], [
+      morningC('「謝謝你，還特地多買一份。」', '「順手啦，妳不要想太多。」\n他把飯糰遞到你手裡，又補了一句：「先吃，等一下還要忙。」', 3),
+      morningC('「你怎麼知道我還沒吃早餐？」', '「妳現在這個樣子，看起來就像剛睡醒啊。」\n他笑了一聲：「猜也猜得到吧。」', 2),
+      morningC('「我比較想吃蛋餅欸。」', '「蛤？有飯糰吃就不錯了欸，還挑喔？」\n他把飯糰往你面前又遞近一點：「不吃就算了，等一下不要喊餓。」', -1),
+    ]),
   ],
   masa: [
-    { kind: 'dialogue', speaker: '瑪莎', text: '「……喔。」' },
-    { kind: 'narration', text: '他看著你，又看看阿信，目光最後落在你身上的外套。' },
-    { kind: 'dialogue', speaker: '瑪莎', text: '「我是不是來得不是時候？」' },
-    { kind: 'dialogue', speaker: '陳信宏', text: '「你不要亂講啦！」' },
-    { kind: 'dialogue', speaker: '瑪莎', text: '「我還什麼都沒說欸。」' },
-    { kind: 'narration', text: '他把紙袋放在阿信腿上，自己跑到長椅另一側坐下。' },
-    { kind: 'dialogue', speaker: '瑪莎', text: '「我本來想說，某人怎麼一個晚上都沒消息，原來不是一個人啊。」' },
-    { kind: 'dialogue', speaker: '你', text: '「你不要誤會啦，我昨天只是留下來陪他守器材。」' },
-    { kind: 'dialogue', speaker: '瑪莎', text: '「喔～守器材。」' },
-    { kind: 'narration', text: '他故意把這三個字重複了一遍，拿出一個飯糰遞給你。' },
-    { kind: 'dialogue', speaker: '瑪莎', text: '「那辛苦妳了，守夜班應該也沒領薪水吧？」' },
-    { kind: 'dialogue', speaker: '陳信宏', text: '「瑪莎！」' },
-    { kind: 'dialogue', speaker: '瑪莎', text: '「幹嘛？我是在關心她欸。」' },
-    { kind: 'narration', text: '他轉頭看向阿信。' },
-    { kind: 'dialogue', speaker: '瑪莎', text: '「你也是啦，至少還知道把外套借人家穿。」' },
-    { kind: 'dialogue', speaker: '陳信宏', text: '「晚上真的有點冷啊。」' },
-    { kind: 'dialogue', speaker: '瑪莎', text: '「知道啊，我又沒有說你不應該借。」' },
-    { kind: 'narration', text: '他撕開包裝，咬了一口飯糰，隨後像是忽然想起什麼。' },
-    { kind: 'dialogue', speaker: '瑪莎', text: '「對了，妳昨天什麼時候來的？」' },
-    { kind: 'dialogue', speaker: '你', text: '「吃完飯以後啊。」' },
-    { kind: 'dialogue', speaker: '瑪莎', text: '「喔……所以真的坐到現在喔？」' },
-    { kind: 'narration', text: '他看了阿信一眼，沒有繼續追問，只把紙袋裡的最後一顆飯糰拿出來。' },
-    { kind: 'dialogue', speaker: '瑪莎', text: '「阿信，這個給你。你今天可要好好唱，不然我這趟早餐就白送了。」' },
+    morningR('瑪莎', '瑪莎一開口就開始鬧', [
+      morningD('瑪莎', '「……喔。」'),
+      morningN('瑪莎看著你，又看看阿信，目光最後落在你肩上的外套，嘴角慢慢揚起來。'),
+      morningD('瑪莎', '「我是不是來得不是時候？」'),
+      morningD('陳信宏', '「你不要亂講啦！」'),
+      morningD('瑪莎', '「我還什麼都沒說欸。」'),
+    ], [
+      morningC('「你來得正好，我快被太陽曬昏了。」', '「那妳應該先把外套拿下來吧？」\n他指了指你頭上的外套，笑得一臉欠揍：「還是妳打算連早餐也蓋著吃？」', 2),
+      morningC('「你又在想什麼有的沒的！」', '「欸，我真的什麼都還沒講欸！」\n他立刻轉頭看阿信：「你看，她先心虛喔。」', 1),
+      morningC('「對，你來得不是時候。」', '「哇，現在連我都不能來喔？」\n他故意往後退了一步，抱著紙袋裝模作樣：「那我是不是應該先消失？」', -2),
+    ]),
+    morningR('瑪莎', '瑪莎拿守夜班開玩笑', [
+      morningN('瑪莎把紙袋放在長椅空著的一端，自己也在旁邊坐下來，故意把最後幾個字拖得很長。'),
+      morningD('瑪莎', '「我本來想說，某人怎麼一個晚上都沒消息，原來不是一個人啊。」'),
+      morningD('你', '「你不要誤會啦，我昨天只是留下來陪他守器材。」'),
+      morningD('瑪莎', '「喔～守器材。」'),
+      morningD('瑪莎', '「那辛苦妳了，守夜班應該也沒領薪水吧？」'),
+      morningD('陳信宏', '「瑪莎！」'),
+      morningD('瑪莎', '「幹嘛？我是在關心她欸。」'),
+    ], [
+      morningC('「那你要不要給我發工資？」', '「可以啊，妳先把出勤紀錄交給我。」\n他摸摸下巴，像真的在算：「不過薪水可能只有一顆飯糰喔。」', 3),
+      morningC('「至少還有早餐可以吃嘛。」', '「這倒是真的，至少沒有白忙一場。」\n他把紙袋往你這邊推了一點：「今天先發早餐，薪水下次再說。」', 2),
+      morningC('「你再說我就讓你也守一整晚。」', '「欸欸欸，不要啦！我明天還要上課欸。」\n他立刻把手舉起來，轉頭朝阿信求救：「你管一下她好不好？」', -1),
+    ]),
+    morningR('瑪莎', '接過瑪莎遞來的飯糰', [
+      morningN('瑪莎從紙袋裡拿出一顆飯糰，遞到你面前，手腕還故意晃了兩下。'),
+      morningD('瑪莎', '「來啦，先吃點東西，省得等一下又喊餓。」'),
+    ], [
+      morningC('「謝謝莎莎！」', '「叫誰莎莎啦，妳很敢欸。」\n他嘴上嫌棄，手卻把飯糰往你掌心塞好，免得掉下去。', 3),
+      morningC('「你今天怎麼突然這麼好心？」', '「我平常也很有好嗎？」\n他挑眉看你，等你回答前自己先笑了：「算了，妳大概不會承認。」', 2),
+      morningC('「你是不是買多了才分我的？」', '「對啦，不然咧？妳要不要嘛。」\n他作勢要把飯糰收回去，卻只停在半路，明顯還是在等你接。', -1),
+    ]),
   ],
   stone: [
-    { kind: 'dialogue', speaker: '石頭', text: '「早啊，阿信。」' },
-    { kind: 'narration', text: '他把紙袋遞過去，隨後才注意到你從外套裡探出頭來。' },
-    { kind: 'dialogue', speaker: '石頭', text: '「咦？妳也在。」' },
-    { kind: 'dialogue', speaker: '你', text: '「嗯，昨天後來就留下來了。」' },
-    { kind: 'narration', text: '石頭看了看你，又看了看阿信。' },
-    { kind: 'dialogue', speaker: '石頭', text: '「那你們應該一整晚都沒怎麼休息吧？」' },
-    { kind: 'dialogue', speaker: '陳信宏', text: '「還好啦，她後來有睡一下。」' },
-    { kind: 'dialogue', speaker: '石頭', text: '「這樣啊。」' },
-    { kind: 'narration', text: '他把紙袋放在兩人中間，目光落在你肩上的外套上。' },
-    { kind: 'dialogue', speaker: '石頭', text: '「外套是阿信的吧？早上風還是有點涼，妳別著涼了。」' },
-    { kind: 'dialogue', speaker: '你', text: '「嗯，他借我穿的。」' },
-    { kind: 'dialogue', speaker: '石頭', text: '「那就好。」' },
-    { kind: 'narration', text: '他沒有再多問，只是把紙袋打開，拿出裡面的飯糰。' },
-    { kind: 'dialogue', speaker: '石頭', text: '「我買了幾個，你們先吃吧。」' },
-    { kind: 'narration', text: '阿信伸手拿了一顆。石頭卻沒有馬上收回手，而是把另一顆遞到了你面前。' },
-    { kind: 'dialogue', speaker: '石頭', text: '「妳也吃一個。陪人守一整晚，應該很累吧。」' },
-    { kind: 'narration', text: '他說得很溫和，視線卻在你身上多停留了一會兒。' },
-    { kind: 'dialogue', speaker: '陳信宏', text: '「她剛剛還在睡欸，我差點不敢叫她起來。」' },
-    { kind: 'dialogue', speaker: '石頭', text: '「是嗎？」' },
-    { kind: 'narration', text: '石頭轉過頭看向阿信。' },
-    { kind: 'dialogue', speaker: '石頭', text: '「那你應該也沒怎麼睡吧。」' },
-    { kind: 'narration', text: '他沒有再接著問，只在長椅另一側坐下，陪你們一起吃早餐。' },
-    { kind: 'dialogue', speaker: '石頭', text: '「先吃早餐吧，別餓著了。」' },
+    morningR('石頭', '石頭關心妳昨晚有沒有休息', [
+      morningD('石頭', '「早啊，阿信。」'),
+      morningD('陳信宏', '「欸？你怎麼來了？」'),
+      morningD('石頭', '「想說你應該還在這裡啊，昨天就沒看你回去。」'),
+      morningN('石頭這才注意到長椅另一側的你，腳步微微停了一下。'),
+      morningD('石頭', '「咦？妳也在。」'),
+      morningD('你', '「嗯，昨天後來就留下來了。」'),
+      morningD('石頭', '「那你們應該一整晚都沒怎麼休息吧？」'),
+      morningD('陳信宏', '「還好啦，她後來有睡一下。」'),
+      morningN('石頭在長椅空著的一端坐下，把紙袋放在膝上，轉過頭來看你。'),
+      morningD('石頭', '「妳後來有睡到一點嗎？」'),
+    ], [
+      morningC('「我後來有睡一下啦。」', '「那就好。」\n他看了看你眼下的倦意，還是有點不放心：「等一下有空，妳再補個眠。」', 1),
+      morningC('「阿信比較辛苦，我還好。」', '「妳還替他說話喔。」\n石頭笑了笑，轉頭看阿信：「那你可要記得，等一下也找時間休息。」', 3),
+      morningC('「你一來就開始關心我們喔？」', '「不然呢？」\n他笑意很淡，語氣卻很自然：「妳看起來就很累啊。」', 2),
+    ]),
+    morningR('石頭', '石頭注意到妳身上的外套', [
+      morningN('石頭的目光落在你肩上的外套，停了一瞬，才抬眼看你。'),
+      morningD('石頭', '「外套是阿信的吧？早上風還是有點涼，妳別著涼了。」'),
+      morningD('你', '「嗯，他借我穿的。」'),
+      morningD('石頭', '「那就好。」'),
+    ], [
+      morningC('「嗯，他看我冷就借我了。」', '「那就先穿著吧，等太陽再大一點再還也不遲。」\n他說完又看了看你，像是確認你真的沒有冷到。', 2),
+      morningC('「你觀察得好仔細喔。」', '「因為這件外套真的滿明顯的。」\n他笑了笑，視線很快移開：「而且尺寸也不太合，應該不是妳自己的吧。」', 3),
+      morningC('「你不用一直管我啦，我知道照顧自己。」', '石頭怔了一下，隨後輕輕點頭。「好，我知道了。」\n他沒有再多說，只把手裡的紙袋往膝上收好。', -1),
+    ]),
+    morningR('石頭', '石頭把飯糰遞給妳', [
+      morningN('石頭打開紙袋，拿出三個飯糰。一個先遞給阿信，另一個遞到你面前，最後把第三個留在自己手上。'),
+      morningD('石頭', '「我買了幾個，你們先吃吧。」'),
+      morningD('石頭', '「妳也吃一個。陪人守一整晚，應該很累吧。」'),
+    ], [
+      morningC('「謝謝你，還特地多帶一份。」', '「我想妳應該也還沒吃，就多拿了一個。」\n他看你接過去，才把自己的那份拿穩：「先吃吧，還熱著。」', 3),
+      morningC('「你也還沒吃吧？一起吃啊。」', '「好啊，我也買了自己的份。」\n他笑著拆開手裡的飯糰，仍坐在長椅空著的一端，陪你們一起吃。', 2),
+      morningC('「我現在還不太餓，先放著好了。」', '「好，那妳先放著，等一下記得吃。」\n他把飯糰放在你身旁的長椅上，沒有勉強你。', 0),
+    ]),
   ],
   yanming: [
-    { kind: 'dialogue', speaker: '諺明', text: '「阿信。」' },
-    { kind: 'narration', text: '他提著紙袋走過來，原本想直接遞給阿信，沒想到你忽然從外套底下探出頭。' },
-    { kind: 'dialogue', speaker: '諺明', text: '「……妳也在啊？」' },
-    { kind: 'dialogue', speaker: '你', text: '「諺明哥，早！」' },
-    { kind: 'dialogue', speaker: '諺明', text: '「早啊。」' },
-    { kind: 'narration', text: '他的目光在你身上的外套停了一瞬，隨後看向阿信。' },
-    { kind: 'dialogue', speaker: '諺明', text: '「昨天晚上沒回去？」' },
-    { kind: 'dialogue', speaker: '你', text: '「嗯，後來就留下來陪他了。」' },
-    { kind: 'dialogue', speaker: '諺明', text: '「這樣啊。」' },
-    { kind: 'narration', text: '他沒有多問，只把紙袋交給阿信。' },
-    { kind: 'dialogue', speaker: '諺明', text: '「我想說你一個人守著器材，應該顧不上吃東西，就買了幾個飯糰過來。」' },
-    { kind: 'dialogue', speaker: '陳信宏', text: '「謝謝諺明哥。」' },
-    { kind: 'dialogue', speaker: '諺明', text: '「不用客氣。」' },
-    { kind: 'narration', text: '他在長椅另一側坐下來，看看你，又看看阿信。' },
-    { kind: 'dialogue', speaker: '諺明', text: '「不過你們兩個倒是挺能熬的。」' },
-    { kind: 'dialogue', speaker: '陳信宏', text: '「她比我厲害啦，我剛剛還差點睡著。」' },
-    { kind: 'dialogue', speaker: '諺明', text: '「那你更要謝謝人家了。」' },
-    { kind: 'narration', text: '他把另一顆飯糰遞給你。' },
-    { kind: 'dialogue', speaker: '諺明', text: '「來，先吃點東西。今天還有演出，別到時候兩個人都沒精神。」' },
+    morningR('諺明', '諺明哥發現妳也留在公園', [
+      morningN('諺明提著早餐袋走近，原本想直接把東西交給阿信，沒想到你忽然從外套底下探出頭。'),
+      morningD('諺明', '「……妳也在啊？」'),
+      morningD('你', '「諺明哥，早！」'),
+      morningD('諺明', '「早啊。」'),
+      morningN('他的目光在你身上的外套停了一瞬，很快又看向阿信。'),
+      morningD('諺明', '「昨天晚上沒回去？」'),
+    ], [
+      morningC('「嗯，後來就留下來陪阿信了。」', '「這樣啊，難怪你們兩個看起來都沒什麼精神。」\n他看了一眼器材箱，語氣平穩：「不過今天還有演出，早餐先吃一點。」', 1),
+      morningC('「諺明哥一大早就來檢查器材嗎？」', '「對啊，今天要演出，還是先過來確認一下比較放心。」\n他把手裡的清單晃了晃：「剛好順路買了早餐。」', 3),
+      morningC('「你該不會也要念我吧？」', '「我還沒說什麼，妳怎麼就先想到被念了？」\n他笑了笑：「只是看妳一臉沒睡飽，怕妳等一下撐不住。」', -1),
+    ]),
+    morningR('諺明', '諺明哥接著聊起你們熬夜的事', [
+      morningN('諺明把早餐袋交給阿信，順手確認了一下旁邊的器材箱，才重新看向你們。'),
+      morningD('諺明', '「我想說你一個人守著器材，應該顧不上吃東西，就買了幾個飯糰過來。」'),
+      morningD('陳信宏', '「謝謝諺明哥。」'),
+      morningD('諺明', '「不用客氣。」'),
+      morningD('諺明', '「不過你們兩個倒是挺能熬的。」'),
+      morningD('陳信宏', '「她比我厲害啦，我剛剛還差點睡著。」'),
+      morningD('諺明', '「那你更要謝謝人家了。」'),
+    ], [
+      morningC('「阿信比我辛苦啦，他昨晚一直顧器材。」', '「那你今天可要好好補充精神。」\n諺明拍了拍紙袋，提醒阿信：「等一下忙起來，記得先把早餐吃完。」', 2),
+      morningC('「諺明哥你也很早欸，難道你都不累嗎？」', '「習慣了啦，練團室有時候比這個還忙。」\n他看了一眼手錶：「不過今天確實起得早了一點。」', 3),
+      morningC('「我們年輕嘛！」', '「好，年輕就是本錢。」\n他笑著搖搖頭：「不過還是要先吃早餐，不然等一下可沒有力氣。」', 0),
+    ]),
+    morningR('諺明', '諺明哥把飯糰遞給妳', [
+      morningN('諺明從紙袋裡拿出一顆飯糰，遞到你面前。他自己那份還留在袋子裡，另一隻手則拿著器材清單。'),
+      morningD('諺明', '「來，先吃點東西。今天還有演出，別到時候兩個人都沒精神。」'),
+    ], [
+      morningC('「謝謝諺明哥，辛苦你特地跑一趟了。」', '「這有什麼，反正我也要過來確認器材。」\n他看你接過飯糰，才放心地收回手：「先吃吧，等一下忙起來就沒空了。」', 2),
+      morningC('「諺明哥你也一起吃啊。」', '「好啊，那我也吃一個。」\n他從袋子裡拿出自己的飯糰，站在長椅旁拆開包裝，順手翻看清單。', 3),
+      morningC('「我現在不餓，你不用特地照顧我啦。」', '「好，那我先放這裡，等妳餓了再吃。」\n他把飯糰放在長椅空著的位置，沒有勉強你，轉而低頭確認清單。', -1),
+    ]),
   ],
 }
 
-export const getMarch28MorningVisitorBlocks = (
-  character: Exclude<March28CharacterId, 'ashin'>,
-): March28Block[] => {
-  const visitorName = march28MorningVisitorNames[character]
-  const arrivalBlocks: March28Block[] = [
-    { kind: 'narration', text: '太陽漸漸升起來，陽光穿過樹葉，斑駁地落在長椅上。你原本還想再閉一會兒眼睛，結果一束陽光正好落在臉上，刺得你直皺眉。' },
-    { kind: 'narration', text: '你把阿信的外套往上拉，乾脆蓋住臉，整個人往長椅裡縮了縮。' },
-    { kind: 'narration', text: '不遠處傳來腳步聲。' },
-    { kind: 'dialogue', speaker: visitorName, text: '「阿信！」' },
-    { kind: 'dialogue', speaker: '陳信宏', text: '「欸？你怎麼來了？」' },
-    { kind: 'dialogue', speaker: visitorName, text: '「想說你應該還在這裡啊，昨天就沒看你回去。」' },
-    { kind: 'narration', text: '紙袋窸窣作響，對方走近幾步。' },
-    { kind: 'dialogue', speaker: visitorName, text: '「喏，買了飯糰。你應該還沒吃早餐吧？」' },
-    { kind: 'dialogue', speaker: '陳信宏', text: '「哇，謝謝欸。」' },
-    { kind: 'narration', text: '你聽見熟悉的聲音，才意識到有人來了。外套底下，你悄悄把臉露出來一點。' },
-    { kind: 'dialogue', speaker: '你', text: '「……早。」' },
-    { kind: 'narration', text: '原本正在把飯糰遞給阿信的人，動作頓了一下。' },
-    { kind: 'narration', text: '他低頭看向長椅，這才發現阿信旁邊居然還坐著一個人。你的頭髮有些凌亂，肩上披著一件明顯不是自己的外套。' },
-    { kind: 'dialogue', speaker: visitorName, text: '「……妳怎麼也在？」' },
-    { kind: 'narration', text: '阿信看了你一眼，伸手把你肩上的外套往上拉了拉。' },
-    { kind: 'dialogue', speaker: '陳信宏', text: '「她昨天留下來陪我啊，坐到現在了。」' },
-    { kind: 'narration', text: '這句話說得很自然，倒是來的人沒有馬上接話。' },
-  ]
-  return [...arrivalBlocks, ...march28MorningVisitorBranches[character]]
+export const march28MorningVisitorEndingBlocks: Record<Exclude<March28CharacterId, 'ashin'>, March28Block[]> = {
+  wen: [
+    morningN('溫尚翊把紙袋收好，自己也在長椅空著的一端坐下來。嘴上雖然沒再說什麼，卻還是時不時抬眼看看你有沒有開始吃。'),
+    morningN('阿信低頭整理器材清單，溫尚翊則把飯糰包裝撕開。兩個人偶爾接上幾句話，清晨的公園也漸漸熱鬧起來。'),
+  ],
+  masa: [
+    morningN('瑪莎又從紙袋裡拿出另一顆飯糰，遞給阿信。'),
+    morningD('瑪莎', '「阿信，這個給你。你今天可要好好唱，不然我這趟早餐就白送了。」'),
+    morningD('陳信宏', '「謝謝啦，妳也吃啊。」'),
+    morningD('瑪莎', '「我有啦，你先顧好你自己。」'),
+    morningN('他把空出來的包裝紙揉成一團，順手收進紙袋裡。阿信看著你們鬥嘴，忍不住笑了一聲，瑪莎立刻轉頭瞪他。'),
+    morningD('瑪莎', '「你笑什麼啦！」'),
+  ],
+  stone: [
+    morningN('石頭把自己的飯糰拿在手裡，沒有再挪動位置。阿信低頭看了一眼器材清單，石頭則一邊吃早餐，一邊留意你有沒有把飯糰拿穩。'),
+    morningN('長椅上三個人的距離不遠，偶爾有人說話，另外兩個人便自然地接上一句。晨光慢慢落滿整條步道。'),
+  ],
+  yanming: [
+    morningN('諺明沒有坐下，只站在長椅旁邊把器材清單重新對了一遍。確認箱子和線材都在原位後，他才把清單收起來。'),
+    morningD('諺明', '「差不多該準備了，等一下我先把要用的東西確認好。」'),
+    morningN('阿信點點頭，把早餐包裝收好。你也把手裡的飯糰吃完，清晨的公園漸漸熱鬧起來，今天的演出越來越近了。'),
+  ],
 }
 
 export const march28CharacterOrder: March28CharacterId[] = ['wen', 'ashin', 'stone', 'masa', 'yanming']
