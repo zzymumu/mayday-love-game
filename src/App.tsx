@@ -1779,7 +1779,9 @@ function App() {
   const [storyStage, setStoryStage] = useState<StoryStage>(() => {
     const saved = localStorage.getItem('mayday-story-stage')
     const savedSpringStage = saved === 'paused' ? localStorage.getItem('mayday-resume-stage') : saved
-    if (localStorage.getItem('mayday-spring-sms-content-version') !== 'daily-chat-v6') {
+    const resetWenSpringSmsStage = localStorage.getItem('mayday-spring-wen-sms-content-version') !== 'hot-cocoa-v3'
+      && localStorage.getItem('mayday-spring-sms-target') === 'wen'
+    if (localStorage.getItem('mayday-spring-sms-content-version') !== 'daily-chat-v6' || resetWenSpringSmsStage) {
       if (savedSpringStage === 'spring-sms-chat') return 'spring-sms-picker'
       if (savedSpringStage === 'spring-free-chat') return 'spring-free-chat-picker'
     }
