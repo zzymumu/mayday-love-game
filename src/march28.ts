@@ -897,7 +897,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
           {
             "kind": "dialogue",
             "speaker": "劉諺明",
-            "text": "「我正好要整理這些線材，可以麻煩妳幫我遞一下膠帶嗎？」"
+            "text": "「我正好在整理明天要用的器材，妳有空幫我搭把手嗎？」"
           }
         ],
         "prompt": "刚好缺一双手",
