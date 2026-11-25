@@ -11,6 +11,84 @@ export type March28Route = {
   endingBlocks: March28Block[]
 }
 
+
+export type March28ParkStayChoice = { text: string; response: string; affection: number }
+export type March28ParkStayRound = { scene: March28Block[]; prompt: string; choices: March28ParkStayChoice[] }
+
+export const march28AfterDinnerBlocks: March28Block[] = [
+  { kind: 'narration', text: '離開下午去過的地方時，天色已經暗了。你先回家吃了晚飯，桌上的飯菜明明和平常差不多，腦袋卻一直飄到明天的大安森林公園。' },
+  { kind: 'narration', text: '飯後把碗筷收好，你原本打算回房間整理明天要帶的東西。走到窗邊時，外頭的風正好吹進來，帶著一點晚春的涼意。' },
+  { kind: 'narration', text: '你忽然有點想去公園走走。離明天的演出場地這麼近，說不定還能看看他們準備得怎麼樣。只是現在再出門，好像又有一點懶。' },
+]
+
+export const march28ParkIntroBlocks: March28Block[] = [
+  { kind: 'narration', text: '大安森林公園夜裡比白天安靜許多。沿著步道往明天演出的空地走，遠遠還看得見幾盞工作燈亮著，偶爾有人影從舞台旁邊走過，搬東西的聲音隔一陣子才傳來。' },
+  { kind: 'narration', text: '幾個貼了標籤的器材箱整齊靠在樹旁，上面蓋著帆布。陳信宏坐在旁邊的折疊椅上，膝上放著一張清單，手裡的筆轉了半圈，又低頭確認了一次。' },
+  { kind: 'narration', text: '你本來只是想從旁邊經過，沒想到他像是聽見腳步聲似的抬起頭。看清楚是你，他先是愣了一下，隨即露出有點意外的笑。' },
+  { kind: 'dialogue', speaker: '陳信宏', text: '「欸？妳怎麼會在這裡？」' },
+  { kind: 'dialogue', speaker: '你', text: '「吃完飯想說來走走，沒想到會遇到你。」' },
+  { kind: 'dialogue', speaker: '陳信宏', text: '「這麼巧喔。」' },
+  { kind: 'narration', text: '他把清單往膝上收了收，朝旁邊的器材箱看了一眼。帆布有一角被晚風吹得掀起來，他伸手壓好，才跟你解釋自己怎麼會坐在這裡。' },
+  { kind: 'dialogue', speaker: '陳信宏', text: '「我留下來顧一下器材。舞台那邊還在確認，工作人員等一下就會回來。」' },
+  { kind: 'dialogue', speaker: '你', text: '「所以你今晚要在這裡守著喔？」' },
+  { kind: 'dialogue', speaker: '陳信宏', text: '「嗯，先看一下而已。東西都搬過來了，總要有人在嘛。」' },
+  { kind: 'narration', text: '你站在他旁邊，陪他看了一會兒那幾只貼著標籤的箱子。遠處有人試著喊了幾聲，聲音穿過樹梢，聽起來比平常空曠。阿信抬頭看了看時間，才轉回來看你。' },
+  { kind: 'dialogue', speaker: '陳信宏', text: '「不過妳差不多該回家了吧？」' },
+  { kind: 'dialogue', speaker: '陳信宏', text: '「明天還要早起欸，今天也跑了一整天。先回去休息，好不好？」' },
+]
+
+export const march28ParkStayIntroBlocks: March28Block[] = [
+  { kind: 'narration', text: '阿信聽完，像是還想再勸你兩句，最後卻只是笑了。他把旁邊空著的折疊椅拉過來，先用手掌拍掉椅面上的灰，才讓你坐下。' },
+  { kind: 'dialogue', speaker: '陳信宏', text: '「好啦，那妳先坐一下。等工作人員回來，我再送妳到公園出口。」' },
+  { kind: 'dialogue', speaker: '你', text: '「你剛剛不是叫我早點回家？」' },
+  { kind: 'dialogue', speaker: '陳信宏', text: '「我有啊，是妳自己不聽的。」' },
+  { kind: 'narration', text: '他說得一本正經，嘴角卻藏著笑。你坐在器材箱旁邊，看他重新把清單壓好，又把帆布邊角塞進箱扣裡。夜風從樹葉間穿過，吹得紙張輕輕掀起一角。' },
+]
+
+export const march28ParkStayRounds: March28ParkStayRound[] = [
+  {
+    scene: [
+      { kind: 'narration', text: '才坐沒多久，耳邊就傳來一聲細細的嗡鳴。你抬手往脖子旁邊拍了一下，什麼也沒拍到，倒是把自己嚇了一跳。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '「妳剛剛是在打蚊子嗎？」' },
+      { kind: 'narration', text: '你還沒回答，他也抬手在手臂上拍了一下，低頭看了看，像是終於找到今晚除了器材以外，另一件需要顧好的東西。' },
+    ],
+    prompt: '公園裡的蚊子',
+    choices: [
+      { text: '「牠剛剛就在我耳朵旁邊！你沒聽到喔？」', response: '「有啊，聽到了。妳那一下倒是很有氣勢。」\n他把手上的清單捲起來，替你輕輕搧了兩下：「先借妳用，至少比徒手有效一點。」', affection: 2 },
+      { text: '「你手上也有一隻，快點！」', response: '「哪裡？這裡喔？」\n他低頭順著你指的地方看，抬手拍了一下，接著忍不住笑：「抓到了。今天總算有一件事比對清單簡單。」', affection: 2 },
+      { text: '「你不是在守器材嗎？怎麼連蚊子也要一起守？」', response: '「這個不在工作範圍裡欸。」\n他笑出聲，抬手拍掉飛到身邊的蚊子：「可是牠們好像不打算放過我們。」', affection: 2 },
+    ],
+  },
+  {
+    scene: [
+      { kind: 'narration', text: '你們又安靜了一會兒。遠處的工作燈照著還沒完全整理好的舞台，幾條電線沿著地面排開。阿信順著那個方向看過去，手指在清單邊緣慢慢折出一道淺痕。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '「有時候會覺得，明天好像很近，可是以後又還很遠。」' },
+      { kind: 'narration', text: '他像是覺得自己講得有點突然，低頭笑了一下，才接著說下去。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '「我以前很喜歡畫畫，會想說以後是不是可以做出一個很漂亮的空間，讓人走進去就想多待一下。現在念室內設計，還是會想這些。」' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '「可是有時候唱歌也會唱得很開心，就會想，如果以後還能一直做音樂，好像也不錯。」' },
+      { kind: 'narration', text: '他說到這裡停了一下，抬頭看著遠處那盞工作燈，眼睛裡映著一點暖黃的光。那神情不像是在談什麼已經決定好的計畫，更像是把藏了好一陣子的願望，趁著夜裡安靜，慢慢說給你聽。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '「我也不知道最後會變成怎樣啦。只是希望以後不要因為怕做不到，就連試都沒有試過。」' },
+    ],
+    prompt: '聽他說起以後',
+    choices: [
+      { text: '「那就一件一件試啊，我覺得你做得到。」', response: '「妳講得好像很簡單欸。」\n他笑了笑，視線又落回那張清單：「不過，聽妳這樣說，好像真的可以慢慢試看看。」', affection: 2 },
+      { text: '「那你以後要唱歌給我聽，不能反悔喔。」', response: '「這個要求比較具體喔。」\n他終於笑得明顯了一點：「好啊，先幫妳留一個位置。到時候不可以嫌我唱得不好。」', affection: 2 },
+      { text: '「你想做的事情好多喔，感覺以後會很忙。」', response: '「可能真的會欸。」\n他低頭把清單折好，語氣卻很認真：「可是如果都是自己喜歡的事，忙一點好像也沒關係。」', affection: 2 },
+    ],
+  },
+]
+
+export const march28ParkStayEndingBlocks: March28Block[] = [
+  { kind: 'narration', text: '話說到一半，遠處有人朝這邊喊了一聲。工作人員拿著另一張清單走回來，跟阿信核對了幾項器材的位置，接著把帆布重新固定好。終於有人接手看著這一排箱子，阿信才把膝上的清單收起來。' },
+  { kind: 'narration', text: '他站起來時，先伸手把折疊椅往旁邊收好，又低頭看了看你被蚊子叮出的小紅點，忍不住笑了一聲。' },
+  { kind: 'dialogue', speaker: '陳信宏', text: '「今天好像讓妳被蚊子咬了不少包。」' },
+  { kind: 'dialogue', speaker: '你', text: '「還不是因為陪你在這裡加班。」' },
+  { kind: 'dialogue', speaker: '陳信宏', text: '「好啦，算我的。」' },
+  { kind: 'narration', text: '他陪你走到公園出口。路燈把兩個人的影子拉得長長的，走到人行道旁，他才停下腳步。' },
+  { kind: 'dialogue', speaker: '陳信宏', text: '「回去小心一點。明天見喔。」' },
+  { kind: 'narration', text: '你點點頭，轉身走了幾步，還是忍不住回頭。阿信已經往器材那邊走回去，走到一半像是察覺你的目光，也回過頭來，朝你揮了揮手。' },
+]
+
 export const march28CharacterOrder: March28CharacterId[] = ['wen', 'ashin', 'stone', 'masa', 'yanming']
 
 export const march28MonthRecap: Record<March28CharacterId, string> = {
