@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { ChevronRight } from 'lucide-react'
+import { March29AfterShow } from './March29AfterShow'
 
 type March29Character = 'wen' | 'ashin' | 'masa' | 'stone' | 'yanming'
-type March29Phase = 'group' | 'picker' | 'interaction' | 'watch' | 'stage' | 'ending'
+type March29Phase = 'group' | 'picker' | 'interaction' | 'watch' | 'stage' | 'ending' | 'aftershow'
 type March29Block =
   | { kind: 'narration'; text: string }
   | { kind: 'dialogue'; speaker: string; text: string }
@@ -45,7 +46,7 @@ const initialProgress: March29Progress = {
 function readProgress(): March29Progress {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null') as Partial<March29Progress> | null
-    if (!saved || !['group', 'picker', 'interaction', 'watch', 'stage', 'ending'].includes(String(saved.phase))) return initialProgress
+    if (!saved || !['group', 'picker', 'interaction', 'watch', 'stage', 'ending', 'aftershow'].includes(String(saved.phase))) return initialProgress
     const character = CHARACTER_ORDER.includes(saved.character as March29Character) ? saved.character as March29Character : null
     return {
       phase: saved.phase as March29Phase,
@@ -448,7 +449,7 @@ function March29Blocks({ blocks }: { blocks: March29Block[] }) {
 
 function clockForProgress(progress: March29Progress) {
   if (progress.phase === 'stage') return '18:10'
-  if (progress.phase === 'ending') return '18:40'
+  if (progress.phase === 'ending' || progress.phase === 'aftershow') return '18:40'
   if (progress.phase === 'watch') return ['16:05', '16:35', '17:10', '17:40'][progress.watchIndex] ?? '17:40'
   return '15:30'
 }
@@ -467,7 +468,7 @@ export function March29Show({
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(progress))
     localStorage.setItem('mayday-march29-clock', clockForProgress(progress))
-    if (progress.phase === 'ending') localStorage.setItem('mayday-march29-complete', 'true')
+    if (progress.phase === 'ending') localStorage.removeItem('mayday-march29-complete')
     onClockChange(clockForProgress(progress))
   }, [progress, onClockChange])
 
@@ -506,6 +507,10 @@ export function March29Show({
   const currentRound = selectedRoute?.rounds[progress.roundIndex]
   const selectedChoice = progress.pendingReply !== null && currentRound ? currentRound.choices[progress.pendingReply] : null
   const currentBand = watchScenes[progress.watchIndex]
+
+  if (progress.phase === 'aftershow') {
+    return <March29AfterShow affection={affection} onAddAffection={onAddAffection} onClockChange={onClockChange} />
+  }
 
   return (
     <div className="story-screen-overlay">
@@ -620,6 +625,11 @@ export function March29Show({
             <h2 className="story-scene-title">18:40 · 演出結束</h2>
             <March29Blocks blocks={endingBlocks} />
             <div className="reunion-pause-note">1997 年 3 月 29 日・大安森林公園</div>
+            <div className="story-action-bar story-inline-action">
+              <button className="story-primary-button" onClick={() => setPhase('aftershow')}>
+                和大家一起慶祝 <ChevronRight size={15} />
+              </button>
+            </div>
           </>
         )}
       </div>
