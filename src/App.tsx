@@ -7587,7 +7587,7 @@ function App() {
                 <div className="story-screen-overlay">
                   <div className="story-screen-head"><div className="chapter-mark">3 月 28 日・白天</div><div className="story-contact-title"><strong>{march28Routes[march28VisitCharacter].title}</strong><small>{march28Routes[march28VisitCharacter].place}</small></div><span className="story-head-spacer" /></div>
                   <div className="story-narrative-scroll">
-                    <div className="story-kicker">A DAY BEFORE THE GIG</div><h2 className="story-scene-title">{march28Routes[march28VisitCharacter].subtitle}</h2>
+                    <div className="story-kicker">A DAY BEFORE THE GIG</div>
                     <StoryBlocks blocks={march28Routes[march28VisitCharacter].blocks} />
                     {march28Routes[march28VisitCharacter].rounds.map((round, index) => (
                       index > march28VisitReplies.length ? null : (
