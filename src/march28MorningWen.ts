@@ -7,7 +7,7 @@ export const march28MorningWenRoute: March28MorningRoute = {
       scene: [
         { kind: 'narration', text: '溫尚翊眉毛一下子抬了起來。他看看你，又看看阿信，手裡的紙袋被捏得沙沙響。' },
         { kind: 'dialogue', speaker: '溫尚翊', text: '蛤？一整晚？' },
-        { kind: 'dialogue', speaker: '溫尚翊', text: '妳怎麼還在這裡？' },
+        { kind: 'dialogue', speaker: '溫尚翊', text: '妳也真的是，怎麼不回去休息？' },
       ],
       prompt: '溫尚翊聽見你留了一整晚，會怎麼回應？',
       choices: [
