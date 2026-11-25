@@ -7562,13 +7562,13 @@ function App() {
                   <div className="story-narrative-scroll">
                     <div className="story-kicker">ONE MONTH LATER</div><h2 className="story-scene-title">三月快要結束了</h2>
                     <StoryBlocks blocks={[
-                      { kind: 'narration', text: '三月好像一下子就要結束了。' },
-                      { kind: 'narration', text: '開學後的日子過得比想像中快。課表漸漸排滿，報告、社團活動，還有偶爾被朋友臨時抓去幫忙的小事，日子倒也沒什麼特別的規律。' },
-                      { kind: 'narration', text: '有時候下課趕著去吃飯，有時候在圖書館待到忘記時間。天氣慢慢暖起來，校園裡的樹也冒出了新葉子。午餐時間的小福照樣熱鬧，走廊上常有人抱著講義匆匆跑過；偶爾坐在窗邊整理筆記，一抬頭才發現下午已經過了一大半。' },
-                      { kind: 'narration', text: '這一個月裡，你和某個人似乎比以前熟悉了一些。' },
+                      { kind: 'narration', text: '三月的最後幾天，台北已經有點夏天的脾氣了。早上出門時還覺得剛好，走到台大校門口，陽光就明晃晃地落在肩上，害人忍不住想把外套脫下來。' },
+                      { kind: 'narration', text: '開學後的日子像被誰偷偷調快了。課表、報告、社團的雜事輪流追著人跑，桌上的講義總是才收好一疊，隔天又多出兩疊。偶爾和同學在小福排隊，明明只想買個午餐，聊著聊著就差點錯過下午的課；也有幾次在總圖坐到忘記時間，抬頭才發現窗外的光已經斜了。' },
+                      { kind: 'narration', text: '校園裡的樹冒出新葉，走廊上有人抱著厚厚的課本一路小跑，腳踏車鈴聲從身後叮叮地追過去。日子沒什麼驚天動地的大事，卻在這些零零碎碎的小忙碌裡，一下子就走到了月底。' },
+                      { kind: 'narration', text: '而這個月，你和某個人的距離，好像也悄悄近了一點。' },
                       { kind: 'narration', text: march28MonthRecap[currentMarch28HighestAffection] },
-                      { kind: 'narration', text: '明天就是大安森林公園的野台開唱。這幾天練團室總比平常熱鬧，偶爾走過附近，還能聽見裡頭傳來反覆練習的吉他聲。想到明天，你不自覺也有點期待。' },
-                      { kind: 'narration', text: '今天沒有排滿的課程。上午處理完自己的事情，你看了看時間，決定出門走走。反正下午還有時間，去哪裡逛逛好呢？' },
+                      { kind: 'narration', text: '明天就是大安森林公園的野台開唱。這幾天練團室裡總有人待到很晚，偶爾經過附近，還能聽見吉他聲一遍遍從門縫裡漏出來。想到明天終於能在台下看他們演出，心裡便有點坐不住，連走路都不自覺快了幾步。' },
+                      { kind: 'narration', text: '今天上午的事情處理完了，下午難得留了段空檔。你把桌上的講義收進包裡，站在宿舍門口想了一會兒：既然還有時間，不如出去晃晃。只是這個時間，去哪裡好呢？' },
                     ]} />
                     <div className="spring-after-choice-list">
                       <div className="spring-after-choice-heading">白天想去哪裡？選一個地方逛逛</div>
