@@ -24,7 +24,7 @@ export const march28MorningWenRoute: March28MorningRoute = {
         { kind: 'dialogue', speaker: '溫尚翊', text: '喔，是喔。那你還真的給她留到天亮喔。' },
         { kind: 'dialogue', speaker: '陳信宏', text: '不然咧？她都說要陪我了。' },
         { kind: 'narration', text: '溫尚翊的視線落到你肩上的外套，眉頭又輕輕動了一下。' },
-        { kind: 'dialogue', speaker: '溫尚翊', text: '那件也是你的喔？' },
+        { kind: 'dialogue', speaker: '溫尚翊', text: '那件也是你的？' },
         { kind: 'dialogue', speaker: '陳信宏', text: '對啊，早上有點冷，就借她穿了。' },
         { kind: 'dialogue', speaker: '溫尚翊', text: '……你倒是滿會照顧人的嘛，連外套都提供。' },
         { kind: 'dialogue', speaker: '陳信宏', text: '哪有啦，就剛好借她一下。' },
