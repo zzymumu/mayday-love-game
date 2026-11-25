@@ -883,11 +883,9 @@ function clockForPhase(phase: March29AfterPhase) {
 }
 
 export function March29AfterShow({
-  affection,
   onAddAffection,
   onClockChange,
 }: {
-  affection: Record<March29Character, number>
   onAddAffection: (character: March29Character, amount: number) => void
   onClockChange: (time: string) => void
 }) {
