@@ -879,7 +879,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
   "yanming": {
     "title": "劉諺明・練團室的器材清單",
     "place": "練團室",
-    "subtitle": "安稳、自然，但不是单纯的长辈式照顾。他会记得你，也会有一点不想让你太快离开的私心。",
+    "subtitle": "",
     "blocks": [
       { kind: 'narration', text: "明天就是大安森林公園的演出了。你走到練團室外，裡頭還亮著燈，隱約傳來紙張翻動和膠帶撕開的聲音。" },
       { kind: 'narration', text: "推門進去，幾個器材箱都敞著。諺明哥蹲在地上整理導線，長短不一的線材分放兩側，箱蓋上壓著一張清單，旁邊是裁好的標籤和一支筆。" },
