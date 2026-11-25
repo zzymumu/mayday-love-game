@@ -43,7 +43,7 @@ export const march28ParkIntroBlocks: March28Block[] = [
 ]
 
 export const march28ParkStayIntroBlocks: March28Block[] = [
-  { kind: 'narration', text: '你說想留下來陪他時，阿信先是愣了一下，像是沒料到你會這麼說。他看了看你，又往長椅另一邊挪出一點位置，動作很輕，像怕自己顯得太期待。' },
+  { kind: 'narration', text: '你說想留下來陪他時，阿信停了一下，像是沒料到你會這麼說。他看了看你。' },
   { kind: 'dialogue', speaker: '陳信宏', text: '「妳真的要留下來喔？可是這裡很無聊欸，而且蚊子很多。」' },
   { kind: 'dialogue', speaker: '你', text: '「那正好啊，我可以陪你一起打蚊子。」' },
   { kind: 'narration', text: '阿信肩膀終於鬆下來，眼睛也亮了一點，剛才那點疲倦像是散開了些。他把身邊的位置讓給你，等你坐下來，才稍稍往旁邊挪了挪。長椅沒有多寬，你們的手臂隔著一點點距離，偶爾隨著動作輕輕碰到。' },
