@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   ArrowLeft,
   BatteryFull,
@@ -96,6 +96,7 @@ import {
 } from './march28'
 import { march28MorningAshinRoute, getMarch28MorningVisitorIntroBlocks } from './march28Morning'
 import { march28MorningVisitorRoutes } from './march28MorningVisitors'
+import { March29Show } from './March29Show'
 import {
   YEAR_END_INVITE_THRESHOLD,
   yearEndIntroBlocks,
@@ -1894,6 +1895,11 @@ function App() {
     const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete', 'month-free-time', 'month-visit', 'month-visit-complete', 'month-free-chat', 'month-diary', 'next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-chat', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete', 'next-month-free-chat', 'next-month-diary', 'year-end-intro', 'year-end-invite-notification', 'year-end-invite-picker', 'year-end-shopping-notification', 'year-end-shopping-chat', 'year-end-shopping', 'year-end-fireworks', 'year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary', 'winter-exam-intro', 'winter-exam-notification', 'winter-exam-chat', 'winter-exam-tutoring', 'winter-break-practice', 'winter-break-gig', 'winter-break-pickup', 'winter-break-bus-choice', 'winter-break-bus', 'winter-diary', 'february-intro', 'february-secret', 'february-dinner', 'february-table', 'february-after-dinner-picker', 'february-after-dinner', 'february-diary', 'spring-term-intro', 'spring-invite-picker', 'spring-invite-notification', 'spring-invite-chat', 'spring-store', 'spring-rehearsal', 'spring-after-picker', 'spring-lesson', 'spring-dinner', 'spring-sms-picker', 'spring-sms-chat', 'spring-diary', 'spring-free-chat-picker', 'spring-free-chat', 'march28-intro', 'march28-visit', 'march28-end', 'march28-park', 'march28-park-stay', 'march28-morning', 'march28-diary', 'march29-show', 'paused']
     return saved && valid.includes(saved as StoryStage) ? saved as StoryStage : 'notification'
   })
+  const [march29Clock, setMarch29Clock] = useState(() => localStorage.getItem('mayday-march29-clock') ?? '15:30')
+  const updateMarch29Clock = useCallback((time: string) => {
+    localStorage.setItem('mayday-march29-clock', time)
+    setMarch29Clock(time)
+  }, [])
   const [studioStep, setStudioStep] = useState(() => Number(localStorage.getItem('mayday-studio-step') ?? '0'))
   const [replyKey, setReplyKey] = useState<ReplyKey | null>(() => {
     const saved = localStorage.getItem('mayday-reply')
@@ -2540,7 +2546,7 @@ function App() {
                                                                          : storyStage === 'march28-park' ? '20:40'
                                                                            : storyStage === 'march28-park-stay' ? (march28ParkStayReplies.length >= 8 ? '05:40' : march28ParkStayReplies.length >= 7 ? '03:10' : march28ParkStayReplies.length >= 6 ? '01:30' : march28ParkStayReplies.length >= 5 ? '00:20' : march28ParkStayReplies.length >= 4 ? '23:10' : march28ParkStayReplies.length >= 3 ? '22:30' : march28ParkStayReplies.length >= 2 ? '22:00' : march28ParkStayReplies.length >= 1 ? '21:35' : '21:10')
                                                                              : storyStage === 'march28-morning' ? '07:10'
-                                                                              : storyStage === 'march29-show' ? '07:30'
+                                                                              : storyStage === 'march29-show' ? march29Clock
                                                                              : storyStage === 'march28-diary' ? '22:00'
                                                                                : '17:20'
   const effectiveDateStage = storyStage === 'paused' ? resumeStage : storyStage
@@ -8024,19 +8030,11 @@ function App() {
               )}
 
               {storyStage === 'march29-show' && (
-                <div className="story-screen-overlay">
-                  <div className="story-screen-head">
-                    <div className="chapter-mark">3 月 29 日・演出日</div>
-                    <div className="story-contact-title"><strong>大安森林公園・野台開唱</strong><small>1997 年 3 月 29 日・現場</small></div>
-                    <span className="story-head-spacer" />
-                  </div>
-                  <div className="story-narrative-scroll">
-                    <div className="story-kicker">MARCH 29 · LIVE</div>
-                    <h2 className="story-scene-title">今天，終於來到現場了。</h2>
-                    <StoryBlocks blocks={[{ kind: 'narration', text: '3 月 29 日，野台開唱的日子到了。你來到大安森林公園，昨晚整理好、搬到現場的器材已經就位，舞台就在眼前。今天的演出，就要開始了。' }]} />
-                    <div className="reunion-pause-note">大安森林公園・野台開唱現場</div>
-                  </div>
-                </div>
+                <March29Show
+                  affection={routeAffection}
+                  onAddAffection={addRouteAffection}
+                  onClockChange={updateMarch29Clock}
+                />
               )}
 
               {storyStage === 'paused' && (
