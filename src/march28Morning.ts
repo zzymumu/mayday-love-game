@@ -83,3 +83,34 @@ const march28MorningAshinRound2: March28MorningRound = {
     { text: '你買了多久啊，我都快等不及了。', response: '阿信笑了一聲。「有這麼誇張喔？我才出去一下下欸。」他抬手比了個很短的距離，像是在替自己辯解。', affection: 1 },
   ],
 }
+
+
+const march28MorningAshinRound3: March28MorningRound = {
+  scene: [
+    { kind: 'narration', text: '他把其中一份遞給你，自己的那份仍好好地裝在紙袋裡，還沒有拆開。你低頭咬了一口，外皮煎得微微酥脆，裡面的雞蛋還軟軟的。' },
+    { kind: 'dialogue', speaker: '你', text: '你怎麼知道我想吃蛋餅？' },
+    { kind: 'dialogue', speaker: '陳信宏', text: '不知道啊，剛好看到那間早餐店開了，就想說買這個給妳。' },
+    { kind: 'dialogue', speaker: '陳信宏', text: '而且妳昨天陪我坐到現在，總不能連早餐都讓妳自己想辦法吧。' },
+    { kind: 'dialogue', speaker: '你', text: '那你呢？你也一晚上沒吃東西吧？' },
+    { kind: 'dialogue', speaker: '陳信宏', text: '我也有啊，妳看。' },
+    { kind: 'narration', text: '他把另一份還沒拆開的蛋餅拿起來，在你面前晃了晃。' },
+  ],
+  prompt: '阿信自己的早餐還沒拆開。你怎麼說？',
+  choices: [
+    { text: '那你快吃啦，不然等一下就涼了。', response: '阿信笑著點頭。「好啦，我現在就吃。」他低頭拆開自己的包裝，咬了一口，這才安心地靠回長椅。', affection: 2 },
+    { text: '你剛剛是不是一直等我先吃？', response: '他拆包裝的手停了一下，抬眼看你，嘴角有點藏不住笑意。「有一點啦，想先看看妳喜不喜歡。」說完才低頭拆開自己的那份。', affection: 3 },
+    { text: '你再不吃，我就要搶你的了！', response: '阿信立刻把自己的蛋餅往身邊挪了挪。「欸！妳自己的還沒吃完欸！」他笑著搖搖頭，趕緊拆開包裝，先咬了一口。', affection: 3 },
+  ],
+}
+
+const march28MorningAshinEnding: March28Block[] = [
+  { kind: 'narration', text: '阿信終於也開始好好吃早餐。你咬著手裡的蛋餅，他偶爾轉過頭看看你的表情，像是比起自己吃得怎麼樣，更在意你喜不喜歡。' },
+  { kind: 'dialogue', speaker: '陳信宏', text: '好吃嗎？' },
+  { kind: 'narration', text: '你點點頭。他看見你的反應，眼睛彎了一下，這才低頭繼續吃自己的那份。晨光落在長椅上，紙袋裡還留著一點煎蛋的香味。' },
+]
+
+export const march28MorningAshinRoute: March28MorningRoute = {
+  introBlocks: march28MorningAshinIntro,
+  rounds: [march28MorningAshinRound1, march28MorningAshinRound2, march28MorningAshinRound3],
+  endingBlocks: march28MorningAshinEnding,
+}
