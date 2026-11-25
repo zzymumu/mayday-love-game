@@ -27,7 +27,7 @@ export const march28ParkIntroBlocks: March28Block[] = [
   { kind: 'dialogue', speaker: '陳信宏', text: '「欸？妳怎麼會在這裡？」' },
   { kind: 'dialogue', speaker: '你', text: '「吃完飯想說來公園走走啊，沒想到會遇到你。」' },
   { kind: 'dialogue', speaker: '陳信宏', text: '「這麼巧喔。」' },
-  { kind: 'narration', text: '他把清單合起來，朝身旁那幾只箱子看了一眼。你這才發現，除了他以外，附近沒有別人；連剛才遠遠聽見的聲音也停了，整片空地只剩風掠過樹葉的沙沙聲。' },
+  { kind: 'narration', text: '他把清單合起來，朝身旁那幾只箱子看了一眼。你這才發現，除了他以外，附近真的沒有別人。整片空地安安靜靜的，只剩風掠過樹葉的沙沙聲，和偶爾從公園外傳來的車聲。' },
   { kind: 'dialogue', speaker: '你', text: '「你一個人在這裡喔？」' },
   { kind: 'dialogue', speaker: '陳信宏', text: '「嗯，器材先放在這邊，明天直接用。音箱、麥克風，還有一堆線都在裡面。」' },
   { kind: 'dialogue', speaker: '你', text: '「所以你今晚要自己顧整晚？」' },
