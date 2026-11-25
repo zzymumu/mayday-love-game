@@ -458,9 +458,8 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "石頭把菜單放到你面前，轉正方向讓你看得清楚，正要開口問你想喝什麼。"
+            "text": "石頭把菜單拿到你面前，順手將方向轉正，讓你不用歪著頭看。他一手扶著菜單邊角，目光落到你臉上，這才像是終於有空好好跟你打招呼。"
           },
-          { kind: 'narration', text: "外場忽然有人喊他。他回頭應了一聲，摸了摸圍裙口袋裡的點單筆，隨即朝你露出抱歉的笑：「我先去一下，等會兒回來幫妳點。」說完便轉身去招呼客人。" },
           {
             "kind": "dialogue",
             "speaker": "石锦航",
