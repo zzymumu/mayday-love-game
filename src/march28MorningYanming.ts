@@ -5,7 +5,7 @@ export const march28MorningYanmingRoute: March28MorningRoute = {
   rounds: [
     {
       scene: [
-        { kind: 'dialogue', speaker: '諺明', text: '昨天晚上沒回去？' },
+        { kind: 'dialogue', speaker: '諺明', text: '妳昨晚也陪他守了一整晚？' },
         { kind: 'narration', text: '諺明看了看你，又看了看阿信，目光在你肩上的外套停了一瞬，沒有立刻追問。' },
       ],
       prompt: '諺明哥發現你也在公園。你怎麼回答？',
