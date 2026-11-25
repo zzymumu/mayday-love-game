@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { ChevronRight } from 'lucide-react'
 import { March29AfterShow } from './March29AfterShow'
+import type { March29DiaryCharacter } from './march29Diary'
 
-type March29Character = 'wen' | 'ashin' | 'masa' | 'stone' | 'yanming'
+type March29Character = March29DiaryCharacter
 type March29Phase = 'group' | 'picker' | 'interaction' | 'watch' | 'stage' | 'ending' | 'aftershow'
 type March29Block =
   | { kind: 'narration'; text: string }
@@ -458,10 +459,12 @@ export function March29Show({
   affection,
   onAddAffection,
   onClockChange,
+  onFinish,
 }: {
   affection: Record<March29Character, number>
   onAddAffection: (character: March29Character, amount: number) => void
   onClockChange: (time: string) => void
+  onFinish: (selection: { handsomeChoice: March29Character | null; escortCharacter: March29Character | null }) => void
 }) {
   const [progress, setProgress] = useState<March29Progress>(readProgress)
 
@@ -509,7 +512,7 @@ export function March29Show({
   const currentBand = watchScenes[progress.watchIndex]
 
   if (progress.phase === 'aftershow') {
-    return <March29AfterShow onAddAffection={onAddAffection} onClockChange={onClockChange} />
+    return <March29AfterShow onAddAffection={onAddAffection} onClockChange={onClockChange} onFinish={onFinish} />
   }
 
   return (

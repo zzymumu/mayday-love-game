@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { ChevronRight } from 'lucide-react'
+import type { March29DiaryCharacter } from './march29Diary'
 
-type March29Character = 'wen' | 'ashin' | 'masa' | 'stone' | 'yanming'
+type March29Character = March29DiaryCharacter
 type March29Block =
   | { kind: 'narration'; text: string }
   | { kind: 'dialogue'; speaker: string; text: string }
@@ -888,9 +889,11 @@ function clockForPhase(phase: March29AfterPhase) {
 export function March29AfterShow({
   onAddAffection,
   onClockChange,
+  onFinish,
 }: {
   onAddAffection: (character: March29Character, amount: number) => void
   onClockChange: (time: string) => void
+  onFinish: (selection: { handsomeChoice: March29Character | null; escortCharacter: March29Character | null }) => void
 }) {
   const [progress, setProgress] = useState<March29AfterProgress>(readProgress)
 
@@ -1049,7 +1052,12 @@ export function March29AfterShow({
           <>
             <h2 className="story-scene-title">1997 年 3 月 29 日・晚安</h2>
             <March29Blocks blocks={completeBlocks} />
-            <div className="reunion-pause-note">今天的故事暫時告一段落。</div>
+            <div className="reunion-pause-note">今天的故事暫時告一段落。回家洗完澡，還有好多事情想記下來。</div>
+            <div className="story-action-bar story-inline-action">
+              <button className="story-primary-button" onClick={() => onFinish({ handsomeChoice: progress.handsomeChoice, escortCharacter: progress.escortCharacter })}>
+                寫下今天的日記 <ChevronRight size={15} />
+              </button>
+            </div>
           </>
         )}
       </div>
