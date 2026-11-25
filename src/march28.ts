@@ -51,7 +51,7 @@ export const march28ParkStayIntroBlocks: March28Block[] = [
   { kind: 'dialogue', speaker: '陳信宏', text: '「本來以為今晚只能跟這幾箱東西聊天。」' },
   { kind: 'dialogue', speaker: '你', text: '「那我是不是打擾你們培養感情了？」' },
   { kind: 'dialogue', speaker: '陳信宏', text: '「不會啊。」' },
-  { kind: 'narration', text: '他笑著把清單翻到下一頁，聲音比剛才輕了一點。夜風從樹梢吹過來，你們的影子落在器材箱旁邊，肩膀偶爾隨著椅子輕輕碰近，又各自挪開一點。' },
+  { kind: 'narration', text: '他笑著把清單翻到下一頁，聲音比剛才輕了一點。夜風從樹梢吹過來，你們的影子落在器材箱旁邊。兩張椅子挨得不遠，說話不用提高聲音，卻也還留著一點剛剛好的距離。' },
 ]
 
 export const march28ParkStayRounds: March28ParkStayRound[] = [
@@ -140,7 +140,7 @@ export const march28ParkStayRounds: March28ParkStayRound[] = [
     prompt: '他的外套',
     choices: [
       { text: '「那我先借穿一下，等一下再還你。」', response: '「不用急啊。」\n他把外套前襟替你攏好，指尖很快就收了回去：「妳先穿著，等天亮再說。」', affection: 2 },
-      { text: '「可是你明天還要唱歌，不能感冒欸。」', response: '「我沒有那麼容易感冒啦。」\n他看你還想把外套還回去，便笑著按住衣角：「真的沒關係。妳如果冷到一直發抖，我還要分心看妳，這樣更顧不好器材。」', affection: 2 },
+      { text: '「可是你明天還要唱歌，不能感冒欸。」', response: '「我沒有那麼容易感冒啦。」\n他看你還在猶豫，便笑著按住衣角：「真的沒關係。妳如果冷到一直發抖，我還要分心看妳，這樣更顧不好器材。」', affection: 2 },
       { text: '「你這樣把外套給我，我會不好意思欸。」', response: '「那妳就先替我保管一下啊。」\n他把袖口往上拉了一點，故意活動兩下手臂：「妳看，還很有精神。」\n說完又看了看你：「而且妳穿著比較好看，這樣算不算理由？」', affection: 2 },
     ],
   },
@@ -162,7 +162,7 @@ export const march28ParkStayRounds: March28ParkStayRound[] = [
 export const march28ParkStayEndingBlocks: March28Block[] = [
   { kind: 'narration', text: '你本來還想再說些什麼，最後只含糊地應了一聲。肩膀慢慢靠過去時，阿信的背先是微微僵了一下，隨後才放鬆下來。他沒有轉頭看你，只把披在你身上的外套往上拉了拉，替你擋住從樹梢間吹下來的風。' },
   { kind: 'narration', text: '你的額頭輕輕抵著他的肩，起初還記得自己只是想休息一下，沒多久呼吸就慢了下來。阿信低頭看了一眼，原本要說的話停在嘴邊，最後只很輕地笑了一下。' },
-  { kind: 'narration', text: '夜裡偶爾有車從公園外的路上經過，遠處傳來幾聲模糊的狗叫。阿信仍不時抬頭看看器材箱，確認帆布和箱扣都好好的；每次要起身，他都先留意你的頭有沒有靠穩，動作放得很慢，像怕一不小心就把你吵醒。' },
+  { kind: 'narration', text: '夜裡偶爾有車從公園外的路上經過，遠處傳來幾聲模糊的狗叫。阿信仍不時抬頭看看器材箱，確認帆布和箱扣都好好的；每次遠處有聲響，他都先抬眼確認器材箱還在原位，動作放得很輕，像怕一不小心就把你吵醒。' },
   { kind: 'narration', text: '你半夢半醒間，感覺他把外套又往你肩上攏了一點。夜色一點點變淡，樹葉上的露水在燈下泛著微光。等你再睜開眼，天邊已經透出很淺的灰藍色。' },
   { kind: 'dialogue', speaker: '陳信宏', text: '「醒啦？」' },
   { kind: 'narration', text: '他的聲音帶著熬夜後一點點沙啞，肩膀也有些僵，卻還是先低頭看你有沒有睡醒。你這才發現自己真的靠著他睡了好一會兒，外套還好端端地披在身上。' },
