@@ -611,6 +611,9 @@ const escortRoutes: Record<March29Character, March29EscortRoute> = {
     ],
     ending: [
       { kind: 'narration', text: '你陪他站了一會兒，直到他終於準備轉身。' },
+      { kind: 'narration', text: '溫尚翊走出兩步，又回過頭來。' },
+      { kind: 'dialogue', speaker: '溫尚翊', text: '欸！' },
+      { kind: 'dialogue', speaker: '你', text: '又怎麼啦？' },
       { kind: 'dialogue', speaker: '溫尚翊', text: '沒事啦。' },
       { kind: 'narration', text: '他笑著擺擺手，手指還不自覺地蜷了一下。' },
       { kind: 'dialogue', speaker: '溫尚翊', text: '快進去啦，晚安。' },
