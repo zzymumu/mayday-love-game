@@ -1008,7 +1008,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
           {
             "kind": "dialogue",
             "speaker": "劉諺明",
-            "text": "「明天換場的時間不長。」"
+            "text": "「明天要搬出去的器材不少。」"
           },
           {
             "kind": "dialogue",
@@ -1061,8 +1061,8 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
             "affection": 2
           },
           {
-            "text": "「你也不要忙到忘记自己要上台喔。」",
-            "response": "「不會啦，我有把自己的部分排進去。」\n他笑着看你：「妳倒是記得吃東西，現場站久了會餓。」\n「不要只顧著看表演，連晚餐都忘了。」",
+            "text": "「你明天也別忙到忘記吃飯喔。」",
+            "response": "「不會啦，器材清單我都核對好了，明天交接給他們就行。」\n他笑着看你：「妳倒是記得吃東西，現場站久了會餓。」\n「不要只顧著看表演，連晚餐都忘了。」",
             "affection": 2
           },
           {
@@ -1086,7 +1086,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
       {
         "kind": "dialogue",
         "speaker": "劉諺明",
-        "text": "「明天見，路上小心。」"
+        "text": "「明天玩得開心，路上小心。」"
       },
       {
         "kind": "narration",
