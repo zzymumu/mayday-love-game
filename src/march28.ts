@@ -202,7 +202,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
           },
           {
             "text": "「那你明天要负责找到我喔。」",
-            "response": "「要求還真多欸。」\n他把背包背起来：「好啦，我找。」\n「妳不要站到最後面去就好，不然我真的找不到。」",
+            "response": "「要求還真多欸。」\n「好啦，我找。」\n「妳不要站到最後面去就好，不然我真的找不到。」",
             "affection": 2
           },
           {
