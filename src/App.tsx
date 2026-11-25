@@ -7569,7 +7569,7 @@ function App() {
                       { kind: 'narration', text: march28MonthRecap[currentMarch28HighestAffection] },
                       { kind: 'narration', text: '瑪莎和石頭因為留級，今年還是高三。白天得穿著制服坐在教室裡考試、交作業，放學後才各自趕去忙。瑪莎有時一邊抱怨考卷太難，一邊又在樂器行教小朋友彈琴；石頭則把講義塞在書包裡，茶舍客人少下來時，就趁空檔翻兩頁。你們的生活時刻表不太一樣，偶爾碰上面，總有種大家都在跟時間賽跑的感覺。' },
                       { kind: 'narration', text: '練團室這陣子總是很晚才熄燈。吉他聲、鼓聲和笑鬧聲常常混在一起，某一段才剛停下來，就有人嚷著重來一次。器材箱靠牆排成一列，海報一張張剪好，連平常最愛鬧的人也開始反覆確認明天要帶的東西。今天是三月二十八日；明天，大安森林公園，野台開唱。' },
-                      { kind: 'narration', text: '今天沒有排滿的課程。上午處理完自己的事情，你看了看時間，決定出門走走。反正下午還有時間，去哪里逛逛好呢？' },
+                      { kind: 'narration', text: '今天沒有排滿的課程。上午處理完自己的事情，你看了看時間，決定出門走走。反正下午還有時間，去哪裡逛逛好呢？' },
                     ]} />
                     <div className="spring-after-choice-list">
                       <div className="spring-after-choice-heading">白天想去哪裡？選一個地方逛逛</div>
