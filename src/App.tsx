@@ -681,6 +681,75 @@ const monthVisitOrder: RouteCharacterId[] = ['wen', 'ashin', 'masa', 'stone', 'y
 const characterNames: Record<CharacterId, string> = {
   wen: '溫尚翊', masa: '蔡昇晏', ashin: '陳信宏', stone: '石錦航', yanming: '劉諺明', youda: '錢佑達',
 }
+const MARCH28_DIARY_COPY_VERSION = '2026-11-26-v1'
+const march28DiaryCopy: Record<March28CharacterId, {
+  title: string
+  afternoon: string
+  closingThoughts: [string, string, string]
+}> = {
+  wen: {
+    title: '那張海報我會好好收著。',
+    afternoon: '今天去系辦本來只是想整理資料，結果莫名其妙變成溫尚翊的免費助手。那張海報明明剪得歪歪的，他還很有自信地拿來問我有沒有比較好，真的是誰給他的自信啦。後來我按著紙角，他拿尺靠過來量，捲起來的袖口就在我手背旁邊晃。明明只是在幫忙壓張紙，我卻突然很在意自己的手要放哪裡……拜託，我到底在緊張什麼。最後他還真的把一張海報留給我，叫我明天到了傳訊息。嘴上嫌他很煩，結果那張海報我還是好好收進袋子裡了。',
+    closingThoughts: [
+      '最後聊到明天，他問我會不會去，我答得倒是很快。明明只是去看演出，怎麼講得像跟他約好了似的。……本來就是期待啊，有什麼好心虛的。',
+      '我故意說要看他們表現，溫尚翊最好真的不要太得意。雖然我還是會去啦，這個不用他提醒。',
+      '我居然直接問他是不是希望我去。這句話現在想起來好像有點太直球了吧？算了，當時都問出口了，現在才害羞也太慢。',
+    ],
+  },
+  ashin: {
+    title: '書籤應該不會再弄丟吧。',
+    afternoon: '今天去書店找老師指定的書，找得我差點想直接放棄。阿信居然就在旁邊，還先看到我。後來他陪我找書，連挑書籤都真的站在旁邊等我慢慢選。那本厚書差點從懷裡滑下來，他伸手托住書底，還笑得一臉很想吐槽的樣子。最可惡的是，走到門口他還記得提醒我不要把書籤弄丟。這種小事他怎麼也記得啦……我自己都不一定記得。',
+    closingThoughts: [
+      '阿信問我明天會不會去，我說想看他們表演。這不是廢話嗎？我都期待那麼久了。',
+      '我故意說唱得好聽才去，明明心裡早就決定了。嘴硬這件事，好像也會傳染。',
+      '我還叫他記得跟我打招呼。希望他真的會記得，不然我站在人群裡找不到他會很糗欸。',
+    ],
+  },
+  stone: {
+    title: '今天的茶舍好像特別忙。',
+    afternoon: '今天去茶舍找石頭，結果他忙到根本像陀螺。客人一個接一個，他還是趁空檔過來幫我看菜單，推薦了一杯。後來旁邊客人差點碰倒杯子，他第一個反應是先扶住，放到我桌上還特地挪開課本，怕杯壁的水沾到紙。真的有夠細心。更好笑的是，他忙完還要回去看數學講義，寫兩行又擦掉兩行。白天上課、晚上打工還要寫作業，石頭到底哪來那麼多時間啊。',
+    closingThoughts: [
+      '石頭問明天會不會去，我答得很自然，現在倒是有點期待明天他會不會在人群裡看到我。',
+      '我居然問他表演完有沒有空，想當面說恭喜是真的啦，但講出口的時候還是有點不好意思。',
+      '我叫他先好好上班，不要光顧著跟我聊天。講完才想到，明明是我坐在那裡佔著他休息時間的人。',
+    ],
+  },
+  masa: {
+    title: '瑪莎當老師的樣子好好笑。',
+    afternoon: '今天在樂器行看到瑪莎教小朋友彈鋼琴，真的有夠新鮮。他平常講話那麼欠，結果坐在琴邊居然一遍一遍示範，還敲著四拍讓小朋友跟上。最精彩的是，小朋友突然問「老師，這個姐姐是你的女朋友嗎？」瑪莎整個人卡住，琴譜跟鉛筆都停在半空中。哈哈哈哈哈，我當時真的快忍不住。後來小朋友走了，他一翻出數學講義又開始哀號，嗯，這才是我認識的瑪莎。',
+    closingThoughts: [
+      '我說明天換我看他被大家圍觀，瑪莎最好不要又嫌我吵。',
+      '我居然像個家長一樣叫他早點回去寫作業，明明自己也沒有資格管他吧。',
+      '我說明天要給他最大的掌聲，這句可不能只是嘴上說說。',
+    ],
+  },
+  yanming: {
+    title: '耳塞我會記得帶。',
+    afternoon: '今天去練團室幫諺明哥整理明天要用的器材，才知道那些導線和小配件有夠多。諺明哥做事真的很有條理，連線都分好長短，標籤也是一條一條對。我貼好一條，他才把下一條遞過來，完全不會讓人手忙腳亂。試音的時候他還讓我站遠一點聽有沒有雜音，我其實很怕自己聽錯，結果他真的照著我說的地方再檢查一次。最後還把耳塞交給我，叫我明天記得帶。這種被人把小事也先想到的感覺，還滿好的。',
+    closingThoughts: [
+      '諺明哥提醒我明天帶耳塞，我真的要記得，不然站太近可能會被音箱震到。',
+      '我提醒他別忙到忘記吃飯，結果他又反過來叮嚀我先吃點東西。好像大家都很愛提醒別人，自己卻不一定記得。',
+      '我誇他周到，這句是真的。那些小地方都先幫大家想到，難怪事情交給他就很安心。',
+    ],
+  },
+}
+
+const buildMarch28DiaryData = (
+  character: March28CharacterId,
+  choice: 'skip' | 'return',
+  replies: number[],
+): March28DiaryData => {
+  const copy = march28DiaryCopy[character]
+  const finalReplyIndex = Number.isInteger(replies[4]) && replies[4] >= 0 && replies[4] <= 2 ? replies[4] : 0
+  const eveningThought = choice === 'skip'
+    ? '吃完晚飯本來有點想去大安森林公園晃晃，最後還是決定乖乖回房間整理明天要帶的東西。說好要早點睡，結果整理包包整理到一半，又開始想明天現場會是什麼樣子。明明只是去看演出，怎麼搞得像自己也要上台一樣緊張啦。希望明天不要下雨，拜託天氣好一點。'
+    : '吃完晚飯還是沒忍住，跑去大安森林公園晃了一圈。結果真的遇到阿信，他一個人坐在樹下顧著明天要用的器材，旁邊堆著音箱和器材箱。明明看起來已經很累了，卻還是隔一會兒就抬頭看一下那些箱子。我才陪他說了幾句，他就開始催我回家，說明天也要來看演出，不用陪他在這裡吹風。嘴上答應得很乾脆，走回去時卻又有點捨不得。好啦，他說得也沒錯，明天還要早起。只是希望他今晚真的有休息一下。'
+  return {
+    title: choice === 'return' ? '本來只是想去公園晃一下。' : copy.title,
+    text: [copy.afternoon, copy.closingThoughts[finalReplyIndex], eveningThought].join('\n\n'),
+  }
+}
+
 const makeChatRound = (
   incoming: string,
   firstText: string,
@@ -2344,7 +2413,22 @@ function App() {
   })
   const [march28DiaryUnlocked, setMarch28DiaryUnlocked] = useState(() => localStorage.getItem('mayday-march28-park-choice') !== 'stay' && localStorage.getItem('mayday-march28-diary-unlocked') === 'true')
   const [march28DiaryData, setMarch28DiaryData] = useState<March28DiaryData | null>(() => {
-    if (localStorage.getItem('mayday-march28-park-choice') === 'stay') return null
+    const savedChoice = localStorage.getItem('mayday-march28-park-choice')
+    if (savedChoice === 'stay') return null
+    if (localStorage.getItem('mayday-march28-diary-copy-version') !== MARCH28_DIARY_COPY_VERSION) {
+      const savedCharacter = localStorage.getItem('mayday-march28-visit-character')
+      if (savedCharacter && march28CharacterOrder.includes(savedCharacter as March28CharacterId) && (savedChoice === 'skip' || savedChoice === 'return')) {
+        let savedReplies: number[] = []
+        try {
+          const parsed = JSON.parse(localStorage.getItem('mayday-march28-visit-replies') ?? '[]')
+          if (Array.isArray(parsed)) savedReplies = parsed.filter((value): value is number => Number.isInteger(value) && value >= 0 && value < 3).slice(0, 5)
+        } catch { savedReplies = [] }
+        const updated = buildMarch28DiaryData(savedCharacter as March28CharacterId, savedChoice, savedReplies)
+        localStorage.setItem('mayday-march28-diary-data', JSON.stringify(updated))
+        localStorage.setItem('mayday-march28-diary-copy-version', MARCH28_DIARY_COPY_VERSION)
+        return updated
+      }
+    }
     try {
       const saved = JSON.parse(localStorage.getItem('mayday-march28-diary-data') ?? 'null') as Partial<March28DiaryData> | null
       return saved && typeof saved.title === 'string' && typeof saved.text === 'string' ? { title: saved.title, text: saved.text } : null
@@ -5021,19 +5105,8 @@ function App() {
     localStorage.removeItem('mayday-march28-morning-replies')
     localStorage.removeItem('mayday-march28-morning-character')
     localStorage.removeItem('mayday-march28-morning-complete')
-    const afternoonPlace = march28Routes[march28VisitCharacter].place
-    const afternoonCharacter = characterNames[march28VisitCharacter]
-    const eveningText = choice === 'skip'
-      ? '吃完晚飯後，本來有點想去大安森林公園走走，想想又覺得今天跑了一整天，還是算了。明天就要演出了，早點回房間整理東西、睡飽比較實在。'
-      : '吃完晚飯突然很想去大安森林公園晃一下，沒想到真的遇到阿信在顧器材。他一個人坐在樹下，旁邊堆著明天要用的音箱和器材箱，說怕晚上被人偷走，所以得守著。聊了一會兒，他還是勸我先回家。雖然只待了一下下，回來路上卻一直想到他坐在那裡的樣子。'
-    const data: March28DiaryData = {
-      title: choice === 'return' ? '吃完飯跑去公園晃了一下。' : '明天就要去看野台開唱了。',
-      text: [
-        `今天下午去了${afternoonPlace}，和${afternoonCharacter}待了一會兒。明明只是平常的一個下午，卻因為明天有演出，連收拾東西都讓人有點期待。`,
-        eveningText,
-        '明天要早起，先睡好了。希望明天不要下雨！',
-      ].join('\\n\\n'),
-    }
+    const data = buildMarch28DiaryData(march28VisitCharacter, choice, march28VisitReplies)
+    localStorage.setItem('mayday-march28-diary-copy-version', MARCH28_DIARY_COPY_VERSION)
     setMarch28DiaryData(data)
     setMarch28DiaryUnlocked(true)
     localStorage.setItem('mayday-march28-diary-data', JSON.stringify(data))
@@ -5334,7 +5407,7 @@ function App() {
   }
 
   const resetLocalData = () => {
-    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-month-visit-target', 'mayday-month-visit-choice', 'mayday-month-visit-replies', 'mayday-month-visit-complete', 'mayday-month-free-chat-target', 'mayday-month-free-chat-choice-pending', 'mayday-month-free-chat-round', 'mayday-month-free-chat-replied', 'mayday-month-free-chat-started', 'mayday-month-free-chat-opening-sent', 'mayday-month-free-chat-replies', 'mayday-month-free-chat-complete', 'mayday-month-day-complete', 'mayday-next-month-started', 'mayday-next-month-invite-candidates', 'mayday-next-month-invite-target', 'mayday-next-month-invite-tease-choice', 'mayday-next-month-invite-reply-choice', 'mayday-next-month-invite-date-replies', 'mayday-next-month-invite-thread-started', 'mayday-next-month-event-kind', 'mayday-next-month-event-character', 'mayday-next-month-open-day-target', 'mayday-next-month-open-day-replies', 'mayday-next-month-free-chat-target', 'mayday-next-month-free-chat-round', 'mayday-next-month-free-chat-replied', 'mayday-next-month-free-chat-opening-sent', 'mayday-next-month-free-chat-replies', 'mayday-next-month-diary-unlocked', 'mayday-next-month-diary-data', 'mayday-wen-open-day-guitar-praise-v1', 'mayday-next-month-day-complete', 'mayday-route-affection', 'mayday-shared-experience-log', 'mayday-call-experience-context', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-month-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming', 'mayday-active-call-character', 'mayday-call-round-index', 'mayday-call-replied', 'mayday-call-transcript', 'mayday-year-end-started', 'mayday-year-end-invite-check-done', 'mayday-year-end-invite-candidates', 'mayday-year-end-invite-target', 'mayday-year-end-shopping-reply-choice', 'mayday-year-end-shopping-replies', 'mayday-year-end-shopping-complete', 'mayday-year-end-fireworks-replies', 'mayday-year-end-fireworks-complete', 'mayday-year-end-greeting-queue', 'mayday-year-end-greeting-index', 'mayday-year-end-greeting-target', 'mayday-year-end-chat-mode', 'mayday-year-end-first-reply-sent', 'mayday-year-end-free-chat-round', 'mayday-year-end-free-chat-replied', 'mayday-year-end-free-chat-replies', 'mayday-year-end-proactive-sent', 'mayday-year-end-extended-chat-characters', 'mayday-year-end-diary-unlocked', 'mayday-year-end-diary-data', 'mayday-year-end-day-complete', 'mayday-year-end-shopping-invite-sent-wen', 'mayday-year-end-shopping-invite-sent-masa', 'mayday-year-end-shopping-invite-sent-ashin', 'mayday-year-end-shopping-invite-sent-stone', 'mayday-year-end-shopping-invite-sent-yanming', 'mayday-winter-exam-chat-started', 'mayday-winter-exam-chat-reply-choice', 'mayday-winter-exam-tutoring-unlocked', 'mayday-winter-exam-replies', 'mayday-winter-practice-replies', 'mayday-winter-yanming-pickup-available', 'mayday-winter-bus-stop-character', 'mayday-winter-diary-unlocked', 'mayday-winter-diary-data', 'mayday-winter-break-day-complete', 'mayday-february-secret-target', 'mayday-february-secret-reply', 'mayday-february-dinner-reply', 'mayday-february-table-character', 'mayday-february-after-dinner-character', 'mayday-february-after-dinner-replies', 'mayday-february-diary-unlocked', 'mayday-february-diary-data', 'mayday-february-day-complete', 'mayday-spring-invites-sent', 'mayday-spring-invite-candidates', 'mayday-spring-invite-target', 'mayday-spring-invite-replies', 'mayday-spring-invite-declined', 'mayday-spring-store-character', 'mayday-spring-store-reply', 'mayday-spring-after-choice', 'mayday-spring-lesson-character', 'mayday-spring-lesson-touch-choice', 'mayday-spring-lesson-reply', 'mayday-spring-dinner-replies', 'mayday-spring-dinner-reply', 'mayday-spring-sms-target', 'mayday-spring-sms-round', 'mayday-spring-sms-replied', 'mayday-spring-sms-opening-sent', 'mayday-spring-sms-opening-choice', 'mayday-spring-sms-replies', 'mayday-spring-sms-mode', 'mayday-spring-diary-unlocked', 'mayday-spring-diary-data', 'mayday-spring-day-complete', 'mayday-march28-started', 'mayday-march28-visit-character', 'mayday-march28-visit-replies', 'mayday-march28-visit-complete', 'mayday-march28-day-complete', 'mayday-march29-started', 'mayday-march28-park-choice', 'mayday-march28-park-stay-replies', 'mayday-march28-morning-character', 'mayday-march28-morning-replies', 'mayday-march28-morning-complete', 'mayday-march28-diary-unlocked', 'mayday-march28-diary-data', 'mayday-spring-free-chat-return-stage'].forEach((key) => localStorage.removeItem(key))
+    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-month-visit-target', 'mayday-month-visit-choice', 'mayday-month-visit-replies', 'mayday-month-visit-complete', 'mayday-month-free-chat-target', 'mayday-month-free-chat-choice-pending', 'mayday-month-free-chat-round', 'mayday-month-free-chat-replied', 'mayday-month-free-chat-started', 'mayday-month-free-chat-opening-sent', 'mayday-month-free-chat-replies', 'mayday-month-free-chat-complete', 'mayday-month-day-complete', 'mayday-next-month-started', 'mayday-next-month-invite-candidates', 'mayday-next-month-invite-target', 'mayday-next-month-invite-tease-choice', 'mayday-next-month-invite-reply-choice', 'mayday-next-month-invite-date-replies', 'mayday-next-month-invite-thread-started', 'mayday-next-month-event-kind', 'mayday-next-month-event-character', 'mayday-next-month-open-day-target', 'mayday-next-month-open-day-replies', 'mayday-next-month-free-chat-target', 'mayday-next-month-free-chat-round', 'mayday-next-month-free-chat-replied', 'mayday-next-month-free-chat-opening-sent', 'mayday-next-month-free-chat-replies', 'mayday-next-month-diary-unlocked', 'mayday-next-month-diary-data', 'mayday-wen-open-day-guitar-praise-v1', 'mayday-next-month-day-complete', 'mayday-route-affection', 'mayday-shared-experience-log', 'mayday-call-experience-context', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-month-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming', 'mayday-active-call-character', 'mayday-call-round-index', 'mayday-call-replied', 'mayday-call-transcript', 'mayday-year-end-started', 'mayday-year-end-invite-check-done', 'mayday-year-end-invite-candidates', 'mayday-year-end-invite-target', 'mayday-year-end-shopping-reply-choice', 'mayday-year-end-shopping-replies', 'mayday-year-end-shopping-complete', 'mayday-year-end-fireworks-replies', 'mayday-year-end-fireworks-complete', 'mayday-year-end-greeting-queue', 'mayday-year-end-greeting-index', 'mayday-year-end-greeting-target', 'mayday-year-end-chat-mode', 'mayday-year-end-first-reply-sent', 'mayday-year-end-free-chat-round', 'mayday-year-end-free-chat-replied', 'mayday-year-end-free-chat-replies', 'mayday-year-end-proactive-sent', 'mayday-year-end-extended-chat-characters', 'mayday-year-end-diary-unlocked', 'mayday-year-end-diary-data', 'mayday-year-end-day-complete', 'mayday-year-end-shopping-invite-sent-wen', 'mayday-year-end-shopping-invite-sent-masa', 'mayday-year-end-shopping-invite-sent-ashin', 'mayday-year-end-shopping-invite-sent-stone', 'mayday-year-end-shopping-invite-sent-yanming', 'mayday-winter-exam-chat-started', 'mayday-winter-exam-chat-reply-choice', 'mayday-winter-exam-tutoring-unlocked', 'mayday-winter-exam-replies', 'mayday-winter-practice-replies', 'mayday-winter-yanming-pickup-available', 'mayday-winter-bus-stop-character', 'mayday-winter-diary-unlocked', 'mayday-winter-diary-data', 'mayday-winter-break-day-complete', 'mayday-february-secret-target', 'mayday-february-secret-reply', 'mayday-february-dinner-reply', 'mayday-february-table-character', 'mayday-february-after-dinner-character', 'mayday-february-after-dinner-replies', 'mayday-february-diary-unlocked', 'mayday-february-diary-data', 'mayday-february-day-complete', 'mayday-spring-invites-sent', 'mayday-spring-invite-candidates', 'mayday-spring-invite-target', 'mayday-spring-invite-replies', 'mayday-spring-invite-declined', 'mayday-spring-store-character', 'mayday-spring-store-reply', 'mayday-spring-after-choice', 'mayday-spring-lesson-character', 'mayday-spring-lesson-touch-choice', 'mayday-spring-lesson-reply', 'mayday-spring-dinner-replies', 'mayday-spring-dinner-reply', 'mayday-spring-sms-target', 'mayday-spring-sms-round', 'mayday-spring-sms-replied', 'mayday-spring-sms-opening-sent', 'mayday-spring-sms-opening-choice', 'mayday-spring-sms-replies', 'mayday-spring-sms-mode', 'mayday-spring-diary-unlocked', 'mayday-spring-diary-data', 'mayday-spring-day-complete', 'mayday-march28-started', 'mayday-march28-visit-character', 'mayday-march28-visit-replies', 'mayday-march28-visit-complete', 'mayday-march28-day-complete', 'mayday-march29-started', 'mayday-march28-park-choice', 'mayday-march28-park-stay-replies', 'mayday-march28-morning-character', 'mayday-march28-morning-replies', 'mayday-march28-morning-complete', 'mayday-march28-diary-unlocked', 'mayday-march28-diary-data', 'mayday-march28-diary-copy-version', 'mayday-spring-free-chat-return-stage'].forEach((key) => localStorage.removeItem(key))
     ;(['wen', 'ashin', 'masa', 'stone', 'yanming'] as SpringCharacterId[]).forEach((character) => localStorage.removeItem('mayday-spring-invite-thread-sent-' + character))
     SAVE_SLOT_IDS.forEach((slot) => localStorage.removeItem(SAVE_SLOT_PREFIX + slot))
     setPlayerName('')
