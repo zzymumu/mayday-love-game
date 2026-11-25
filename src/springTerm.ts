@@ -1012,9 +1012,9 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
     tracks: [
       [
         springDailySmsRound('', [
-          { text: '「想看看你有没有什么私藏的好吃店。」', response: '「喔，原來是想找我當美食地圖喔？可以啊，我知道幾家不錯的。」', affection: 3 },
+          { text: '「想看看你有没有什么私藏的好吃店。」', response: '「喔，原来是想找我当美食地图喔？可以啊，我知道几家不错的。」', affection: 3 },
           { text: '「因为我发现你还挺懂吃的嘛。」', response: '「我哪有很懂，吃得多而已啦。」', affection: 2 },
-          { text: '「没什么，我只是想找个人陪我吃东西。」', response: '「妳這個理由倒是很直接欸。想吃就講啊，又不會不陪妳去。', affection: 4 },
+          { text: '「没什么，我只是想找个人陪我吃东西。」', response: '「妳这个理由倒是很直接欸。想吃就讲啊，又不会不陪妳去。」', affection: 4 },
         ], {
           outgoing: '「你平常是不是也很喜欢吃甜的？」',
           incomingMessages: [
@@ -1024,7 +1024,7 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
         }),
         springDailySmsRound('', [
           { text: '「那你是不是经常饿着肚子练团？」', response: '「也没有那么夸张啦，有空还是会吃。」' },
-          { text: '「我觉得你应该随身带一包零食。」', response: '「妳以為我是小學生喔，還要帶零食。」' },
+          { text: '「我觉得你应该随身带一包零食。」', response: '「妳以为我是小学生喔，还要带零食。」' },
           { text: '「下次我给你带吃的好了。」', response: '「真的喔？那我先说好，不可以拿不好吃的东西来敷衍我。」', affection: 4 },
         ], {
           outgoing: '「对了，你平常练团的时候会不会突然很想吃东西？」',
@@ -1041,17 +1041,17 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
           outgoing: '「你讲话真的很像那种嘴上嫌弃别人，实际上又什么都会管的人。」',
           incomingMessages: [
             '「妳现在是在说我喔？」',
-            '「我哪有管妳，妳不要亂講。」',
+            '「我哪有管妳，妳不要乱讲。」',
           ],
         }),
         springDailySmsRound('', [
-          { text: '「知道啦！温老师晚安。」', response: '「誰是老師啦。晚安，手機放下去。」' },
-          { text: '「你怎么突然这么像我妈？」', response: '「蛤？我有那麼囉嗦喔？妳才是要早點睡的那個。」' },
+          { text: '「知道啦！温老师晚安。」', response: '「谁是老师啦。晚安，手机放下去。」' },
+          { text: '「你怎么突然这么像我妈？」', response: '「蛤？我有那么啰嗦喔？妳才是要早点睡的那个。」' },
           { text: '「那你也早点睡，不要又熬夜。」', response: '「知道啦，妳也是。晚安。」' },
         ], {
           outgoing: '「好啦，不闹你了，我要去洗澡了。」',
           incomingMessages: [
-            '「快去啦，手機不要拿進浴室。」',
+            '「快去啦，手机不要拿进浴室。」',
           ],
         }),
       ],
