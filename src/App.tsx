@@ -4394,25 +4394,27 @@ function App() {
     const secretTarget = februarySecretTarget ?? 'wen'
     const tableTarget = februaryTableCharacter ?? 'wen'
     const afterTarget = februaryAfterDinnerCharacter ?? 'wen'
-    const groupText = februaryDinnerReply === null ? '' : [
-      '我跟他們說：「當然會啊！我可是你們的忠實觀眾欸！」',
-      '我忍不住先擔心佑達，叫他到時候不要又突然加一堆鼓花。本人立刻抗議，瑪莎倒是笑得很開心。',
-      '我叫他們先把歌好好練熟，別到時候上台才發現還沒準備好。石頭和阿信都很認真地答應了。',
-    ][februaryDinnerReply]
+    const dinnerMemories = [
+      '吃飯時瑪莎突然問我，三月底如果他們真的報上了，我會不會去。我當然說會啊，還補了一句自己可是忠實觀眾。佑達馬上把這句話當成在替他個人應援，瑪莎當然也不肯放過他。',
+      '我說我比較擔心佑達，到時候不要又突然加一堆鼓花。他立刻抗議我怎麼也跟著瑪莎欺負他，瑪莎倒是笑得很開心。其實我只是想看他到時候能不能忍住不加戲。',
+      '我叫他們先把歌好好練熟，別到時候上台才發現還沒準備好。石頭和阿信都很認真地答應了，溫尚翊也說不會讓我失望。突然有點期待三月底了。',
+    ]
+    const groupText = februaryDinnerReply === null ? '' : dinnerMemories[februaryDinnerReply]
     const lastRound = februaryAfterDinnerRoutes[afterTarget].rounds[2]
     const lastChoice = lastRound.choices[februaryAfterDinnerReplies[2] ?? 0]
-    const endingNote = lastChoice ? '最後他問起三月底的演出，我回了：「' + lastChoice.text.replace(/^「|」$/g, '') + '」' : ''
+    const endingNote = lastChoice
+      ? '最後聊到三月底的演出，他問我會不會去。我回了：「' + lastChoice.text.replace(/^「|」$/g, '') + '」'
+      : ''
     const text = [
-      '今天真的笑死我了。原本只是去練團室坐坐，結果差點因為 So Band 被笑到忘記正事。瑪莎居然是聽到阿信準備填報名表，才突然想到把名字倒過來念很像便所。溫尚翊笑得最大聲，佑達則是一臉「你們到底在說什麼」的表情。',
-      '後來佑達自告奮勇要取新名字，結果一口氣端出暗黑究極音波使徒、銀河終焉五芒星暴走團，還有地獄烈焰末日審判者。每一個都講得超認真，大家每吐槽一句，他就更努力解釋一次。我真的差點把飲料噴出來。最後還是瑪莎拿自己的 BBS 名字 Mayday 救場。看著溫尚翊把 MAYDAY 寫進報名表，突然覺得三月底好像真的近了。',
+      '我現在只要想到佑達拿著那支粗頭筆的樣子就想笑。\\n\\n他寫「暗黑究極音波使徒」的時候，那個表情認真得不得了，好像下一秒真的要帶我們去拯救世界。瑪莎每吐槽一句，他就多解釋兩句，後來居然還扯出五芒星、銀河系……我真的很想知道，他平常到底都在看些什麼。\\n\\n最後救場的居然是瑪莎自己的 BBS 名字。Mayday。就這樣？前面那幾個名字瞬間變成廢紙，佑達還一臉不甘心。可是看著溫尚翊把 MAYDAY 寫進報名表的時候，我突然覺得三月底真的越來越近了。',
       februarySecretDiaryText[secretTarget],
       groupText,
       februaryTableDiaryText[tableTarget],
       februaryAfterDinnerDiaryText[afterTarget],
       endingNote,
-      '不知道這個名字最後會走到哪裡，不過今天看他們為了一張報名表吵成這樣，反而覺得很踏實。希望三月底真的能站上那個舞台。到時候我一定要去。',
-    ].filter(Boolean).join('\n\n')
-    return { title: '二月初，MAYDAY', text }
+      '不知道這個名字最後會走到哪裡。不過今天看他們為了一張報名表吵成這樣，反而覺得很踏實。希望三月底真的能站上那個舞台。到時候我一定要去。',
+    ].filter(Boolean).join('\\n\\n')
+    return { title: '佑達今天真的很有事', text }
   }
 
   const startFebruaryDiary = () => {
@@ -4765,53 +4767,110 @@ function App() {
   }
 
   const buildSpringDiaryData = () => {
-    const characterNamesForDiary: Record<SpringCharacterId, string> = {
-      wen: '溫尚翊',
-      ashin: '阿信',
-      masa: '瑪莎',
-      stone: '石頭',
-      yanming: '諺明哥',
-    }
     const storeMemories: Record<SpringCharacterId, string> = {
-      wen: '上午跟溫尚翊去樂器行，說好只是逛逛，結果他一進門就熟門熟路地鑽去效果器區。吉他一接上音箱，他踩下開關時音色忽然變得厚起來，還一本正經問我帥不帥——到底是在問效果器還是在問他自己啊。後來又把展示琴遞給我試，走之前還說記得我剛剛講的事。',
-      ashin: '上午阿信陪我在店裡慢慢逛，走到木吉他區才停下來。他把兩把琴輪流彈給我聽，還把速度放慢讓我比較；抱起木吉他才知道比想像中大，他笑我像抱大抱枕。最後拿琴型卡跟我講尺寸，問我是不是有點想學。',
-      masa: '上午瑪莎一進店就直奔 Bass 區，先被琴弦的價格嚇到，嘴上嫌貴，轉頭卻接上展示 Bass 彈了一段。後來兩包琴弦擺在我面前，說要我幫忙看差別，明明自己已經研究得很仔細。結帳時還一眼看穿我在偷看電吉他，真煩人。',
-      stone: '上午跟石頭去買背帶、琴弦和保養用品，挑背帶時還真的問我哪條好看。後來他一邊講解清潔用品，一邊示範怎麼擦琴，連展示琴都先問我想不想試。跟他逛店很舒服，不會催人，也不會替我做決定。',
-      yanming: '上午跟諺明哥看鼓棒和器材，他連重量差一點點都拿起來比較。果然是很仔細的人，連逛個樂器行都讓人有種事情一定會被安排妥當的安心感。',
+      wen: '溫尚翊一進樂器行就直奔效果器區，嘴上還說今天只是逛逛，結果蹲在展示架前研究得超認真。後來他把自己的吉他接上音箱，腳尖一踩，聲音立刻變得厚起來，還轉頭問我有沒有覺得很帥。我回他到底是在問效果器還是在問自己，他愣了一下才笑出來。真的很會。',
+      ashin: '阿信先陪我在店裡慢慢逛，經過木吉他區才停下來。他拿兩把琴輪流彈給我聽，讓我比較聲音有什麼不一樣。我說第二把好像比較清楚，他還笑我耳朵滿好的，後來又特地多看了一眼我喜歡的那把。這種小事他居然也會記得。',
+      masa: '瑪莎一進門就跑去 Bass 區，看到琴弦的價格馬上皺眉，還跟我為了到底買不買吵了兩句。後來他接上展示 Bass 彈了一段，低音真的震得地板都像在動。接著又把兩包琴弦推給我，叫我幫忙看差別；最後還抓包我一直偷看旁邊的電吉他。眼睛也太尖了吧。',
+      stone: '石頭今天要買背帶、琴弦和保養用品。挑背帶時還真的轉過來問我哪條好看，後來又很仔細地示範怎麼擦琴，連展示琴都先問我想不想試背。跟他逛店不用急，也不用怕自己什麼都不懂，這點真的很舒服。',
+      yanming: '諺明哥拿著一張長長的清單去買鼓棒、鼓皮和導線，連兩副鼓棒的重量都要拿起來比較。他在練習墊上隨手敲了幾下，結果一下就變成一小段節奏，後來還帶我去試打區看他打鼓。離開前他居然記得我拿起來比較順手的是哪一副，還說下次想練的話可以幫我準備。也太仔細了吧。',
     }
-    const lessonMemories: Record<Exclude<SpringCharacterId, 'yanming'>, string> = {
-      wen: '後來留下來學電吉他，手指痛得我差點想跟琴弦絕交。偏偏溫尚翊手上的繭就在眼前，我一時好奇問出口，摸到的時候才發現真的比看起來粗。最可疑的是他明明有點不自在，還硬要裝沒事，突然把弦刷得超大聲。拜託，誰看不出來啦。',
-      ashin: '阿信教木吉他真的很有耐心，我的手指一直不聽使喚，他也沒有催我。後來摸到他指尖那層薄繭，才發現那些痕跡都是一點一點練出來的。他整個人又很自然，反而害我不知道該把手放哪裡。',
-      masa: '瑪莎教 Bass 的時候嘴巴還是一樣不饒人，我差點每隔三十秒就想反擊一次。可是手指一喊痛，他馬上就停下來；連摸個繭都能被他說成檢查，這人真的是連溫柔都要包裝成吐槽。',
-      stone: '石頭教得很慢，也很細心，連我手指按得太用力都看得出來。摸到他指尖的繭時，才發現平常看起來溫溫和和的人，手上也有這些練出來的痕跡。跟他相處不用急著裝厲害，這點很舒服。',
+    const touchLessonMemories: Record<Exclude<SpringCharacterId, 'yanming'>, string[]> = {
+      wen: [
+        '我真的伸手摸了溫尚翊指腹上的繭。才剛碰到，他的手指就不自覺蜷了一下，抬眼跟我對上視線後又立刻把眼神挪開。接著他清了清喉嚨，抓起撥片把琴弦刷得超大聲，假裝自己只是要試音。拜託，誰看不出來啦。',
+        '我問他是不是害羞了，他立刻否認，結果下一秒重新刷弦還刮出一聲怪音。他又裝作只是沒拿穩，低頭繼續教我按弦。這個人真的很會嘴硬。',
+        '我叫他坐近一點教我，他嘴上還反問現在不夠近嗎，椅子卻真的往我這邊挪了半寸，肩膀幾乎碰在一起。後來他托住我的手腕幫我調位置，講話聲音還比剛才低了一點。',
+      ],
+      ashin: [
+        '我真的摸了阿信指尖那層薄繭，還忍不住說比想像中硬。他笑著說自己以前也沒注意過，都是彈久了才變成這樣。明明只是摸一下手指，我卻莫名有點不知道手該放哪裡。',
+        '我問阿信怎麼一點都不驚訝，他才說其實有一點，只是怕他一笑，我就不好意思繼續摸了。這句話講得也太自然，害我反而更不好意思。',
+        '我問他是不是我問得太突然，他說不會，只是好奇而已，還說我剛才那個表情比問的話還可愛。救命，這種話他怎麼可以講得這麼順。',
+      ],
+      masa: [
+        '我真的伸手摸了瑪莎的繭，結果他全程盯著我看，還故意一動也不動。等我抬頭，他馬上笑著問檢查報告寫好了沒。明明是他先把手伸過來的，最後卻變成我被他逗。',
+        '我叫瑪莎不要一直講，他還回我又沒怎樣，是我自己先開口的，接著就把手收回去。這人真的連被摸一下都可以講得像在吵架。',
+        '我叫他把手拿開，他居然說檢查還沒結束，故意又把手放回我面前。到底是誰在檢查誰啦！',
+      ],
+      stone: [
+        '我真的摸了石頭指腹上的繭。他一直很安靜地把手放在我面前，等我抬頭時還對我笑了一下。後來他問會不會覺得有點粗，還怕刮到我的手。這個人連這種小地方都會先替我想到。',
+        '我問石頭以前剛開始練琴的時候是不是也會痛，他說會，所以知道我現在的感覺。明明是我在摸他的手，最後卻又變成他在提醒我不要勉強自己。',
+        '我問石頭是不是也要練到這樣才算厲害，他說練琴不是比誰的繭子多，還用手背輕輕碰了一下我的指尖。這句話好像比剛才那幾個和弦還讓人記得住。',
+      ],
     }
+    const noTouchLessonMemories: Record<Exclude<SpringCharacterId, 'yanming'>, { question: string; comment: string }> = {
+      wen: {
+        question: '我沒有真的摸他的手，只是問那些繭要練多久才磨得出來。他說很久了，剛開始也會痛，後來才慢慢習慣，還叫我手痛就先休息，不要硬撐。',
+        comment: '我說他的手指也太辛苦了吧，他居然回我吉他又不會自己變厲害。嘴巴還是很硬，倒是有記得叫我不要勉強。',
+      },
+      ashin: {
+        question: '我問阿信以前剛開始練琴的時候是不是也會痛。他說會，按久了手指真的會酸，還提醒我今天已經很認真了，回去要記得休息。',
+        comment: '我說那些痕跡都是練琴留下來的，他點點頭，說不用急著也練成這樣，先享受彈出聲音就好了。聽起來簡單，卻讓人安心。',
+      },
+      masa: {
+        question: '我問瑪莎平常練那麼久，手指不會痛嗎。他說剛開始當然會，所以我現在痛就該停，不要逞強，琴又不會跑掉。難得講了一句很像老師的話。',
+        comment: '我說他嘴巴那麼壞，手倒是很認真在練。他馬上反問這跟嘴巴有什麼關係，最後還是笑著說今天算我有學到東西。',
+      },
+      stone: {
+        question: '我問石頭以前剛開始練琴的時候是不是也會痛。他說會，所以知道我現在的感覺，還提醒我不用一次練太久，慢慢來就好。',
+        comment: '我說他平常看起來溫溫柔柔的，沒想到手上也有這些痕跡。他笑著說彈久了多少都會有，沒有把話說得很嚴肅。',
+      },
+    }
+    const lessonMemory = springLessonCharacter
+      ? springLessonReplies[4] === 0
+        ? touchLessonMemories[springLessonCharacter][springLessonReplies[5] ?? 0]
+        : springLessonReplies[4] === 2
+          ? noTouchLessonMemories[springLessonCharacter].comment
+          : noTouchLessonMemories[springLessonCharacter].question
+      : ''
     const storeMemory = springStoreCharacter ? storeMemories[springStoreCharacter] : ''
-    const rehearsalMemory = '《轧車》一開下去，整間練團室像要被掀掉。佑達今天特別亢奮，第一遍就自己加了一串鼓花，瑪莎那個快翻白眼的表情我現在想到還想笑；溫尚翊不但沒阻止，還在旁邊跟著起鬨。最誇張的是最後一遍突然又帥得很整齊，前面還像一群小學生在吵架，音樂一進來卻又默契得不得了。'
+    const rehearsalMemory = '《轧車》一開下去，整間練團室真的像要被掀掉。佑達第一遍就打得太起勁，突然加了一串誇張鼓點，瑪莎直接喊他，溫尚翊也叫他不要自己加戲，阿信差點跟不上，石頭在旁邊笑。第二遍大家重新抓好節奏，最後一段幾乎同時收住。前面還像一群小學生在吵架，音樂一進來卻又默契得不得了。',
     const afterMemory = springAfterChoice === 'yanming-dinner'
-      ? '散場後才發現諺明哥已經先出去了。我背起包走到樓下找了一圈，才在外面的騎樓看到他。那家小店他很熟，連老闆都認識；吃飯時也不用刻意找話題，水杯被推到手邊、筷子遞過來，全都自然得不得了。跟他吃飯有種很踏實的舒服。'
+      ? '散場後佑達先趕去拿朋友幫他留的東西，其他人還在收拾器材。諺明哥已經先一步到樓下等我，我背起包走出去就看見他在騎樓那邊。那家小店他很熟，老闆一看到他就打招呼；吃飯時他讓我慢慢看菜單，也會把湯和菜往桌子中間挪。聊到剛才練團的事，才知道他打鼓時其實一直要聽著大家、幫整首歌穩住節奏。跟他吃飯不用刻意找話題，安安靜靜的也很舒服。',
       : springAfterChoice === 'home'
-        ? '今天散場後沒有續攤，我背起包自己回家。走出練團室才發現外面安靜得有點不習慣，耳朵裡卻還在轟轟作響。走到一半想到佑達那串亂七八糟的鼓花，又自己笑出來，路人可能覺得我怪怪的。'
+        ? '今天散場後沒有續攤，我背起包自己回家。走出練團室才發現外面安靜得有點不習慣，耳朵裡卻還在轟轟響。走到一半又想到佑達那串亂七八糟的鼓花，忍不住自己笑出來。路人可能覺得我怪怪的。',
         : springLessonCharacter
-          ? lessonMemories[springLessonCharacter]
+          ? lessonMemory
           : ''
-    const chatMemory = springSmsTarget && springSmsOpeningChoice !== null
-      ? '回家後又和' + characterNamesForDiary[springSmsTarget] + '聊了一會兒。其實也沒什麼驚天動地的大事，手機放下以後，心情卻還是好了一點。'
+    const chatMemories: Record<SpringCharacterId, string[]> = {
+      wen: ['回家後我跟溫尚翊抱怨熱可可喝太急，第一口差點燙到舌頭。他先嫌我到底有多急，後來又補一句熱的東西要先吹一下。明明只是喝個東西，還是被他念了兩句。'],
+      ashin: [
+        '回家後跟阿信聊到早餐紙袋突然破掉，飯糰差點滾到地上。他居然也講起自己以前豆漿袋裂開的糗事，原來大家都有這種狼狽時刻。',
+        '回家後跟阿信聊到今天下大雨，連帶傘都被風吹翻。他說自己也遇過，講得像是在交換倒楣經驗，害我覺得好像沒那麼丟臉了。',
+        '回家後跟阿信抱怨買麵包居然買成紅豆口味，他還替紅豆麵包說話，說至少不是買到完全不能吃的東西。可是我本來就想吃奶油啊！',
+      ],
+      masa: [
+        '回家後跟瑪莎抱怨自動販賣機把飲料卡住，我站在那裡看了一分鐘也沒用。他先問我看它有什麼用，接著又說自己以前拍了機器兩下，旁邊那罐也掉下來了。這種解決方式真的很瑪莎。',
+        '回家後跟瑪莎說我在教室拆洋芋片，結果碎屑飛得到處都是。他居然問我有沒有考慮過旁邊同學的感受，拜託，我也不是故意的！',
+        '回家後跟瑪莎說我自己拿剪刀修劉海，現在左右好像不是同一個長度。他先沉默，接著叫我先不要動。怎麼辦，我突然有點不敢照鏡子。',
+      ],
+      stone: [
+        '回家後跟石頭分享盆栽終於長出新葉。他還記得我之前一直說它都沒動靜，看到新葉好像真的替我開心。',
+        '回家後跟石頭聊到我煎蛋失敗，蛋黃一破就變成一團不知道是什麼的東西。他居然也說自己以前煎蛋煎到最後變炒蛋，至少不是只有我一個人不會。',
+        '回家後跟石頭聊到在書裡找到一張舊書籤。他說自己以前也在書裡發現過別人留下的東西，看到的時候還愣了一下。這種小小的巧合還滿有意思的。',
+      ],
+      yanming: [
+        '回家後跟諺明哥說我買便當忘了拿筷子，站在店門口差點想直接用手吃。他問我是不是在等筷子自己從天上掉下來，真的很會吐槽欸。',
+        '回家後跟諺明哥抱怨洗完衣服只剩一隻襪子，另一隻不知道跑去哪。他說洗衣機開始收租了喔，我居然覺得很有道理。',
+        '回家後跟諺明哥說我明明寫了購物清單，買了一堆東西卻偏偏忘記雞蛋。他問我那張清單今天有沒有出勤，這句真的太好笑了。',
+      ],
+    }
+    const chatMemory = springSmsTarget
+      ? chatMemories[springSmsTarget][springSmsOpeningChoice ?? 0] ?? chatMemories[springSmsTarget][0]
       : ''
     const title = springAfterChoice === 'yanming-dinner'
-      ? '散場後，還得出去找諺明哥'
+      ? '諺明哥已經在樓下等我'
       : springAfterChoice === 'home'
         ? '《轧車》的鼓聲一路跟回家'
         : springLessonCharacter === 'wen'
-          ? '今天最燙手的不是琴弦'
+          ? springLessonReplies[4] === 0 ? '今天最燙手的不是琴弦' : '跟溫尚翊學電吉他，手指先投降'
           : springLessonCharacter === 'ashin'
-            ? '木吉他和一雙很有耐心的手'
+            ? springLessonReplies[4] === 0 ? '木吉他和一雙很有耐心的手' : '阿信教吉他真的很有耐心'
             : springLessonCharacter === 'masa'
               ? 'Bass 很難，瑪莎更難搞'
               : springLessonCharacter === 'stone'
-                ? '今天有人比我還怕我手痛'
+                ? springLessonReplies[4] === 0 ? '今天有人比我還怕我手痛' : '石頭教吉他，比我有耐心'
                 : '開學第一天，練團室還是很吵'
     const text = [
-      '過完年回來上課，第一天就被練團室的聲音吵到腦袋嗡嗡響。嗯，這學期看來不會太安靜。',
+      '過完年回來上課，第一天還有點沒切回上課模式，結果才進練團室，就被《轧車》吵到完全清醒。這學期看來真的不會太安靜。',
       storeMemory,
       rehearsalMemory,
       afterMemory,
@@ -4894,9 +4953,23 @@ function App() {
   }, [])
 
   useEffect(() => {
-    const rewriteKey = 'mayday-spring-diary-narrative-rewrite-v1'
+    const rewriteKey = 'mayday-february-diary-narrative-rewrite-v1'
     if (localStorage.getItem(rewriteKey) === 'true') return
-    if (springDiaryUnlocked && springDiaryData && springAfterChoice) {
+    if (februaryDiaryUnlocked && februaryDiaryData) {
+      if (!februarySecretTarget || februarySecretReply === null || februaryDinnerReply === null || !februaryTableCharacter || !februaryAfterDinnerCharacter || februaryAfterDinnerReplies.length !== 3) return
+      const refreshed = buildFebruaryDiaryData()
+      setFebruaryDiaryData(refreshed)
+      localStorage.setItem('mayday-february-diary-data', JSON.stringify(refreshed))
+    }
+    localStorage.setItem(rewriteKey, 'true')
+  }, [])
+
+  useEffect(() => {
+    const rewriteKey = 'mayday-spring-diary-narrative-rewrite-v2'
+    if (localStorage.getItem(rewriteKey) === 'true') return
+    if (springDiaryUnlocked && springDiaryData) {
+      if (!springAfterChoice || !springSmsTarget || springSmsOpeningChoice === null || springSmsReplies.length !== 5) return
+      if (springAfterChoice === 'lesson' && (!springLessonCharacter || springLessonReplies.length < 5)) return
       const refreshed = buildSpringDiaryData()
       setSpringDiaryData(refreshed)
       localStorage.setItem('mayday-spring-diary-data', JSON.stringify(refreshed))
