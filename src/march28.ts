@@ -61,7 +61,7 @@ export const march28ParkStayRounds: March28ParkStayRound[] = [
       { kind: 'narration', text: '才安靜坐了一會兒，你耳邊忽然響起一聲細細的嗡鳴。你下意識抬手一拍，啪的一聲落在自己腿上，蚊子當然沒有打到。' },
       { kind: 'dialogue', speaker: '陳信宏', text: '「怎麼了？」' },
       { kind: 'dialogue', speaker: '你', text: '「有蚊子！剛剛就在我耳朵旁邊！」' },
-      { kind: 'narration', text: '阿信眯起眼睛看了看，路燈的光照不到長椅這一側，四周暗暗的，根本看不清那隻蚊子在哪裡，只聽見嗡嗡聲一下遠，一下近。' },
+      { kind: 'narration', text: '阿信眯起眼睛看了看，路燈的光找不到長椅這一側，四周暗暗的，根本看不清那隻蚊子在哪裡，只聽見嗡嗡聲一下遠，一下近。' },
       { kind: 'dialogue', speaker: '陳信宏', text: '「看不到欸……妳先不要亂拍，等一下又打到自己了。」' },
     ],
     prompt: '第一隻蚊子',
