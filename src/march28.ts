@@ -34,8 +34,10 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
     ],
     rounds: [
       {
-        scene: [],
-        prompt: '你走近一看，桌上已經堆了好幾疊剪好的海報，旁邊還有一把剪刀和半卷透明膠帶。',
+        scene: [
+          { kind: 'narration', text: '你走近桌邊，才看見桌面被剪下來的紙條佔去大半。電風扇把最上面那張海報吹得翹起來，溫尚翊伸手壓住，另一隻手還拿著剪刀，像是打算跟那個歪掉的邊角再決鬥一次。' },
+        ],
+        prompt: '他把剪刀柄朝你這邊遞過來，自己按住海報另一端。',
         choices: [
           { text: '「你剪三次還是歪的喔？」', response: '「欸，妳不要一來就笑我好不好。」他把剪刀放下，拿尺敲了敲桌面。「我只是想剪得漂亮一點，這樣也有錯喔？」', affection: 3 },
           { text: '「我本來是來整理資料的，怎麼又被你抓來做工。」', response: '「啊不然咧？妳都走到我面前了，總不能假裝沒看到吧。」他把椅子往旁邊挪了挪。「幫我一下啦，等一下請妳喝東西。」', affection: 2 },
@@ -109,7 +111,9 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
     ],
     rounds: [
       {
-        scene: [],
+        scene: [
+          { kind: 'narration', text: '你把皺起來的清單攤平，阿信稍稍側過身，替你擋住從門口吹進來的冷氣。他沒有立刻伸手拿清單，只先低頭看了看你圈起來的書名。' },
+        ],
         prompt: '他把手上的書合起來，往你手裡的清單看了一眼。',
         choices: [
           { text: '「我在找老師指定的書，找半天了。」', response: '「哪一本？我剛剛好像有看到這個作者。」他接過清單看了一下，沒有急著幫妳決定，先帶妳往靠裡面的書架走。「我們去那邊找找看。」', affection: 3 },
@@ -184,7 +188,9 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
     ],
     rounds: [
       {
-        scene: [],
+        scene: [
+          { kind: 'narration', text: '櫃台前的點單鈴又響了一聲。石頭先把擦到一半的杯子倒扣在架上，抽了張紙巾擦手，才從櫃台後探出身來。你聞到茶香裡混著一點烤吐司的味道，旁邊桌子的客人正把吸管紙套揉成一小團。' },
+        ],
         prompt: '你看了看他身上的圍裙，才發現他真的在上班。',
         choices: [
           { text: '「你在這裡打工喔？」', response: '「嗯，放學後過來幾個小時。」他把菜單拿給妳。「今天剛好輪到我顧櫃台，妳慢慢看，不用急。」', affection: 3 },
@@ -261,7 +267,9 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
     ],
     rounds: [
       {
-        scene: [],
+        scene: [
+          { kind: 'narration', text: '你往裡面走了兩步，小女孩立刻把手從琴鍵上收回來，偷偷打量你。瑪莎趁機把琴譜轉正，指尖在剛才彈錯的那一小節點了點，像是終於找到一個喘口氣的空檔。' },
+        ],
         prompt: '他朝你挑了挑眉，小女孩也跟著轉過頭來。',
         choices: [
           { text: '「你竟然在教鋼琴？」', response: '「不然咧，妳以為我只會坐著吐槽喔？」他把鉛筆在指間轉了一圈。「老闆叫我放學後來幫忙代一堂，結果比我想的還累。」', affection: 2 },
@@ -337,8 +345,10 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
     ],
     rounds: [
       {
-        scene: [],
-        prompt: '他朝旁邊的工具箱看了一眼，問你能不能幫忙。',
+        scene: [
+          { kind: 'narration', text: '你繞過門邊的鼓袋，在一張折疊椅旁停下。練團室裡有股木頭和灰塵混在一起的味道，桌上的紙杯只剩半杯冷掉的咖啡。諺明哥把接頭放到膝邊，先確認你站的位置不會踩到線，才抬頭跟你說話。' },
+        ],
+        prompt: '他朝旁邊的工具箱看了一眼，問你能不能幫忙。'
         choices: [
           { text: '「我來幫你拿膠帶，要哪一卷？」', response: '「黑色那卷，謝謝。」他指了指工具箱旁邊。「拿的時候小心一點，地上這幾條還沒收好，別踩到了。」', affection: 3 },
           { text: '「你這是在幫大家做全身健檢嗎？」', response: '「差不多啦，器材也會累。」他笑了一聲，繼續看著接頭。「如果今天不先檢查，明天壞在台上就麻煩了。」', affection: 2 },
