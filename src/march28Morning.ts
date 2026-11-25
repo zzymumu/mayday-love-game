@@ -30,6 +30,7 @@ export const getMarch28MorningVisitorIntroBlocks = (
     { kind: 'dialogue', speaker: '你', text: '……早。' },
     { kind: 'narration', text: '原本正提著早餐袋的人，動作頓了一下。他低頭看向長椅，這才發現阿信旁邊還坐著一個人。你的頭髮有些凌亂，肩上披著一件明顯不是自己的外套。' },
     { kind: 'dialogue', speaker: name, text: '……妳怎麼也在？' },
+    { kind: 'dialogue', speaker: '陳信宏', text: '她昨天留下來陪我啊，坐到現在了。' },
   ]
 }
 
