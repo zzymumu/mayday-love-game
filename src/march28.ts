@@ -52,7 +52,7 @@ export const march28ParkStayIntroBlocks: March28Block[] = [
   { kind: 'dialogue', speaker: '陳信宏', text: '「有一點點啦。」' },
   { kind: 'narration', text: '他說完便低下頭，用鞋尖輕輕碰了碰地上的小石子。過了幾秒，他才又抬起眼。' },
   { kind: 'dialogue', speaker: '陳信宏', text: '「本來以為今晚要一個人坐到天亮了。妳來了，好像就沒那麼難熬了。」' },
-  { kind: 'narration', text: '他說完沒有看你，只把手邊那瓶水往自己腳邊挪了挪。路燈底下，他的耳朵悄悄泛紅。你看在眼裡，忽然覺得他有點可愛。' },
+  { kind: 'narration', text: '他說完沒有看你，只把手邊那瓶水往自己腳邊挪了挪，拇指沿著瓶身標籤來回刮了兩下，半天沒再接話。你看在眼裡，忽然覺得他有點可愛。' },
 ]
 
 export const march28ParkStayRounds: March28ParkStayRound[] = [
@@ -99,7 +99,7 @@ export const march28ParkStayRounds: March28ParkStayRound[] = [
     ],
     prompt: '一個人守著器材',
     choices: [
-      { text: '「難怪你剛剛坐在那裡一動也不動。」', response: '「被妳發現了喔。」\n他耳根微微泛紅，抬手揉了揉後頸：「坐到現在，腰都快不是自己的了。可是也只能再撐一下啦。」', affection: 2 },
+      { text: '「難怪你剛剛坐在那裡一動也不動。」', response: '「被妳發現了喔。」\n他抬手揉了揉後頸，嘴角不受控制地揚了一下，又趕緊收住：「坐到現在，腰都快不是自己的了。可是也只能再撐一下啦。」', affection: 2 },
       { text: '「你要是真的累了，可以靠著休息一下。」', response: '「那妳要幫我看著喔？」\n他試探似地問了一句，見你點頭，緊繃的肩膀才慢慢放鬆：「好啦，我就偷懶一分鐘。有人陪著，好像真的比較安心。」', affection: 3 },
       { text: '「早知道我就帶點吃的來陪你了。」', response: '「不用啦，妳人來就好了。」\n他說得很自然，過了一秒才意識到這句話有點直白，垂下眼，指尖輕輕捻了捻褲縫：「我是說……有人講話，時間真的會過快一點。」', affection: 3 },
     ],
@@ -192,7 +192,7 @@ export const march28ParkStayEndingBlocks: March28Block[] = [
   { kind: 'narration', text: '他就這樣陪你坐在同一張長椅上，沒有把肩膀挪開。遠處偶爾有車聲或腳步聲，他仍會抬眼看看器材箱；確認一切都好，才又低下頭。每次你稍微動一下，他都會跟著停住動作，等你重新睡穩。' },
   { kind: 'narration', text: '半夢半醒間，耳邊傳來他一句：「睡吧，我在。」夜色一點點變淡，樹葉上的露水在路燈下泛著微光。等你再睜開眼，天邊已經透出很淺的灰藍色。' },
   { kind: 'dialogue', speaker: '陳信宏', text: '「醒啦？」' },
-  { kind: 'narration', text: '他的聲音帶著熬夜後一點點沙啞，眼底也有些倦意。你這才發現自己真的靠著他睡了好一會兒，手指還不知什麼時候輕輕勾住了他的袖口。阿信低頭看了一眼，耳尖悄悄泛紅，卻沒有提醒你。' },
+  { kind: 'narration', text: '他的聲音帶著熬夜後一點點沙啞，眼底也有些倦意。你這才發現自己真的靠著他睡了好一會兒，手指還不知什麼時候輕輕勾住了他的袖口。阿信低頭看見了，手腕稍稍一頓，最後沒有抽開，只把手臂安安穩穩地留在原處。' },
   { kind: 'dialogue', speaker: '你', text: '「你怎麼沒有叫醒我？」' },
   { kind: 'dialogue', speaker: '陳信宏', text: '「看妳睡得那麼熟，我有點捨不得叫妳啊。」' },
   { kind: 'dialogue', speaker: '你', text: '「可是你肩膀一定很痠吧……」' },
