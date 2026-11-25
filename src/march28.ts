@@ -44,7 +44,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
             "speaker": "温尚翊",
             "text": "「幫我看一下，這張是不是有比較好了？」"
           },
-          { kind: 'narration', text: "桌上那把美工刀的刀片只推出一小截，尺卻被他壓得歪了一點。你看著那條不太服貼的切線，差點當場笑出聲；他像是察覺你的視線，手掌往海報上一蓋，假裝什麼都沒發生。" }
+          { kind: 'narration', text: "他把海報往你面前推近一點，食指點了點右上角：「妳看這裡，這樣有沒有比較順？」說得一本正經，眼神卻一直在偷看你的反應。" }
         ],
         "prompt": "剪得很有自信",
         "choices": [
@@ -145,7 +145,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
             "kind": "narration",
             "text": "最后一张海报终于剪好。温尚翊把它翻过来，检查了一遍日期，又把笔放到桌上。"
           },
-          { kind: 'narration', text: "他把剪好的幾張疊齊，拿筆逐一核對日期和地點。看到其中一張邊角翹起來，他用指腹壓了兩下，這才像終於對自己的成果滿意。" },
+          { kind: 'narration', text: "他把筆蓋扣上，將確認好的海報分成兩疊，一疊放進紙袋，另一疊留在桌邊等著明天帶走。" },
           {
             "kind": "dialogue",
             "speaker": "温尚翊",
@@ -180,7 +180,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "你把桌面收拾干净，温尚翊从那叠海报里挑出一张，仔细把边角压平，递给你。"
+            "text": "你把桌上的尺和剪刀放回原位。溫尚翊從完成的海報裡抽出一張，沒有立刻遞過來，先低頭把背面的紙屑拍掉，才交到你手上。"
           },
           { kind: 'narration', text: "桌面清出一小塊空位後，他把剩下的紙屑掃進掌心，順手把那張留給你的海報放到最上面，還特地把折到的角壓平。" },
           {
@@ -658,7 +658,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
     "blocks": [
       { kind: 'narration', text: "你經過樂器行時，裡頭傳來斷斷續續的鋼琴聲。同一小節旋律反覆彈了好幾遍，你忍不住停下腳步，往店裡看了一眼。" },
       { kind: 'narration', text: "琴凳旁坐著一個小女孩，瑪莎正陪她練琴。你還沒走近，就看見他努力維持著耐心，眉心卻已經悄悄皺了起來。" },
-      { kind: 'narration', text: "你推門走進去時，琴聲又斷了一下。瑪莎抬頭看見你，眼睛一亮，像是終於等到有人可以替他評理。" }
+      { kind: 'narration', text: "你推門走進去時，琴聲又斷了一下。瑪莎還低著頭看琴譜，暫時沒注意到你已經走近。" }
     ],
     "rounds": [
       {
@@ -1006,7 +1006,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "換過接頭後，音箱裡的雜音終於消失。諺明哥回到桌邊，在清單上打了個勾。"
+            "text": "諺明哥重新檢查了接頭，把鬆掉的插頭壓緊，再請你聽一次。這回雜音終於消失，他才回到桌邊在清單上打了個勾。"
           },
           { kind: 'narration', text: "他把清單翻到背面，補上明天搬運時要先拿的兩件器材，寫完才看了眼牆上的時鐘。" },
           {
@@ -1043,7 +1043,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
         "scene": [
           {
             "kind": "narration",
-            "text": "器材確認完畢，諺明哥把最後一條線收進袋子，這才把工具箱扣上。"
+            "text": "器材確認完畢，諺明哥把最後一條線收進袋子，扣上工具箱後，才拿起桌角那包耳塞放到你手邊。"
           },
           { kind: 'narration', text: "他看見桌角那包耳塞，拿起來放到你手邊，提醒你明天站在音箱附近時記得帶著。" },
           {
