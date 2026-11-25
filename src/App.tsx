@@ -1790,6 +1790,7 @@ function App() {
   const smsMessagesRef = useRef(smsMessages)
   const [storyStage, setStoryStage] = useState<StoryStage>(() => {
     const saved = localStorage.getItem('mayday-story-stage')
+    if (saved === 'march28-diary' && localStorage.getItem('mayday-march28-park-choice') === 'stay') return 'march28-park-stay'
     const savedSpringStage = saved === 'paused' ? localStorage.getItem('mayday-resume-stage') : saved
     const resetWenSpringSmsStage = localStorage.getItem('mayday-spring-wen-sms-content-version') !== 'hot-cocoa-v3'
       && localStorage.getItem('mayday-spring-sms-target') === 'wen'
@@ -2398,7 +2399,7 @@ function App() {
         : storyStage === 'dinner' ? '19:10'
           : storyStage === 'after-dinner' ? '20:35'
             : storyStage === 'ending' || storyStage === 'greetings' ? '21:18'
-              : storyStage === 'completed' ? (localStorage.getItem('mayday-march28-day-complete') === 'true' ? '18:45' : localStorage.getItem('mayday-february-day-complete') === 'true' ? '22:30' : localStorage.getItem('mayday-winter-break-day-complete') === 'true' ? '00:30' : localStorage.getItem('mayday-year-end-day-complete') === 'true' ? '00:40' : '21:18')
+              : storyStage === 'completed' ? (localStorage.getItem('mayday-march28-park-choice') === 'stay' && localStorage.getItem('mayday-march28-day-complete') === 'true' ? '05:40' : localStorage.getItem('mayday-march28-day-complete') === 'true' ? '18:45' : localStorage.getItem('mayday-february-day-complete') === 'true' ? '22:30' : localStorage.getItem('mayday-winter-break-day-complete') === 'true' ? '00:30' : localStorage.getItem('mayday-year-end-day-complete') === 'true' ? '00:40' : '21:18')
               : storyStage === 'classroom' || storyStage === 'masa-checkin' || storyStage === 'stone-checkin' ? '10:12'
                 : storyStage === 'ice-date' ? '16:20'
                   : storyStage === 'stroll' ? '17:05'
@@ -2453,7 +2454,7 @@ function App() {
   const isWinterBreak = ['winter-break-practice', 'winter-break-gig', 'winter-break-pickup', 'winter-break-bus-choice', 'winter-break-bus', 'winter-diary'].includes(effectiveDateStage) || isFebruary || localStorage.getItem('mayday-winter-break-day-complete') === 'true'
   const isYearEnd = ['year-end-intro', 'year-end-invite-notification', 'year-end-invite-picker', 'year-end-shopping-notification', 'year-end-shopping-chat', 'year-end-shopping', 'year-end-fireworks', 'year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary'].includes(effectiveDateStage) || localStorage.getItem('mayday-year-end-day-complete') === 'true'
   const isNewYear = ['year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary'].includes(effectiveDateStage) || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-year-end-day-complete') === 'true' && localStorage.getItem('mayday-winter-break-day-complete') !== 'true')
-  const saveGameDate = isMarch28 ? '1997.03.28' : isSpringTerm ? '1997.02.17' : isFebruary ? '1997.02.03' : isWinterBreak ? '1997.01.22' : isWinterExam ? (effectiveDateStage === 'winter-exam-tutoring' ? '1997.01.08' : '1997.01.07') : isNewYear ? '1997.01.01' : isYearEnd ? '1996.12.31' : isNextMonth ? '1996.12.14' : isMonthLater ? '1996.11.16' : isSecondDay ? '1996.10.16' : '1996.10.15'
+  const saveGameDate = effectiveDateStage === 'completed' && localStorage.getItem('mayday-march28-park-choice') === 'stay' && localStorage.getItem('mayday-march28-day-complete') === 'true' ? '1997.03.29' : isMarch28 ? '1997.03.28' : isSpringTerm ? '1997.02.17' : isFebruary ? '1997.02.03' : isWinterBreak ? '1997.01.22' : isWinterExam ? (effectiveDateStage === 'winter-exam-tutoring' ? '1997.01.08' : '1997.01.07') : isNewYear ? '1997.01.01' : isYearEnd ? '1996.12.31' : isNextMonth ? '1996.12.14' : isMonthLater ? '1996.11.16' : isSecondDay ? '1996.10.16' : '1996.10.15'
   const [calendarYear, calendarMonth, calendarDay] = saveGameDate.split('.')
   const calendarDate = new Date(Number(calendarYear), Number(calendarMonth) - 1, Number(calendarDay))
   const calendarWeekday = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'][calendarDate.getDay()]
