@@ -999,7 +999,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
             "kind": "narration",
             "text": "聽完你的描述，他回到音箱旁沿著線材檢查，最後在一個接頭前停下。接頭有些鬆，他重新壓緊，又把線的位置理順，才站起來準備再試一次。"
           },
-          { kind: 'narration', text: "這次聲音穩了，沒有再冒出雜音。諺明哥回到器材箱旁，在清單上逐項打勾，又翻到背面寫下明天要優先搬的器材。寫到最後，他瞥了眼牆上的時鐘，像是在心裡估算明早得提早多久出門。" },
+          { kind: 'narration', text: "這次聲音穩了，沒有再冒出雜音。諺明哥回到器材箱旁，在清單上逐項打勾，又翻到背面確認今晚裝車的順序。寫到最後，他瞥了眼牆上的時鐘，像是在估算還要多久才能把器材全數搬上車。" },
           {
             "kind": "dialogue",
             "speaker": "劉諺明",
@@ -1011,7 +1011,7 @@ export const march28Routes: Record<March28CharacterId, March28Route> = {
             "text": "「今晚能先確認的，就先準備好。」"
           }
         ],
-        "prompt": "明天的准备",
+        "prompt": "今晚裝車前的準備",
         "choices": [
           {
             "text": "「你连这么小的地方都记得，好厉害。」",
