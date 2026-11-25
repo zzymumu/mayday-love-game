@@ -542,7 +542,7 @@ export function March29Show({
         {progress.phase === 'interaction' && selectedRoute && currentRound && (
           <>
             <h2 className="story-scene-title">和{selectedRoute.name}待一會兒</h2>
-            <March29Blocks blocks={selectedRoute.intro} />
+            {progress.roundIndex === 0 && <March29Blocks blocks={selectedRoute.intro} />}
             <div className="reunion-pause-note">第 {progress.roundIndex + 1}／3 輪互動</div>
             <p className="narrative-paragraph">{currentRound.prompt}</p>
             {selectedChoice ? (
@@ -555,6 +555,7 @@ export function March29Show({
                   <span>{selectedRoute.name}</span>
                   <p>{'「' + selectedChoice.response + '」'}</p>
                 </div>
+                {progress.roundIndex === 2 && <March29Blocks blocks={selectedRoute.ending} />}
                 <div className="story-action-bar story-inline-action">
                   <button className="story-primary-button" onClick={continueInteraction}>
                     {progress.roundIndex < 2 ? '繼續聊下去' : '去看其他樂團'} <ChevronRight size={15} />
