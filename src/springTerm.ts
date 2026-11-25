@@ -1005,8 +1005,8 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
     openings: [
       springDailySmsRound('', [
         { text: '「我哪有！我只是太想喝了嘛。」', response: '「最好是啦，連喝個東西都等不了。」' },
-        { text: '「那你下次要記得提醒我。」', response: '「蛤？喝東西還要我提醒喔？……好啦，下次記得先吹涼。」', affection: 3 },
-        { text: '「你不要講我，你自己肯定也會這樣！」', response: '「我才不會咧，至少我知道燙的東西要先放一下。」' },
+        { text: '「那你下次要记得提醒我。」', response: '「蛤？喝東西還要我提醒喔？……好啦，下次記得先吹涼。」', affection: 3 },
+        { text: '「你不要讲我，你自己肯定也会这样！」', response: '「我才不會咧，至少我知道燙的東西要先放一下。」' },
       ]),
     ],
     tracks: [
