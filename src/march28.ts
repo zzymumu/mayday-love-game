@@ -1,7 +1,11 @@
 export type March28CharacterId = 'wen' | 'ashin' | 'stone' | 'masa' | 'yanming'
 export type March28Block = { kind: 'narration' | 'dialogue' | 'aside'; speaker?: string; text: string }
 export type March28Choice = { text: string; response: string; affection: number }
-export type March28Round = { scene: March28Block[]; prompt: string; choices: March28Choice[] }
+export type March28Round = { scene: March28Block[
+      { kind: 'narration', text: '練團室裡比平常安靜，地上卻比平常熱鬧。導線從音箱旁一路繞到控制台，幾個支架靠著牆排好，器材箱蓋子全都打開；窗邊還放著明天要帶走的清單和一捲沒用完的膠帶。諺明哥蹲在地上，正把一個接頭轉過來又轉回去，仔細確認是不是接觸不良。' },
+      { kind: 'narration', text: '你推門時不小心碰到門邊的鼓袋，發出一聲悶響。諺明哥抬頭看見你，先笑著點了點頭，隨即把手裡那條線往旁邊收好，還用手指了指地上，提醒你腳邊有一段沒收起來的導線。' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '先等一下喔，這條線接上去會有雜音，我找一下是哪裡出問題。' },
+    ]; prompt: string; choices: March28Choice[] }
 export type March28Route = {
   title: string
   place: string
