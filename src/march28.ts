@@ -43,7 +43,7 @@ export const march28ParkIntroBlocks: March28Block[] = [
 ]
 
 export const march28ParkStayIntroBlocks: March28Block[] = [
-  { kind: 'narration', text: '你說想留下來陪他時，阿信停了一下，像是沒料到你會這麼說。他看了看你。' },
+  { kind: 'narration', text: '你說想留下來陪他時，阿信愣了一下，像是沒料到你會這麼說。他看了看你。' },
   { kind: 'dialogue', speaker: '陳信宏', text: '「妳真的要留下來喔？可是這裡很無聊欸，而且蚊子很多。」' },
   { kind: 'dialogue', speaker: '你', text: '「那正好啊，我可以陪你一起打蚊子。」' },
   { kind: 'narration', text: '阿信肩膀終於鬆下來，眼睛也亮了一點，剛才那點疲倦像是散開了些。他把身邊的位置讓給你，等你坐下來，才稍稍往旁邊挪了挪。長椅沒有多寬，你們的手臂隔著一點點距離，偶爾隨著動作輕輕碰到。' },
@@ -76,13 +76,13 @@ export const march28ParkStayRounds: March28ParkStayRound[] = [
       { kind: 'narration', text: '沒過多久，耳邊又傳來一聲嗡嗡。你和阿信幾乎同時抬手，兩隻手在半空中輕輕碰了一下。你們都停住，誰也沒拍下去。' },
       { kind: 'dialogue', speaker: '陳信宏', text: '「欸，妳也聽到了喔？」' },
       { kind: 'dialogue', speaker: '你', text: '「有啊！可是牠到底在哪裡啦？」' },
-      { kind: 'narration', text: '你們同時收回手，對看了一眼。黑暗裡根本看不見蚊子的影子，只能靠那一點聲音猜方向。阿信又聽了一下，忽然伸手想替你擋開耳邊的嗡鳴，手背卻輕輕擦過你的手腕。' },
+      { kind: 'narration', text: '你們同時收回手，對看了一眼。黑暗裡根本看不見蚊子的影子，只能靠那一點聲音猜方向。阿信又聽了一下，忽然伸手想替你擋開耳邊的嗡鳴，手背從你耳邊掠過，差點碰到你的耳朵。' },
       { kind: 'narration', text: '他像是也察覺到了，手指停了一瞬，才慢慢收回去，聲音比剛才更輕。' },
       { kind: 'dialogue', speaker: '陳信宏', text: '「不好意思喔，有沒有碰痛妳？」' },
     ],
     prompt: '又有蚊子靠近',
     choices: [
-      { text: '「沒有啦，你剛剛是在幫我趕蚊子嗎？」', response: '「對啊，不然牠一直在妳旁邊繞。」\n他沒有立刻接話，視線卻沒有移開：「我看不到牠，只好先幫妳擋一下。結果好像連妳的手都一起碰到了。」', affection: 3 },
+      { text: '「沒有啦，你剛剛是在幫我趕蚊子嗎？」', response: '「對啊，不然牠一直在妳旁邊繞。」', affection: 3 },
       { text: '「你剛剛也被牠嚇到了吧？」', response: '「有一點啦。」\n他很老實地承認，把手收回膝上，指尖在褲面上蹭了蹭：「剛剛那個聲音突然跑到耳朵旁邊，我也差點拍下去。」\n停了一下，他又小聲補充：「還好沒有拍到妳。」', affection: 2 },
       { text: '「沒事，你幫我趕走牠就好。」', response: '「好啊。」\n他答得很輕，身子往你這邊稍稍側過來：「那妳先坐著，我聽聽看牠跑去哪裡了。」\n他認真聽了幾秒，最後無奈地嘆了口氣：「可是牠真的很會躲欸。」', affection: 3 },
     ],
