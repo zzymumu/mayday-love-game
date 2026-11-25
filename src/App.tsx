@@ -7562,13 +7562,12 @@ function App() {
                   <div className="story-narrative-scroll">
                     <div className="story-kicker">ONE MONTH LATER</div><h2 className="story-scene-title">三月一下子就過去了</h2>
                     <StoryBlocks blocks={[
-                      { kind: 'narration', text: '二月十七日之後，日子像被人偷偷按了快轉。你每天在台大上課、抄筆記、跑總圖找資料，為了報告在影印店排隊，跟同學約在小福吃飯，偶爾還得趕著去系上幫忙。課表排得滿滿的，真正能喘口氣的時候，通常是走回教室的那幾分鐘。' },
-                      { kind: 'narration', text: '三月的台北忽冷忽熱，早上出門還得套外套，中午又熱得想把袖子捲起來。你和同學交換課堂筆記、在 BBS 上留言、為了小組報告分工，也開始習慣把週末留一點時間給自己。' },
+                      { kind: 'narration', text: '二月十七日之後，日子就像被課表推著往前跑。早上常常是踩著鐘聲進教室，手裡還抓著沒吃完的飯糰；下課抱著講義往總圖走，為了找一篇資料在書架間繞來繞去，最後又在影印店門口排起隊。小組報告、課堂筆記、老師臨時加的閱讀範圍，零零碎碎把三月塞得很滿。偶爾走到教室門口才發現筆記抄漏一整段，只好趁下一堂課前抓同學借來補，忙得連抱怨都要挑有空的時候。' },
+                      { kind: 'narration', text: '三月的天氣也很會捉弄人，早上出門覺得風涼，到了中午又熱得想把外套塞進書包。系館走廊常有人抱著講義蹲在牆邊討論報告，總圖裡翻頁聲和打字聲混在一起；你有時候跟同學約在小福吃飯，明明說好只休息半小時，聊著聊著又拖到下一堂課快開始。晚上回宿舍或回家，才想起白天還有一件事忘了做，趕緊把待辦事項補在筆記本最後一頁。' },
                       { kind: 'narration', text: march28MonthRecap[currentMarch28HighestAffection] },
-                      { kind: 'narration', text: '瑪莎和石頭因為之前留級，今年仍然是高三生。白天要回學校上課、考試和交作業，放學後才趕去打工或練團；有時候你聽他們抱怨考卷，才想起大家雖然走在不同的生活節奏裡，卻都忙得差不多。' },
-                      { kind: 'narration', text: '五月天也為明天的演出忙了好一陣子。器材、線材、曲目和排練一樣都不能少。今天是三月二十八日，明天就是大安森林公園的野台開唱。' },
+                      { kind: 'narration', text: '瑪莎和石頭因為之前留級，今年仍然是高三生。白天得乖乖回學校上課、考試、交作業，放學後才趕去打工或練團。有時候你聽瑪莎抱怨數學考卷，還沒來得及安慰，他就先嫌你笑得太大聲；石頭則常常把制服換成工作圍裙，忙完一輪客人，還得抽空翻兩頁講義。你們的課表不一樣，見面的時間也得一點點擠，但每次聽他們講起學校的事，都覺得大家好像只是被不同的鐘聲追著跑。' },
+                      { kind: 'narration', text: '五月天這陣子也沒閒著。練團室裡常常一待就是好幾個鐘頭，曲目要再順一次，器材要檢查，線材和支架也得提前整理好。你偶爾聽他們聊起明天的演出，才發現大家嘴上說得輕鬆，手邊卻各自忙個不停。今天終於來到三月二十八日；明天，大安森林公園，野台開唱。' },
                     ]} />
-                    <div className="reunion-pause-note">這個月和你互動最多、目前好感度最高的是：{characterNames[currentMarch28HighestAffection]}。這段回憶會依照你的實際好感度變化。</div>
                     <div className="spring-after-choice-list">
                       <div className="spring-after-choice-heading">白天想去哪裡？選一個地方逛逛</div>
                       {march28CharacterOrder.map((character) => (
@@ -7624,9 +7623,9 @@ function App() {
                   <div className="story-narrative-scroll">
                     <div className="story-kicker">THE NIGHT BEFORE</div><h2 className="story-scene-title">明天就要上場了</h2>
                     <StoryBlocks blocks={[
-                      { kind: 'narration', text: '離開' + march28Routes[march28VisitCharacter].place + '時，天色已經慢慢暗下來。你回家把明天要帶的東西先整理好，水、錢包和外套都放進包裡，還特地確認了一次鬧鐘。' },
-                      { kind: 'narration', text: '今天遇見' + characterNames[march28VisitCharacter] + '的那幾句話，偶爾又從腦袋裡冒出來。你一邊整理東西，一邊想著明天的現場會是什麼樣子。' },
-                      { kind: 'narration', text: '1997 年 3 月 29 日，大安森林公園。野台開唱。' },
+                      { kind: 'narration', text: '離開' + march28Routes[march28VisitCharacter].place + '時，天色已經暗了一截。路邊店家的燈一盞盞亮起來，你沿著騎樓慢慢往回走，腦袋裡還留著剛才那段對話。回到家後，你把包包放到椅背上，才開始整理明天要帶的東西：錢包、零錢、學生證、外套和水，一樣樣攤在桌上，確認完又重新塞回去一次。' },
+                      { kind: 'narration', text: '等東西都收好了，你坐在床沿歇了一會兒，才發現自己還在回想今天遇見' + characterNames[march28VisitCharacter] + '時的那些小事。明明只是平常的一個下午，卻因為幾句玩笑、幾個不經意的動作，變得有點值得記住。你把明天要穿的衣服也先找出來，免得早上又手忙腳亂。' },
+                      { kind: 'narration', text: '床頭的鬧鐘被你往前調了幾分鐘。明天是三月二十九日，大安森林公園的野台開唱。你躺下來時還忍不住想了一下：不知道明天會不會很熱鬧，也不知道他們上台前會不會緊張。算了，先睡，明天就知道了。' },
                     ]} />
                   </div>
                   <div className="story-action-bar"><button className="story-primary-button" onClick={finishMarch28Day}>收起今天，明天見 <ChevronRight size={15} /></button></div>
