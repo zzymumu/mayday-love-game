@@ -2007,6 +2007,20 @@ function App() {
       }
     }).sort((left, right) => right.messages - left.messages || right.save.savedAt.localeCompare(left.save.savedAt)) : []
 
+    let savedSpringSmsReplies: unknown = []
+    try { savedSpringSmsReplies = JSON.parse(localStorage.getItem('mayday-spring-sms-replies') ?? '[]') } catch { savedSpringSmsReplies = [] }
+    const legacyCompletedSpringFreeChat =
+      localStorage.getItem('mayday-spring-sms-mode') === 'free' &&
+      localStorage.getItem('mayday-spring-sms-opening-sent') === 'true' &&
+      localStorage.getItem('mayday-spring-sms-replied') === 'true' &&
+      Array.isArray(savedSpringSmsReplies) && savedSpringSmsReplies.length === 5 &&
+      !localStorage.getItem('mayday-spring-sms-target') &&
+      !localStorage.getItem('mayday-spring-free-chat-return-stage')
+    const canRestoreCompletedSpringFreeChatArchive =
+      (localStorage.getItem('mayday-spring-free-chat-complete') === 'true' || legacyCompletedSpringFreeChat) &&
+      localStorage.getItem('mayday-spring-sms-mode') === 'free' &&
+      localStorage.getItem('mayday-spring-sms-opening-sent') === 'true'
+
     const bestArchive = savedArchives[0]
     if (bestArchive) {
       const restored: Record<CharacterId, SmsMessage[]> = { ...current }
@@ -2023,6 +2037,7 @@ function App() {
           ? bestArchive.archived[character]!.filter((message): message is SmsMessage =>
               Boolean(message && message.date === '1997年2月17日・晚上' &&
                 typeof message.id === 'string' && typeof message.text === 'string' &&
+                (canRestoreCompletedSpringFreeChatArchive || !message.time?.startsWith('22:')) &&
                 (message.from === 'me' || greetingOrder.includes(message.from as CharacterId))))
           : []
         const existing = restored[character] ?? []
