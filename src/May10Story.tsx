@@ -738,7 +738,7 @@ export function May10Story({
             {selectedChoice ? (
               <>
                 <div className="reunion-pause-note">你選擇的回應</div>
-                <p className="narrative-paragraph">{selectedChoice.text}</p>
+                <Blocks blocks={[d('你', selectedChoice.text)]} />
                 <Blocks blocks={selectedChoice.response} />
                 {progress.roundIndex === 2 && <Blocks blocks={route.tease} />}
                 <div className="story-action-bar story-inline-action">
@@ -792,7 +792,7 @@ export function May10Story({
             {selectedJealousyChoice ? (
               <>
                 <div className="reunion-pause-note">你選擇的回應</div>
-                <p className="narrative-paragraph">{selectedJealousyChoice.text}</p>
+                <Blocks blocks={[d('你', selectedJealousyChoice.text)]} />
                 <Blocks blocks={selectedJealousyChoice.response} />
                 <div className="story-action-bar story-inline-action">
                   <button className="story-primary-button" onClick={continueJealousyRound}>
