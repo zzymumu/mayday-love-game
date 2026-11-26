@@ -1060,7 +1060,6 @@ export function JuneStudyStory({
             <Blocks blocks={currentRound.blocks} />
             {selectedChoice ? (
               <>
-                <div className="reunion-pause-note">你選擇的回應</div>
                 <Blocks blocks={[d('你', selectedChoice.text)]} />
                 <Blocks blocks={selectedChoice.response} />
                 <div className="story-action-bar story-inline-action">
