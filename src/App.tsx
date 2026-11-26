@@ -8538,6 +8538,21 @@ function App() {
                               <strong>今天想找誰聊一聊？</strong>
                               <p>每個人的回覆都會接著你們最近真正發生的事情，不會把沒一起經歷過的事當成回憶。</p>
                             </div>
+                            {(springFreeChatArchiveSlots.length > 0 || springChatRecoveryFeedback) && (
+                              <div className="free-chat-archive-recovery">
+                                <div className="sms-inbox-heading">
+                                  <strong>找回之前的自由聊天</strong>
+                                  <span>只恢復訊息</span>
+                                </div>
+                                <p>選擇舊存檔，只會把 2 月 17 日的訊息補回收件匣，不會讀取或覆蓋目前的劇情進度。</p>
+                                {springFreeChatArchiveSlots.map((archive) => (
+                                  <button className="story-primary-button" key={archive.slot} onClick={() => restoreSpringFreeChatHistoryFromSlot(archive.slot)}>
+                                    從存檔 {archive.slot} 恢復 {archive.count} 則（{archive.characters}） <ChevronRight size={15} />
+                                  </button>
+                                ))}
+                                {springChatRecoveryFeedback && <p role="status">{springChatRecoveryFeedback}</p>}
+                              </div>
+                            )}
                             {springCharacterOrder.map((id) => {
                               const person = characterInfo.find((item) => item.id === id)!
                               return (
