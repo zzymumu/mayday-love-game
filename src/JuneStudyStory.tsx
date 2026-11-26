@@ -359,7 +359,7 @@ const routes: Record<JuneStudyCharacter, Route> = {
         n('阿信赶紧把图纸收好，你也把讲义叠起来。'),
         n('你低头检查有没有漏掉东西，忽然发现笔记本里多了一张折好的小纸片。'),
         n('展开以后，是一个抱着厚厚一叠书、头发翘起来的小人。旁边还写着一行字：'),
-        d('紙條', '期末考加油！'),
+        n('「期末考加油！」'),
         n('你抬头看向阿信，他正在假装认真整理自己的书包。'),
       ], [
         c('这个是专门画给我的喔？', 2, [
@@ -815,12 +815,10 @@ function Blocks({ blocks }: { blocks: Block[] }) {
 }
 
 export function JuneStudyStory({
-  affection,
   onAddAffection,
   onClockChange,
   onFinish,
 }: {
-  affection: Record<JuneStudyCharacter, number>
   onAddAffection: (character: JuneStudyCharacter, amount: number) => void
   onClockChange: (time: string) => void
   onFinish: (selection: JuneStudySelection) => void
