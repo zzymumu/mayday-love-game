@@ -5821,9 +5821,12 @@ function App() {
     localStorage.setItem('mayday-june-free-chat-replied', 'false')
     setJuneFreeChatReplies([])
     localStorage.setItem('mayday-june-free-chat-replies', '[]')
+    const openingMessages = script.openingMessages ?? [script.opening]
+    const openingReply = script.openingReply ?? (script.rounds[0].incoming ? [script.rounds[0].incoming] : [])
     appendChatMessages(character, [
-      { from: 'me', text: script.opening, time: '17:16' },
-      { from: character, text: script.rounds[0].incoming, time: '17:17' },
+      ...openingMessages.map((text) => ({ from: 'me' as const, text, time: '17:16' })),
+      ...openingReply.map((text) => ({ from: character, text, time: '17:17' })),
+      ...(script.rounds[0].prompt ? [{ from: 'me' as const, text: script.rounds[0].prompt, time: '17:18' }] : []),
     ], '1997年6月15日・傍晚')
     setSelectedSmsThread(character)
     setActiveApp('messages')
@@ -5838,10 +5841,16 @@ function App() {
     const minute = 18 + juneFreeChatRound * 2
     const time = '17:' + String(minute).padStart(2, '0')
     const nextTime = '17:' + String(minute + 1).padStart(2, '0')
+    const nextRound = juneFreeChatRound < 4 ? script.rounds[juneFreeChatRound + 1] : null
+    const nextPromptMessages = nextRound?.prompt
+      ? [{ from: 'me' as const, text: nextRound.prompt, time: nextTime }]
+      : nextRound?.incoming
+        ? [{ from: juneFreeChatTarget, text: nextRound.incoming, time: nextTime }]
+        : []
     appendChatMessages(juneFreeChatTarget, [
       { from: 'me', text: choice.text, time },
       ...choice.response.map((text) => ({ from: juneFreeChatTarget, text, time })),
-      ...(juneFreeChatRound < 4 ? [{ from: juneFreeChatTarget, text: script.rounds[juneFreeChatRound + 1].incoming, time: nextTime }] : []),
+      ...nextPromptMessages,
     ], '1997年6月15日・傍晚')
     const nextReplies = [...juneFreeChatReplies, choiceIndex]
     setJuneFreeChatReplies(nextReplies)
