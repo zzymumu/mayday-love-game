@@ -3180,13 +3180,13 @@ function App() {
 
     const next: Record<CharacterId, SmsMessage[]> = { ...chatMessagesRef.current }
     const dateOrder = (value: string) => {
-      const full = value.match(/(\\d{4})年(\\d{1,2})月(\\d{1,2})日/)
+      const full = value.match(/(\d{4})年(\d{1,2})月(\d{1,2})日/)
       if (full) return Number(full[1]) * 10000 + Number(full[2]) * 100 + Number(full[3])
-      const short = value.match(/(\\d{1,2})月(\\d{1,2})日/)
+      const short = value.match(/(\d{1,2})月(\d{1,2})日/)
       return short ? 1996 * 10000 + Number(short[1]) * 100 + Number(short[2]) : 0
     }
     const messageOrder = (message: SmsMessage) => {
-      const match = message.id.match(/^[^-]+-(\\d+)-(\\d+)$/)
+      const match = message.id.match(/^[^-]+-(\d+)-(\d+)$/)
       return match ? Number(match[1]) * 100 + Number(match[2]) : 0
     }
     const isDuplicate = (left: SmsMessage, right: SmsMessage) =>
