@@ -1938,19 +1938,15 @@ function App() {
   const [chatMessages, setChatMessages] = useState<Record<CharacterId, SmsMessage[]>>(() => {
     // Keep the refreshed conversation copy, but restore the player's original 17 February
     // messages automatically from the most complete existing save slot.
+    const springSmsAlreadyStarted =
+      localStorage.getItem('mayday-spring-sms-event-started') === 'true' ||
+      localStorage.getItem('mayday-spring-sms-event-complete') === 'true' ||
+      Boolean(localStorage.getItem('mayday-spring-sms-target')) ||
+      localStorage.getItem('mayday-spring-sms-opening-sent') === 'true' ||
+      localStorage.getItem('mayday-spring-sms-replied') === 'true'
     if (localStorage.getItem('mayday-spring-sms-content-version') !== 'daily-chat-v6') {
       localStorage.setItem('mayday-spring-sms-content-version', 'daily-chat-v6')
-      localStorage.removeItem('mayday-spring-sms-target')
-      localStorage.setItem('mayday-spring-sms-round', '0')
-      localStorage.setItem('mayday-spring-sms-replied', 'false')
-      localStorage.setItem('mayday-spring-sms-opening-sent', 'false')
-      localStorage.removeItem('mayday-spring-sms-opening-choice')
-      localStorage.setItem('mayday-spring-sms-replies', '[]')
-      localStorage.setItem('mayday-spring-sms-mode', 'day')
-    }
-    if (localStorage.getItem('mayday-spring-wen-sms-content-version') !== 'hot-cocoa-v3') {
-      localStorage.setItem('mayday-spring-wen-sms-content-version', 'hot-cocoa-v3')
-      if (localStorage.getItem('mayday-spring-sms-target') === 'wen') {
+      if (!springSmsAlreadyStarted) {
         localStorage.removeItem('mayday-spring-sms-target')
         localStorage.setItem('mayday-spring-sms-round', '0')
         localStorage.setItem('mayday-spring-sms-replied', 'false')
@@ -1959,6 +1955,10 @@ function App() {
         localStorage.setItem('mayday-spring-sms-replies', '[]')
         localStorage.setItem('mayday-spring-sms-mode', 'day')
       }
+    }
+    if (localStorage.getItem('mayday-spring-wen-sms-content-version') !== 'hot-cocoa-v3') {
+      localStorage.setItem('mayday-spring-wen-sms-content-version', 'hot-cocoa-v3')
+      // A content refresh must never reset a selected/started one-time SMS event.
     }
 
     const saved = localStorage.getItem('mayday-chat-messages')
