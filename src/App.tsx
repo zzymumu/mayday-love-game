@@ -5887,7 +5887,12 @@ function App() {
         return missing.length ? [{ character, count: missing.length }] : []
       })
       const count = characters.reduce((total, item) => total + item.count, 0)
-      return count ? [{ slot, count, characters: characters.map((item) => characterNames[item.character] + ' ' + item.count + ' 則').join('、') }] : []
+      return count ? [{
+        slot,
+        count,
+        firstCharacter: characters[0]?.character,
+        characters: characters.map((item) => characterNames[item.character] + ' ' + item.count + ' 則').join('、'),
+      }] : []
     } catch {
       return []
     }
@@ -8546,8 +8551,11 @@ function App() {
                                 </div>
                                 <p>選擇舊存檔，只會把 2 月 17 日的訊息補回收件匣，不會讀取或覆蓋目前的劇情進度。</p>
                                 {springFreeChatArchiveSlots.map((archive) => (
-                                  <button className="story-primary-button" key={archive.slot} onClick={() => restoreSpringFreeChatHistoryFromSlot(archive.slot)}>
-                                    從存檔 {archive.slot} 恢復 {archive.count} 則（{archive.characters}） <ChevronRight size={15} />
+                                  <button className="story-primary-button" key={archive.slot} onClick={() => {
+                                    restoreSpringFreeChatHistoryFromSlot(archive.slot)
+                                    if (archive.firstCharacter) setSelectedSmsThread(archive.firstCharacter)
+                                  }}>
+                                    從存檔 {archive.slot} 恢復並查看 {archive.count} 則（{archive.characters}） <ChevronRight size={15} />
                                   </button>
                                 ))}
                                 {springChatRecoveryFeedback && <p role="status">{springChatRecoveryFeedback}</p>}
@@ -8598,8 +8606,11 @@ function App() {
                                 </div>
                                 <p>我在舊存檔裡找到先前的聊天紀錄。選擇存檔後，只會把 2 月 17 日的訊息補回收件匣，不會讀取或覆蓋目前的劇情進度。</p>
                                 {springFreeChatArchiveSlots.map((archive) => (
-                                  <button className="story-primary-button" key={archive.slot} onClick={() => restoreSpringFreeChatHistoryFromSlot(archive.slot)}>
-                                    從存檔 {archive.slot} 恢復 {archive.count} 則（{archive.characters}） <ChevronRight size={15} />
+                                  <button className="story-primary-button" key={archive.slot} onClick={() => {
+                                    restoreSpringFreeChatHistoryFromSlot(archive.slot)
+                                    if (archive.firstCharacter) setSelectedSmsThread(archive.firstCharacter)
+                                  }}>
+                                    從存檔 {archive.slot} 恢復並查看 {archive.count} 則（{archive.characters}） <ChevronRight size={15} />
                                   </button>
                                 ))}
                                 {springChatRecoveryFeedback && <p role="status">{springChatRecoveryFeedback}</p>}
