@@ -2383,7 +2383,9 @@ function App() {
   const [springSmsMode, setSpringSmsMode] = useState<'day' | 'free'>(() => localStorage.getItem('mayday-spring-sms-mode') === 'free' ? 'free' : 'day')
   const [springFreeChatStarted, setSpringFreeChatStarted] = useState(() => {
     if (localStorage.getItem('mayday-spring-free-chat-started') === 'true' || localStorage.getItem('mayday-spring-free-chat-complete') === 'true') return true
-    return localStorage.getItem('mayday-spring-sms-mode') === 'free' && Boolean(localStorage.getItem('mayday-spring-sms-target'))
+    // The mode switches to "free" as soon as this one-off event starts,
+    // including the picker stage before a character has been selected.
+    return localStorage.getItem('mayday-spring-sms-mode') === 'free'
   })
   const [springFreeChatComplete, setSpringFreeChatComplete] = useState(() => {
     if (localStorage.getItem('mayday-spring-free-chat-complete') === 'true') return true
