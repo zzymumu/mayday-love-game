@@ -12,14 +12,6 @@ export type JuneDiaryData = {
   text: string
 }
 
-const chatNames: Record<JuneStudyCharacter, string> = {
-  wen: '怪獸',
-  ashin: '阿信',
-  masa: '瑪莎',
-  stone: '石頭',
-  yanming: '諺明哥',
-}
-
 const choiceAt = (choices: number[], index: number) =>
   Number.isInteger(choices[index]) && choices[index] >= 0 && choices[index] <= 2 ? choices[index] : 1
 
@@ -169,7 +161,6 @@ function chatEntry(character: JuneStudyCharacter, choices: number[]): string[] {
 }
 
 export function buildJuneDiaryData(selection: JuneDiarySelection): JuneDiaryData {
-  const chatName = chatNames[selection.chatCharacter]
   const paragraphs = [
     '六月十五日，星期日。今天熱得我真的很想把自己塞進冰箱。五月十日之後一眨眼就到了六月中旬，期末報告也終於追到眼前。最近每天抱著講義跑來跑去，連去買個東西都恨不得把參考書一起帶上，今天總算逼自己坐下來好好處理了。',
     ...studyEntry(selection.studyCharacter, selection.studyChoices),
