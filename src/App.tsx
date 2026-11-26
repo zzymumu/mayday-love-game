@@ -5025,6 +5025,7 @@ function App() {
       ? firstRound.incomingMessages
       : firstRound.incoming ? [firstRound.incoming] : []
     const firstRoundStartMinute = 8 + openingEntries.length
+    const springSmsHistoryDate = springSmsMode === 'free' ? '1997年3月28日・晚上' : '1997年2月17日・晚上'
     appendChatMessages(springSmsTarget, [
       ...openingEntries,
       ...(firstRound.outgoing ? [{
@@ -5037,7 +5038,8 @@ function App() {
         text,
         time: '21:' + String(firstRoundStartMinute + (firstRound.outgoing ? 1 : 0) + index).padStart(2, '0'),
       })),
-    ], '1997年2月17日・晚上')
+    ], springSmsHistoryDate)
+    if (springSmsMode === 'day') localStorage.setItem('mayday-spring-sms-history-restore-v1', 'true')
     addRouteAffection(springSmsTarget, opening.affection)
     setSpringSmsOpeningChoice(choiceIndex)
     localStorage.setItem('mayday-spring-sms-opening-choice', String(choiceIndex))
@@ -5079,11 +5081,12 @@ function App() {
         time: '21:' + String(minute + choice.response.length + (nextRound.outgoing ? 2 : 1) + index).padStart(2, '0'),
       })),
     ] : []
+    const springSmsHistoryDate = springSmsMode === 'free' ? '1997年3月28日・晚上' : '1997年2月17日・晚上'
     appendChatMessages(springSmsTarget, [
       { from: 'me', text: choice.text, time: '21:' + String(minute).padStart(2, '0') },
       ...choice.response.map((text, index) => ({ from: springSmsTarget, text, time: '21:' + String(minute + index + 1).padStart(2, '0') })),
       ...nextRoundMessages,
-    ], '1997年2月17日・晚上')
+    ], springSmsHistoryDate)
     setSpringSmsReplies(nextReplies)
     localStorage.setItem('mayday-spring-sms-replies', JSON.stringify(nextReplies))
     addRouteAffection(springSmsTarget, choice.affection)
