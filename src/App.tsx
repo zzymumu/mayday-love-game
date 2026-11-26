@@ -4946,7 +4946,8 @@ function App() {
   }
 
   const openSpringSmsPicker = () => {
-    if (saveGameDate !== '1997.02.17' || springSmsEventComplete) return
+    if (saveGameDate !== '1997.02.17' || springSmsEventComplete ||
+      localStorage.getItem('mayday-spring-sms-event-complete') === 'true') return
     if (springSmsEventStarted && springSmsTarget) {
       setSelectedSmsThread(springSmsTarget)
       setActiveApp('messages')
@@ -5029,7 +5030,10 @@ function App() {
   const chooseSpringSmsTarget = (character: SpringCharacterId) => {
     if (storyStage !== 'spring-sms-picker' || effectiveDateStage !== 'spring-sms-picker' ||
       saveGameDate !== '1997.02.17' || currentTime < '21:00' ||
-      springSmsEventStarted || springSmsEventComplete || springSmsTarget) return
+      springSmsEventStarted || springSmsEventComplete || springSmsTarget ||
+      localStorage.getItem('mayday-spring-sms-event-started') === 'true' ||
+      localStorage.getItem('mayday-spring-sms-event-complete') === 'true' ||
+      localStorage.getItem('mayday-spring-sms-target')) return
     setSpringSmsEventStarted(true)
     localStorage.setItem('mayday-spring-sms-event-started', 'true')
     setSpringSmsTarget(character)
@@ -5051,7 +5055,10 @@ function App() {
   }
 
   const chooseSpringSmsOpening = (choiceIndex: number) => {
-    if (!springSmsTarget || springSmsOpeningSent || !springSmsEventStarted || springSmsEventComplete || saveGameDate !== '1997.02.17' || storyStage !== 'spring-sms-chat') return
+    if (!springSmsTarget || springSmsOpeningSent || !springSmsEventStarted || springSmsEventComplete ||
+      localStorage.getItem('mayday-spring-sms-opening-sent') === 'true' ||
+      localStorage.getItem('mayday-spring-sms-event-complete') === 'true' ||
+      saveGameDate !== '1997.02.17' || storyStage !== 'spring-sms-chat') return
     const context: SpringDayContext = {
       storeCharacter: springStoreCharacter,
       afterChoice: springAfterChoice,
@@ -5107,7 +5114,10 @@ function App() {
   }
 
   const chooseSpringSmsReply = (choiceIndex: number) => {
-    if (!springSmsTarget || !springSmsOpeningSent || springSmsReplied || !springSmsEventStarted || springSmsEventComplete || saveGameDate !== '1997.02.17' || storyStage !== 'spring-sms-chat') return
+    if (!springSmsTarget || !springSmsOpeningSent || springSmsReplied || !springSmsEventStarted || springSmsEventComplete ||
+      localStorage.getItem('mayday-spring-sms-replied') === 'true' ||
+      localStorage.getItem('mayday-spring-sms-event-complete') === 'true' ||
+      saveGameDate !== '1997.02.17' || storyStage !== 'spring-sms-chat') return
     const context: SpringDayContext = {
       storeCharacter: springStoreCharacter,
       afterChoice: springAfterChoice,
@@ -5276,6 +5286,7 @@ function App() {
   const startSpringDiary = () => {
     if (storyStage !== 'spring-sms-chat' || effectiveDateStage !== 'spring-sms-chat' ||
       saveGameDate !== '1997.02.17' || !springSmsEventStarted || springSmsEventComplete ||
+      localStorage.getItem('mayday-spring-sms-event-complete') === 'true' ||
       !springSmsTarget || !springSmsOpeningSent || !springSmsReplied ||
       springSmsRound !== 4 || springSmsReplies.length !== 5) return
     const data = buildSpringDiaryData()
