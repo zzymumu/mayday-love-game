@@ -1,9 +1,25 @@
+import type { May10Character } from './May10Story'
+
 export type May10DiaryData = {
+  version: 2
   title: string
   text: string
 }
 
-const may10DiaryText = [
+type May10DiarySelection = {
+  character: May10Character | null
+  jealousyCharacter: May10Character | null
+}
+
+const NAMES: Record<May10Character, string> = {
+  wen: '溫尚翊',
+  ashin: '陳信宏',
+  masa: '瑪莎',
+  stone: '石錦航',
+  yanming: '劉諺明',
+}
+
+const may10DiaryParagraphs = [
   '今天去練團室，差點笑到肚子痛。',
   '前面那幾個面試的人真的太有自己的想法了。一個來了就想打自己的 Solo，一個完全不管大家在彈什麼，還有一個居然想讓所有歌都跟著節拍器走。',
   '我真的很好奇，他們到底是怎麼找到這裡來的啦！',
@@ -25,11 +41,32 @@ const may10DiaryText = [
   '這個人到底是怎樣啦。',
   '先這樣好了，今天笑得有點累。',
   '晚安！',
-].join('\\n\\n')
+]
 
-export function buildMay10DiaryData(): May10DiaryData {
+const jealousyDiaryText: Record<May10Character, (mainCharacter: May10Character | null) => string> = {
+  wen: (mainCharacter) =>
+    `本來還在跟${mainCharacter ? NAMES[mainCharacter] : '他'}聊著，怪獸就從另一頭走過來叫我。說是剛才有個地方還想問我，結果講著講著，注意力倒一直繞回我怎麼跟別人聊那麼久。嘴上明明不肯承認在等，手裡那個撥片卻轉個不停。這個人真的很不會拐彎。`,
+  ashin: (mainCharacter) =>
+    `本來還在跟${mainCharacter ? NAMES[mainCharacter] : '他'}聊著，阿信後來抱著吉他和樂譜走過來，說剛才那段還想再彈給我聽。他沒有直接打斷我們，一直等到我轉過頭才開口。坐下來之後又很留意我有沒有認真聽，害我連想分心都不好意思。`,
+  masa: (mainCharacter) =>
+    `本來還在跟${mainCharacter ? NAMES[mainCharacter] : '他'}聊著，瑪莎就靠過來問我是不是很忙，還說要不要拿號碼牌。明明一副在看熱鬧的樣子，話裡話外卻一直拿我跟別人聊天這件事開玩笑。後來還敲我額頭，真的是……嘴巴那麼壞，倒是很會找機會把人留下來。`,
+  stone: (mainCharacter) =>
+    `本來還在跟${mainCharacter ? NAMES[mainCharacter] : '他'}聊著，石頭等我轉過頭才輕聲叫我，沒有急著插話。他說剛才就想找我，只是看我聊得開心，才多等了一下。話說得不多，卻一直把時間留給我，讓人不知不覺就安靜下來。`,
+  yanming: (mainCharacter) =>
+    `本來還在跟${mainCharacter ? NAMES[mainCharacter] : '他'}聊著，諺明哥忙完鼓組才過來，沒有急著打斷我們，只跟我聊起陳泳錩剛才打鼓的事。說到下次練團，他還提醒我來之前跟他說一聲。跟諺明哥講話就是這樣，明明很平常，卻會把事情替人想得很周到。`,
+}
+
+export function buildMay10DiaryData(selection?: May10DiarySelection): May10DiaryData {
+  const paragraphs = [...may10DiaryParagraphs]
+  if (selection?.jealousyCharacter) {
+    const insertAt = paragraphs.indexOf('啊，對了。')
+    const jealousyEntry = jealousyDiaryText[selection.jealousyCharacter](selection.character)
+    paragraphs.splice(insertAt < 0 ? paragraphs.length : insertAt, 0, jealousyEntry)
+  }
+
   return {
+    version: 2,
     title: '終於找到新鼓手了！',
-    text: may10DiaryText,
+    text: paragraphs.join('\\n\\n'),
   }
 }
