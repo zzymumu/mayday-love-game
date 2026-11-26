@@ -2390,6 +2390,21 @@ function App() {
   const [springSmsMode, setSpringSmsMode] = useState<'day' | 'free'>(() => localStorage.getItem('mayday-spring-sms-mode') === 'free' ? 'free' : 'day')
   const [springFreeChatStarted, setSpringFreeChatStarted] = useState(() => {
     if (localStorage.getItem('mayday-spring-free-chat-started') === 'true' || localStorage.getItem('mayday-spring-free-chat-complete') === 'true') return true
+    const currentStage = localStorage.getItem('mayday-story-stage')
+    const currentTimelineStage = currentStage === 'paused'
+      ? localStorage.getItem('mayday-resume-stage')
+      : currentStage
+    const legacyTimelineAlreadyPastCheckpoint =
+      localStorage.getItem('mayday-spring-day-complete') === 'true' &&
+      localStorage.getItem('mayday-spring-free-chat-eligible-v1') !== 'true' &&
+      currentTimelineStage !== 'spring-free-chat-picker' &&
+      currentTimelineStage !== 'spring-free-chat'
+    if (legacyTimelineAlreadyPastCheckpoint) {
+      // Close an already-running 3/28-era timeline that predates the checkpoint flags.
+      localStorage.setItem('mayday-spring-free-chat-started', 'true')
+      localStorage.setItem('mayday-spring-free-chat-complete', 'true')
+      return true
+    }
     // The mode switches to "free" as soon as this one-off event starts,
     // including the picker stage before a character has been selected.
     return localStorage.getItem('mayday-spring-sms-mode') === 'free'
@@ -2404,21 +2419,6 @@ function App() {
       && !localStorage.getItem('mayday-spring-sms-target')
       && !localStorage.getItem('mayday-spring-free-chat-return-stage')
     if (legacyCompleted) {
-      localStorage.setItem('mayday-spring-free-chat-started', 'true')
-      localStorage.setItem('mayday-spring-free-chat-complete', 'true')
-      return true
-    }
-    const currentStage = localStorage.getItem('mayday-story-stage')
-    const currentTimelineStage = currentStage === 'paused'
-      ? localStorage.getItem('mayday-resume-stage')
-      : currentStage
-    const legacyTimelineAlreadyPastCheckpoint =
-      localStorage.getItem('mayday-spring-day-complete') === 'true' &&
-      localStorage.getItem('mayday-spring-free-chat-eligible-v1') !== 'true' &&
-      currentTimelineStage !== 'spring-free-chat-picker' &&
-      currentTimelineStage !== 'spring-free-chat'
-    if (legacyTimelineAlreadyPastCheckpoint) {
-      // Migrate an already-running 3/28-era timeline that predates the checkpoint flags.
       localStorage.setItem('mayday-spring-free-chat-started', 'true')
       localStorage.setItem('mayday-spring-free-chat-complete', 'true')
       return true
