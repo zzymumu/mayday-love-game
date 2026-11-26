@@ -132,7 +132,7 @@ const failedAuditionBlocks: Block[] = [
   d('你', '哈哈哈哈哈哈！'),
   d('溫尚翊', '妳還笑！'),
   d('瑪莎', '不然下一個讓怪獸自己坐上去打好了，反正他什麼都會。'),
-  d('溫尚翊', '你閉嘴啦！'),
+  d('溫尚翊', '你要不要聽聽看自己在講什麼？'),
 ]
 
 const newDrummerBlocks: Block[] = [
