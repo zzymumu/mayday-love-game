@@ -2714,6 +2714,8 @@ function App() {
     put('mayday-march28-morning-complete', localStorage.getItem('mayday-march28-morning-complete'))
     put('mayday-march28-diary-unlocked', String(march28DiaryUnlocked))
     put('mayday-march28-diary-data', march28DiaryData ? JSON.stringify(march28DiaryData) : null)
+    put('mayday-spring-free-chat-started', String(springFreeChatStarted))
+    put('mayday-spring-free-chat-complete', String(springFreeChatComplete))
     put('mayday-spring-free-chat-return-stage', localStorage.getItem('mayday-spring-free-chat-return-stage'))
     put('mayday-route-affection', JSON.stringify(routeAffection))
     put('mayday-shared-experience-log', JSON.stringify(sharedExperienceLog))
@@ -2776,6 +2778,54 @@ function App() {
       ;(['wen', 'masa', 'ashin', 'stone', 'yanming'] as YearEndRouteCharacterId[]).forEach((character) => {
         delete restoredData['mayday-year-end-shopping-invite-sent-' + character]
       })
+    }
+
+    // The February 17 free-chat reward is a one-time checkpoint for this story timeline.
+    // Only saves from before the February 17 story checkpoint may replay it. Older save
+    // slots do not contain the newer flags, so infer the checkpoint from their saved date
+    // and progress instead of treating a missing flag as "not yet played".
+    const savedResumeStage = restoredData['mayday-resume-stage']
+    const savedTimelineStage = saved.stage === 'paused' && savedResumeStage
+      ? savedResumeStage
+      : saved.stage
+    const beforeSpringFreeChatCheckpoint =
+      saved.gameDate < '1997.02.17' ||
+      (saved.gameDate === '1997.02.17' && restoredData['mayday-spring-day-complete'] !== 'true')
+    if (beforeSpringFreeChatCheckpoint) {
+      ;[
+        'mayday-spring-free-chat-started',
+        'mayday-spring-free-chat-complete',
+        'mayday-spring-free-chat-return-stage',
+      ].forEach((key) => delete restoredData[key])
+      // Clear only the temporary free-chat session state; the saved historical SMS
+      // conversation itself remains untouched.
+      ;[
+        'mayday-spring-sms-target',
+        'mayday-spring-sms-round',
+        'mayday-spring-sms-replied',
+        'mayday-spring-sms-opening-sent',
+        'mayday-spring-sms-opening-choice',
+        'mayday-spring-sms-replies',
+      ].forEach((key) => delete restoredData[key])
+      restoredData['mayday-spring-sms-mode'] = 'day'
+    } else {
+      const resumableSpringChat =
+        savedTimelineStage === 'spring-free-chat' &&
+        Boolean(restoredData['mayday-spring-sms-target']) &&
+        restoredData['mayday-spring-sms-mode'] === 'free'
+      restoredData['mayday-spring-free-chat-started'] = 'true'
+      if (resumableSpringChat) {
+        // A save made inside the actual conversation may resume its existing round,
+        // but it cannot reopen the character picker or start a second conversation.
+        delete restoredData['mayday-spring-free-chat-complete']
+      } else {
+        restoredData['mayday-spring-free-chat-complete'] = 'true'
+        delete restoredData['mayday-spring-free-chat-return-stage']
+        if (savedTimelineStage === 'spring-free-chat-picker' || savedTimelineStage === 'spring-free-chat') {
+          restoredData['mayday-story-stage'] = 'march28-intro'
+          if (saved.stage === 'paused') restoredData['mayday-resume-stage'] = 'march28-intro'
+        }
+      }
     }
 
     Object.entries(restoredData).forEach(([key, value]) => {
