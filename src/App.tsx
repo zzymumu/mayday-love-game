@@ -1848,6 +1848,7 @@ function App() {
   const [showResetConfirm, setShowResetConfirm] = useState(false)
   const [saveSlots, setSaveSlots] = useState<Record<number, SaveSlotData | null>>(() => ({ 1: readSaveSlot(1), 2: readSaveSlot(2), 3: readSaveSlot(3) }))
   const [saveFeedback, setSaveFeedback] = useState('')
+  const [springChatRecoveryFeedback, setSpringChatRecoveryFeedback] = useState('')
   const [selectedSmsThread, setSelectedSmsThread] = useState<CharacterId | null>(null)
   const [smsMessages, setSmsMessages] = useState<SmsMessage[]>(() => {
     const saved = localStorage.getItem('mayday-sms-messages')
@@ -1976,18 +1977,10 @@ function App() {
               : message),
             masa: removeDuplicateMasaErrandLine(parsed.masa),
           }
-          const refreshed: Record<CharacterId, SmsMessage[]> = resetSpringSmsHistory || resetWenSpringSmsHistory
-            ? Object.fromEntries(Object.entries(migrated).map(([id, messages]) => [
-                id,
-                messages.filter((message) => {
-                  if (message.date !== '1997年2月17日・晚上') return true
-                  if (resetSpringSmsHistory) return false
-                  return !(resetWenSpringSmsHistory && id === 'wen')
-                }),
-              ])) as Record<CharacterId, SmsMessage[]>
-            : migrated
-          if (JSON.stringify(refreshed) !== JSON.stringify(parsed)) localStorage.setItem('mayday-chat-messages', JSON.stringify(refreshed))
-          return refreshed
+          // Content refreshes may reset an unfinished conversation, but must never erase
+          // the player's completed 17 February chat history from the message archive.
+          if (JSON.stringify(migrated) !== JSON.stringify(parsed)) localStorage.setItem('mayday-chat-messages', JSON.stringify(migrated))
+          return migrated
         }
       } catch {
         // Rebuild the new contact threads if saved chat data is malformed.
@@ -3167,6 +3160,66 @@ function App() {
     chatMessagesRef.current = next
     localStorage.setItem('mayday-chat-messages', JSON.stringify(next))
     setChatMessages(next)
+  }
+
+  const restoreSpringFreeChatHistoryFromSlot = (slot: number) => {
+    const saved = saveSlots[slot]
+    const raw = saved?.data['mayday-chat-messages']
+    if (!raw) {
+      setSpringChatRecoveryFeedback('這個存檔沒有可讀取的訊息紀錄。')
+      return
+    }
+
+    let archived: Partial<Record<CharacterId, SmsMessage[]>>
+    try {
+      archived = JSON.parse(raw) as Partial<Record<CharacterId, SmsMessage[]>>
+    } catch {
+      setSpringChatRecoveryFeedback('這個存檔的訊息資料無法讀取，原存檔沒有被修改。')
+      return
+    }
+
+    const next: Record<CharacterId, SmsMessage[]> = { ...chatMessagesRef.current }
+    const dateOrder = (value: string) => {
+      const full = value.match(/(\\d{4})年(\\d{1,2})月(\\d{1,2})日/)
+      if (full) return Number(full[1]) * 10000 + Number(full[2]) * 100 + Number(full[3])
+      const short = value.match(/(\\d{1,2})月(\\d{1,2})日/)
+      return short ? 1996 * 10000 + Number(short[1]) * 100 + Number(short[2]) : 0
+    }
+    const messageOrder = (message: SmsMessage) => {
+      const match = message.id.match(/^[^-]+-(\\d+)-(\\d+)$/)
+      return match ? Number(match[1]) * 100 + Number(match[2]) : 0
+    }
+    const isDuplicate = (left: SmsMessage, right: SmsMessage) =>
+      left.id === right.id ||
+      (left.date === right.date && left.from === right.from && left.text === right.text && (left.time ?? '') === (right.time ?? ''))
+
+    let added = 0
+    for (const character of greetingOrder) {
+      const archivedMessages = Array.isArray(archived[character])
+        ? archived[character]!.filter((message): message is SmsMessage =>
+            Boolean(message && message.date === '1997年2月17日・晚上' &&
+              typeof message.id === 'string' && typeof message.text === 'string' &&
+              (message.from === 'me' || greetingOrder.includes(message.from as CharacterId))))
+        : []
+      const existing = next[character] ?? []
+      const additions = archivedMessages.filter((message) => !existing.some((current) => isDuplicate(current, message)))
+      if (!additions.length) continue
+      next[character] = [...existing, ...additions].sort((left, right) =>
+        dateOrder(left.date) - dateOrder(right.date) ||
+        messageOrder(left) - messageOrder(right) ||
+        (left.time ?? '').localeCompare(right.time ?? ''))
+      added += additions.length
+    }
+
+    if (!added) {
+      setSpringChatRecoveryFeedback('這份存檔裡的 2 月 17 日自由聊天已經在收件匣中，沒有重複匯入。')
+      return
+    }
+
+    chatMessagesRef.current = next
+    localStorage.setItem('mayday-chat-messages', JSON.stringify(next))
+    setChatMessages(next)
+    setSpringChatRecoveryFeedback(`已從存檔 ${slot} 找回 ${added} 則自由聊天訊息。只恢復訊息紀錄，沒有讀取或覆蓋目前的劇情進度。`)
   }
 
   const addRouteAffection = (character: CharacterId, amount: number) => {
@@ -5815,6 +5868,30 @@ function App() {
       ? (chatMessages.wen?.[chatMessages.wen.length - 1]?.time ?? latestSmsMessage?.time ?? '15:42')
       : (chatMessages[person.id]?.[chatMessages[person.id].length - 1]?.time ?? '21:20'),
   }))
+  const springFreeChatArchiveSlots = SAVE_SLOT_IDS.flatMap((slot) => {
+    const raw = saveSlots[slot]?.data['mayday-chat-messages']
+    if (!raw) return []
+    try {
+      const archived = JSON.parse(raw) as Partial<Record<CharacterId, SmsMessage[]>>
+      const characters = greetingOrder.flatMap((character) => {
+        const archivedMessages = Array.isArray(archived[character])
+          ? archived[character]!.filter((message): message is SmsMessage =>
+              Boolean(message && message.date === '1997年2月17日・晚上' &&
+                typeof message.id === 'string' && typeof message.text === 'string' &&
+                (message.from === 'me' || greetingOrder.includes(message.from as CharacterId))))
+          : []
+        const current = chatMessages[character] ?? []
+        const missing = archivedMessages.filter((message) => !current.some((item) =>
+          item.id === message.id ||
+          (item.date === message.date && item.from === message.from && item.text === message.text && (item.time ?? '') === (message.time ?? ''))))
+        return missing.length ? [{ character, count: missing.length }] : []
+      })
+      const count = characters.reduce((total, item) => total + item.count, 0)
+      return count ? [{ slot, count, characters: characters.map((item) => characterNames[item.character] + ' ' + item.count + ' 則').join('、') }] : []
+    } catch {
+      return []
+    }
+  })
 
   return (
     <main className="page-shell">
@@ -8498,6 +8575,21 @@ function App() {
                               <strong>訊息列表</strong>
                               <span>{isSpringTerm ? "收件匣 · 1997" : "收件匣 · 1996"}</span>
                             </div>
+                            {(springFreeChatArchiveSlots.length > 0 || springChatRecoveryFeedback) && (
+                              <div className="free-chat-archive-recovery">
+                                <div className="sms-inbox-heading">
+                                  <strong>找回之前的自由聊天</strong>
+                                  <span>只恢復訊息</span>
+                                </div>
+                                <p>我在舊存檔裡找到先前的聊天紀錄。選擇存檔後，只會把 2 月 17 日的訊息補回收件匣，不會讀取或覆蓋目前的劇情進度。</p>
+                                {springFreeChatArchiveSlots.map((archive) => (
+                                  <button className="story-primary-button" key={archive.slot} onClick={() => restoreSpringFreeChatHistoryFromSlot(archive.slot)}>
+                                    從存檔 {archive.slot} 恢復 {archive.count} 則（{archive.characters}） <ChevronRight size={15} />
+                                  </button>
+                                ))}
+                                {springChatRecoveryFeedback && <p role="status">{springChatRecoveryFeedback}</p>}
+                              </div>
+                            )}
                             {localStorage.getItem('mayday-spring-day-complete') === 'true' && !springFreeChatStarted && !springFreeChatComplete && (
                               <button className="story-primary-button" onClick={startSpringFreeChat}>自由聊天 <ChevronRight size={15} /></button>
                             )}
