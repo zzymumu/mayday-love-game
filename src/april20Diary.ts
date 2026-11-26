@@ -46,7 +46,7 @@ const rehearsalDiary = [
   '對了，明天還要上課。',
   '突然想到這個，心情更不好了。',
   '晚安！',
-].join('\\n\\n')
+].join('\n\n')
 
 const parkDiary = [
   '本來只是想去找諺明哥走走，沒想到今天從下午開始，就一直覺得佑達那幾句訊息怪怪的。',
@@ -68,7 +68,7 @@ const parkDiary = [
   '今天先這樣好了。',
   '明天還要上課，不能再坐在這裡胡思亂想了。',
   '晚安！',
-].join('\\n\\n')
+].join('\n\n')
 
 export function buildApril20DiaryData(route: 'park' | 'rehearsal'): April20DiaryData {
   return route === 'rehearsal'
