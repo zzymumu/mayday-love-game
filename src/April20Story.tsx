@@ -18,7 +18,7 @@ type April20Route = {
   rounds: [InteractionRound, InteractionRound, InteractionRound]
   ending: April20Block[]
 }
-type April20Phase = 'notification' | 'sms' | 'routePicker' | 'park' | 'conflict' | 'characterPicker' | 'interaction' | 'complete'
+type April20Phase = 'notification' | 'sms' | 'smsEnding' | 'routePicker' | 'park' | 'conflict' | 'characterPicker' | 'interaction' | 'complete'
 type April20RouteKind = 'park' | 'rehearsal' | null
 type April20Progress = {
   phase: April20Phase
@@ -688,7 +688,7 @@ const characterRoutes: Record<April20Character, April20Route> = {
 function readProgress(): April20Progress {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null') as Partial<April20Progress> | null
-    const phases: April20Phase[] = ['notification', 'sms', 'routePicker', 'park', 'conflict', 'characterPicker', 'interaction', 'complete']
+    const phases: April20Phase[] = ['notification', 'sms', 'smsEnding', 'routePicker', 'park', 'conflict', 'characterPicker', 'interaction', 'complete']
     if (!saved || !phases.includes(saved.phase as April20Phase)) return initialProgress
     const route = saved.route === 'park' || saved.route === 'rehearsal' ? saved.route : null
     const character = CHARACTER_ORDER.includes(saved.character as April20Character) ? saved.character as April20Character : null
@@ -722,6 +722,7 @@ function readProgress(): April20Progress {
 
 function clockForProgress(progress: April20Progress) {
   if (progress.phase === 'notification' || progress.phase === 'sms') return ['15:16', '15:20', '15:24', '15:28', '15:32'][progress.smsRound]
+  if (progress.phase === 'smsEnding') return '15:36'
   if (progress.phase === 'routePicker') return '15:40'
   if (progress.phase === 'park') return ['16:00', '16:20', '16:40'][progress.roundIndex]
   if (progress.phase === 'conflict') return '16:00'
@@ -871,8 +872,24 @@ export function April20Story({
       }))
       onAppendMessages(incoming)
     } else {
-      setProgress((current) => ({ ...current, phase: 'routePicker', smsPendingChoice: null }))
+      const endingMessages: SmsLine[] = [
+        { from: 'youda', text: '謝謝妳啦，突然問這些奇怪的問題。', time: '15:36' },
+        { from: 'youda', text: '妳就當我今天想太多好了。', time: '15:36' },
+        { from: 'youda', text: '先這樣，我還有點事。', time: '15:36' },
+      ]
+      setProgress((current) => ({
+        ...current,
+        phase: 'smsEnding',
+        smsPendingChoice: null,
+        messages: [...current.messages, ...endingMessages],
+      }))
+      onAppendMessages(endingMessages)
     }
+  }
+
+  const continueAfterSmsEnding = () => {
+    if (progress.phase !== 'smsEnding') return
+    setProgress((current) => ({ ...current, phase: 'routePicker' }))
   }
 
   const chooseRoute = (route: 'park' | 'rehearsal') => {
@@ -1003,6 +1020,44 @@ export function April20Story({
     )
   }
 
+  if (progress.phase === 'smsEnding') {
+    return (
+      <div className="story-screen-overlay">
+        <div className="story-screen-head">
+          <div className="chapter-mark">新訊息・4 月 20 日</div>
+          <div className="story-contact-title">
+            <strong>錢佑達</strong>
+            <small>1997 年 4 月 20 日・下午</small>
+          </div>
+          <span className="story-head-spacer" />
+        </div>
+        <div className="story-narrative-scroll">
+          <div className="story-kicker">MESSAGE ENDED · 15:36</div>
+          <h2 className="story-scene-title">佑達最後又傳了幾句話。</h2>
+          <div className="sms-thread-scroll">
+            <div className="story-date-label">1997 年 4 月 20 日・下午</div>
+            {progress.messages.map((message, index) => (
+              <div key={index}>
+                <div className={message.from === 'me' ? 'message-row mine' : 'message-row'}>
+                  <div className={message.from === 'me' ? 'message-bubble mine' : 'message-bubble'}>{message.text}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <April20Blocks blocks={[
+            { kind: 'narration', text: '對話框安靜了下來。' },
+            { kind: 'narration', text: '你盯著屏幕看了一會兒，總覺得佑達今天說話怪怪的。明明每個問題都像是在討論樂團，卻又好像不只是討論樂團。' },
+          ]} />
+          <div className="story-action-bar story-inline-action">
+            <button className="story-primary-button" onClick={continueAfterSmsEnding}>
+              看看下午要去哪裡 <ChevronRight size={15} />
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   if (progress.phase === 'routePicker') {
     return (
       <div className="story-screen-overlay">
@@ -1018,7 +1073,7 @@ export function April20Story({
           <div className="story-kicker">SUNDAY AFTERNOON</div>
           <h2 className="story-scene-title">今天下午想去哪裡？</h2>
           <April20Blocks blocks={[
-            { kind: 'narration', text: '你把手機收進包裡，心裡還惦記著佑達剛才那些沒頭沒尾的問題。想了一下，決定先去找個人，或是直接去練團室看看。' },
+            { kind: 'narration', text: '你把手機收進包裡，抬頭看了一眼時間。下午還早，想了想，決定先去找個人，或是直接去練團室看看。' },
           ]} />
           <div className="march29-reply-list">
             <button className="reply-choice" onClick={() => chooseRoute('park')}>
