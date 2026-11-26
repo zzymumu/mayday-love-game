@@ -3280,7 +3280,12 @@ function App() {
     if (!routeValue || !validRoutes.includes(routeValue as April30Route) || !Array.isArray(choices) || choices.length !== 5) return
     const validChoices = choices.filter((value): value is number => Number.isInteger(value) && value >= 0 && value <= 2)
     if (validChoices.length !== 5) return
-    const amount = getApril30AffectionTotal(routeValue as April30Route, validChoices, null)
+    const storedComfortChoice = localStorage.getItem('mayday-april30-comfort-choice')
+    const parsedComfortChoice = storedComfortChoice === null || storedComfortChoice === '' ? null : Number(storedComfortChoice)
+    const comfortChoice = parsedComfortChoice !== null && Number.isInteger(parsedComfortChoice) && parsedComfortChoice >= 0 && parsedComfortChoice <= 2
+      ? parsedComfortChoice
+      : null
+    const amount = getApril30AffectionTotal(routeValue as April30Route, validChoices, comfortChoice)
     addRouteAffection(routeValue as April30Route, amount)
     localStorage.setItem(appliedKey, 'true')
     localStorage.setItem('mayday-april30-affection-backfill-v1', 'true')
@@ -4818,7 +4823,7 @@ function App() {
     if (!choice) return
     setFebruarySecretReply(choiceIndex)
     localStorage.setItem('mayday-february-secret-reply', String(choiceIndex))
-    if (choiceIndex !== 1) addRouteAffection(februarySecretTarget, 1)
+    addRouteAffection(februarySecretTarget, choice.affection)
   }
 
   const chooseFebruaryDinnerReply = (choiceIndex: number) => {
@@ -4845,6 +4850,8 @@ function App() {
     setFebruaryAfterDinnerReplies([])
     localStorage.setItem('mayday-february-after-dinner-character', character)
     localStorage.setItem('mayday-february-after-dinner-replies', '[]')
+    // Choosing to spend the walk with this character is itself a relationship choice.
+    addRouteAffection(character, 1)
     changeStage('february-after-dinner')
   }
 

@@ -217,9 +217,9 @@ export const februarySecretInteractions: Record<FebruaryCharacterId, {
 }
 
 export const februarySecretReplyChoices = [
-  { text: '「沒有啦！我只是問一點事情而已！」', response: '我又沒說什麼，妳緊張什麼？' },
-  { text: '「你們繼續討論啊，我又沒有打擾你們。」', response: '我們是有在討論啦，可是妳們剛剛真的很明顯欸。' },
-  { text: '「你們剛剛不也一直互相攻擊嗎？我只是加入一下而已！」', response: '好像也是啦，反正剛剛本來就很吵。' },
+  { text: '「沒有啦！我只是問一點事情而已！」', response: '我又沒說什麼，妳緊張什麼？', affection: 1 },
+  { text: '「你們繼續討論啊，我又沒有打擾你們。」', response: '我們是有在討論啦，可是妳們剛剛真的很明顯欸。', affection: 2 },
+  { text: '「你們剛剛不也一直互相攻擊嗎？我只是加入一下而已！」', response: '好像也是啦，反正剛剛本來就很吵。', affection: 1 },
 ] as const
 
 export const februaryDinnerBlocks: FebruaryStoryBlock[] = [
