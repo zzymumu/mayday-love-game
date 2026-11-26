@@ -5102,7 +5102,7 @@ function App() {
         time: springSmsHour + ':' + String(minute + choice.response.length + (nextRound.outgoing ? 2 : 1) + index).padStart(2, '0'),
       })),
     ] : []
-    const springSmsHistoryDate = springSmsMode === 'free' ? '1997年3月28日・晚上' : '1997年2月17日・晚上'
+    const springSmsHistoryDate = '1997年2月17日・晚上'
     appendChatMessages(springSmsTarget, [
       { from: 'me', text: choice.text, time: springSmsHour + ':' + String(minute).padStart(2, '0') },
       ...choice.response.map((text, index) => ({ from: springSmsTarget, text, time: springSmsHour + ':' + String(minute + index + 1).padStart(2, '0') })),
