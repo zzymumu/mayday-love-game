@@ -907,7 +907,6 @@ export function JuneStudyStory({
                   <button className="reply-choice spring-invite-person-choice" key={character} onClick={() => chooseCharacter(character)}>
                     <span className="spring-invite-person-copy">
                       <strong>{item.name}</strong>
-                      <small>{item.location} · {item.subtitle}</small>
                     </span>
                     <ChevronRight size={15} />
                   </button>
