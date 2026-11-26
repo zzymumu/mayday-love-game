@@ -2891,9 +2891,9 @@ function App() {
       restoredData['mayday-spring-free-chat-eligible-v1'] = 'true'
       restoredData['mayday-spring-free-chat-started'] = 'true'
       restoredData['mayday-spring-free-chat-complete'] = 'true'
+      const returnStage = restoredData['mayday-spring-free-chat-return-stage'] || 'march28-intro'
       delete restoredData['mayday-spring-free-chat-return-stage']
       if (savedTimelineStage === 'spring-free-chat-picker' || savedTimelineStage === 'spring-free-chat') {
-        const returnStage = restoredData['mayday-spring-free-chat-return-stage'] || 'march28-intro'
         restoredData['mayday-story-stage'] = returnStage
         if (saved.stage === 'paused') restoredData['mayday-resume-stage'] = returnStage
       }
