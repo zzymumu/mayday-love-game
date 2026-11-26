@@ -103,6 +103,7 @@ import { April20Story, type April20Character } from './April20Story'
 import { April30Story, getApril30AffectionTotal, type April30Route, type April30Selection } from './April30Story'
 import { May10Story, type May10Character, type May10Selection } from './May10Story'
 import { JuneStudyStory, type JuneStudySelection } from './JuneStudyStory'
+import { juneFreeChatScripts } from './JuneFreeChat'
 import { buildApril20DiaryData, type April20DiaryData } from './april20Diary'
 import { buildApril30DiaryData, type April30DiaryData } from './april30Diary'
 import { buildMay10DiaryData, type May10DiaryData } from './may10Diary'
@@ -125,7 +126,7 @@ import {
 type AppKey = 'messages' | 'contacts' | 'calls' | 'diary' | 'calendar' | 'photos' | 'music' | 'notes' | 'settings'
 type CharacterId = 'wen' | 'masa' | 'ashin' | 'stone' | 'yanming' | 'youda'
 type RouteCharacterId = Exclude<CharacterId, 'youda'>
-type StoryStage = 'notification' | 'messages' | 'reply' | 'walk' | 'studio' | 'reunion' | 'reunion-chat' | 'nickname' | 'rehearsal' | 'dinner' | 'after-dinner' | 'ending' | 'completed' | 'greetings' | 'classroom' | 'masa-checkin' | 'stone-checkin' | 'ice-date' | 'stroll' | 'day2-diary' | 'free-time' | 'free-chat' | 'day2-complete' | 'month-free-time' | 'month-visit' | 'month-visit-complete' | 'month-free-chat' | 'month-diary' | 'next-month-intro' | 'next-month-invite-notification' | 'next-month-invite-picker' | 'next-month-invite' | 'next-month-invite-chat' | 'next-month-invite-date' | 'next-month-open-day' | 'next-month-open-day-picker' | 'next-month-open-day-visit' | 'next-month-open-day-visit-complete' | 'next-month-free-chat' | 'next-month-diary' | 'year-end-intro' | 'year-end-invite-notification' | 'year-end-invite-picker' | 'year-end-shopping-notification' | 'year-end-shopping-chat' | 'year-end-shopping' | 'year-end-fireworks' | 'year-end-new-year-notification' | 'year-end-new-year-chat' | 'year-end-free-chat' | 'year-end-free-chat-picker' | 'year-end-diary' | 'winter-exam-intro' | 'winter-exam-notification' | 'winter-exam-chat' | 'winter-exam-tutoring' | 'winter-break-practice' | 'winter-break-gig' | 'winter-break-pickup' | 'winter-break-bus-choice' | 'winter-break-bus' | 'winter-diary' | 'february-intro' | 'february-secret' | 'february-dinner' | 'february-table' | 'february-after-dinner-picker' | 'february-after-dinner' | 'february-diary' | 'spring-term-intro' | 'spring-invite-picker' | 'spring-invite-notification' | 'spring-invite-chat' | 'spring-store' | 'spring-rehearsal' | 'spring-after-picker' | 'spring-lesson' | 'spring-dinner' | 'spring-sms-picker' | 'spring-sms-chat' | 'spring-diary' | 'march28-intro' | 'march28-visit' | 'march28-end' | 'march28-park' | 'march28-park-stay' | 'march28-morning' | 'march28-diary' | 'march29-show' | 'april12-story' | 'april20-story' | 'april30-story' | 'may10-story' | 'june-study' | 'june-study-complete' | 'paused'
+type StoryStage = 'notification' | 'messages' | 'reply' | 'walk' | 'studio' | 'reunion' | 'reunion-chat' | 'nickname' | 'rehearsal' | 'dinner' | 'after-dinner' | 'ending' | 'completed' | 'greetings' | 'classroom' | 'masa-checkin' | 'stone-checkin' | 'ice-date' | 'stroll' | 'day2-diary' | 'free-time' | 'free-chat' | 'day2-complete' | 'month-free-time' | 'month-visit' | 'month-visit-complete' | 'month-free-chat' | 'month-diary' | 'next-month-intro' | 'next-month-invite-notification' | 'next-month-invite-picker' | 'next-month-invite' | 'next-month-invite-chat' | 'next-month-invite-date' | 'next-month-open-day' | 'next-month-open-day-picker' | 'next-month-open-day-visit' | 'next-month-open-day-visit-complete' | 'next-month-free-chat' | 'next-month-diary' | 'year-end-intro' | 'year-end-invite-notification' | 'year-end-invite-picker' | 'year-end-shopping-notification' | 'year-end-shopping-chat' | 'year-end-shopping' | 'year-end-fireworks' | 'year-end-new-year-notification' | 'year-end-new-year-chat' | 'year-end-free-chat' | 'year-end-free-chat-picker' | 'year-end-diary' | 'winter-exam-intro' | 'winter-exam-notification' | 'winter-exam-chat' | 'winter-exam-tutoring' | 'winter-break-practice' | 'winter-break-gig' | 'winter-break-pickup' | 'winter-break-bus-choice' | 'winter-break-bus' | 'winter-diary' | 'february-intro' | 'february-secret' | 'february-dinner' | 'february-table' | 'february-after-dinner-picker' | 'february-after-dinner' | 'february-diary' | 'spring-term-intro' | 'spring-invite-picker' | 'spring-invite-notification' | 'spring-invite-chat' | 'spring-store' | 'spring-rehearsal' | 'spring-after-picker' | 'spring-lesson' | 'spring-dinner' | 'spring-sms-picker' | 'spring-sms-chat' | 'spring-diary' | 'march28-intro' | 'march28-visit' | 'march28-end' | 'march28-park' | 'march28-park-stay' | 'march28-morning' | 'march28-diary' | 'march29-show' | 'april12-story' | 'april20-story' | 'april30-story' | 'may10-story' | 'june-study' | 'june-free-chat' | 'june-study-complete' | 'paused'
 type ReplyKey = 'a' | 'b' | 'c'
 type ReunionReplyKey = 'a' | 'b' | 'c'
 type NicknameQuestionKey = 'a' | 'b' | 'c'
@@ -262,7 +263,7 @@ const storyStageLabels: Record<StoryStage, string> = {
   'day2-complete': '第二天結束', 'month-free-time': '一個月後・自由活動', 'month-visit': '一個月後・外出見面', 'month-visit-complete': '一個月後・見面結束', 'month-free-chat': '一個月後・自由對話', 'month-diary': '一個月後・私人日記',
   'next-month-intro': '又一個月後・校園開放日', 'next-month-invite-notification': '有人想約你', 'next-month-invite-picker': '看看是誰想約你', 'next-month-invite': '回覆邀約', 'next-month-invite-chat': '邀約簡訊', 'next-month-invite-date': '赴約', 'next-month-open-day': '椰風搖滾社・校園開放日', 'next-month-open-day-picker': '一起逛校園', 'next-month-open-day-visit': '校園散步', 'next-month-open-day-visit-complete': '校園開放日・見面結束', 'next-month-free-chat': '十二月・自由對話', 'next-month-diary': '十二月・私人日記',
   'year-end-intro': '十二月三十一日・跨年篇', 'year-end-invite-notification': '收到年貨邀約', 'year-end-invite-picker': '選擇邀約對象', 'year-end-shopping-notification': '年貨邀約簡訊', 'year-end-shopping-chat': '回覆年貨邀約', 'year-end-shopping': '一起買年貨', 'year-end-fireworks': '七人跨年煙火', 'year-end-new-year-notification': '收到新年祝福', 'year-end-new-year-chat': '回覆新年祝福', 'year-end-free-chat': '新年自由聊天', 'year-end-free-chat-picker': '新年自由活動', 'year-end-diary': '1996 年最後一篇日記', 'winter-exam-intro': '一九九七年・期末考前一週', 'winter-exam-notification': '統計學補習提示', 'winter-exam-chat': '傳訊息給溫尚翊', 'winter-exam-tutoring': '圖書館・統計學補習', 'winter-break-practice': '寒假・諺明哥的練團室', 'winter-break-gig': '寒假・酒吧駐唱', 'winter-break-pickup': '諺明哥來接你', 'winter-break-bus-choice': '散場後・選擇同行的人', 'winter-break-bus': '一起走到公車站', 'winter-diary': '一九九七年・寒假日記', 'february-intro': '二月初・MAYDAY 的名字', 'february-secret': '練團室裡的小秘密', 'february-dinner': '一起吃晚餐', 'february-table': '餐桌上的小動作', 'february-after-dinner-picker': '飯後・選擇同行的人', 'february-after-dinner': '飯後單獨相處', 'february-diary': '二月初・私人日記',
-  'spring-term-intro': '開學後・春日邀約', 'spring-invite-picker': '看看誰約你去樂器行', 'spring-invite-notification': '收到樂器行邀約簡訊', 'spring-invite-chat': '回覆樂器行邀約', 'spring-store': '樂器行・一起逛逛', 'spring-rehearsal': '練團室・轧車', 'spring-after-picker': '練團結束・選擇去處', 'spring-lesson': '練團室・學樂器', 'spring-dinner': '和諺明一起吃飯', 'spring-sms-picker': '回家後・想傳訊息給誰', 'spring-sms-chat': '今晚的簡訊', 'spring-diary': '開學後・私人日記', 'march28-intro': '三月二十八日・野台開唱前一天', 'march28-visit': '白天・選擇一段相遇', 'march28-end': '晚飯後・公園散步', 'march28-park': '大安森林公園・遇見阿信', 'march28-park-stay': '大安森林公園・夜裡聊天', 'march28-morning': '三月二十九日・清晨早餐', 'march28-diary': '三月二十八日・私人日記', 'march29-show': '大安森林公園・野台開唱現場', 'april12-story': '四月十二日・練團室', 'april20-story': '四月二十日・佑達的訊息與練團室', 'april30-story': '四月三十日・少了一個人的練團室', 'may10-story': '五月十日・新鼓手面試', 'june-study': '六月中旬・期末複習', 'june-study-complete': '六月中旬・期末複習完成', paused: '故事暫停',
+  'spring-term-intro': '開學後・春日邀約', 'spring-invite-picker': '看看誰約你去樂器行', 'spring-invite-notification': '收到樂器行邀約簡訊', 'spring-invite-chat': '回覆樂器行邀約', 'spring-store': '樂器行・一起逛逛', 'spring-rehearsal': '練團室・轧車', 'spring-after-picker': '練團結束・選擇去處', 'spring-lesson': '練團室・學樂器', 'spring-dinner': '和諺明一起吃飯', 'spring-sms-picker': '回家後・想傳訊息給誰', 'spring-sms-chat': '今晚的簡訊', 'spring-diary': '開學後・私人日記', 'march28-intro': '三月二十八日・野台開唱前一天', 'march28-visit': '白天・選擇一段相遇', 'march28-end': '晚飯後・公園散步', 'march28-park': '大安森林公園・遇見阿信', 'march28-park-stay': '大安森林公園・夜裡聊天', 'march28-morning': '三月二十九日・清晨早餐', 'march28-diary': '三月二十八日・私人日記', 'march29-show': '大安森林公園・野台開唱現場', 'april12-story': '四月十二日・練團室', 'april20-story': '四月二十日・佑達的訊息與練團室', 'april30-story': '四月三十日・少了一個人的練團室', 'may10-story': '五月十日・新鼓手面試', 'june-study': '六月中旬・期末複習', 'june-free-chat': '六月中旬・自由簡訊', 'june-study-complete': '六月中旬・期末複習完成', paused: '故事暫停',
 }
 const readSaveSlot = (slot: number): SaveSlotData | null => {
   try {
@@ -1871,6 +1872,7 @@ function App() {
   const smsMessagesRef = useRef(smsMessages)
   const [storyStage, setStoryStage] = useState<StoryStage>(() => {
     const saved = localStorage.getItem('mayday-story-stage')
+    if (saved === 'june-study-complete' && localStorage.getItem('mayday-june-free-chat-complete') !== 'true') return 'june-free-chat'
     if (saved === 'march28-diary' && localStorage.getItem('mayday-march28-park-choice') === 'stay') return 'march28-park-stay'
     if (saved === 'completed' && localStorage.getItem('mayday-april12-diary-unlocked') === 'true') return 'completed'
     if (saved === 'completed' && localStorage.getItem('mayday-march29-diary-unlocked') === 'true') return 'completed'
@@ -1905,7 +1907,7 @@ function App() {
     const day2PlanChosen = localStorage.getItem('mayday-day2-after-ice-choice') === 'accept' || localStorage.getItem('mayday-day2-after-ice-choice') === 'decline'
     if (['free-time', 'free-chat', 'day2-complete'].includes(saved ?? '') && !day2PlanChosen) return 'ice-date'
     if (saved === 'free-time' && savedTarget && freeTimeOrder.includes(savedTarget as RouteCharacterId) && localStorage.getItem('mayday-free-chat-complete') !== 'true') return 'free-chat'
-    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete', 'month-free-time', 'month-visit', 'month-visit-complete', 'month-free-chat', 'month-diary', 'next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-chat', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete', 'next-month-free-chat', 'next-month-diary', 'year-end-intro', 'year-end-invite-notification', 'year-end-invite-picker', 'year-end-shopping-notification', 'year-end-shopping-chat', 'year-end-shopping', 'year-end-fireworks', 'year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary', 'winter-exam-intro', 'winter-exam-notification', 'winter-exam-chat', 'winter-exam-tutoring', 'winter-break-practice', 'winter-break-gig', 'winter-break-pickup', 'winter-break-bus-choice', 'winter-break-bus', 'winter-diary', 'february-intro', 'february-secret', 'february-dinner', 'february-table', 'february-after-dinner-picker', 'february-after-dinner', 'february-diary', 'spring-term-intro', 'spring-invite-picker', 'spring-invite-notification', 'spring-invite-chat', 'spring-store', 'spring-rehearsal', 'spring-after-picker', 'spring-lesson', 'spring-dinner', 'spring-sms-picker', 'spring-sms-chat', 'spring-diary', 'march28-intro', 'march28-visit', 'march28-end', 'march28-park', 'march28-park-stay', 'march28-morning', 'march28-diary', 'march29-show', 'april12-story', 'april20-story', 'april30-story', 'may10-story', 'june-study', 'june-study-complete', 'paused']
+    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete', 'month-free-time', 'month-visit', 'month-visit-complete', 'month-free-chat', 'month-diary', 'next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-chat', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete', 'next-month-free-chat', 'next-month-diary', 'year-end-intro', 'year-end-invite-notification', 'year-end-invite-picker', 'year-end-shopping-notification', 'year-end-shopping-chat', 'year-end-shopping', 'year-end-fireworks', 'year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary', 'winter-exam-intro', 'winter-exam-notification', 'winter-exam-chat', 'winter-exam-tutoring', 'winter-break-practice', 'winter-break-gig', 'winter-break-pickup', 'winter-break-bus-choice', 'winter-break-bus', 'winter-diary', 'february-intro', 'february-secret', 'february-dinner', 'february-table', 'february-after-dinner-picker', 'february-after-dinner', 'february-diary', 'spring-term-intro', 'spring-invite-picker', 'spring-invite-notification', 'spring-invite-chat', 'spring-store', 'spring-rehearsal', 'spring-after-picker', 'spring-lesson', 'spring-dinner', 'spring-sms-picker', 'spring-sms-chat', 'spring-diary', 'march28-intro', 'march28-visit', 'march28-end', 'march28-park', 'march28-park-stay', 'march28-morning', 'march28-diary', 'march29-show', 'april12-story', 'april20-story', 'april30-story', 'may10-story', 'june-study', 'june-free-chat', 'june-study-complete', 'paused']
     return saved && valid.includes(saved as StoryStage) ? saved as StoryStage : 'notification'
   })
   const [march29Clock, setMarch29Clock] = useState(() => localStorage.getItem('mayday-march29-clock') ?? '15:30')
@@ -2083,6 +2085,22 @@ function App() {
   })
   const [freeChatRound, setFreeChatRound] = useState(() => Number(localStorage.getItem('mayday-free-chat-round') ?? '0'))
   const [freeChatReplied, setFreeChatReplied] = useState(() => localStorage.getItem('mayday-free-chat-replied') === 'true')
+  const [juneFreeChatTarget, setJuneFreeChatTarget] = useState<RouteCharacterId | null>(() => {
+    const saved = localStorage.getItem('mayday-june-free-chat-target')
+    return saved && freeTimeOrder.includes(saved as RouteCharacterId) ? saved as RouteCharacterId : null
+  })
+  const [juneFreeChatRound, setJuneFreeChatRound] = useState(() => Math.max(0, Math.min(4, Number(localStorage.getItem('mayday-june-free-chat-round') ?? '0'))))
+  const [juneFreeChatReplied, setJuneFreeChatReplied] = useState(() => localStorage.getItem('mayday-june-free-chat-replied') === 'true')
+  const [juneFreeChatStarted, setJuneFreeChatStarted] = useState(() =>
+    localStorage.getItem('mayday-june-free-chat-started') === 'true' ||
+    (localStorage.getItem('mayday-june-study-day-complete') === 'true' && localStorage.getItem('mayday-june-free-chat-complete') !== 'true')
+  )
+  const [juneFreeChatReplies, setJuneFreeChatReplies] = useState<number[]>(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('mayday-june-free-chat-replies') ?? '[]')
+      return Array.isArray(saved) ? saved.filter((value): value is number => Number.isInteger(value) && value >= 0 && value <= 2).slice(0, 5) : []
+    } catch { return [] }
+  })
   const [monthVisitTarget, setMonthVisitTarget] = useState<RouteCharacterId | null>(() => {
     const saved = localStorage.getItem('mayday-month-visit-target')
     return saved && monthVisitOrder.includes(saved as RouteCharacterId) ? saved as RouteCharacterId : null
@@ -2659,7 +2677,7 @@ function App() {
   const [selectedProfile, setSelectedProfile] = useState<string | null>(null)
   const [resumeStage, setResumeStage] = useState<StoryStage>(() => {
     const saved = localStorage.getItem('mayday-resume-stage')
-    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete', 'month-free-time', 'month-visit', 'month-visit-complete', 'month-free-chat', 'month-diary', 'next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-chat', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete', 'next-month-free-chat', 'next-month-diary', 'year-end-intro', 'year-end-invite-notification', 'year-end-invite-picker', 'year-end-shopping-notification', 'year-end-shopping-chat', 'year-end-shopping', 'year-end-fireworks', 'year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary', 'winter-exam-intro', 'winter-exam-notification', 'winter-exam-chat', 'winter-exam-tutoring', 'winter-break-practice', 'winter-break-gig', 'winter-break-pickup', 'winter-break-bus-choice', 'winter-break-bus', 'winter-diary', 'february-intro', 'february-secret', 'february-dinner', 'february-table', 'february-after-dinner-picker', 'february-after-dinner', 'february-diary', 'spring-term-intro', 'spring-invite-picker', 'spring-invite-notification', 'spring-invite-chat', 'spring-store', 'spring-rehearsal', 'spring-after-picker', 'spring-lesson', 'spring-dinner', 'spring-sms-picker', 'spring-sms-chat', 'spring-diary', 'march28-intro', 'march28-visit', 'march28-end', 'march28-park', 'march28-park-stay', 'march28-morning', 'march28-diary', 'march29-show', 'april12-story', 'april20-story', 'april30-story', 'may10-story', 'june-study', 'june-study-complete']
+    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete', 'month-free-time', 'month-visit', 'month-visit-complete', 'month-free-chat', 'month-diary', 'next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-chat', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete', 'next-month-free-chat', 'next-month-diary', 'year-end-intro', 'year-end-invite-notification', 'year-end-invite-picker', 'year-end-shopping-notification', 'year-end-shopping-chat', 'year-end-shopping', 'year-end-fireworks', 'year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary', 'winter-exam-intro', 'winter-exam-notification', 'winter-exam-chat', 'winter-exam-tutoring', 'winter-break-practice', 'winter-break-gig', 'winter-break-pickup', 'winter-break-bus-choice', 'winter-break-bus', 'winter-diary', 'february-intro', 'february-secret', 'february-dinner', 'february-table', 'february-after-dinner-picker', 'february-after-dinner', 'february-diary', 'spring-term-intro', 'spring-invite-picker', 'spring-invite-notification', 'spring-invite-chat', 'spring-store', 'spring-rehearsal', 'spring-after-picker', 'spring-lesson', 'spring-dinner', 'spring-sms-picker', 'spring-sms-chat', 'spring-diary', 'march28-intro', 'march28-visit', 'march28-end', 'march28-park', 'march28-park-stay', 'march28-morning', 'march28-diary', 'march29-show', 'april12-story', 'april20-story', 'april30-story', 'may10-story', 'june-study', 'june-free-chat', 'june-study-complete']
     return saved && valid.includes(saved as StoryStage) ? saved as StoryStage : 'reunion'
   })
   const messageScrollRef = useRef<HTMLDivElement>(null)
@@ -2668,6 +2686,7 @@ function App() {
     storyStage === 'paused' && resumeStage === 'june-study' ? juneStudyClock
       : storyStage === 'june-study' ? juneStudyClock
         : storyStage === 'june-study-complete' ? '17:10'
+          : storyStage === 'june-free-chat' ? (juneFreeChatTarget ? '17:20' : '17:15')
           : storyStage === 'notification' || storyStage === 'messages' ? '15:42'
       : storyStage === 'walk' ? '16:30'
         : storyStage === 'dinner' ? '19:10'
@@ -2730,11 +2749,11 @@ function App() {
   const isWinterExam = ['winter-exam-intro', 'winter-exam-notification', 'winter-exam-chat', 'winter-exam-tutoring'].includes(effectiveDateStage)
   const isFebruary = ['february-intro', 'february-secret', 'february-dinner', 'february-table', 'february-after-dinner-picker', 'february-after-dinner', 'february-diary'].includes(effectiveDateStage) || localStorage.getItem('mayday-february-day-complete') === 'true'
   const isMarch28 = localStorage.getItem('mayday-march29-complete') !== 'true' && (['march28-intro', 'march28-visit', 'march28-end', 'march28-park', 'march28-park-stay', 'march28-morning', 'march28-diary'].includes(effectiveDateStage) || localStorage.getItem('mayday-march28-started') === 'true' || localStorage.getItem('mayday-march28-day-complete') === 'true')
-  const isSpringTerm = ['spring-term-intro', 'spring-invite-picker', 'spring-invite-notification', 'spring-invite-chat', 'spring-store', 'spring-rehearsal', 'spring-after-picker', 'spring-lesson', 'spring-dinner', 'spring-sms-picker', 'spring-sms-chat', 'spring-diary', 'march28-intro', 'march28-visit', 'march28-end', 'march28-park', 'march28-park-stay', 'march28-morning', 'march28-diary', 'march29-show', 'april20-story', 'april30-story', 'may10-story', 'june-study', 'june-study-complete'].includes(effectiveDateStage) || localStorage.getItem('mayday-spring-day-complete') === 'true' || localStorage.getItem('mayday-april20-day-complete') === 'true' || localStorage.getItem('mayday-april30-day-complete') === 'true' || localStorage.getItem('mayday-may10-day-complete') === 'true' || localStorage.getItem('mayday-june-study-day-complete') === 'true'
+  const isSpringTerm = ['spring-term-intro', 'spring-invite-picker', 'spring-invite-notification', 'spring-invite-chat', 'spring-store', 'spring-rehearsal', 'spring-after-picker', 'spring-lesson', 'spring-dinner', 'spring-sms-picker', 'spring-sms-chat', 'spring-diary', 'march28-intro', 'march28-visit', 'march28-end', 'march28-park', 'march28-park-stay', 'march28-morning', 'march28-diary', 'march29-show', 'april20-story', 'april30-story', 'may10-story', 'june-study', 'june-free-chat', 'june-study-complete'].includes(effectiveDateStage) || localStorage.getItem('mayday-spring-day-complete') === 'true' || localStorage.getItem('mayday-april20-day-complete') === 'true' || localStorage.getItem('mayday-april30-day-complete') === 'true' || localStorage.getItem('mayday-may10-day-complete') === 'true' || localStorage.getItem('mayday-june-study-day-complete') === 'true'
   const isWinterBreak = ['winter-break-practice', 'winter-break-gig', 'winter-break-pickup', 'winter-break-bus-choice', 'winter-break-bus', 'winter-diary'].includes(effectiveDateStage) || isFebruary || localStorage.getItem('mayday-winter-break-day-complete') === 'true'
   const isYearEnd = ['year-end-intro', 'year-end-invite-notification', 'year-end-invite-picker', 'year-end-shopping-notification', 'year-end-shopping-chat', 'year-end-shopping', 'year-end-fireworks', 'year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary'].includes(effectiveDateStage) || localStorage.getItem('mayday-year-end-day-complete') === 'true'
   const isNewYear = ['year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary'].includes(effectiveDateStage) || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-year-end-day-complete') === 'true' && localStorage.getItem('mayday-winter-break-day-complete') !== 'true')
-  const saveGameDate = effectiveDateStage === 'june-study' || effectiveDateStage === 'june-study-complete' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-june-study-day-complete') === 'true') ? '1997.06.15' : effectiveDateStage === 'may10-story' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-may10-day-complete') === 'true') ? '1997.05.10' : effectiveDateStage === 'april30-story' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-april30-day-complete') === 'true') ? '1997.04.30' : effectiveDateStage === 'april20-story' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-april20-day-complete') === 'true') ? '1997.04.20' : effectiveDateStage === 'april12-story' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-april12-diary-unlocked') === 'true') ? '1997.04.12' : effectiveDateStage === 'march29-show' || effectiveDateStage === 'march28-morning' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-march29-diary-unlocked') === 'true') || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-march28-park-choice') === 'stay' && localStorage.getItem('mayday-march28-day-complete') === 'true') ? '1997.03.29' : isMarch28 ? '1997.03.28' : isSpringTerm ? '1997.02.17' : isFebruary ? '1997.02.03' : isWinterBreak ? '1997.01.22' : isWinterExam ? (effectiveDateStage === 'winter-exam-tutoring' ? '1997.01.08' : '1997.01.07') : isNewYear ? '1997.01.01' : isYearEnd ? '1996.12.31' : isNextMonth ? '1996.12.14' : isMonthLater ? '1996.11.16' : isSecondDay ? '1996.10.16' : '1996.10.15'
+  const saveGameDate = effectiveDateStage === 'june-study' || effectiveDateStage === 'june-free-chat' || effectiveDateStage === 'june-study-complete' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-june-study-day-complete') === 'true') ? '1997.06.15' : effectiveDateStage === 'may10-story' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-may10-day-complete') === 'true') ? '1997.05.10' : effectiveDateStage === 'april30-story' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-april30-day-complete') === 'true') ? '1997.04.30' : effectiveDateStage === 'april20-story' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-april20-day-complete') === 'true') ? '1997.04.20' : effectiveDateStage === 'april12-story' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-april12-diary-unlocked') === 'true') ? '1997.04.12' : effectiveDateStage === 'march29-show' || effectiveDateStage === 'march28-morning' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-march29-diary-unlocked') === 'true') || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-march28-park-choice') === 'stay' && localStorage.getItem('mayday-march28-day-complete') === 'true') ? '1997.03.29' : isMarch28 ? '1997.03.28' : isSpringTerm ? '1997.02.17' : isFebruary ? '1997.02.03' : isWinterBreak ? '1997.01.22' : isWinterExam ? (effectiveDateStage === 'winter-exam-tutoring' ? '1997.01.08' : '1997.01.07') : isNewYear ? '1997.01.01' : isYearEnd ? '1996.12.31' : isNextMonth ? '1996.12.14' : isMonthLater ? '1996.11.16' : isSecondDay ? '1996.10.16' : '1996.10.15'
   const [calendarYear, calendarMonth, calendarDay] = saveGameDate.split('.')
   const calendarDate = new Date(Number(calendarYear), Number(calendarMonth) - 1, Number(calendarDay))
   const calendarWeekday = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'][calendarDate.getDay()]
@@ -3244,15 +3263,24 @@ function App() {
     }
 
     const juneStudyCharacter = localStorage.getItem('mayday-june-study-character')
-    const latestExperience = storyStage === 'june-study-complete' && juneStudyCharacter === pendingCallCharacter
+    const juneFreeChatCharacter = localStorage.getItem('mayday-june-free-chat-target')
+    const latestExperience = storyStage === 'june-study-complete' && juneFreeChatCharacter === pendingCallCharacter && localStorage.getItem('mayday-june-free-chat-complete') === 'true'
       ? {
           character: pendingCallCharacter,
           source: 'june-study' as const,
           date: saveGameDate,
-          eventKey: '六月中旬・期末複習',
+          eventKey: '六月中旬・日常簡訊',
           day2StrollAccepted: false,
         }
-      : storyStage === 'month-visit-complete' && monthVisitTarget === pendingCallCharacter
+      : storyStage === 'june-study-complete' && juneStudyCharacter === pendingCallCharacter
+        ? {
+            character: pendingCallCharacter,
+            source: 'june-study' as const,
+            date: saveGameDate,
+            eventKey: '六月中旬・期末複習',
+            day2StrollAccepted: false,
+          }
+        : storyStage === 'month-visit-complete' && monthVisitTarget === pendingCallCharacter
       ? {
           character: pendingCallCharacter,
           source: 'month-visit' as const,
@@ -3275,13 +3303,13 @@ function App() {
     localStorage.setItem('mayday-call-v2-triggered-' + pendingCallCharacter, 'true')
     localStorage.removeItem('mayday-pending-call')
     setPendingCallCharacter(null)
-  }, [storyStage, activeApp, pendingCallCharacter, incomingCallCharacter, activeCallCharacter, routeAffection, sharedExperienceLog, monthVisitTarget, monthVisitReplies, saveGameDate, day2StrollAccepted])
+  }, [storyStage, activeApp, pendingCallCharacter, incomingCallCharacter, activeCallCharacter, routeAffection, sharedExperienceLog, monthVisitTarget, monthVisitReplies, saveGameDate, day2StrollAccepted, juneFreeChatTarget])
 
   useEffect(() => {
     if (activeApp === 'messages' && selectedSmsThread && messageScrollRef.current) {
       messageScrollRef.current.scrollTop = messageScrollRef.current.scrollHeight
     }
-  }, [activeApp, selectedSmsThread, smsMessages, chatMessages, greetingRound, freeChatRound, monthFreeChatRound, nextMonthFreeChatRound])
+  }, [activeApp, selectedSmsThread, smsMessages, chatMessages, greetingRound, freeChatRound, juneFreeChatRound, monthFreeChatRound, nextMonthFreeChatRound])
 
   useEffect(() => {
     if (activeCallCharacter && callTranscriptRef.current) {
@@ -5767,6 +5795,88 @@ function App() {
     setActiveApp(null)
     setSelectedDiaryDate(null)
     setSelectedSmsThread(null)
+    setJuneFreeChatTarget(null)
+    localStorage.removeItem('mayday-june-free-chat-target')
+    setJuneFreeChatRound(0)
+    localStorage.setItem('mayday-june-free-chat-round', '0')
+    setJuneFreeChatReplied(false)
+    localStorage.setItem('mayday-june-free-chat-replied', 'false')
+    setJuneFreeChatReplies([])
+    localStorage.setItem('mayday-june-free-chat-replies', '[]')
+    setJuneFreeChatStarted(true)
+    localStorage.setItem('mayday-june-free-chat-started', 'true')
+    localStorage.removeItem('mayday-june-free-chat-complete')
+    changeStage('june-free-chat')
+  }
+
+  const chooseJuneFreeChatTarget = (character: RouteCharacterId) => {
+    if (!juneFreeChatStarted || juneFreeChatTarget || localStorage.getItem('mayday-june-free-chat-complete') === 'true') return
+    const script = juneFreeChatScripts[character]
+    if (!script || script.rounds.length !== 5) return
+    setJuneFreeChatTarget(character)
+    localStorage.setItem('mayday-june-free-chat-target', character)
+    setJuneFreeChatRound(0)
+    localStorage.setItem('mayday-june-free-chat-round', '0')
+    setJuneFreeChatReplied(false)
+    localStorage.setItem('mayday-june-free-chat-replied', 'false')
+    setJuneFreeChatReplies([])
+    localStorage.setItem('mayday-june-free-chat-replies', '[]')
+    appendChatMessages(character, [
+      { from: 'me', text: script.opening, time: '17:16' },
+      { from: character, text: script.rounds[0].incoming, time: '17:17' },
+    ], '1997年6月15日・傍晚')
+    setSelectedSmsThread(character)
+    setActiveApp('messages')
+  }
+
+  const chooseJuneFreeChatReply = (choiceIndex: number) => {
+    if (!juneFreeChatStarted || !juneFreeChatTarget || juneFreeChatReplied) return
+    const script = juneFreeChatScripts[juneFreeChatTarget]
+    const round = script.rounds[juneFreeChatRound]
+    const choice = round?.choices[choiceIndex]
+    if (!choice) return
+    const minute = 18 + juneFreeChatRound * 2
+    const time = '17:' + String(minute).padStart(2, '0')
+    const nextTime = '17:' + String(minute + 1).padStart(2, '0')
+    appendChatMessages(juneFreeChatTarget, [
+      { from: 'me', text: choice.text, time },
+      ...choice.response.map((text) => ({ from: juneFreeChatTarget, text, time })),
+      ...(juneFreeChatRound < 4 ? [{ from: juneFreeChatTarget, text: script.rounds[juneFreeChatRound + 1].incoming, time: nextTime }] : []),
+    ], '1997年6月15日・傍晚')
+    const nextReplies = [...juneFreeChatReplies, choiceIndex]
+    setJuneFreeChatReplies(nextReplies)
+    localStorage.setItem('mayday-june-free-chat-replies', JSON.stringify(nextReplies))
+    addRouteAffection(juneFreeChatTarget, choice.affection)
+    if (juneFreeChatRound < 4) {
+      const nextRound = juneFreeChatRound + 1
+      setJuneFreeChatRound(nextRound)
+      localStorage.setItem('mayday-june-free-chat-round', String(nextRound))
+      setJuneFreeChatReplied(false)
+      localStorage.setItem('mayday-june-free-chat-replied', 'false')
+    } else {
+      setJuneFreeChatReplied(true)
+      localStorage.setItem('mayday-june-free-chat-replied', 'true')
+    }
+  }
+
+  const finishJuneFreeChat = () => {
+    if (!juneFreeChatTarget || !juneFreeChatStarted || !juneFreeChatReplied || juneFreeChatRound !== 4 || juneFreeChatReplies.length !== 5) return
+    const experience: CharacterExperienceRecord = {
+      character: juneFreeChatTarget,
+      source: 'june-study',
+      date: saveGameDate,
+      eventKey: '六月中旬・日常簡訊',
+      day2StrollAccepted: false,
+      choices: [...juneFreeChatReplies],
+    }
+    const nextExperienceLog = { ...sharedExperienceLog, [juneFreeChatTarget]: experience }
+    setSharedExperienceLog(nextExperienceLog)
+    localStorage.setItem('mayday-shared-experience-log', JSON.stringify(nextExperienceLog))
+    localStorage.setItem('mayday-june-free-chat-complete', 'true')
+    setJuneFreeChatStarted(false)
+    localStorage.setItem('mayday-june-free-chat-started', 'false')
+    setActiveApp(null)
+    setSelectedSmsThread(null)
     changeStage('june-study-complete')
   }
 
@@ -5924,7 +6034,7 @@ function App() {
   }
 
   const resetLocalData = () => {
-    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-month-visit-target', 'mayday-month-visit-choice', 'mayday-month-visit-replies', 'mayday-month-visit-complete', 'mayday-month-free-chat-target', 'mayday-month-free-chat-choice-pending', 'mayday-month-free-chat-round', 'mayday-month-free-chat-replied', 'mayday-month-free-chat-started', 'mayday-month-free-chat-opening-sent', 'mayday-month-free-chat-replies', 'mayday-month-free-chat-complete', 'mayday-month-day-complete', 'mayday-next-month-started', 'mayday-next-month-invite-candidates', 'mayday-next-month-invite-target', 'mayday-next-month-invite-tease-choice', 'mayday-next-month-invite-reply-choice', 'mayday-next-month-invite-date-replies', 'mayday-next-month-invite-thread-started', 'mayday-next-month-event-kind', 'mayday-next-month-event-character', 'mayday-next-month-open-day-target', 'mayday-next-month-open-day-replies', 'mayday-next-month-free-chat-target', 'mayday-next-month-free-chat-round', 'mayday-next-month-free-chat-replied', 'mayday-next-month-free-chat-opening-sent', 'mayday-next-month-free-chat-replies', 'mayday-next-month-diary-unlocked', 'mayday-next-month-diary-data', 'mayday-wen-open-day-guitar-praise-v1', 'mayday-next-month-day-complete', 'mayday-route-affection', 'mayday-shared-experience-log', 'mayday-call-experience-context', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-month-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming', 'mayday-active-call-character', 'mayday-call-round-index', 'mayday-call-replied', 'mayday-call-transcript', 'mayday-year-end-started', 'mayday-year-end-invite-check-done', 'mayday-year-end-invite-candidates', 'mayday-year-end-invite-target', 'mayday-year-end-shopping-reply-choice', 'mayday-year-end-shopping-replies', 'mayday-year-end-shopping-complete', 'mayday-year-end-fireworks-replies', 'mayday-year-end-fireworks-complete', 'mayday-year-end-greeting-queue', 'mayday-year-end-greeting-index', 'mayday-year-end-greeting-target', 'mayday-year-end-chat-mode', 'mayday-year-end-first-reply-sent', 'mayday-year-end-free-chat-round', 'mayday-year-end-free-chat-replied', 'mayday-year-end-free-chat-replies', 'mayday-year-end-proactive-sent', 'mayday-year-end-extended-chat-characters', 'mayday-year-end-diary-unlocked', 'mayday-year-end-diary-data', 'mayday-year-end-day-complete', 'mayday-year-end-shopping-invite-sent-wen', 'mayday-year-end-shopping-invite-sent-masa', 'mayday-year-end-shopping-invite-sent-ashin', 'mayday-year-end-shopping-invite-sent-stone', 'mayday-year-end-shopping-invite-sent-yanming', 'mayday-winter-exam-chat-started', 'mayday-winter-exam-chat-reply-choice', 'mayday-winter-exam-tutoring-unlocked', 'mayday-winter-exam-replies', 'mayday-winter-practice-replies', 'mayday-winter-yanming-pickup-available', 'mayday-winter-bus-stop-character', 'mayday-winter-diary-unlocked', 'mayday-winter-diary-data', 'mayday-winter-break-day-complete', 'mayday-february-secret-target', 'mayday-february-secret-reply', 'mayday-february-dinner-reply', 'mayday-february-table-character', 'mayday-february-after-dinner-character', 'mayday-february-after-dinner-replies', 'mayday-february-diary-unlocked', 'mayday-february-diary-data', 'mayday-february-day-complete', 'mayday-spring-invites-sent', 'mayday-spring-invite-candidates', 'mayday-spring-invite-target', 'mayday-spring-invite-replies', 'mayday-spring-invite-declined', 'mayday-spring-store-character', 'mayday-spring-store-reply', 'mayday-spring-after-choice', 'mayday-spring-lesson-character', 'mayday-spring-lesson-touch-choice', 'mayday-spring-lesson-reply', 'mayday-spring-dinner-replies', 'mayday-spring-dinner-reply', 'mayday-spring-sms-target', 'mayday-spring-sms-round', 'mayday-spring-sms-replied', 'mayday-spring-sms-opening-sent', 'mayday-spring-sms-opening-choice', 'mayday-spring-sms-replies', 'mayday-spring-sms-mode', 'mayday-spring-sms-event-started', 'mayday-spring-sms-event-complete', 'mayday-spring-sms-history-restore-v1', 'mayday-spring-free-chat-eligible-v1', 'mayday-spring-free-chat-started', 'mayday-spring-free-chat-complete', 'mayday-spring-diary-unlocked', 'mayday-spring-diary-data', 'mayday-spring-diary-pending-data', 'mayday-spring-day-complete', 'mayday-march28-started', 'mayday-march28-visit-character', 'mayday-march28-visit-replies', 'mayday-march28-visit-complete', 'mayday-march28-day-complete', 'mayday-march29-started', 'mayday-march28-park-choice', 'mayday-march28-park-stay-replies', 'mayday-march28-morning-character', 'mayday-march28-morning-replies', 'mayday-march28-morning-complete', 'mayday-march28-diary-unlocked', 'mayday-march28-diary-data', 'mayday-march28-diary-copy-version', 'mayday-march29-progress', 'mayday-march29-aftershow-progress', 'mayday-march29-complete', 'mayday-march29-diary-unlocked', 'mayday-march29-diary-data', 'mayday-april12-started', 'mayday-april12-progress', 'mayday-april12-clock', 'mayday-april12-complete', 'mayday-april12-diary-unlocked', 'mayday-april12-diary-data', 'mayday-april20-started', 'mayday-april20-progress', 'mayday-april20-clock', 'mayday-april20-complete', 'mayday-april20-day-complete', 'mayday-april20-sms-seeded', 'mayday-april20-route', 'mayday-april20-character', 'mayday-april20-choices', 'mayday-april20-diary-unlocked', 'mayday-april20-diary-data', 'mayday-april30-affection-applied', 'mayday-april30-affection-backfill-v1', 'mayday-april30-affection-total', 'mayday-april30-comfort-choice', 'mayday-spring-selection-affection-backfill-v1', 'mayday-may10-started', 'mayday-may10-progress-v1', 'mayday-may10-clock', 'mayday-may10-complete', 'mayday-may10-day-complete', 'mayday-may10-diary-unlocked', 'mayday-may10-diary-data', 'mayday-may10-character', 'mayday-may10-character-selection-affection-v1', 'mayday-may10-choices', 'mayday-may10-jealousy-character', 'mayday-may10-jealousy-choices', 'mayday-current-drummer', 'mayday-drummer-joined-date', 'mayday-spring-free-chat-return-stage'].forEach((key) => localStorage.removeItem(key))
+    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-june-free-chat-target', 'mayday-june-free-chat-round', 'mayday-june-free-chat-replied', 'mayday-june-free-chat-started', 'mayday-june-free-chat-replies', 'mayday-june-free-chat-complete', 'mayday-month-visit-target', 'mayday-month-visit-choice', 'mayday-month-visit-replies', 'mayday-month-visit-complete', 'mayday-month-free-chat-target', 'mayday-month-free-chat-choice-pending', 'mayday-month-free-chat-round', 'mayday-month-free-chat-replied', 'mayday-month-free-chat-started', 'mayday-month-free-chat-opening-sent', 'mayday-month-free-chat-replies', 'mayday-month-free-chat-complete', 'mayday-month-day-complete', 'mayday-next-month-started', 'mayday-next-month-invite-candidates', 'mayday-next-month-invite-target', 'mayday-next-month-invite-tease-choice', 'mayday-next-month-invite-reply-choice', 'mayday-next-month-invite-date-replies', 'mayday-next-month-invite-thread-started', 'mayday-next-month-event-kind', 'mayday-next-month-event-character', 'mayday-next-month-open-day-target', 'mayday-next-month-open-day-replies', 'mayday-next-month-free-chat-target', 'mayday-next-month-free-chat-round', 'mayday-next-month-free-chat-replied', 'mayday-next-month-free-chat-opening-sent', 'mayday-next-month-free-chat-replies', 'mayday-next-month-diary-unlocked', 'mayday-next-month-diary-data', 'mayday-wen-open-day-guitar-praise-v1', 'mayday-next-month-day-complete', 'mayday-route-affection', 'mayday-shared-experience-log', 'mayday-call-experience-context', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-month-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming', 'mayday-active-call-character', 'mayday-call-round-index', 'mayday-call-replied', 'mayday-call-transcript', 'mayday-year-end-started', 'mayday-year-end-invite-check-done', 'mayday-year-end-invite-candidates', 'mayday-year-end-invite-target', 'mayday-year-end-shopping-reply-choice', 'mayday-year-end-shopping-replies', 'mayday-year-end-shopping-complete', 'mayday-year-end-fireworks-replies', 'mayday-year-end-fireworks-complete', 'mayday-year-end-greeting-queue', 'mayday-year-end-greeting-index', 'mayday-year-end-greeting-target', 'mayday-year-end-chat-mode', 'mayday-year-end-first-reply-sent', 'mayday-year-end-free-chat-round', 'mayday-year-end-free-chat-replied', 'mayday-year-end-free-chat-replies', 'mayday-year-end-proactive-sent', 'mayday-year-end-extended-chat-characters', 'mayday-year-end-diary-unlocked', 'mayday-year-end-diary-data', 'mayday-year-end-day-complete', 'mayday-year-end-shopping-invite-sent-wen', 'mayday-year-end-shopping-invite-sent-masa', 'mayday-year-end-shopping-invite-sent-ashin', 'mayday-year-end-shopping-invite-sent-stone', 'mayday-year-end-shopping-invite-sent-yanming', 'mayday-winter-exam-chat-started', 'mayday-winter-exam-chat-reply-choice', 'mayday-winter-exam-tutoring-unlocked', 'mayday-winter-exam-replies', 'mayday-winter-practice-replies', 'mayday-winter-yanming-pickup-available', 'mayday-winter-bus-stop-character', 'mayday-winter-diary-unlocked', 'mayday-winter-diary-data', 'mayday-winter-break-day-complete', 'mayday-february-secret-target', 'mayday-february-secret-reply', 'mayday-february-dinner-reply', 'mayday-february-table-character', 'mayday-february-after-dinner-character', 'mayday-february-after-dinner-replies', 'mayday-february-diary-unlocked', 'mayday-february-diary-data', 'mayday-february-day-complete', 'mayday-spring-invites-sent', 'mayday-spring-invite-candidates', 'mayday-spring-invite-target', 'mayday-spring-invite-replies', 'mayday-spring-invite-declined', 'mayday-spring-store-character', 'mayday-spring-store-reply', 'mayday-spring-after-choice', 'mayday-spring-lesson-character', 'mayday-spring-lesson-touch-choice', 'mayday-spring-lesson-reply', 'mayday-spring-dinner-replies', 'mayday-spring-dinner-reply', 'mayday-spring-sms-target', 'mayday-spring-sms-round', 'mayday-spring-sms-replied', 'mayday-spring-sms-opening-sent', 'mayday-spring-sms-opening-choice', 'mayday-spring-sms-replies', 'mayday-spring-sms-mode', 'mayday-spring-sms-event-started', 'mayday-spring-sms-event-complete', 'mayday-spring-sms-history-restore-v1', 'mayday-spring-free-chat-eligible-v1', 'mayday-spring-free-chat-started', 'mayday-spring-free-chat-complete', 'mayday-spring-diary-unlocked', 'mayday-spring-diary-data', 'mayday-spring-diary-pending-data', 'mayday-spring-day-complete', 'mayday-march28-started', 'mayday-march28-visit-character', 'mayday-march28-visit-replies', 'mayday-march28-visit-complete', 'mayday-march28-day-complete', 'mayday-march29-started', 'mayday-march28-park-choice', 'mayday-march28-park-stay-replies', 'mayday-march28-morning-character', 'mayday-march28-morning-replies', 'mayday-march28-morning-complete', 'mayday-march28-diary-unlocked', 'mayday-march28-diary-data', 'mayday-march28-diary-copy-version', 'mayday-march29-progress', 'mayday-march29-aftershow-progress', 'mayday-march29-complete', 'mayday-march29-diary-unlocked', 'mayday-march29-diary-data', 'mayday-april12-started', 'mayday-april12-progress', 'mayday-april12-clock', 'mayday-april12-complete', 'mayday-april12-diary-unlocked', 'mayday-april12-diary-data', 'mayday-april20-started', 'mayday-april20-progress', 'mayday-april20-clock', 'mayday-april20-complete', 'mayday-april20-day-complete', 'mayday-april20-sms-seeded', 'mayday-april20-route', 'mayday-april20-character', 'mayday-april20-choices', 'mayday-april20-diary-unlocked', 'mayday-april20-diary-data', 'mayday-april30-affection-applied', 'mayday-april30-affection-backfill-v1', 'mayday-april30-affection-total', 'mayday-april30-comfort-choice', 'mayday-spring-selection-affection-backfill-v1', 'mayday-may10-started', 'mayday-may10-progress-v1', 'mayday-may10-clock', 'mayday-may10-complete', 'mayday-may10-day-complete', 'mayday-may10-diary-unlocked', 'mayday-may10-diary-data', 'mayday-may10-character', 'mayday-may10-character-selection-affection-v1', 'mayday-may10-choices', 'mayday-may10-jealousy-character', 'mayday-may10-jealousy-choices', 'mayday-current-drummer', 'mayday-drummer-joined-date', 'mayday-spring-free-chat-return-stage'].forEach((key) => localStorage.removeItem(key))
     ;(['wen', 'ashin', 'masa', 'stone', 'yanming'] as SpringCharacterId[]).forEach((character) => localStorage.removeItem('mayday-spring-invite-thread-sent-' + character))
     SAVE_SLOT_IDS.forEach((slot) => localStorage.removeItem(SAVE_SLOT_PREFIX + slot))
     setPlayerName('')
@@ -5957,6 +6067,11 @@ function App() {
     setFreeChatTarget(null)
     setFreeChatRound(0)
     setFreeChatReplied(false)
+    setJuneFreeChatTarget(null)
+    setJuneFreeChatRound(0)
+    setJuneFreeChatReplied(false)
+    setJuneFreeChatStarted(false)
+    setJuneFreeChatReplies([])
     setMonthVisitTarget(null)
     setMonthVisitReplies([])
     setMonthFreeChatTarget(null)
@@ -8601,6 +8716,61 @@ function App() {
                 />
               )}
 
+              {storyStage === 'june-free-chat' && juneFreeChatStarted && juneFreeChatTarget === null && activeApp === null && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">六月中旬・傍晚</div>
+                    <div className="story-contact-title">
+                      <strong>自由簡訊</strong>
+                      <small>1997 年 6 月 15 日・星期日</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">JUNE · EVENING MESSAGES</div>
+                    <h2 className="story-scene-title">今晚想找誰聊聊？</h2>
+                    <StoryBlocks blocks={[
+                      { kind: 'narration', text: '期末複習告一段落，回到家後，你忽然想到幾件今天遇到的小事。沒有什麼特別的原因，只是想拿起手機，找一個人隨便聊聊。' },
+                    ]} />
+                    <div className="month-visit-picker">
+                      {freeTimeOrder.map((id) => {
+                        const person = characterInfo.find((item) => item.id === id)!
+                        return (
+                          <button className="free-time-person" key={id} onClick={() => chooseJuneFreeChatTarget(id)}>
+                            <span className="sms-avatar">{person.avatar}</span>
+                            <span><strong>{person.name}</strong><small>主動傳訊息，聊聊日常</small></span>
+                            <ChevronRight size={15} />
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {storyStage === 'june-free-chat' && juneFreeChatStarted && juneFreeChatTarget !== null && activeApp === null && (
+                <div className="story-screen-overlay">
+                  <div className="story-screen-head">
+                    <div className="chapter-mark">六月中旬・傍晚</div>
+                    <div className="story-contact-title">
+                      <strong>{characterNames[juneFreeChatTarget]}</strong>
+                      <small>自由簡訊・1997 年 6 月 15 日</small>
+                    </div>
+                    <span className="story-head-spacer" />
+                  </div>
+                  <div className="story-narrative-scroll">
+                    <div className="story-kicker">訊息還停留在剛才的地方</div>
+                    <h2 className="story-scene-title">要繼續和他聊天嗎？</h2>
+                    <StoryBlocks blocks={[
+                      { kind: 'narration', text: '你已經選好了今晚想找的人。打開訊息，就能接著剛才的對話繼續聊。' },
+                    ]} />
+                  </div>
+                  <div className="story-action-bar">
+                    <button className="story-primary-button" onClick={() => openMessagesApp(juneFreeChatTarget)}>打開訊息 <ChevronRight size={15} /></button>
+                  </div>
+                </div>
+              )}
+
               {storyStage === 'paused' && (
                 <div className="paused-story-banner">
                   <div>
@@ -9003,6 +9173,17 @@ function App() {
                                   <small>每輪都有三種回法，會影響對方反應與好感；也可能一不小心扣分。</small>
                                 </div>
                               )}
+                              {storyStage === 'june-free-chat' && juneFreeChatTarget && selectedSmsThread === juneFreeChatTarget && !juneFreeChatReplied && (
+                                <div className="choice-area">
+                                  <div className="choice-heading">六月日常簡訊・第 {juneFreeChatRound + 1}/5 輪</div>
+                                  {juneFreeChatScripts[juneFreeChatTarget].rounds[juneFreeChatRound].choices.map((choice, index) => (
+                                    <button className="reply-choice" key={index} onClick={() => chooseJuneFreeChatReply(index)}>
+                                      <span>{stripCornerQuotes(choice.text)}</span><ChevronRight size={15} />
+                                    </button>
+                                  ))}
+                                  <small>每輪有三個回覆選項，會影響對方的好感度；聊天紀錄會保留在收件匣裡。</small>
+                                </div>
+                              )}
                               {storyStage === 'month-free-chat' && monthFreeChatTarget && selectedSmsThread === monthFreeChatTarget && !monthFreeChatOpeningSent && (
                                 <div className="choice-area">
                                   <div className="choice-heading">{monthFreeChatTarget === monthVisitTarget ? '延續今天和' + characterNames[monthFreeChatTarget] + '的見面，先傳一則訊息' : '今天想找' + characterNames[monthFreeChatTarget] + '聊聊，先傳一則訊息'}</div>
@@ -9075,6 +9256,12 @@ function App() {
                               <div className="sms-thread-actions">
                                 <div className="reply-note">五輪對話已完成。這段訊息會保留在收件匣裡，你之後可以隨時回看。</div>
                                 <button className="story-primary-button" onClick={finishFreeChat}>結束自由活動 <ChevronRight size={15} /></button>
+                              </div>
+                            )}
+                            {storyStage === 'june-free-chat' && juneFreeChatTarget && selectedSmsThread === juneFreeChatTarget && juneFreeChatReplied && juneFreeChatRound === 4 && (
+                              <div className="sms-thread-actions">
+                                <div className="reply-note">五輪日常聊天已經聊完，所有訊息都會留在收件匣裡，之後也可以隨時回看。</div>
+                                <button className="story-primary-button" onClick={finishJuneFreeChat}>收起手機，結束今晚聊天 <ChevronRight size={15} /></button>
                               </div>
                             )}
                             {storyStage === 'month-free-chat' && monthFreeChatTarget && selectedSmsThread === monthFreeChatTarget && monthFreeChatReplied && monthFreeChatRound === 4 && (
