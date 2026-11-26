@@ -2713,7 +2713,8 @@ function App() {
   const messageScrollRef = useRef<HTMLDivElement>(null)
   const callTranscriptRef = useRef<HTMLDivElement>(null)
   const currentTime =
-    storyStage === 'paused' && resumeStage === 'june-study' ? juneStudyClock
+    storyStage === 'paused' && resumeStage === 'june-diary' ? '21:30'
+      : storyStage === 'paused' && resumeStage === 'june-study' ? juneStudyClock
       : storyStage === 'june-study' ? juneStudyClock
         : storyStage === 'june-study-complete' ? '17:10'
           : storyStage === 'june-diary' ? '21:30'
@@ -2723,7 +2724,7 @@ function App() {
         : storyStage === 'dinner' ? '19:10'
           : storyStage === 'after-dinner' ? '20:35'
             : storyStage === 'ending' || storyStage === 'greetings' ? '21:18'
-              : storyStage === 'completed' ? (localStorage.getItem('mayday-may10-day-complete') === 'true' ? '17:25' : localStorage.getItem('mayday-april30-day-complete') === 'true' ? '17:30' : localStorage.getItem('mayday-april20-day-complete') === 'true' ? '17:50' : localStorage.getItem('mayday-april12-diary-unlocked') === 'true' ? '22:00' : localStorage.getItem('mayday-march29-diary-unlocked') === 'true' ? '21:30' : localStorage.getItem('mayday-march28-park-choice') === 'stay' && localStorage.getItem('mayday-march28-day-complete') === 'true' ? (localStorage.getItem('mayday-march28-morning-complete') === 'true' ? '07:30' : '05:40') : localStorage.getItem('mayday-march28-day-complete') === 'true' ? '18:45' : localStorage.getItem('mayday-february-day-complete') === 'true' ? '22:30' : localStorage.getItem('mayday-winter-break-day-complete') === 'true' ? '00:30' : localStorage.getItem('mayday-year-end-day-complete') === 'true' ? '00:40' : '21:18')
+              : storyStage === 'completed' ? (localStorage.getItem('mayday-june-diary-unlocked') === 'true' ? '21:30' : localStorage.getItem('mayday-may10-day-complete') === 'true' ? '17:25' : localStorage.getItem('mayday-april30-day-complete') === 'true' ? '17:30' : localStorage.getItem('mayday-april20-day-complete') === 'true' ? '17:50' : localStorage.getItem('mayday-april12-diary-unlocked') === 'true' ? '22:00' : localStorage.getItem('mayday-march29-diary-unlocked') === 'true' ? '21:30' : localStorage.getItem('mayday-march28-park-choice') === 'stay' && localStorage.getItem('mayday-march28-day-complete') === 'true' ? (localStorage.getItem('mayday-march28-morning-complete') === 'true' ? '07:30' : '05:40') : localStorage.getItem('mayday-march28-day-complete') === 'true' ? '18:45' : localStorage.getItem('mayday-february-day-complete') === 'true' ? '22:30' : localStorage.getItem('mayday-winter-break-day-complete') === 'true' ? '00:30' : localStorage.getItem('mayday-year-end-day-complete') === 'true' ? '00:40' : '21:18')
               : storyStage === 'classroom' || storyStage === 'masa-checkin' || storyStage === 'stone-checkin' ? '10:12'
                 : storyStage === 'ice-date' ? '16:20'
                   : storyStage === 'stroll' ? '17:05'
