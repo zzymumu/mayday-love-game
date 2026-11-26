@@ -1848,7 +1848,6 @@ function App() {
   const [showResetConfirm, setShowResetConfirm] = useState(false)
   const [saveSlots, setSaveSlots] = useState<Record<number, SaveSlotData | null>>(() => ({ 1: readSaveSlot(1), 2: readSaveSlot(2), 3: readSaveSlot(3) }))
   const [saveFeedback, setSaveFeedback] = useState('')
-  const [springChatRecoveryFeedback, setSpringChatRecoveryFeedback] = useState('')
   const [selectedSmsThread, setSelectedSmsThread] = useState<CharacterId | null>(null)
   const [smsMessages, setSmsMessages] = useState<SmsMessage[]>(() => {
     const saved = localStorage.getItem('mayday-sms-messages')
@@ -1935,10 +1934,9 @@ function App() {
   const [monthDiaryUnlocked, setMonthDiaryUnlocked] = useState(() => localStorage.getItem('mayday-month-diary-unlocked') === 'true' || localStorage.getItem('mayday-month-day-complete') === 'true')
   const [selectedDiaryDate, setSelectedDiaryDate] = useState<'1996-10-15' | '1996-10-16' | '1996-11-16' | '1996-12-14' | '1996-12-31' | '1997-01-22' | '1997-02-03' | '1997-02-17' | '1997-03-28' | '1997-03-29' | '1997-04-12' | null>(null)
   const [chatMessages, setChatMessages] = useState<Record<CharacterId, SmsMessage[]>>(() => {
-    // The spring SMS conversations now use topic-specific openings, natural topic drift, and refreshed message history.
-    // Remove only the previous 17 February free-chat exchange; keep every other historical message.
-    const resetSpringSmsHistory = localStorage.getItem('mayday-spring-sms-content-version') !== 'daily-chat-v6'
-    if (resetSpringSmsHistory) {
+    // Keep the refreshed conversation copy, but restore the player's original 17 February
+    // messages automatically from the most complete existing save slot.
+    if (localStorage.getItem('mayday-spring-sms-content-version') !== 'daily-chat-v6') {
       localStorage.setItem('mayday-spring-sms-content-version', 'daily-chat-v6')
       localStorage.removeItem('mayday-spring-sms-target')
       localStorage.setItem('mayday-spring-sms-round', '0')
@@ -1948,9 +1946,7 @@ function App() {
       localStorage.setItem('mayday-spring-sms-replies', '[]')
       localStorage.setItem('mayday-spring-sms-mode', 'day')
     }
-    // Refresh only Wen's 17 February thread; preserve the other characters' saved conversations.
-    const resetWenSpringSmsHistory = localStorage.getItem('mayday-spring-wen-sms-content-version') !== 'hot-cocoa-v3'
-    if (resetWenSpringSmsHistory) {
+    if (localStorage.getItem('mayday-spring-wen-sms-content-version') !== 'hot-cocoa-v3') {
       localStorage.setItem('mayday-spring-wen-sms-content-version', 'hot-cocoa-v3')
       if (localStorage.getItem('mayday-spring-sms-target') === 'wen') {
         localStorage.removeItem('mayday-spring-sms-target')
@@ -1962,31 +1958,76 @@ function App() {
         localStorage.setItem('mayday-spring-sms-mode', 'day')
       }
     }
+
     const saved = localStorage.getItem('mayday-chat-messages')
+    let current: Record<CharacterId, SmsMessage[]> = createInitialChatMessages()
     if (saved) {
       try {
-        const parsed = JSON.parse(saved) as Record<CharacterId, SmsMessage[]>
+        const parsed = JSON.parse(saved) as Partial<Record<CharacterId, SmsMessage[]>>
         if (parsed && greetingOrder.every((id) => Array.isArray(parsed[id]))) {
-          const migrated: Record<CharacterId, SmsMessage[]> = {
-            ...parsed,
-            wen: removeDuplicateWenMovieInviteLine(parsed.wen).map((message) => message.text === '今天大家好像都滿喜歡妳的，尤其阿信，一直找妳聊天。'
+          current = {
+            ...parsed as Record<CharacterId, SmsMessage[]>,
+            wen: removeDuplicateWenMovieInviteLine(parsed.wen as SmsMessage[]).map((message) => message.text === '今天大家好像都滿喜歡妳的，尤其阿信，一直找妳聊天。'
               ? { ...message, text: '剛剛在唱片行，妳跟阿信聊得滿開心的嘛。' }
               : message),
-            ashin: parsed.ashin.map((message) => ['剛剛在樂器行碰到你們，感覺你們今天心情很好。我也順利買到吉他弦了。', '剛剛一起逛唱片行滿開心的，妳最後有沒有挑到喜歡的？我本來還想多介紹幾張，結果得趕回去練團。'].includes(message.text)
+            ashin: (parsed.ashin as SmsMessage[]).map((message) => ['剛剛在樂器行碰到你們，感覺你們今天心情很好。我也順利買到吉他弦了。', '剛剛一起逛唱片行滿開心的，妳最後有沒有挑到喜歡的？我本來還想多介紹幾張，結果得趕回去練團。'].includes(message.text)
               ? { ...message, text: '剛剛一起逛唱片行滿開心的，妳最後有沒有挑到喜歡的？我本來還想多介紹幾張，不過後來也差不多該回家了。' }
               : message),
-            masa: removeDuplicateMasaErrandLine(parsed.masa),
+            masa: removeDuplicateMasaErrandLine(parsed.masa as SmsMessage[]),
           }
-          // Content refreshes may reset an unfinished conversation, but must never erase
-          // the player's completed 17 February chat history from the message archive.
-          if (JSON.stringify(migrated) !== JSON.stringify(parsed)) localStorage.setItem('mayday-chat-messages', JSON.stringify(migrated))
-          return migrated
         }
       } catch {
-        // Rebuild the new contact threads if saved chat data is malformed.
+        // If the current message store is malformed, start with the authored inbox
+        // and still attempt to restore the saved conversation archive below.
       }
     }
-    return createInitialChatMessages()
+
+    const savedArchives = SAVE_SLOT_IDS.flatMap((slot) => {
+      const save = readSaveSlot(slot)
+      const raw = save?.data['mayday-chat-messages']
+      if (!save || !raw) return []
+      try {
+        const archived = JSON.parse(raw) as Partial<Record<CharacterId, SmsMessage[]>>
+        const messages = greetingOrder.reduce((total, character) => {
+          const thread = Array.isArray(archived[character]) ? archived[character]! : []
+          return total + thread.filter((message) => message?.date === '1997年2月17日・晚上').length
+        }, 0)
+        return messages ? [{ save, archived, messages }] : []
+      } catch {
+        return []
+      }
+    }).sort((left, right) => right.messages - left.messages || right.save.savedAt.localeCompare(left.save.savedAt))
+
+    const bestArchive = savedArchives[0]
+    if (bestArchive) {
+      const restored: Record<CharacterId, SmsMessage[]> = { ...current }
+      const messageOrder = (message: SmsMessage) => {
+        const match = message.id.match(/^[^-]+-(\\d+)-(\\d+)$/)
+        return match ? Number(match[1]) * 100 + Number(match[2]) : 0
+      }
+      const isDuplicate = (left: SmsMessage, right: SmsMessage) =>
+        left.id === right.id ||
+        (left.date === right.date && left.from === right.from && left.text === right.text && (left.time ?? '') === (right.time ?? ''))
+
+      for (const character of greetingOrder) {
+        const archivedMessages = Array.isArray(bestArchive.archived[character])
+          ? bestArchive.archived[character]!.filter((message): message is SmsMessage =>
+              Boolean(message && message.date === '1997年2月17日・晚上' &&
+                typeof message.id === 'string' && typeof message.text === 'string' &&
+                (message.from === 'me' || greetingOrder.includes(message.from as CharacterId))))
+          : []
+        const existing = restored[character] ?? []
+        const additions = archivedMessages.filter((message) => !existing.some((item) => isDuplicate(item, message)))
+        if (additions.length) {
+          restored[character] = [...existing, ...additions].sort((left, right) =>
+            messageOrder(left) - messageOrder(right) || (left.time ?? '').localeCompare(right.time ?? ''))
+        }
+      }
+      current = restored
+    }
+
+    if (JSON.stringify(current) !== saved) localStorage.setItem('mayday-chat-messages', JSON.stringify(current))
+    return current
   })
   const chatMessagesRef = useRef(chatMessages)
   const [greetingIndex, setGreetingIndex] = useState(() => Number(localStorage.getItem('mayday-greeting-index') ?? '0'))
@@ -3160,66 +3201,6 @@ function App() {
     chatMessagesRef.current = next
     localStorage.setItem('mayday-chat-messages', JSON.stringify(next))
     setChatMessages(next)
-  }
-
-  const restoreSpringFreeChatHistoryFromSlot = (slot: number) => {
-    const saved = saveSlots[slot]
-    const raw = saved?.data['mayday-chat-messages']
-    if (!raw) {
-      setSpringChatRecoveryFeedback('這個存檔沒有可讀取的訊息紀錄。')
-      return
-    }
-
-    let archived: Partial<Record<CharacterId, SmsMessage[]>>
-    try {
-      archived = JSON.parse(raw) as Partial<Record<CharacterId, SmsMessage[]>>
-    } catch {
-      setSpringChatRecoveryFeedback('這個存檔的訊息資料無法讀取，原存檔沒有被修改。')
-      return
-    }
-
-    const next: Record<CharacterId, SmsMessage[]> = { ...chatMessagesRef.current }
-    const dateOrder = (value: string) => {
-      const full = value.match(/(\d{4})年(\d{1,2})月(\d{1,2})日/)
-      if (full) return Number(full[1]) * 10000 + Number(full[2]) * 100 + Number(full[3])
-      const short = value.match(/(\d{1,2})月(\d{1,2})日/)
-      return short ? 1996 * 10000 + Number(short[1]) * 100 + Number(short[2]) : 0
-    }
-    const messageOrder = (message: SmsMessage) => {
-      const match = message.id.match(/^[^-]+-(\d+)-(\d+)$/)
-      return match ? Number(match[1]) * 100 + Number(match[2]) : 0
-    }
-    const isDuplicate = (left: SmsMessage, right: SmsMessage) =>
-      left.id === right.id ||
-      (left.date === right.date && left.from === right.from && left.text === right.text && (left.time ?? '') === (right.time ?? ''))
-
-    let added = 0
-    for (const character of greetingOrder) {
-      const archivedMessages = Array.isArray(archived[character])
-        ? archived[character]!.filter((message): message is SmsMessage =>
-            Boolean(message && message.date === '1997年2月17日・晚上' &&
-              typeof message.id === 'string' && typeof message.text === 'string' &&
-              (message.from === 'me' || greetingOrder.includes(message.from as CharacterId))))
-        : []
-      const existing = next[character] ?? []
-      const additions = archivedMessages.filter((message) => !existing.some((current) => isDuplicate(current, message)))
-      if (!additions.length) continue
-      next[character] = [...existing, ...additions].sort((left, right) =>
-        dateOrder(left.date) - dateOrder(right.date) ||
-        messageOrder(left) - messageOrder(right) ||
-        (left.time ?? '').localeCompare(right.time ?? ''))
-      added += additions.length
-    }
-
-    if (!added) {
-      setSpringChatRecoveryFeedback('這份存檔裡的 2 月 17 日自由聊天已經在收件匣中，沒有重複匯入。')
-      return
-    }
-
-    chatMessagesRef.current = next
-    localStorage.setItem('mayday-chat-messages', JSON.stringify(next))
-    setChatMessages(next)
-    setSpringChatRecoveryFeedback(`已從存檔 ${slot} 找回 ${added} 則自由聊天訊息。只恢復訊息紀錄，沒有讀取或覆蓋目前的劇情進度。`)
   }
 
   const addRouteAffection = (character: CharacterId, amount: number) => {
@@ -5868,36 +5849,6 @@ function App() {
       ? (chatMessages.wen?.[chatMessages.wen.length - 1]?.time ?? latestSmsMessage?.time ?? '15:42')
       : (chatMessages[person.id]?.[chatMessages[person.id].length - 1]?.time ?? '21:20'),
   }))
-  const springFreeChatArchiveSlots = SAVE_SLOT_IDS.flatMap((slot) => {
-    const raw = saveSlots[slot]?.data['mayday-chat-messages']
-    if (!raw) return []
-    try {
-      const archived = JSON.parse(raw) as Partial<Record<CharacterId, SmsMessage[]>>
-      const characters = greetingOrder.flatMap((character) => {
-        const archivedMessages = Array.isArray(archived[character])
-          ? archived[character]!.filter((message): message is SmsMessage =>
-              Boolean(message && message.date === '1997年2月17日・晚上' &&
-                typeof message.id === 'string' && typeof message.text === 'string' &&
-                (message.from === 'me' || greetingOrder.includes(message.from as CharacterId))))
-          : []
-        const current = chatMessages[character] ?? []
-        const missing = archivedMessages.filter((message) => !current.some((item) =>
-          item.id === message.id ||
-          (item.date === message.date && item.from === message.from && item.text === message.text && (item.time ?? '') === (message.time ?? ''))))
-        return missing.length ? [{ character, count: missing.length }] : []
-      })
-      const count = characters.reduce((total, item) => total + item.count, 0)
-      return count ? [{
-        slot,
-        count,
-        firstCharacter: characters[0]?.character,
-        characters: characters.map((item) => characterNames[item.character] + ' ' + item.count + ' 則').join('、'),
-      }] : []
-    } catch {
-      return []
-    }
-  })
-
   return (
     <main className="page-shell">
       <div className="ambient ambient-one" />
@@ -8543,24 +8494,6 @@ function App() {
                               <strong>今天想找誰聊一聊？</strong>
                               <p>每個人的回覆都會接著你們最近真正發生的事情，不會把沒一起經歷過的事當成回憶。</p>
                             </div>
-                            {(springFreeChatArchiveSlots.length > 0 || springChatRecoveryFeedback) && (
-                              <div className="free-chat-archive-recovery">
-                                <div className="sms-inbox-heading">
-                                  <strong>找回之前的自由聊天</strong>
-                                  <span>只恢復訊息</span>
-                                </div>
-                                <p>選擇舊存檔，只會把 2 月 17 日的訊息補回收件匣，不會讀取或覆蓋目前的劇情進度。</p>
-                                {springFreeChatArchiveSlots.map((archive) => (
-                                  <button className="story-primary-button" key={archive.slot} onClick={() => {
-                                    restoreSpringFreeChatHistoryFromSlot(archive.slot)
-                                    if (archive.firstCharacter) setSelectedSmsThread(archive.firstCharacter)
-                                  }}>
-                                    從存檔 {archive.slot} 恢復並查看 {archive.count} 則（{archive.characters}） <ChevronRight size={15} />
-                                  </button>
-                                ))}
-                                {springChatRecoveryFeedback && <p role="status">{springChatRecoveryFeedback}</p>}
-                              </div>
-                            )}
                             {springCharacterOrder.map((id) => {
                               const person = characterInfo.find((item) => item.id === id)!
                               return (
@@ -8598,24 +8531,6 @@ function App() {
                               <strong>訊息列表</strong>
                               <span>{isSpringTerm ? "收件匣 · 1997" : "收件匣 · 1996"}</span>
                             </div>
-                            {(springFreeChatArchiveSlots.length > 0 || springChatRecoveryFeedback) && (
-                              <div className="free-chat-archive-recovery">
-                                <div className="sms-inbox-heading">
-                                  <strong>找回之前的自由聊天</strong>
-                                  <span>只恢復訊息</span>
-                                </div>
-                                <p>我在舊存檔裡找到先前的聊天紀錄。選擇存檔後，只會把 2 月 17 日的訊息補回收件匣，不會讀取或覆蓋目前的劇情進度。</p>
-                                {springFreeChatArchiveSlots.map((archive) => (
-                                  <button className="story-primary-button" key={archive.slot} onClick={() => {
-                                    restoreSpringFreeChatHistoryFromSlot(archive.slot)
-                                    if (archive.firstCharacter) setSelectedSmsThread(archive.firstCharacter)
-                                  }}>
-                                    從存檔 {archive.slot} 恢復並查看 {archive.count} 則（{archive.characters}） <ChevronRight size={15} />
-                                  </button>
-                                ))}
-                                {springChatRecoveryFeedback && <p role="status">{springChatRecoveryFeedback}</p>}
-                              </div>
-                            )}
                             {localStorage.getItem('mayday-spring-day-complete') === 'true' && !springFreeChatStarted && !springFreeChatComplete && (
                               <button className="story-primary-button" onClick={startSpringFreeChat}>自由聊天 <ChevronRight size={15} /></button>
                             )}
