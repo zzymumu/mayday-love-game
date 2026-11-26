@@ -5483,13 +5483,15 @@ function App() {
   }
 
   const chooseSpringFreeChatTarget = (character: SpringCharacterId) => {
-    if (!springFreeChatStarted || springFreeChatComplete || springSmsTarget
-      || localStorage.getItem('mayday-spring-free-chat-complete') === 'true') return
+    if (!springFreeChatStarted || springFreeChatComplete || saveGameDate !== '1997.02.17' ||
+      effectiveDateStage !== 'spring-free-chat-picker' || springSmsTarget ||
+      localStorage.getItem('mayday-spring-free-chat-complete') === 'true') return
     chooseSpringSmsTarget(character, 'free')
   }
 
   const resumeSpringFreeChat = () => {
-    if (!springFreeChatStarted || springFreeChatComplete) return
+    if (!springFreeChatStarted || springFreeChatComplete || saveGameDate !== '1997.02.17' ||
+      !['spring-diary', 'spring-free-chat-picker', 'spring-free-chat'].includes(effectiveDateStage)) return
     setActiveApp('messages')
     if (springSmsTarget) {
       setSelectedSmsThread(springSmsTarget)
@@ -5501,8 +5503,9 @@ function App() {
   }
 
   const finishSpringFreeChat = () => {
-    if (!springSmsTarget || !springSmsOpeningSent || !springSmsReplied || springSmsRound !== 4
-      || springFreeChatComplete || localStorage.getItem('mayday-spring-free-chat-complete') === 'true') return
+    if (!springSmsTarget || !springSmsOpeningSent || !springSmsReplied || springSmsRound !== 4 ||
+      saveGameDate !== '1997.02.17' || effectiveDateStage !== 'spring-free-chat' ||
+      springFreeChatComplete || localStorage.getItem('mayday-spring-free-chat-complete') === 'true') return
     setSpringFreeChatStarted(true)
     setSpringFreeChatComplete(true)
     localStorage.setItem('mayday-spring-free-chat-started', 'true')
@@ -8586,7 +8589,8 @@ function App() {
                               <strong>訊息列表</strong>
                               <span>{isSpringTerm ? "收件匣 · 1997" : "收件匣 · 1996"}</span>
                             </div>
-                            {springFreeChatStarted && !springFreeChatComplete && (
+                            {springFreeChatStarted && !springFreeChatComplete && saveGameDate === '1997.02.17' &&
+                              ['spring-diary', 'spring-free-chat-picker', 'spring-free-chat'].includes(effectiveDateStage) && (
                               <button className="story-primary-button" onClick={resumeSpringFreeChat}>繼續自由聊天 <ChevronRight size={15} /></button>
                             )}
                             {inboxThreads.map((thread) => (
