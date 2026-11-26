@@ -1982,7 +1982,16 @@ function App() {
       }
     }
 
-    const savedArchives = SAVE_SLOT_IDS.flatMap((slot) => {
+    // A saved archive may preserve the original 17 February messages after a content
+    // refresh, but it must never be merged into a timeline that was loaded before that
+    // evening's SMS event. loadSaveSlot writes this checkpoint from the selected save.
+    const archiveRestoreCheckpoint = localStorage.getItem('mayday-spring-sms-history-restore-v1')
+    const canRestoreSpringSmsArchive = archiveRestoreCheckpoint === 'true' ||
+      (archiveRestoreCheckpoint !== 'false' && (
+        localStorage.getItem('mayday-spring-sms-opening-sent') === 'true' ||
+        localStorage.getItem('mayday-spring-day-complete') === 'true'
+      ))
+    const savedArchives = canRestoreSpringSmsArchive ? SAVE_SLOT_IDS.flatMap((slot) => {
       const save = readSaveSlot(slot)
       const raw = save?.data['mayday-chat-messages']
       if (!save || !raw) return []
@@ -1996,7 +2005,7 @@ function App() {
       } catch {
         return []
       }
-    }).sort((left, right) => right.messages - left.messages || right.save.savedAt.localeCompare(left.save.savedAt))
+    }).sort((left, right) => right.messages - left.messages || right.save.savedAt.localeCompare(left.save.savedAt)) : []
 
     const bestArchive = savedArchives[0]
     if (bestArchive) {
@@ -2870,6 +2879,15 @@ function App() {
         }
       }
     }
+
+    // Keep the message archive aligned with the selected save, not with the furthest
+    // progress that may still exist in another save slot.
+    const selectedSaveHasSpringSmsHistory =
+      restoredData['mayday-spring-sms-opening-sent'] === 'true' ||
+      restoredData['mayday-spring-day-complete'] === 'true' ||
+      saved.gameDate > '1997.02.17' ||
+      (saved.gameDate === '1997.02.17' && ['spring-diary', 'spring-free-chat-picker', 'spring-free-chat', 'march28-intro', 'march28-visit', 'march28-end', 'march28-park', 'march28-park-stay', 'march28-morning', 'march28-diary', 'march29-show', 'april12-story', 'completed'].includes(savedTimelineStage))
+    restoredData['mayday-spring-sms-history-restore-v1'] = selectedSaveHasSpringSmsHistory ? 'true' : 'false'
 
     Object.entries(restoredData).forEach(([key, value]) => {
       if (key.startsWith('mayday-') && !key.startsWith(SAVE_SLOT_PREFIX)) localStorage.setItem(key, value)
