@@ -2801,7 +2801,8 @@ function App() {
       const resumableSpringChat =
         savedTimelineStage === 'spring-free-chat' &&
         Boolean(restoredData['mayday-spring-sms-target']) &&
-        restoredData['mayday-spring-sms-mode'] === 'free'
+        restoredData['mayday-spring-sms-mode'] === 'free' &&
+        restoredData['mayday-spring-free-chat-complete'] !== 'true'
       restoredData['mayday-spring-free-chat-started'] = 'true'
       if (resumableSpringChat) {
         // A save made inside the actual conversation may resume its existing round,
