@@ -11,11 +11,11 @@ type SmsLine = { from: 'youda' | 'me'; text: string; time: string }
 type SmsChoice = { text: string; replies: string[] }
 type SmsRound = { incoming: string[]; choices: [SmsChoice, SmsChoice, SmsChoice] }
 type InteractionChoice = { text: string; response: April20Block[]; affection: number }
-type InteractionRound = { prompt: string; choices: [InteractionChoice, InteractionChoice, InteractionChoice] }
+type InteractionRound = { prompt: string; setup?: April20Block[]; choices: [InteractionChoice, InteractionChoice, InteractionChoice] }
 type April20Route = {
   name: string
   intro: April20Block[]
-  rounds: [InteractionRound, InteractionRound, InteractionRound]
+  rounds: InteractionRound[]
   ending: April20Block[]
 }
 type April20Phase = 'notification' | 'sms' | 'smsEnding' | 'routePicker' | 'park' | 'conflict' | 'characterPicker' | 'interaction' | 'complete'
@@ -423,264 +423,663 @@ const characterRoutes: Record<April20Character, April20Route> = {
   ashin: {
     name: '陳信宏',
     intro: [
-      { kind: 'narration', text: '阿信沒有跟著大家說話。他拿著剛才寫曲目的紙，走到靠牆的椅子旁坐下，手指把紙角慢慢壓平。' },
-      { kind: 'narration', text: '你走過去時，他抬頭看見你，往旁邊挪出一點位置。' },
-      { kind: 'dialogue', speaker: '陳信宏', text: '妳要坐這裡嗎？' },
+      { kind: 'narration', text: '錢佑達離開以後，練團室裡安靜了好一會兒。溫尚翊還站在音箱旁邊，眉頭皺得很緊。瑪莎靠著鼓組，低頭撥弄著Bass弦，石頭站在旁邊整理剛才散落的譜紙。' },
+      { kind: 'narration', text: '阿信沒有馬上回到裡面。他把手裡那幾張譜紙拿著，走到靠牆的椅子旁坐下。你走過去時，他抬起頭，往旁邊挪出一點位置。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '欸，妳還在喔？' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '剛剛是不是有嚇到妳？' },
+      { kind: 'dialogue', speaker: '你', text: '有一點啦……' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '我剛剛講話是不是有點急啊……' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '可是聽佑達一直說自己拖累大家，我真的有點聽不下去。' },
     ],
     rounds: [
-      { prompt: '阿信把那張寫著曲目的紙放在膝上，低頭看了一會兒。', choices: [
-        { text: '「你剛剛是不是也很擔心佑達？」', affection: 2, response: [
+      { prompt: '阿信把那張寫著曲目的紙放在膝上，指腹慢慢壓平紙角，像是在想剛才那幾句話。', choices: [
+        { text: '你已經說得很清楚了啊。', affection: 2, response: [
+          { kind: 'dialogue', speaker: '陳信宏', text: '有嗎？我自己都覺得剛剛講得有點亂欸。' },
+          { kind: 'dialogue', speaker: '陳信宏', text: '不過妳這樣說，我好像有比較放心一點。' },
+        ]},
+        { text: '你剛才其實也生氣了吧？', affection: 2, response: [
           { kind: 'dialogue', speaker: '陳信宏', text: '有一點啦。' },
-          { kind: 'narration', text: '他用指腹把紙角壓平，沒有急著抬頭。' },
-          { kind: 'dialogue', speaker: '陳信宏', text: '我只是覺得，他好像把很多事情都先怪到自己身上了。' },
-          { kind: 'dialogue', speaker: '陳信宏', text: '可是我們練團哪有可能每次都一次就很順嘛。' },
+          { kind: 'dialogue', speaker: '陳信宏', text: '不是氣佑達，只是……他好像把我們說的每一句話，都往自己身上攬。' },
+          { kind: 'dialogue', speaker: '陳信宏', text: '我不知道要怎麼講，他才會相信我們真的不是那個意思。' },
         ]},
-        { text: '「你剛才一直想讓大家先聽他說完欸。」', affection: 2, response: [
-          { kind: 'dialogue', speaker: '陳信宏', text: '因為大家都太急了呀。' },
-          { kind: 'narration', text: '他抬起眼看你，語氣放得很輕。' },
-          { kind: 'dialogue', speaker: '陳信宏', text: '怪獸是急著留住他，佑達又一直覺得自己不夠好，兩個人講著講著就撞在一起了。' },
-        ]},
-        { text: '「先不要想那些了，坐一下嘛。」', affection: 2, response: [
-          { kind: 'dialogue', speaker: '陳信宏', text: '好啊。' },
-          { kind: 'narration', text: '他把紙放到旁邊，往椅背靠了一點。' },
-          { kind: 'dialogue', speaker: '陳信宏', text: '剛剛一直站著講話，現在坐下來才發現腿有點酸。' },
-          { kind: 'dialogue', speaker: '你', text: '你也會腿酸喔？' },
-          { kind: 'dialogue', speaker: '陳信宏', text: '會啊，我又不是機器人。' },
+        { text: '我還以為你會先攔著怪獸呢。', affection: 2, response: [
+          { kind: 'dialogue', speaker: '陳信宏', text: '妳有看到喔？' },
+          { kind: 'dialogue', speaker: '陳信宏', text: '我本來也想攔他的，可是怪獸剛剛那個表情……' },
+          { kind: 'dialogue', speaker: '陳信宏', text: '我怕我還沒開口，他就先把旁邊的譜架踢倒了。' },
+          { kind: 'narration', text: '他說完自己也覺得有點好笑，嘴角輕輕彎了一下。' },
         ]},
       ]},
-      { prompt: '阿信把紙翻到背面，拿起鉛筆，在空白處隨手畫了幾個小圈。', choices: [
-        { text: '「你還在想Demo的事情喔？」', affection: 2, response: [
-          { kind: 'dialogue', speaker: '陳信宏', text: '有一點。' },
-          { kind: 'dialogue', speaker: '陳信宏', text: '可是現在好像不是挑歌的時候啦。' },
-          { kind: 'dialogue', speaker: '陳信宏', text: '等大家心情好一點，再一起慢慢弄就好了。' },
+      { setup: [
+        { kind: 'narration', text: '阿信把桌上的譜紙重新整理好，抽出其中一張看了看。' },
+        { kind: 'dialogue', speaker: '陳信宏', text: '其實我剛剛聽到他說，以前根本沒想過要走音樂這條路……' },
+        { kind: 'dialogue', speaker: '陳信宏', text: '我才突然想到，搞不好我們最近真的講得太多了。' },
+        { kind: 'dialogue', speaker: '陳信宏', text: '一下子說Demo，一下子說唱片公司，好像大家都已經想好以後要做什麼了。' },
+        { kind: 'dialogue', speaker: '陳信宏', text: '可是也沒有人規定一定要這樣啊。' },
+      ], prompt: '他把譜紙翻到背面，抬眼看了看你。', choices: [
+        { text: '他好像把每次重來都當成自己的錯。', affection: 2, response: [
+          { kind: 'dialogue', speaker: '陳信宏', text: '嗯，我也有這樣想。' },
+          { kind: 'dialogue', speaker: '陳信宏', text: '可是我們每次停下來重來，其實也不是只在等他啊。大家都有要調整的地方。' },
+          { kind: 'dialogue', speaker: '陳信宏', text: '可能他自己聽起來，跟我們聽起來真的不太一樣。' },
         ]},
-        { text: '把鉛筆拿過來，在他畫的小圈旁邊補一顆星星。', affection: 2, response: [
-          { kind: 'narration', text: '他看見你補上的星星，笑著把鉛筆又推回你手邊。' },
-          { kind: 'dialogue', speaker: '陳信宏', text: '這樣看起來比較像一張地圖了欸。' },
-          { kind: 'dialogue', speaker: '你', text: '那你要負責畫路線。' },
-          { kind: 'dialogue', speaker: '陳信宏', text: '好啊，那妳不要亂改我的方向喔。' },
+        { text: 'Demo又不是馬上就要出道了。', affection: 2, response: [
+          { kind: 'dialogue', speaker: '陳信宏', text: '對啊，本來只是想把歌錄下來，留個紀錄而已。' },
+          { kind: 'dialogue', speaker: '陳信宏', text: '結果講著講著，好像變成一件很嚴肅的事情了。' },
+          { kind: 'dialogue', speaker: '陳信宏', text: '我們自己都還不知道以後會怎樣呢。' },
         ]},
-        { text: '伸手把他膝上的紙往自己這邊拉近一點，一起看。', affection: 3, response: [
-          { kind: 'narration', text: '阿信順著你的手把紙移到兩個人中間，肩膀也自然靠近了一點。' },
-          { kind: 'dialogue', speaker: '陳信宏', text: '妳看，這裡我本來想寫幾首比較適合先錄的。' },
-          { kind: 'dialogue', speaker: '陳信宏', text: '不過今天先不想了，陪妳坐一下比較重要。' },
+        { text: '你們是不是還沒認真問過他想不想繼續？', affection: 2, response: [
+          { kind: 'dialogue', speaker: '陳信宏', text: '好像真的沒有欸……' },
+          { kind: 'narration', text: '他停了一下，輕輕嘆了口氣。' },
+          { kind: 'dialogue', speaker: '陳信宏', text: '我們一直跟他說可以一起練、可以一起進步，可是他想不想繼續，可能才是最重要的吧。' },
         ]},
       ]},
-      { prompt: '走廊裡傳來瑪莎搬椅子的聲音，阿信把鉛筆放回紙上。', choices: [
-        { text: '「你等一下還會去勸佑達嗎？」', affection: 2, response: [
-          { kind: 'dialogue', speaker: '陳信宏', text: '我想先讓他自己靜一靜。' },
-          { kind: 'dialogue', speaker: '陳信宏', text: '等他願意講的時候，我們再聽他說，好不好？' },
+      { setup: [
+        { kind: 'narration', text: '阿信把譜紙放回桌上，發現還有一疊散在你旁邊。' },
+        { kind: 'dialogue', speaker: '陳信宏', text: '欸，妳可以幫我拿一下那幾張嗎？' },
+        { kind: 'dialogue', speaker: '陳信宏', text: '我把這邊收好，不然等一下又不知道跑去哪裡了。' },
+        { kind: 'narration', text: '你伸手接過譜紙，他也剛好伸手拿住另一邊，兩個人的指尖不小心碰在一起。' },
+        { kind: 'dialogue', speaker: '陳信宏', text: '啊，抱歉。' },
+        { kind: 'narration', text: '他很快鬆開手，低頭把剩下的譜紙疊好。' },
+        { kind: 'dialogue', speaker: '陳信宏', text: '這個看起來薄薄的，怎麼每次整理都一大堆啊。' },
+        { kind: 'dialogue', speaker: '陳信宏', text: '妳拿得住嗎？' },
+      ], prompt: '他看了看你手裡那疊譜紙，伸手想幫你扶一下。', choices: [
+        { text: '你是不是把整個月的譜都塞給我了？', affection: 2, response: [
+          { kind: 'dialogue', speaker: '陳信宏', text: '哪有啦，我只是把剛剛散掉的收起來而已。' },
+          { kind: 'narration', text: '他看了一眼你手裡厚厚的一疊，自己也笑了。' },
+          { kind: 'dialogue', speaker: '陳信宏', text: '好啦，好像真的有一點多。我幫妳拿一半好了。' },
         ]},
-        { text: '把手輕輕搭在他的手背上，沒有馬上收回來。', affection: 3, response: [
-          { kind: 'narration', text: '阿信低頭看了一眼你的手，手指慢慢放鬆，沒有抽開。' },
-          { kind: 'dialogue', speaker: '陳信宏', text: '妳今天也被嚇到了吧？' },
-          { kind: 'dialogue', speaker: '你', text: '有一點點。' },
-          { kind: 'dialogue', speaker: '陳信宏', text: '那先坐一下，不用急著回去。' },
+        { text: '我拿得住啦，不要小看我。', affection: 2, response: [
+          { kind: 'dialogue', speaker: '陳信宏', text: '好喔，那我就放心交給妳了。' },
+          { kind: 'narration', text: '他把最後幾張遞過來，看到你穩穩接住，嘴角彎了一下。' },
+          { kind: 'dialogue', speaker: '陳信宏', text: '欸，真的拿得很穩耶。' },
         ]},
-        { text: '「你剛剛那句『我們可以一起找方法』講得很好欸。」', affection: 2, response: [
-          { kind: 'dialogue', speaker: '陳信宏', text: '真的嗎？我只是覺得……可以一起做的事情，就不要一個人扛嘛。' },
-          { kind: 'narration', text: '他說完笑了一下，伸手把你剛才畫的星星圈起來。' },
-          { kind: 'dialogue', speaker: '陳信宏', text: '這顆留著好了，等下次真的錄Demo，再拿出來看。' },
+        { text: '你剛剛碰到我的手了。', affection: 3, response: [
+          { kind: 'dialogue', speaker: '陳信宏', text: '欸……' },
+          { kind: 'narration', text: '他低頭看了看剛才碰到你的手，耳朵慢慢有點紅。' },
+          { kind: 'dialogue', speaker: '陳信宏', text: '剛剛那張一直滑下來嘛，我只是想幫妳拿好啦。' },
+          { kind: 'narration', text: '他輕輕笑了一聲。' },
+          { kind: 'dialogue', speaker: '陳信宏', text: '妳怎麼連這個都注意到啊。' },
+        ]},
+      ]},
+      { setup: [
+        { kind: 'narration', text: '兩個人把譜紙放回架上。阿信沒有馬上走回其他人身邊，而是看了一眼練團室裡安靜下來的幾個人。' },
+        { kind: 'narration', text: '門外有風吹進來，桌上的紙張被掀起一個小角。' },
+        { kind: 'dialogue', speaker: '陳信宏', text: '這裡好像有點悶。' },
+        { kind: 'dialogue', speaker: '陳信宏', text: '要不要出去站一下？不用走遠，就門口。' },
+      ], prompt: '他拿起放在一旁的外套，回頭看你，像是在等你的回答。', choices: [
+        { text: '好啊，裡面真的有點悶。', affection: 2, response: [
+          { kind: 'narration', text: '他替你推開門，等你先走出去，才跟在旁邊。' },
+          { kind: 'dialogue', speaker: '陳信宏', text: '嗯，出來透透氣也好。' },
+        ]},
+        { text: '你不回去陪他們嗎？', affection: 2, response: [
+          { kind: 'dialogue', speaker: '陳信宏', text: '他們應該也想自己靜一下吧。' },
+          { kind: 'narration', text: '他看了你一眼，聲音放輕了一點。' },
+          { kind: 'dialogue', speaker: '陳信宏', text: '而且我也沒有要走很遠啦，等一下就回去。只是想跟妳說幾句話。' },
+        ]},
+        { text: '你是不是想找藉口跟我單獨待著？', affection: 3, response: [
+          { kind: 'dialogue', speaker: '陳信宏', text: '欸……妳怎麼突然這樣講啦？' },
+          { kind: 'narration', text: '他笑著移開視線，手指輕輕捏了捏外套袖口。' },
+          { kind: 'dialogue', speaker: '陳信宏', text: '好啦，也不是不行啊。' },
+        ]},
+      ]},
+      { setup: [
+        { kind: 'narration', text: '走廊比練團室安靜許多。偶爾有人從樓梯間經過，腳步聲很快又遠了。阿信靠著牆，手裡還拿著剛才整理好的幾張譜紙。' },
+        { kind: 'dialogue', speaker: '陳信宏', text: '其實我剛剛說那句，大家一起把歌練好……' },
+        { kind: 'dialogue', speaker: '陳信宏', text: '不是覺得只要這樣講，事情就會變簡單啦。' },
+        { kind: 'dialogue', speaker: '陳信宏', text: '只是我不想讓佑達覺得，自己好像不應該待在這裡。' },
+      ], prompt: '他說得很輕，低頭看了看手裡的紙，過了一會兒才重新看向你。', choices: [
+        { text: '等他願意回來，再慢慢說吧。', affection: 2, response: [
+          { kind: 'dialogue', speaker: '陳信宏', text: '嗯，我也是這樣想。' },
+          { kind: 'dialogue', speaker: '陳信宏', text: '先讓他喘口氣好了。等他願意講的時候，我們再找他。' },
+          { kind: 'dialogue', speaker: '陳信宏', text: '我想他應該也不是真的不想跟大家玩了。' },
+        ]},
+        { text: '你也不用什麼事情都替大家想。', affection: 2, response: [
+          { kind: 'dialogue', speaker: '陳信宏', text: '我沒有啦……' },
+          { kind: 'narration', text: '他有點不好意思地笑了笑。' },
+          { kind: 'dialogue', speaker: '陳信宏', text: '只是有時候大家都不講，事情就會一直卡在那裡啊。' },
+          { kind: 'dialogue', speaker: '陳信宏', text: '不過妳是不是覺得我很愛想東想西？' },
+        ]},
+        { text: '那你剛剛有顧到我嗎？', affection: 3, response: [
+          { kind: 'dialogue', speaker: '陳信宏', text: '有啊。' },
+          { kind: 'narration', text: '他回答得很快，說完才像是意識到什麼，稍稍停了一下。' },
+          { kind: 'dialogue', speaker: '陳信宏', text: '我剛剛還怕妳站在那邊會不會覺得很尷尬。' },
+          { kind: 'dialogue', speaker: '陳信宏', text: '可是後來看到妳一直都在，我就比較放心了。' },
+          { kind: 'dialogue', speaker: '陳信宏', text: '妳在旁邊，我會比較想把話講清楚一點。' },
         ]},
       ]},
     ],
     ending: [
-      { kind: 'narration', text: '阿信把那張紙折好，沒有再繼續討論Demo。他陪你坐了一會兒，等裡面的聲音慢慢恢復平常的樣子，才一起站起來。' },
-      { kind: 'dialogue', speaker: '陳信宏', text: '今天先這樣好了。回去路上小心喔，妳到家再休息。' },
-      { kind: 'narration', text: '他把椅子推回原位，還順手替你把包包帶子從椅腳旁邊拿開。' },
+      { kind: 'narration', text: '走廊的風把阿信手裡的譜紙吹起一角。他低頭把紙角壓平，過了一會兒才重新看向你。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '今天好像也沒辦法繼續練了。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '等大家心情好一點，再說吧。' },
+      { kind: 'narration', text: '他把譜紙夾在手臂間，忽然像是想起什麼，又叫住你。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '欸，對了。' },
+      { kind: 'dialogue', speaker: '你', text: '嗯？' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '妳剛剛是不是一直站在門口？' },
+      { kind: 'dialogue', speaker: '你', text: '對啊，怎麼了？' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '沒什麼啦。' },
+      { kind: 'narration', text: '他笑了一下，伸手替你把被風吹到臉頰旁邊的一縷頭髮輕輕撥開，碰到髮梢便收回了手。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '就是覺得妳今天也陪我們聽了好久。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '謝謝妳喔。' },
+      { kind: 'narration', text: '他像是覺得最後那句話有點太認真，低頭笑了笑。' },
+      { kind: 'dialogue', speaker: '陳信宏', text: '走啦，我們回去看看他們。' },
+      { kind: 'narration', text: '他走在你旁邊，經過門口時特意放慢了一點腳步。' },
     ],
   },
   masa: {
     name: '瑪莎',
     intro: [
-      { kind: 'narration', text: '瑪莎還站在鼓組旁邊，手裡拿著一瓶水，瓶蓋轉了半天也沒喝一口。你走近時，他瞥了你一眼，像是早就知道你會過來。' },
-      { kind: 'dialogue', speaker: '瑪莎', text: '幹嘛？要來幫我罵人喔？' },
+      { kind: 'narration', text: '錢佑達離開後，練團室裡的氣氛變得有些奇怪。瑪莎還站在鼓組旁邊，手裡拿著一瓶水，瓶蓋轉了半天也沒喝一口。你走近時，他瞥了你一眼。' },
+      { kind: 'dialogue', speaker: '瑪莎', text: '幹嘛？站這麼久，腳不酸喔？' },
+      { kind: 'dialogue', speaker: '瑪莎', text: '剛剛是不是被嚇到了？' },
+      { kind: 'dialogue', speaker: '你', text: '有一點啦……' },
+      { kind: 'dialogue', speaker: '瑪莎', text: '嘖，早知道剛剛叫妳先出去。' },
+      { kind: 'dialogue', speaker: '瑪莎', text: '不過也沒什麼好看的，一群人吵架而已。' },
+      { kind: 'dialogue', speaker: '瑪莎', text: '尤其某個人，嗓門大得跟不用錢一樣。' },
     ],
     rounds: [
-      { prompt: '瑪莎把水瓶放到音箱上，雙手抱在胸前。', choices: [
-        { text: '「我才沒有要罵人，我是來看你還在不在生氣。」', affection: 2, response: [
-          { kind: 'dialogue', speaker: '瑪莎', text: '妳看不出來喔？' },
-          { kind: 'narration', text: '他故意把眉毛挑得很高，過了一會兒又自己笑出來。' },
-          { kind: 'dialogue', speaker: '瑪莎', text: '好啦，沒有那麼氣了。只是覺得很莫名其妙。' },
+      { setup: [
+        { kind: 'narration', text: '瑪莎把水瓶放到音箱上，雙手抱在胸前。' },
+        { kind: 'dialogue', speaker: '瑪莎', text: '不過認真講，妳剛剛應該都有聽到吧？' },
+        { kind: 'dialogue', speaker: '瑪莎', text: '我都拿自己彈錯的事情跟他講了，他還是一直覺得自己不行。' },
+        { kind: 'dialogue', speaker: '瑪莎', text: '是有沒有這麼固執啊……' },
+      ], prompt: '他皺著眉，視線又落到空著的鼓椅上。', choices: [
+        { text: '你剛才其實也很生氣吧？', affection: 2, response: [
+          { kind: 'dialogue', speaker: '瑪莎', text: '廢話，當然會生氣啊。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '我們又不是今天才認識，突然跑來說要退團，誰聽了會爽？' },
+          { kind: 'narration', text: '他把導線往旁邊一放，輕輕嘖了一聲。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '而且我最討厭他那種，好像什麼事情都自己決定好了才來通知我們的樣子。' },
         ]},
-        { text: '「你剛剛是不是差點想把鼓棒塞回他手裡？」', affection: 2, response: [
-          { kind: 'dialogue', speaker: '瑪莎', text: '我倒是想問他要不要先把話講完。' },
-          { kind: 'dialogue', speaker: '瑪莎', text: '拿著鼓棒講退團，講完又直接走人，是怎樣啦。' },
+        { text: '你拿自己舉例，他好像還是沒聽進去。', affection: 2, response: [
+          { kind: 'dialogue', speaker: '瑪莎', text: '對啊！所以我才覺得很煩。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '我都跟他講了，我彈錯你們還不是照樣陪我重來。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '他到底是沒聽懂，還是根本不想聽啊？' },
           { kind: 'narration', text: '他嘴上嫌著，手卻把那瓶水往你這邊推了一點。' },
         ]},
-        { text: '「你先喝水啦，瓶子都快被你捏扁了。」', affection: 1, response: [
-          { kind: 'narration', text: '他低頭看了一眼瓶身，這才發現自己真的把塑膠瓶捏得凹了一塊。' },
-          { kind: 'dialogue', speaker: '瑪莎', text: '……妳不要管這麼多啦。' },
-          { kind: 'narration', text: '話是這麼說，他還是把瓶蓋打開喝了一口。' },
+        { text: '你是不是怕他真的不回來了？', affection: 3, response: [
+          { kind: 'dialogue', speaker: '瑪莎', text: '……廢話。' },
+          { kind: 'narration', text: '他回答得很快，隨後又像覺得自己說得太直接，低頭看了一眼Bass。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '不然咧？少一個鼓手，我們是要自己長出第三隻手喔？' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '而且都一起玩多久了。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '這種事情誰會真的無所謂啊。' },
         ]},
       ]},
-      { prompt: '他把水瓶放下，視線又落回空著的鼓椅。', choices: [
-        { text: '「你是不是也不想他真的走？」', affection: 2, response: [
-          { kind: 'dialogue', speaker: '瑪莎', text: '不然咧？少一個鼓手，誰來幫我們收尾？' },
-          { kind: 'narration', text: '他停了一下，語氣沒有剛才那麼尖。' },
-          { kind: 'dialogue', speaker: '瑪莎', text: '而且一起玩這麼久，哪有說散就散的。' },
+      { setup: [
+        { kind: 'narration', text: '瑪莎把導線收好，坐到旁邊的椅子上，順手拿起桌上的撥片，在指間轉了兩圈。' },
+        { kind: 'dialogue', speaker: '瑪莎', text: '欸，妳有沒有覺得最近大家很奇怪？' },
+        { kind: 'dialogue', speaker: '瑪莎', text: '一下子說要錄Demo，一下子又在講唱片公司。' },
+        { kind: 'dialogue', speaker: '瑪莎', text: '搞得好像明天就要出道一樣。' },
+        { kind: 'dialogue', speaker: '瑪莎', text: '雖然我也不是不想啦。' },
+      ], prompt: '他把撥片在指間轉了一圈，抬頭看你。', choices: [
+        { text: '你其實很期待錄Demo吧？', affection: 2, response: [
+          { kind: 'dialogue', speaker: '瑪莎', text: '當然啊，不然錄來幹嘛？' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '總不能每次練完就回家睡覺，連自己彈成什麼樣都不知道吧。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '不過真的要寄出去，還是有點緊張啦。' },
         ]},
-        { text: '「你剛剛講Bass那段，是不是故意讓他知道大家也會出錯？」', affection: 2, response: [
-          { kind: 'dialogue', speaker: '瑪莎', text: '不然咧，我又不是每次都彈得多神。' },
-          { kind: 'dialogue', speaker: '瑪莎', text: '他最好不要以為只有他會出包。' },
-          { kind: 'narration', text: '他伸手彈了一下自己的琴弦，低低的聲音在房間裡震了一下。' },
+        { text: '你自己不也很認真在準備嗎？', affection: 2, response: [
+          { kind: 'dialogue', speaker: '瑪莎', text: '我哪有？' },
+          { kind: 'narration', text: '他馬上抬頭反駁。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '我只是覺得Bass的部分不能太隨便好不好。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '欸，妳不要用那種表情看我。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '認真一點也有錯喔？' },
         ]},
-        { text: '「你不要一直皺眉啦，額頭都快打結了。」', affection: 2, response: [
-          { kind: 'dialogue', speaker: '瑪莎', text: '妳才打結咧。' },
-          { kind: 'narration', text: '他伸手用指節輕輕敲了一下你的額頭，像是把那句話原封不動還給你。' },
-          { kind: 'dialogue', speaker: '瑪莎', text: '好了，這樣比較平均。' },
+        { text: '你有沒有想過以後真的靠音樂生活？', affection: 2, response: [
+          { kind: 'dialogue', speaker: '瑪莎', text: '蛤？妳想得也太遠了吧。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '我連高三都還沒搞定，妳就在幫我安排職涯了喔？' },
+          { kind: 'narration', text: '他忍不住笑了一下。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '先讓我把聯考考完再說啦，拜託。' },
         ]},
       ]},
-      { prompt: '練團室裡的其他人沒有再說話，瑪莎把Bass背帶重新拉正。', choices: [
-        { text: '伸手替他把歪掉的背帶拉回肩膀正中間。', affection: 3, response: [
-          { kind: 'narration', text: '他低頭看著你整理背帶，原本想吐槽的話停在嘴邊。等你弄好，他才慢慢把琴背穩。' },
-          { kind: 'dialogue', speaker: '瑪莎', text: '欸，妳現在很會照顧人喔。' },
-          { kind: 'dialogue', speaker: '你', text: '偶爾啦，看對象。' },
-          { kind: 'dialogue', speaker: '瑪莎', text: '喔？那我是不是要感到榮幸？' },
+      { setup: [
+        { kind: 'narration', text: '瑪莎站起來，準備把剩下的導線收好。' },
+        { kind: 'dialogue', speaker: '瑪莎', text: '欸，妳不要亂拉。' },
+        { kind: 'dialogue', speaker: '瑪莎', text: '這個要先從接頭那邊拆，不然等一下纏成一團，我還要重新弄。' },
+        { kind: 'dialogue', speaker: '你', text: '我又不是笨蛋！' },
+        { kind: 'dialogue', speaker: '瑪莎', text: '喔？那妳上次把耳機線打成死結是誰？' },
+        { kind: 'dialogue', speaker: '你', text: '……那是意外！' },
+        { kind: 'dialogue', speaker: '瑪莎', text: '每次都意外，妳的人生意外還真多。' },
+        { kind: 'narration', text: '他笑著把導線遞給你，讓你幫忙扶住另一端。你低頭照著他說的方式收線，沒注意到線繞過了自己的手腕。' },
+        { kind: 'dialogue', speaker: '瑪莎', text: '等一下，妳手。' },
+        { kind: 'narration', text: '他走近一步，伸手托住你的手腕，另一隻手把纏住的線慢慢繞開。' },
+        { kind: 'dialogue', speaker: '瑪莎', text: '妳到底是來幫忙，還是來增加我的工作量啊？' },
+      ], prompt: '他低頭把最後一圈線解開，手還扶著你的手腕。', choices: [
+        { text: '我明明很認真，是你要求太多！', affection: 2, response: [
+          { kind: 'dialogue', speaker: '瑪莎', text: '好啦好啦，妳最認真。' },
+          { kind: 'narration', text: '他鬆開你的手腕，把整理好的線遞給你。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '那這條交給妳，拜託不要再跟它打架了。' },
         ]},
-        { text: '把水瓶遞給他，叫他先不要再瞪那張空椅子。', affection: 2, response: [
-          { kind: 'dialogue', speaker: '瑪莎', text: '我哪有瞪？' },
-          { kind: 'narration', text: '他接過水瓶，卻還是忍不住朝鼓椅看了一眼。' },
-          { kind: 'dialogue', speaker: '瑪莎', text: '好啦，我知道啦。先喝水。' },
+        { text: '你靠這麼近，我怎麼知道要怎麼弄啦。', affection: 3, response: [
+          { kind: 'dialogue', speaker: '瑪莎', text: '蛤？' },
+          { kind: 'narration', text: '他低頭看了看兩個人之間的距離，手上的動作頓了一下。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '……是妳自己站過來的欸。' },
+          { kind: 'narration', text: '嘴上這麼說，他還是往旁邊退了半步。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '好啦，這樣可以了吧？大小姐。' },
         ]},
-        { text: '「等一下要不要陪我出去買點東西？不要一直悶在這裡。」', affection: 2, response: [
-          { kind: 'dialogue', speaker: '瑪莎', text: '妳是把我當小朋友在哄喔？' },
-          { kind: 'dialogue', speaker: '你', text: '你現在看起來很需要被哄啊。' },
-          { kind: 'dialogue', speaker: '瑪莎', text: '……走啦，買什麼？' },
+        { text: '那你教我啊，不要一直嫌棄我。', affection: 2, response: [
+          { kind: 'dialogue', speaker: '瑪莎', text: '我剛剛不是在教了嗎？' },
+          { kind: 'narration', text: '他重新拿起導線，放慢動作給你看。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '妳看，這樣繞。' },
+          { kind: 'narration', text: '他握著你的手稍微調整了一下方向。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '對啦，就是這樣。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '妳看，明明就會。' },
+        ]},
+      ]},
+      { setup: [
+        { kind: 'narration', text: '導線終於整理好了。瑪莎把它放到架子旁邊，自己坐在音箱邊緣，低頭擺弄著手裡的撥片。' },
+        { kind: 'dialogue', speaker: '瑪莎', text: '說真的，我現在有點不知道要怎麼辦。' },
+        { kind: 'dialogue', speaker: '瑪莎', text: '叫他回來，他又不一定肯。' },
+        { kind: 'dialogue', speaker: '瑪莎', text: '可是就這樣讓他走，我又覺得很莫名其妙。' },
+        { kind: 'dialogue', speaker: '瑪莎', text: '妳說，這種事情到底要怎麼處理啊？' },
+      ], prompt: '他把撥片放在膝上，抬眼看著你。', choices: [
+        { text: '等他冷靜下來再找他談吧。', affection: 2, response: [
+          { kind: 'dialogue', speaker: '瑪莎', text: '嗯，現在追出去大概也只是繼續吵。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '等他自己想清楚再說吧。' },
+          { kind: 'narration', text: '他把撥片重新夾回指間。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '不過最好不要讓我等太久，聯考已經夠煩了。' },
+        ]},
+        { text: '你們也可以試著聽聽他真正想要什麼。', affection: 2, response: [
+          { kind: 'dialogue', speaker: '瑪莎', text: '這個我知道啦。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '可是妳也看到他剛剛那個樣子了，根本不給人插話。' },
+          { kind: 'narration', text: '他抬頭看了你一眼。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '下次如果有機會，我會問清楚一點。' },
+        ]},
+        { text: '你是不是也有點難過？', affection: 3, response: [
+          { kind: 'dialogue', speaker: '瑪莎', text: '……妳今天怎麼突然變得這麼會講話？' },
+          { kind: 'narration', text: '他原本想吐槽你，最後卻只是笑了一下。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '有一點吧。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '一起練這麼久了，突然少一個人，當然會覺得怪啊。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '而且佑達平常其實滿好笑的，少了他，練團室可能會安靜很多。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '雖然有時候也會被他吵到啦。' },
+        ]},
+      ]},
+      { setup: [
+        { kind: 'narration', text: '瑪莎把撥片在指尖轉了一圈，忽然抬頭看你。' },
+        { kind: 'dialogue', speaker: '瑪莎', text: '欸，妳今天怎麼一直待在這裡？' },
+        { kind: 'dialogue', speaker: '瑪莎', text: '平常不是很會到處跑嗎？' },
+        { kind: 'dialogue', speaker: '瑪莎', text: '今天這麼閒喔？' },
+      ], prompt: '他看著你，嘴角帶著一點笑意。', choices: [
+        { text: '我是怕你一個人生悶氣。', affection: 2, response: [
+          { kind: 'dialogue', speaker: '瑪莎', text: '我哪有生悶氣？' },
+          { kind: 'narration', text: '他馬上反駁，隨後又忍不住笑了。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '妳是把我當小朋友喔？還要人陪？' },
+          { kind: 'narration', text: '他把旁邊的椅子往你這邊推了一點。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '不過妳要是真的想坐，就坐啊。' },
+        ]},
+        { text: '怎麼，不歡迎我啊？', affection: 2, response: [
+          { kind: 'dialogue', speaker: '瑪莎', text: '歡迎啊，怎麼不歡迎？' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '只是怕妳待太久，等一下又開始嫌無聊。' },
+          { kind: 'narration', text: '他拍了拍旁邊空出來的位置。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '來啦，坐這邊。不要一直站著擋路。' },
+        ]},
+        { text: '因為想陪你一下嘛。', affection: 3, response: [
+          { kind: 'dialogue', speaker: '瑪莎', text: '……蛤？' },
+          { kind: 'narration', text: '他明顯愣了一下，隨後低頭笑了出來。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '妳今天是怎樣啦，突然講這種話。' },
+          { kind: 'narration', text: '他用撥片輕輕碰了一下你的手背。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '好啦，那就陪我一下。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '反正我現在也不想回去聽怪獸碎碎念。' },
         ]},
       ]},
     ],
     ending: [
-      { kind: 'narration', text: '瑪莎把Bass重新背好，路過你身邊時用肩膀輕輕撞了你一下。' },
-      { kind: 'dialogue', speaker: '瑪莎', text: '走啦，等一下不要又站在門口發呆。' },
-      { kind: 'narration', text: '他嘴上還是那麼欠，卻放慢腳步等你跟上。' },
+      { kind: 'narration', text: '你在旁邊坐下來。瑪莎把Bass從架子上取下來，檢查了一下琴弦，又重新放回去。' },
+      { kind: 'dialogue', speaker: '瑪莎', text: '欸，對了。' },
+      { kind: 'dialogue', speaker: '你', text: '又怎麼了？' },
+      { kind: 'dialogue', speaker: '瑪莎', text: '妳剛剛是不是有偷看我？' },
+      { kind: 'dialogue', speaker: '你', text: '？？？我哪有！' },
+      { kind: 'dialogue', speaker: '瑪莎', text: '沒有喔？那妳幹嘛這麼緊張？' },
+      { kind: 'dialogue', speaker: '你', text: '蔡昇晏！' },
+      { kind: 'dialogue', speaker: '瑪莎', text: '好啦好啦，不鬧妳了。' },
+      { kind: 'narration', text: '他笑著坐回去，手指撥了一下Bass弦，發出很輕的一聲低音。' },
+      { kind: 'dialogue', speaker: '瑪莎', text: '不過……今天謝啦。' },
+      { kind: 'dialogue', speaker: '你', text: '謝什麼？' },
+      { kind: 'dialogue', speaker: '瑪莎', text: '沒什麼。' },
+      { kind: 'dialogue', speaker: '瑪莎', text: '就覺得有人陪著講幾句廢話，好像也不錯。' },
+      { kind: 'dialogue', speaker: '瑪莎', text: '好了，妳可以回去找妳的怪獸了。' },
+      { kind: 'dialogue', speaker: '瑪莎', text: '不要在這裡妨礙我練琴，謝謝。' },
+      { kind: 'narration', text: '他嘴上趕你，手卻還搭在旁邊的椅背上，沒有馬上起身。' },
     ],
   },
   stone: {
     name: '石錦航',
     intro: [
-      { kind: 'narration', text: '石頭把剛才撿起來的鼓棒放回鼓組旁邊，又蹲下來把散開的導線慢慢理好。你走近時，他抬頭看了你一眼，先把手上的線放到一旁。' },
-      { kind: 'dialogue', speaker: '石錦航', text: '妳要不要先坐一下？剛剛站在門口應該也聽了不少。' },
+      { kind: 'narration', text: '錢佑達離開後，石頭一直沒有說話。他彎腰把剛才掉在地上的鼓棒撿起來，輕輕拍掉上面的灰，放回鼓組旁邊。' },
+      { kind: 'narration', text: '溫尚翊還在一旁煩躁地走來走去，瑪莎低頭整理著Bass的導線，阿信則把散落的譜紙重新收好。石頭看了一眼空下來的鼓椅，伸手把它扶正。' },
+      { kind: 'dialogue', speaker: '石錦航', text: '妳還好嗎？' },
+      { kind: 'dialogue', speaker: '石錦航', text: '剛剛是不是有嚇到？' },
+      { kind: 'dialogue', speaker: '你', text: '還好啦，就是有點突然……' },
+      { kind: 'dialogue', speaker: '石錦航', text: '嗯，我也沒想到他今天會突然講這些。' },
+      { kind: 'dialogue', speaker: '石錦航', text: '不過，他應該真的想很久了。' },
     ],
     rounds: [
-      { prompt: '石頭把導線收好，坐到旁邊的椅子上。', choices: [
-        { text: '「你是不是也覺得很突然？」', affection: 2, response: [
-          { kind: 'dialogue', speaker: '石錦航', text: '有一點。之前沒有聽他提過這些。' },
+      { setup: [
+        { kind: 'narration', text: '石頭把鼓棒放回鼓組旁邊，又看了一眼空著的鼓椅。' },
+        { kind: 'dialogue', speaker: '石錦航', text: '妳剛剛有聽到他說的那些話吧？' },
+        { kind: 'dialogue', speaker: '石錦航', text: '我覺得他好像一直很在意自己有沒有跟上大家。' },
+        { kind: 'dialogue', speaker: '石錦航', text: '可是有些事情，不是他一個人覺得不夠好，就代表大家也這樣想啊。' },
+      ], prompt: '他把手掌輕輕放在膝上，安靜地看著你。', choices: [
+        { text: '你剛才一直沒怎麼說話，是不是也很擔心他？', affection: 2, response: [
+          { kind: 'dialogue', speaker: '石錦航', text: '有一點吧。' },
           { kind: 'narration', text: '他把手掌放在膝上，想了一會兒才繼續。' },
-          { kind: 'dialogue', speaker: '石錦航', text: '不過仔細想想，他可能真的悶了很久，只是我們都沒發現。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '只是剛剛大家都在講，我也不知道要從哪裡說起。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '而且我覺得，他可能不是聽不懂我們的意思，只是他自己還過不去。' },
         ]},
-        { text: '「你剛才一直在幫大家把東西收好欸。」', affection: 1, response: [
-          { kind: 'dialogue', speaker: '石錦航', text: '總要有人先把東西放回去嘛。' },
-          { kind: 'narration', text: '他笑了一下，伸手把旁邊的椅子往你這邊拉近。' },
-          { kind: 'dialogue', speaker: '石錦航', text: '不然等一下真的要練，也不知道從哪裡開始。' },
+        { text: '我看見你把他的鼓棒收起來了。', affection: 2, response: [
+          { kind: 'dialogue', speaker: '石錦航', text: '嗯，怕他剛剛走得太急，等一下回來又找不到。' },
+          { kind: 'narration', text: '他笑了一下，手指輕輕碰了碰鼓棒末端。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '之前他也常常把鼓棒隨手放在這裡，過一會兒又問大家有沒有看到。' },
         ]},
-        { text: '坐到他旁邊，肩膀輕輕靠上去。', affection: 3, response: [
-          { kind: 'narration', text: '他先是停了一下，隨後把肩膀放鬆，讓你靠得穩一點。' },
-          { kind: 'dialogue', speaker: '石錦航', text: '今天好像大家都需要休息一下。' },
-          { kind: 'dialogue', speaker: '你', text: '那你呢？' },
-          { kind: 'dialogue', speaker: '石錦航', text: '我現在還好，有妳坐在旁邊就不會那麼悶。' },
-        ]},
-      ]},
-      { prompt: '石頭拿起桌上的歌譜，把被折到的角慢慢撫平。', choices: [
-        { text: '「你覺得佑達還會回來嗎？」', affection: 2, response: [
-          { kind: 'dialogue', speaker: '石錦航', text: '我希望會。' },
-          { kind: 'dialogue', speaker: '石錦航', text: '但現在一直猜也沒有用，先讓他把心情整理好吧。' },
-          { kind: 'narration', text: '他把歌譜放回桌上，沒有把話說得太滿。' },
-        ]},
-        { text: '伸手替他把歌譜折起來的角壓平。', affection: 2, response: [
-          { kind: 'narration', text: '你們的手指在紙邊碰到，他稍微讓開一點，卻沒有把歌譜抽走。' },
-          { kind: 'dialogue', speaker: '石錦航', text: '謝謝。這張剛剛差點被踩到。' },
-          { kind: 'dialogue', speaker: '你', text: '還好你有撿起來。' },
-          { kind: 'dialogue', speaker: '石錦航', text: '妳也有看到啊。' },
-        ]},
-        { text: '「你不要一直忙了，坐下來陪我一下。」', affection: 2, response: [
-          { kind: 'dialogue', speaker: '石錦航', text: '好啊。' },
-          { kind: 'narration', text: '他把手裡的紙放下，真的坐回你旁邊，沒有再找事情做。' },
-          { kind: 'dialogue', speaker: '石錦航', text: '這樣可以嗎？' },
+        { text: '怪獸剛剛真的氣得不輕欸。', affection: 2, response: [
+          { kind: 'dialogue', speaker: '石錦航', text: '怪獸是真的很生氣。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '不過他不是討厭佑達啦，妳應該也看得出來。' },
+          { kind: 'narration', text: '他看了一眼練團室裡面，語氣放得更輕了一點。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '就是太在乎了，才會講話那麼急。' },
         ]},
       ]},
-      { prompt: '練團室裡傳來一聲椅腳摩擦地面的聲音，石頭抬眼看了看門口。', choices: [
-        { text: '「你等一下會去找佑達嗎？」', affection: 2, response: [
-          { kind: 'dialogue', speaker: '石錦航', text: '先不急。現在大家都還有點情緒，晚一點再問問他在哪裡。' },
-          { kind: 'dialogue', speaker: '石錦航', text: '如果他願意說，我們就好好聽。' },
+      { setup: [
+        { kind: 'narration', text: '石頭把旁邊的椅子往外挪了一點，示意你坐下。' },
+        { kind: 'dialogue', speaker: '石錦航', text: '其實我覺得，佑達剛剛說的那個標準……' },
+        { kind: 'dialogue', speaker: '石錦航', text: '一個團要看最差的那個人能到什麼程度。' },
+        { kind: 'dialogue', speaker: '石錦航', text: '聽起來好像很有道理，可是我不太喜歡這樣想。' },
+        { kind: 'dialogue', speaker: '石錦航', text: '如果每次練團，都要一直擔心自己是不是最差的那個，那不是會很累嗎？' },
+      ], prompt: '他坐在你旁邊，轉過頭來問你。', choices: [
+        { text: '那你覺得一個團真正重要的是什麼？', affection: 2, response: [
+          { kind: 'dialogue', speaker: '石錦航', text: '我想，應該是大家願不願意一起把一首歌完成吧。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '有人今天狀態不好，有人明天彈錯，這些都很正常啊。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '如果每個人都只顧著證明自己很厲害，那還要一起練團做什麼？' },
+          { kind: 'narration', text: '他說完，輕輕笑了一下。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '我是不是講得有點像老師啊？' },
         ]},
-        { text: '把手放到他手背上，輕輕拍兩下。', affection: 3, response: [
-          { kind: 'narration', text: '他低頭看了看你的手，隨後把自己的手翻過來，輕輕碰了碰你的指尖。' },
-          { kind: 'dialogue', speaker: '石錦航', text: '謝謝妳陪我坐一下。' },
-          { kind: 'dialogue', speaker: '石錦航', text: '剛剛那麼吵，現在安靜下來，反而有點不習慣。' },
+        { text: '可是他好像真的覺得自己跟不上。', affection: 2, response: [
+          { kind: 'dialogue', speaker: '石錦航', text: '嗯，我知道。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '可是妳有沒有發現，他一直在說自己不夠好，卻很少說自己其實還想不想跟我們一起練？' },
+          { kind: 'narration', text: '他停了一下，視線落回空著的鼓椅。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '我有點在意這個。' },
         ]},
-        { text: '「等一下要不要出去走走？在裡面待太久了。」', affection: 2, response: [
-          { kind: 'dialogue', speaker: '石錦航', text: '好啊，出去吹一下風也好。' },
-          { kind: 'narration', text: '他站起來時，先替你把椅子往後拉開，等你起身才跟上。' },
+        { text: '你自己會不會也有這種壓力？', affection: 2, response: [
+          { kind: 'dialogue', speaker: '石錦航', text: '會啊。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '我也有彈不好的時候，尤其有時候大家已經練得很順了，我還在想剛剛那個地方怎麼接。' },
+          { kind: 'narration', text: '他有些不好意思地摸了摸鼻子。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '不過後來就覺得，反正多練幾次就好了。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '總不能每次彈錯，都要懷疑自己是不是不適合玩團吧。' },
+        ]},
+      ]},
+      { setup: [
+        { kind: 'narration', text: '你坐了一會兒，發現桌邊還有幾張譜紙沒有整理好，便伸手幫忙。' },
+        { kind: 'dialogue', speaker: '石錦航', text: '這幾張應該是剛剛練歌的時候用的。' },
+        { kind: 'dialogue', speaker: '石錦航', text: '妳幫我拿一下，我把下面那幾張疊好。' },
+        { kind: 'narration', text: '你把譜紙遞過去，其中一張卻因為沒有夾穩，輕輕滑了下來。石頭伸手接住，另一隻手也剛好扶住你的手背。' },
+        { kind: 'dialogue', speaker: '石錦航', text: '小心。' },
+        { kind: 'narration', text: '他低頭看了一眼，發現你的手指沾上了一點鉛筆灰。' },
+        { kind: 'dialogue', speaker: '石錦航', text: '欸，妳手弄髒了。' },
+        { kind: 'narration', text: '他從桌邊拿了一張乾淨的紙巾遞給你。' },
+      ], prompt: '石頭看了看你的指尖，等著你接過紙巾。', choices: [
+        { text: '沒關係啦，擦一下就好了。', affection: 2, response: [
+          { kind: 'dialogue', speaker: '石錦航', text: '好，那妳擦一下。' },
+          { kind: 'narration', text: '他把紙巾遞到你手裡，又順手把滑下來的譜紙夾好。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '這幾張很容易散掉，我剛剛就差點弄丟了。' },
+        ]},
+        { text: '你怎麼連這個都注意到了？', affection: 2, response: [
+          { kind: 'dialogue', speaker: '石錦航', text: '因為就在眼前啊。' },
+          { kind: 'narration', text: '他笑了笑，目光落在你的指尖。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '而且妳剛剛一直拿著譜紙，我怕等一下弄到衣服上。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '白白的衣服沾到鉛筆灰，很難洗欸。' },
+        ]},
+        { text: '那你幫我擦嘛。', affection: 3, response: [
+          { kind: 'dialogue', speaker: '石錦航', text: '蛤？真的要我幫妳喔？' },
+          { kind: 'narration', text: '他愣了一下，隨後笑著接過你的手，用紙巾輕輕擦掉指尖的灰。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '這樣可以了吧？' },
+          { kind: 'narration', text: '擦完以後，他沒有馬上鬆開，只是低頭確認了一下。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '嗯，乾淨了。' },
+        ]},
+      ]},
+      { setup: [
+        { kind: 'narration', text: '譜紙終於整理好了。石頭把它們放回架子上，又看了一眼練團室的門。' },
+        { kind: 'dialogue', speaker: '石錦航', text: '我在想，晚一點要不要去找他。' },
+        { kind: 'dialogue', speaker: '石錦航', text: '現在追出去，他應該也不想聽我們講話。' },
+        { kind: 'dialogue', speaker: '石錦航', text: '可是就這樣放著，好像也不太好。' },
+      ], prompt: '他轉過來看你，像是在認真聽你的想法。', choices: [
+        { text: '等他自己冷靜下來吧。', affection: 2, response: [
+          { kind: 'dialogue', speaker: '石錦航', text: '嗯，我也是這樣想。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '先讓他自己待一下吧。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '有時候一直追著問，反而會讓人更想躲起來。' },
+        ]},
+        { text: '你可以先傳個訊息給他。', affection: 2, response: [
+          { kind: 'dialogue', speaker: '石錦航', text: '這個好像可以。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '不用講太多，問他有沒有平安到家就好了。' },
+          { kind: 'narration', text: '他想了一下，又補了一句。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '至少讓他知道，我們沒有因為剛剛吵架，就不理他了。' },
+        ]},
+        { text: '你是不是很捨不得他離開？', affection: 3, response: [
+          { kind: 'dialogue', speaker: '石錦航', text: '當然啊。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '一起練了這麼久，怎麼可能說不在意就不在意。' },
+          { kind: 'narration', text: '他笑了一下。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '而且佑達平常其實滿好笑的，少了他，練團室可能會安靜很多。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '雖然有時候也會被他吵到啦。' },
+        ]},
+      ]},
+      { setup: [
+        { kind: 'narration', text: '練團室裡的聲音漸漸小了下來。石頭把最後幾張譜紙收好，發現你還坐在旁邊，便走過來停在你身邊。' },
+        { kind: 'dialogue', speaker: '石錦航', text: '欸，妳今天是不是站了很久？' },
+        { kind: 'dialogue', speaker: '石錦航', text: '剛剛我好像一直看到妳在門口。' },
+        { kind: 'dialogue', speaker: '石錦航', text: '怎麼沒有找個地方坐？' },
+      ], prompt: '他把旁邊的椅子稍微拉開，讓你坐得舒服一點。', choices: [
+        { text: '因為你們在吵架，我不好意思進去嘛。', affection: 2, response: [
+          { kind: 'dialogue', speaker: '石錦航', text: '原來是這樣喔。' },
+          { kind: 'narration', text: '他把旁邊的椅子往你這邊挪了挪。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '下次不用一直站在那裡啦。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '妳可以直接進來坐，沒有人會介意的。' },
+        ]},
+        { text: '我在等你們什麼時候吵完啊。', affection: 2, response: [
+          { kind: 'dialogue', speaker: '石錦航', text: '那妳應該等了滿久的。' },
+          { kind: 'narration', text: '他有點不好意思地笑了。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '抱歉喔，今天好像讓妳看了不少熱鬧。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '下次應該不會這樣了……希望啦。' },
+        ]},
+        { text: '其實我今天就是想多待一會兒。', affection: 3, response: [
+          { kind: 'dialogue', speaker: '石錦航', text: '是喔？' },
+          { kind: 'narration', text: '他看著你，安靜了一小會兒。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '那今天就多待一下啊。' },
+          { kind: 'narration', text: '他像是怕自己顯得太刻意，又補了一句。' },
+          { kind: 'dialogue', speaker: '石錦航', text: '反正我也還沒整理完東西。妳可以陪我慢慢弄。' },
         ]},
       ]},
     ],
     ending: [
-      { kind: 'narration', text: '石頭把最後一條導線放回箱子裡，沒有再急著開始下一件事。' },
-      { kind: 'dialogue', speaker: '石錦航', text: '今天先不要勉強自己待太久了。妳要是想回去，我陪妳走到外面。' },
-      { kind: 'narration', text: '他把門替你扶住，等你走出去才跟上。' },
+      { kind: 'narration', text: '石頭把鼓組旁邊的椅子重新擺好，又把錢佑達的鼓棒放回原來的位置，沒有收進櫃子裡。' },
+      { kind: 'dialogue', speaker: '你', text: '你還留著他的鼓棒喔？' },
+      { kind: 'dialogue', speaker: '石錦航', text: '嗯，先放著吧。' },
+      { kind: 'dialogue', speaker: '石錦航', text: '他如果明天來，還是可以直接拿。' },
+      { kind: 'dialogue', speaker: '你', text: '沒有啦，只是覺得你真的很細心。' },
+      { kind: 'dialogue', speaker: '石錦航', text: '有嗎？' },
+      { kind: 'narration', text: '他笑了一下，伸手把你剛才放在椅子上的外套拿起來，遞給你。' },
+      { kind: 'dialogue', speaker: '石錦航', text: '妳自己的東西都差點忘了，還說我細心。' },
+      { kind: 'dialogue', speaker: '你', text: '哎呀，我剛剛不是在幫忙嘛！' },
+      { kind: 'dialogue', speaker: '石錦航', text: '好啦，知道妳有幫忙。' },
+      { kind: 'dialogue', speaker: '石錦航', text: '妳等一下要回去了嗎？' },
+      { kind: 'dialogue', speaker: '你', text: '怎麼啦？' },
+      { kind: 'dialogue', speaker: '石錦航', text: '沒有啊。' },
+      { kind: 'dialogue', speaker: '石錦航', text: '如果不急的話，我陪妳走一段好了。' },
+      { kind: 'dialogue', speaker: '石錦航', text: '今天外面風好像滿舒服的。' },
+      { kind: 'narration', text: '他拿起自己的外套，等你一起往門口走。走到門邊時，他稍稍放慢了腳步。' },
+      { kind: 'dialogue', speaker: '石錦航', text: '欸，今天謝謝妳喔。' },
+      { kind: 'dialogue', speaker: '你', text: '我又沒做什麼。' },
+      { kind: 'dialogue', speaker: '石錦航', text: '有啊。妳有在這裡陪我們。' },
+      { kind: 'dialogue', speaker: '石錦航', text: '而且剛剛幫忙整理譜紙，也算有做事啦。' },
+      { kind: 'narration', text: '他替你推開門，等你先走出去，自己才跟上來。走廊裡的風迎面吹來，他稍稍側過身，替你擋了一下。' },
     ],
   },
   yanming: {
     name: '劉諺明',
     intro: [
-      { kind: 'narration', text: '諺明哥站在練團室門邊，剛才的爭執他沒有插手。看見你走過去，他先往裡面看了一眼，才把門帶上了一點，讓裡面的聲音小一些。' },
-      { kind: 'dialogue', speaker: '劉諺明', text: '妳也聽到了喔？' },
-      { kind: 'dialogue', speaker: '你', text: '嗯……有一點不知道該怎麼辦。' },
+      { kind: 'narration', text: '錢佑達離開後，練團室裡還是有些亂。你看了一眼裡面的情況，沒有貿然過去，轉身走到外面的櫃檯。' },
+      { kind: 'narration', text: '諺明正坐在櫃檯後面，戴著眼鏡，低頭核對今天的場地租借紀錄。旁邊放著一疊收據，他手裡還拿著計算器。' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '欸？怎麼出來了？' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '裡面還在吵喔？' },
+      { kind: 'dialogue', speaker: '你', text: '沒有啦，剛剛吵完。' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '嗯，剛剛聲音是不小。' },
+      { kind: 'narration', text: '他把手裡的筆放下，伸手拿過旁邊的玻璃杯，往你這邊推了推。' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '先喝點水吧，站那麼久。' },
     ],
     rounds: [
-      { prompt: '諺明哥靠在門邊，手裡拿著剛才從櫃檯帶過來的帳本。', choices: [
-        { text: '「你不進去勸他們嗎？」', affection: 1, response: [
-          { kind: 'dialogue', speaker: '劉諺明', text: '那是他們自己的事情，我先不插手比較好。' },
-          { kind: 'dialogue', speaker: '劉諺明', text: '等大家冷靜一點，想講話自然會出來找我。' },
+      { setup: [
+        { kind: 'dialogue', speaker: '劉諺明', text: '我剛剛有聽到一點。' },
+        { kind: 'dialogue', speaker: '劉諺明', text: '佑達說想退團，是吧？' },
+        { kind: 'narration', text: '他沒有繼續追問，只是把收據疊整齊。' },
+        { kind: 'dialogue', speaker: '劉諺明', text: '這幾個年輕人啊，平常練團吵吵鬧鬧的，真的碰到事情，反而都不知道怎麼講了。' },
+      ], prompt: '他把收據放到桌邊，抬頭看了你一眼。', choices: [
+        { text: '怪獸剛剛真的氣壞了。', affection: 1, response: [
+          { kind: 'dialogue', speaker: '劉諺明', text: '看得出來。' },
+          { kind: 'narration', text: '他笑著搖了搖頭。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '怪獸那個脾氣，平常就藏不住事情。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '不過他會那麼生氣，應該也是因為真的很在乎吧。' },
         ]},
-        { text: '「你是不是也覺得他們今天很不對勁？」', affection: 2, response: [
-          { kind: 'dialogue', speaker: '劉諺明', text: '嗯，從剛才開始就有點不太對。' },
-          { kind: 'narration', text: '他把帳本換到另一隻手，語氣還是很平穩。' },
-          { kind: 'dialogue', speaker: '劉諺明', text: '不過這種事情，總要讓他們自己把話說清楚。' },
+        { text: '佑達好像是真的覺得自己不夠好。', affection: 2, response: [
+          { kind: 'dialogue', speaker: '劉諺明', text: '嗯，這種事情旁邊的人講再多，也不一定聽得進去。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '有時候自己覺得不夠好，別人怎麼說都沒用。' },
+          { kind: 'narration', text: '他把計算器放到一邊。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '可能要讓他自己慢慢想通才行。' },
         ]},
-        { text: '「我可以在這裡陪你一下嗎？」', affection: 2, response: [
-          { kind: 'dialogue', speaker: '劉諺明', text: '當然可以啊。' },
-          { kind: 'narration', text: '他把旁邊的椅子拉出來，讓你坐在門邊不會擋到出入。' },
-          { kind: 'dialogue', speaker: '劉諺明', text: '裡面現在比較吵，坐這裡舒服一點。' },
-        ]},
-      ]},
-      { prompt: '門內的聲音慢慢低下來，諺明哥把帳本放到旁邊的小桌上。', choices: [
-        { text: '「你覺得佑達是不是想了很久才說出口？」', affection: 2, response: [
-          { kind: 'dialogue', speaker: '劉諺明', text: '有可能。今天看起來不像是一時衝動。' },
-          { kind: 'dialogue', speaker: '劉諺明', text: '不過他們一起練這麼久，應該還有機會慢慢談。' },
-        ]},
-        { text: '「你平常都要幫他們收拾這些爛攤子嗎？」', affection: 1, response: [
-          { kind: 'dialogue', speaker: '劉諺明', text: '也不算啦，平常比較常收拾的是器材。' },
-          { kind: 'narration', text: '他笑了一聲，抬手推了推眼鏡。' },
-          { kind: 'dialogue', speaker: '劉諺明', text: '人跟人的事情，我可沒有辦法幫他們整理得那麼整齊。' },
-        ]},
-        { text: '把手裡的水遞給他，叫他也休息一下。', affection: 2, response: [
-          { kind: 'dialogue', speaker: '劉諺明', text: '謝謝。妳倒是比裡面那幾個人冷靜。' },
-          { kind: 'narration', text: '他接過水喝了一口，又把瓶子放回你手邊。' },
-          { kind: 'dialogue', speaker: '劉諺明', text: '妳自己也喝一點，今天跑來跑去的。' },
+        { text: '諺明哥，你覺得他們還能和好嗎？', affection: 2, response: [
+          { kind: 'dialogue', speaker: '劉諺明', text: '會不會和好，我倒是不敢說。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '不過他們幾個認識這麼久，不至於因為今天吵一架就什麼都不剩。' },
+          { kind: 'narration', text: '他看了你一眼。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '先別替他們擔心了，妳看起來比他們還緊張。' },
         ]},
       ]},
-      { prompt: '諺明哥看了一眼牆上的時鐘，準備把帳本拿回櫃檯。', choices: [
-        { text: '「等一下陪我出去走一小段路好不好？」', affection: 3, response: [
-          { kind: 'dialogue', speaker: '劉諺明', text: '好啊，等我把帳本放回去。' },
-          { kind: 'narration', text: '他把帳本收好，回來時順手拿起外套。' },
-          { kind: 'dialogue', speaker: '劉諺明', text: '走吧，外面風還滿舒服的。' },
+      { setup: [
+        { kind: 'narration', text: '諺明把桌上的收據收進文件夾，順手調整了一下眼鏡。' },
+        { kind: 'dialogue', speaker: '劉諺明', text: '其實玩團就是這樣啦。' },
+        { kind: 'dialogue', speaker: '劉諺明', text: '一開始大家只是覺得好玩，後來慢慢有了自己的想法，就會開始碰到一些問題。' },
+        { kind: 'dialogue', speaker: '劉諺明', text: '我以前也玩過團，多少知道那種感覺。' },
+      ], prompt: '他把文件夾放到一旁，等你接話。', choices: [
+        { text: '諺明哥以前也是鼓手嘛？', affection: 2, response: [
+          { kind: 'dialogue', speaker: '劉諺明', text: '對啊，鼓手。' },
+          { kind: 'narration', text: '他笑了一下。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '不過現在比較常做的是幫人搬器材、算時間，還有提醒他們不要把東西弄壞。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '有時候覺得自己好像比以前還忙。' },
         ]},
-        { text: '「你不要一直站著，坐一下啦。」', affection: 2, response: [
-          { kind: 'dialogue', speaker: '劉諺明', text: '好，聽妳的。' },
-          { kind: 'narration', text: '他把椅子拉到你旁邊坐下，還特意留了一點空間讓你伸腿。' },
+        { text: '那你以前有沒有跟團員吵過架？', affection: 2, response: [
+          { kind: 'dialogue', speaker: '劉諺明', text: '有啊，哪有可能完全不吵。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '每個人想法不一樣，練久了多少會有意見。' },
+          { kind: 'narration', text: '他想了一下，才繼續說。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '不過吵架也不一定是壞事，至少有些事情講出來，總比一直悶著好。' },
         ]},
-        { text: '「你回去忙吧，我再進去看看大家。」', affection: 1, response: [
-          { kind: 'dialogue', speaker: '劉諺明', text: '好啊。那妳進去的時候小心一點，別被他們的導線絆到。' },
-          { kind: 'narration', text: '他替你把門拉開，讓你先走進去。' },
+        { text: '所以你現在才開練團室喔？', affection: 2, response: [
+          { kind: 'dialogue', speaker: '劉諺明', text: '也不完全是啦。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '只是後來覺得，能讓喜歡音樂的人有個地方練團，也滿好的。' },
+          { kind: 'narration', text: '他看了一眼裡面亮著的燈。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '而且每天聽他們在裡面吵吵鬧鬧，還挺有意思的。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '雖然有時候真的很吵。' },
+        ]},
+      ]},
+      { setup: [
+        { kind: 'narration', text: '你喝完水，把杯子放回櫃檯。諺明正準備整理一疊場地登記表，旁邊的風扇卻把幾張紙吹得翹了起來。' },
+        { kind: 'dialogue', speaker: '劉諺明', text: '欸，等一下。' },
+        { kind: 'dialogue', speaker: '劉諺明', text: '妳幫我拿一下這幾張紙好不好？風扇一直吹，快飛到地上了。' },
+        { kind: 'narration', text: '你伸手幫他按住紙張。他一邊翻找登記表，一邊把散開的幾張收據重新疊好。其中一張滑到桌邊，你趕緊伸手去接，兩個人的手剛好碰在一起。' },
+        { kind: 'dialogue', speaker: '劉諺明', text: '喔，小心。' },
+        { kind: 'dialogue', speaker: '劉諺明', text: '有沒有撞到？' },
+      ], prompt: '他先把收據接過來，隨後看了看你的手。', choices: [
+        { text: '沒有啦，我反應很快吧！', affection: 2, response: [
+          { kind: 'dialogue', speaker: '劉諺明', text: '是啊，反應不錯。' },
+          { kind: 'narration', text: '他笑著把收據放好。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '不然我這個櫃檯今天可能要多一個工讀生了。' },
+        ]},
+        { text: '諺明哥，你平常都自己整理這麼多東西喔？', affection: 2, response: [
+          { kind: 'dialogue', speaker: '劉諺明', text: '差不多啦，租借時間、器材紀錄，還有一些雜七雜八的事情。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '有時候忙起來，連午餐都會忘記吃。' },
+          { kind: 'narration', text: '他看了看桌上的文件。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '不過習慣就好了，東西放整齊，找起來也比較快。' },
+        ]},
+        { text: '你剛剛是不是碰到我的手了？', affection: 3, response: [
+          { kind: 'dialogue', speaker: '劉諺明', text: '有嗎？' },
+          { kind: 'narration', text: '他低頭看了一眼自己的手，隨後笑了笑。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '剛剛是怕收據掉下去啦。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '不過妳反應這麼快，我倒是省事了。' },
+          { kind: 'narration', text: '他說著，把另一張收據遞給你。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '來，這張也幫我顧一下，今天請妳當臨時助理。' },
+        ]},
+      ]},
+      { setup: [
+        { kind: 'narration', text: '諺明把登記表整理好，拿起計算器核對了一遍今天的租借時間。' },
+        { kind: 'dialogue', speaker: '劉諺明', text: '對了，今天他們的時間還沒到。' },
+        { kind: 'dialogue', speaker: '劉諺明', text: '妳不用擔心，我不會現在就進去催他們。' },
+        { kind: 'dialogue', speaker: '劉諺明', text: '這種時候，讓他們自己待一下比較好。' },
+        { kind: 'dialogue', speaker: '劉諺明', text: '而且佑達如果等一下回來，東西還在原位，不用再跑來問我。' },
+      ], prompt: '他朝練團室看了一眼，又轉回來看你。', choices: [
+        { text: '諺明哥，你是不是其實很照顧他們？', affection: 2, response: [
+          { kind: 'dialogue', speaker: '劉諺明', text: '每天看他們在這裡練，多少會有感情啦。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '而且這些人有時候真的很會給人添麻煩。' },
+          { kind: 'narration', text: '他笑著搖搖頭。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '不過也還算有趣。' },
+        ]},
+        { text: '那如果佑達真的不回來了呢？', affection: 2, response: [
+          { kind: 'dialogue', speaker: '劉諺明', text: '那也沒辦法啊。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '他如果真的想清楚了，我們也不能替他決定。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '不過我想，至少應該找個時間好好談一次。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '畢竟有些話，今天吵架的時候可能還沒講完。' },
+        ]},
+        { text: '你都不擔心今天練團室的氣氛變得很差嗎？', affection: 2, response: [
+          { kind: 'dialogue', speaker: '劉諺明', text: '不會啊，練團室本來就不是每天都只有開心的事情。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '有人心情好，有人心情不好，總不能因為今天吵架，就把音箱全部收起來吧？' },
+          { kind: 'narration', text: '他說完，自己也覺得好笑。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '那我可能要失業了。' },
+        ]},
+      ]},
+      { setup: [
+        { kind: 'narration', text: '諺明把最後一張收據夾進文件夾，終於從櫃檯後面站起來，活動了一下肩膀。' },
+        { kind: 'dialogue', speaker: '劉諺明', text: '欸，妳等一下還有事嗎？' },
+        { kind: 'dialogue', speaker: '劉諺明', text: '我本來想出去買點東西，順便走走。' },
+        { kind: 'dialogue', speaker: '劉諺明', text: '妳要不要一起？' },
+      ], prompt: '他拿起鑰匙，站在櫃檯旁邊等你的回答。', choices: [
+        { text: '好啊，我也想出去透透氣。', affection: 2, response: [
+          { kind: 'dialogue', speaker: '劉諺明', text: '好啊。' },
+          { kind: 'narration', text: '他拿起櫃檯上的鑰匙。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '外面天氣還不錯，走一走也好。' },
+        ]},
+        { text: '你要買什麼？我陪你去。', affection: 2, response: [
+          { kind: 'dialogue', speaker: '劉諺明', text: '買點日用品，還有櫃檯要用的東西。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '不過不多啦，妳不用擔心要幫我提一大堆。' },
+          { kind: 'narration', text: '他笑著看你。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '真的要買很多，我可不敢麻煩妳。' },
+        ]},
+        { text: '你是怕我一個人在這裡無聊嗎？', affection: 3, response: [
+          { kind: 'dialogue', speaker: '劉諺明', text: '哈哈，妳這樣講，好像我很怕妳無聊一樣。' },
+          { kind: 'narration', text: '他把鑰匙收進口袋，語氣依舊平穩。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '不過妳今天在這裡待了這麼久，出去透透氣也好。' },
+          { kind: 'dialogue', speaker: '劉諺明', text: '走吧，順便陪我買個東西。' },
         ]},
       ]},
     ],
     ending: [
-      { kind: 'narration', text: '諺明哥把帳本放回櫃檯，沒有替團員做任何決定，只是把門口和走道整理好，讓大家有地方安靜一下。' },
-      { kind: 'dialogue', speaker: '劉諺明', text: '今天先到這裡吧。妳回去路上小心，到了家記得休息。' },
-      { kind: 'narration', text: '他站在門口目送你走遠，才轉身回去。' },
+      { kind: 'narration', text: '諺明把櫃檯簡單整理了一下，交代裡面的人如果有事情就叫他，隨後帶著你走出練團室。外面的太陽已經沒有下午剛來時那麼刺眼，巷口有賣飲料的小攤，旁邊停著幾輛腳踏車。' },
+      { kind: 'narration', text: '諺明走在靠近馬路的一側，經過路邊的小攤時停下來，買了兩瓶水。' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '妳要喝嗎？' },
+      { kind: 'dialogue', speaker: '你', text: '你不是剛剛才給我水？' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '剛剛那杯是坐在裡面喝的，現在出來走路又不一樣。' },
+      { kind: 'narration', text: '他把水遞給你，自己擰開另一瓶喝了一口。' },
+      { kind: 'dialogue', speaker: '你', text: '諺明哥，你是不是平常都這樣照顧別人啊？' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '哪樣？' },
+      { kind: 'dialogue', speaker: '你', text: '就是……什麼都幫人家想到。' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '習慣了吧。開店做生意，總要多留意一點。' },
+      { kind: 'narration', text: '走了一小段，他忽然側過頭看你。' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '不過妳今天倒是挺乖的。' },
+      { kind: 'dialogue', speaker: '你', text: '蛤？我哪裡乖了？' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '剛剛在裡面那麼吵，妳也沒跟著起鬨。' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '還知道出來透透氣。' },
+      { kind: 'narration', text: '他推了推眼鏡，嘴角帶著一點笑意。' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '比裡面那幾個省心多了。' },
+      { kind: 'dialogue', speaker: '你', text: '你這樣講，他們知道會傷心欸。' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '那就不要讓他們知道。' },
+      { kind: 'narration', text: '他說完，自己先笑了。快走到巷口時，他稍稍放慢腳步。' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '今天如果還想回去，就慢慢來。' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '不用急著走。' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '我等一下也會回去看著他們，妳不用擔心。' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '對了，下次來練團室，記得先跟我打聲招呼。' },
+      { kind: 'dialogue', speaker: '你', text: '為什麼？' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '不然我怎麼知道妳來了？' },
+      { kind: 'narration', text: '他說得很自然，像是在講一件再普通不過的事情。可說完以後，他又笑了一下。' },
+      { kind: 'dialogue', speaker: '劉諺明', text: '走啦，回去吧。' },
     ],
   },
 }
@@ -695,15 +1094,18 @@ function readProgress(): April20Progress {
     const messages = Array.isArray(saved.messages)
       ? saved.messages.filter((item): item is SmsLine => item && (item.from === 'youda' || item.from === 'me') && typeof item.text === 'string' && typeof item.time === 'string').slice(0, 40)
       : []
+    if ((saved.phase === 'park' || saved.phase === 'interaction' || saved.phase === 'complete') && !character) return initialProgress
+    const savedRoute = route === 'park' ? parkRoute : character ? characterRoutes[character] : null
+    const roundCount = savedRoute?.rounds.length ?? 3
     const choices = Array.isArray(saved.choices)
-      ? saved.choices.filter((value): value is number => Number.isInteger(value) && value >= 0 && value < 3).slice(0, 3)
+      ? saved.choices.filter((value): value is number => Number.isInteger(value) && value >= 0 && value < 3).slice(0, roundCount)
       : []
     const smsRound = Number.isInteger(saved.smsRound) ? Math.max(0, Math.min(4, Number(saved.smsRound))) : 0
-    const roundIndex = Number.isInteger(saved.roundIndex) ? Math.max(0, Math.min(2, Number(saved.roundIndex))) : 0
+    const roundIndex = Number.isInteger(saved.roundIndex) ? Math.max(0, Math.min(roundCount - 1, Number(saved.roundIndex))) : 0
     const smsPendingChoice = Number.isInteger(saved.smsPendingChoice) && Number(saved.smsPendingChoice) >= 0 && Number(saved.smsPendingChoice) < 3 ? Number(saved.smsPendingChoice) : null
     const pendingChoice = Number.isInteger(saved.pendingChoice) && Number(saved.pendingChoice) >= 0 && Number(saved.pendingChoice) < 3 ? Number(saved.pendingChoice) : null
-    if ((saved.phase === 'park' || saved.phase === 'interaction' || saved.phase === 'complete') && !character) return initialProgress
-    if (saved.phase === 'complete' && choices.length !== 3) return initialProgress
+    const legacyThreeRoundCompletion = saved.phase === 'complete' && roundCount === 5 && choices.length === 3
+    if (saved.phase === 'complete' && choices.length !== roundCount && !legacyThreeRoundCompletion) return initialProgress
     return {
       phase: saved.phase as April20Phase,
       smsRound,
@@ -727,7 +1129,7 @@ function clockForProgress(progress: April20Progress) {
   if (progress.phase === 'park') return ['16:00', '16:20', '16:40'][progress.roundIndex]
   if (progress.phase === 'conflict') return '16:00'
   if (progress.phase === 'characterPicker') return '16:35'
-  if (progress.phase === 'interaction') return ['16:45', '17:05', '17:25'][progress.roundIndex]
+  if (progress.phase === 'interaction') return ['16:45', '17:00', '17:15', '17:30', '17:45'][progress.roundIndex] ?? '17:45'
   return '17:50'
 }
 
@@ -777,14 +1179,15 @@ function InteractionScreen({
         <div className="story-kicker">{kicker}</div>
         <h2 className="story-scene-title">{title}</h2>
         {progress.roundIndex === 0 && <April20Blocks blocks={route.intro} />}
-        <div className="reunion-pause-note">第 {progress.roundIndex + 1}／3 輪互動</div>
+        {round.setup && <April20Blocks blocks={round.setup} />}
+        <div className="reunion-pause-note">第 {progress.roundIndex + 1}／{route.rounds.length} 輪互動</div>
         <p className="narrative-paragraph">{round.prompt}</p>
         {selected ? (
           <>
             <April20Blocks blocks={[{ kind: 'dialogue', speaker: '你', text: selected.text }, ...selected.response]} />
             <div className="story-action-bar story-inline-action">
               <button className="story-primary-button" onClick={onContinue}>
-                {progress.roundIndex < 2 ? '繼續聊一會兒' : '收下這段相處'} <ChevronRight size={15} />
+                {progress.roundIndex < route.rounds.length - 1 ? '繼續聊一會兒' : '收下這段相處'} <ChevronRight size={15} />
               </button>
             </div>
           </>
@@ -928,10 +1331,13 @@ export function April20Story({
     }))
   }
 
+  const currentRoute = progress.route === 'park'
+    ? parkRoute
+    : progress.character ? characterRoutes[progress.character] : null
+
   const chooseInteraction = (index: number) => {
-    if (!progress.character || progress.pendingChoice !== null) return
-    const route = progress.phase === 'park' ? parkRoute : characterRoutes[progress.character]
-    const choice = route.rounds[progress.roundIndex]?.choices[index]
+    if (!progress.character || progress.pendingChoice !== null || !currentRoute) return
+    const choice = currentRoute.rounds[progress.roundIndex]?.choices[index]
     if (!choice) return
     setProgress((current) => ({
       ...current,
@@ -942,8 +1348,8 @@ export function April20Story({
   }
 
   const continueInteraction = () => {
-    if (progress.pendingChoice === null) return
-    if (progress.roundIndex < 2) {
+    if (progress.pendingChoice === null || !currentRoute) return
+    if (progress.roundIndex < currentRoute.rounds.length - 1) {
       setProgress((current) => ({ ...current, roundIndex: current.roundIndex + 1, pendingChoice: null }))
     } else {
       setProgress((current) => ({ ...current, phase: 'complete', pendingChoice: null }))
@@ -951,13 +1357,11 @@ export function April20Story({
   }
 
   const finish = () => {
-    if (!progress.route || !progress.character || progress.choices.length !== 3) return
+    if (!progress.route || !progress.character || !currentRoute) return
+    const legacyThreeRoundCompletion = progress.phase === 'complete' && currentRoute.rounds.length === 5 && progress.choices.length === 3
+    if (progress.choices.length !== currentRoute.rounds.length && !legacyThreeRoundCompletion) return
     onFinish({ route: progress.route, character: progress.character, choices: progress.choices })
   }
-
-  const currentRoute = progress.route === 'park'
-    ? parkRoute
-    : progress.character ? characterRoutes[progress.character] : null
 
   if (progress.phase === 'notification') {
     return (
