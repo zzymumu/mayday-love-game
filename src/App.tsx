@@ -2434,23 +2434,8 @@ function App() {
   const [springFreeChatStarted, setSpringFreeChatStarted] = useState(() => {
     if (localStorage.getItem('mayday-spring-free-chat-started') === 'true' ||
       localStorage.getItem('mayday-spring-free-chat-complete') === 'true') return true
-    const currentStage = localStorage.getItem('mayday-story-stage')
-    const currentTimelineStage = currentStage === 'paused'
-      ? localStorage.getItem('mayday-resume-stage')
-      : currentStage
-    const legacyTimelineAlreadyPastCheckpoint =
-      localStorage.getItem('mayday-spring-day-complete') === 'true' &&
-      localStorage.getItem('mayday-spring-free-chat-eligible-v1') !== 'true' &&
-      currentTimelineStage !== 'spring-free-chat-picker' &&
-      currentTimelineStage !== 'spring-free-chat'
-    if (legacyTimelineAlreadyPastCheckpoint) {
-      // Close an already-running 3/28-era timeline that predates the checkpoint flags.
-      localStorage.setItem('mayday-spring-free-chat-started', 'true')
-      localStorage.setItem('mayday-spring-free-chat-complete', 'true')
-      return true
-    }
-    // The mode switches to "free" as soon as this one-off event starts,
-    // including the picker stage before a character has been selected.
+    // The mode switches to "free" as soon as the picker opens, including
+    // the stage before a character has been selected.
     return localStorage.getItem('mayday-spring-sms-mode') === 'free'
   })
   const [springFreeChatComplete, setSpringFreeChatComplete] = useState(() => {
@@ -2890,16 +2875,19 @@ function App() {
       // selected save has not consumed the optional free chat yet.
       restoredData['mayday-spring-free-chat-eligible-v1'] = 'true'
       if (savedTimelineStage === 'spring-free-chat-picker' || savedTimelineStage === 'spring-free-chat') {
-        const resumableSpringChat =
-          savedTimelineStage === 'spring-free-chat' &&
-          Boolean(restoredData['mayday-spring-sms-target']) &&
-          restoredData['mayday-spring-sms-mode'] === 'free'
-        if (resumableSpringChat) {
-          restoredData['mayday-spring-free-chat-started'] = 'true'
-        } else {
-          restoredData['mayday-spring-free-chat-started'] = 'false'
-          restoredData['mayday-spring-free-chat-complete'] = 'false'
+        // Preserve an in-progress event (including the picker before choosing
+        // a character) so the player can resume it instead of opening a new one.
+        restoredData['mayday-spring-free-chat-started'] = 'true'
+        if (savedTimelineStage === 'spring-free-chat' &&
+          (!restoredData['mayday-spring-sms-target'] || restoredData['mayday-spring-sms-mode'] !== 'free')) {
+          restoredData['mayday-story-stage'] = 'spring-free-chat-picker'
+          if (saved.stage === 'paused') restoredData['mayday-resume-stage'] = 'spring-free-chat-picker'
         }
+      } else {
+        // This save reached the checkpoint but had not started the optional chat.
+        restoredData['mayday-spring-free-chat-started'] = 'false'
+        restoredData['mayday-spring-free-chat-complete'] = 'false'
+        delete restoredData['mayday-spring-free-chat-return-stage']
       }
     }
 
