@@ -120,7 +120,7 @@ export const springInviteRounds: Record<SpringCharacterId, SpringInviteRound[]> 
 
 const springStoreNarration = (text: string): SpringBlock => ({ kind: 'narration', text })
 const springStoreDialogue = (speaker: string, text: string): SpringBlock => ({ kind: 'dialogue', speaker, text })
-const springStoreChoice = (text: string, response: string, affection = 2): SpringChoice => ({ text, response, affection })
+const springStoreChoice = (text: string, response: string, affection: number): SpringChoice => ({ text, response, affection })
 const springStoreRound = (scene: SpringBlock[], prompt: string, choices: SpringChoice[]): SpringStoreRound => ({ scene, prompt, choices })
 
 export const springStoreRoutes: Record<SpringCharacterId, SpringStoreRoute> = {
@@ -928,13 +928,13 @@ export const springYanmingDinnerEndingBlocks: SpringBlock[] = [
   { kind: 'dialogue', speaker: '劉諺明', text: '今天吃得還習慣嗎？下次有想吃的再跟我說。回去路上小心。' },
 ]
 
-const springSmsChoice = (text: string, response: string[], affection = 2): SpringSmsChoice => ({ text, response, affection })
+const springSmsChoice = (text: string, response: string[], affection: number): SpringSmsChoice => ({ text, response, affection })
 const springSmsRound = (incoming: string, choices: SpringSmsChoice[]): SpringSmsRound => ({ incoming, choices })
 
 type SpringDailySmsChoiceData = {
   text: string
   response: string | string[]
-  affection?: number
+  affection: number
 }
 type SpringDailySmsTrack = SpringSmsRound[]
 type SpringDailySmsChat = {
@@ -946,7 +946,7 @@ const springDailySmsRound = (
   choices: SpringDailySmsChoiceData[],
   options: Pick<SpringSmsRound, 'outgoing' | 'incomingMessages'> = {},
 ): SpringSmsRound => ({
-  ...springSmsRound(incoming, choices.map(({ text, response, affection = 2 }) =>
+  ...springSmsRound(incoming, choices.map(({ text, response, affection }) =>
     springSmsChoice(text, Array.isArray(response) ? response : [response], affection),
   )),
   ...options,
@@ -1004,9 +1004,9 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
   wen: {
     openings: [
       springDailySmsRound('', [
-        { text: '「我哪有！我只是太想喝了嘛。」', response: '「最好是啦，連喝個東西都等不了。」' },
+        { text: '「我哪有！我只是太想喝了嘛。」', response: '「最好是啦，連喝個東西都等不了。」' , affection: 2},
         { text: '「那你下次要记得提醒我。」', response: '「蛤？喝東西還要我提醒喔？……好啦，下次記得先吹涼。」', affection: 3 },
-        { text: '「你不要讲我，你自己肯定也会这样！」', response: '「我才不會咧，至少我知道燙的東西要先放一下。」' },
+        { text: '「你不要讲我，你自己肯定也会这样！」', response: '「我才不會咧，至少我知道燙的東西要先放一下。」' , affection: 2},
       ]),
     ],
     tracks: [
@@ -1023,8 +1023,8 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
           ],
         }),
         springDailySmsRound('', [
-          { text: '「那你是不是经常饿着肚子练团？」', response: '「也没有那么夸张啦，有空还是会吃。」' },
-          { text: '「我觉得你应该随身带一包零食。」', response: '「妳以为我是小学生喔，还要带零食。」' },
+          { text: '「那你是不是经常饿着肚子练团？」', response: '「也没有那么夸张啦，有空还是会吃。」' , affection: 2},
+          { text: '「我觉得你应该随身带一包零食。」', response: '「妳以为我是小学生喔，还要带零食。」' , affection: 2},
           { text: '「下次我给你带吃的好了。」', response: '「真的喔？那我先说好，不可以拿不好吃的东西来敷衍我。」', affection: 4 },
         ], {
           outgoing: '「对了，你平常练团的时候会不会突然很想吃东西？」',
@@ -1034,9 +1034,9 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
           ],
         }),
         springDailySmsRound('', [
-          { text: '「有啊！刚刚还叫我吃慢一点。」', response: '「那是因为妳吃太快，正常人都会提醒吧。」' },
+          { text: '「有啊！刚刚还叫我吃慢一点。」', response: '「那是因为妳吃太快，正常人都会提醒吧。」' , affection: 2},
           { text: '「那你干嘛一直记得我头痛？」', response: '「……我只是刚好记得而已，有什么好奇怪的。」', affection: 4 },
-          { text: '「好啦好啦，你最没有管我了。」', response: '「知道就好，不要一天到晚给我乱扣帽子。」' },
+          { text: '「好啦好啦，你最没有管我了。」', response: '「知道就好，不要一天到晚给我乱扣帽子。」' , affection: 2},
         ], {
           outgoing: '「你讲话真的很像那种嘴上嫌弃别人，实际上又什么都会管的人。」',
           incomingMessages: [
@@ -1045,9 +1045,9 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
           ],
         }),
         springDailySmsRound('', [
-          { text: '「知道啦！温老师晚安。」', response: '「谁是老师啦。晚安，手机放下去。」' },
-          { text: '「你怎么突然这么像我妈？」', response: '「蛤？我有那么啰嗦喔？妳才是要早点睡的那个。」' },
-          { text: '「那你也早点睡，不要又熬夜。」', response: '「知道啦，妳也是。晚安。」' },
+          { text: '「知道啦！温老师晚安。」', response: '「谁是老师啦。晚安，手机放下去。」' , affection: 2},
+          { text: '「你怎么突然这么像我妈？」', response: '「蛤？我有那么啰嗦喔？妳才是要早点睡的那个。」' , affection: 2},
+          { text: '「那你也早点睡，不要又熬夜。」', response: '「知道啦，妳也是。晚安。」' , affection: 2},
         ], {
           outgoing: '「好啦，不闹你了，我要去洗澡了。」',
           incomingMessages: [
@@ -1060,51 +1060,51 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
   ashin: {
     openings: [
       springDailySmsRound('', [
-        { text: "「怎么大家买个早餐都这么狼狈啦！」", response: "「真的欸，早餐店每天不知道要上演多少這種意外。」" },
-        { text: "「那你最后有接住吗？」", response: "「有啦，不過還是漏了一點，回去的時候手都黏黏的，超糗的馁。」" },
-        { text: "「我觉得我们以后应该自己带袋子。」", response: "「這個好像可以欸，至少不用每天跟紙袋的命運搏鬥。」" }
+        { text: "「怎么大家买个早餐都这么狼狈啦！」", response: "「真的欸，早餐店每天不知道要上演多少這種意外。」" , affection: 2},
+        { text: "「那你最后有接住吗？」", response: "「有啦，不過還是漏了一點，回去的時候手都黏黏的，超糗的馁。」" , affection: 2},
+        { text: "「我觉得我们以后应该自己带袋子。」", response: "「這個好像可以欸，至少不用每天跟紙袋的命運搏鬥。」" , affection: 2}
       ]),
       springDailySmsRound('', [
-        { text: "「你当时是不是也很狼狈！」", response: "「超狼狽的啦，旁邊還有人經過，我只好假裝自己在整理東西。」" },
-        { text: "「那你最后怎么回家的？」", response: "「後來就收起來走回去了，反正也沒有很遠。」" },
-        { text: "「我觉得雨伞根本是个不可靠的东西。」", response: "「不能這樣說啦，平常還是很可靠的，只是遇到大風就會突然罷工。」" }
+        { text: "「你当时是不是也很狼狈！」", response: "「超狼狽的啦，旁邊還有人經過，我只好假裝自己在整理東西。」" , affection: 2},
+        { text: "「那你最后怎么回家的？」", response: "「後來就收起來走回去了，反正也沒有很遠。」" , affection: 2},
+        { text: "「我觉得雨伞根本是个不可靠的东西。」", response: "「不能這樣說啦，平常還是很可靠的，只是遇到大風就會突然罷工。」" , affection: 2}
       ]),
       springDailySmsRound('', [
-        { text: "「我当时真的有点怀疑人生！」", response: "「一個麵包讓妳思考這麼久，感覺它的壓力也很大欸。」" },
-        { text: "「我还想说老板是不是拿错了。」", response: "「妳有沒有回去確認？還是已經默默接受它了？」" },
-        { text: "「可是我明明最想吃的是奶油！」", response: "「那下次就買奶油的啊，不用委屈自己啦。」" }
+        { text: "「我当时真的有点怀疑人生！」", response: "「一個麵包讓妳思考這麼久，感覺它的壓力也很大欸。」" , affection: 2},
+        { text: "「我还想说老板是不是拿错了。」", response: "「妳有沒有回去確認？還是已經默默接受它了？」" , affection: 2},
+        { text: "「可是我明明最想吃的是奶油！」", response: "「那下次就買奶油的啊，不用委屈自己啦。」" , affection: 2}
       ])
     ],
     tracks: [
       [
         springDailySmsRound('', [
-          { text: "「它今天可是我们家的贵宾！」", response: "「那它今天應該要坐主位才對。」" },
-          { text: "「我甚至不敢让它离开我的视线。」", response: "「妳不要這樣啦，我現在想到那個畫面就覺得很好笑。」" },
-          { text: "「下次我要给它准备一个专属便当袋！」", response: "「這樣會不會太隆重了？只是買個早餐欸。」" }
+          { text: "「它今天可是我们家的贵宾！」", response: "「那它今天應該要坐主位才對。」" , affection: 2},
+          { text: "「我甚至不敢让它离开我的视线。」", response: "「妳不要這樣啦，我現在想到那個畫面就覺得很好笑。」" , affection: 2},
+          { text: "「下次我要给它准备一个专属便当袋！」", response: "「這樣會不會太隆重了？只是買個早餐欸。」" , affection: 2}
         ], {
           outgoing: "「我后来一路都把袋子托在手上。」",
           incomingMessages: ["「妳這樣好像在護送什麼重要物品喔。」", "「盒盒盒，那個飯糰今天真的很有排場馁。」"]
         }),
         springDailySmsRound('', [
-          { text: "「没办法！我已经不相信任何纸袋了。」", response: "「不要這樣啦，還是有可靠的紙袋的，只是今天那個不太爭氣。」" },
-          { text: "「你也要学起来，不然下次又洒了。」", response: "「好啦，我會記住的。下次買東西先檢查，不能再讓豆漿逃跑了。」" },
-          { text: "「我是不是应该去买个环保袋？」", response: "「可以啊，挑一個妳喜歡的，還可以每天帶著。」" }
+          { text: "「没办法！我已经不相信任何纸袋了。」", response: "「不要這樣啦，還是有可靠的紙袋的，只是今天那個不太爭氣。」" , affection: 2},
+          { text: "「你也要学起来，不然下次又洒了。」", response: "「好啦，我會記住的。下次買東西先檢查，不能再讓豆漿逃跑了。」" , affection: 2},
+          { text: "「我是不是应该去买个环保袋？」", response: "「可以啊，挑一個妳喜歡的，還可以每天帶著。」" , affection: 2}
         ], {
           outgoing: "「而且我现在买东西都会先检查袋子。」",
           incomingMessages: ["「這個後遺症可能會跟妳很久欸。」", "「以後店員把袋子遞給妳，妳第一件事就是檢查它的承重能力。」"]
         }),
         springDailySmsRound('', [
-          { text: "「对！它已经成为我的人生挚友了。」", response: "「那下次要好好保護它喔，不可以再讓它受傷了。」" },
-          { text: "「你怎么一直记得我的饭团啦！」", response: "「因為妳講得很有畫面啊，想忘記也有點難欸。」" },
-          { text: "「下次我买早餐也帮你带一份！」", response: "「真的喔？那我先預約一份好了，不過要安全送達的那種。」" }
+          { text: "「对！它已经成为我的人生挚友了。」", response: "「那下次要好好保護它喔，不可以再讓它受傷了。」" , affection: 2},
+          { text: "「你怎么一直记得我的饭团啦！」", response: "「因為妳講得很有畫面啊，想忘記也有點難欸。」" , affection: 2},
+          { text: "「下次我买早餐也帮你带一份！」", response: "「真的喔？那我先預約一份好了，不過要安全送達的那種。」" , affection: 2}
         ], {
           outgoing: "「不过最后还是吃完了！」",
           incomingMessages: ["「盒盒盒，感覺它已經不是普通的飯糰了。」", "「妳以後經過那家店，可能都會想到今天這件事。」"]
         }),
         springDailySmsRound('', [
-          { text: "「知道啦！你也要记得吃饭。」", response: "「好，我會記得的。妳也要乖乖吃飯。」" },
-          { text: "「你是不是偷偷觉得我很好笑？」", response: ["「有一點點啦……」", "「盒盒盒，不過我沒有真的笑妳。」"] },
-          { text: "「晚点再找你聊天喔！」", response: "「好啊，妳忙完再來找我，我還在啦。」" }
+          { text: "「知道啦！你也要记得吃饭。」", response: "「好，我會記得的。妳也要乖乖吃飯。」" , affection: 2},
+          { text: "「你是不是偷偷觉得我很好笑？」", response: ["「有一點點啦……」", "「盒盒盒，不過我沒有真的笑妳。」"] , affection: 2},
+          { text: "「晚点再找你聊天喔！」", response: "「好啊，妳忙完再來找我，我還在啦。」" , affection: 2}
         ], {
           outgoing: "「好啦，我要去忙了。」",
           incomingMessages: ["「好啦，妳去忙吧。」", "「不過早餐還是要好好吃喔，不要忙起來就隨便對付一餐馁。」"]
@@ -1112,33 +1112,33 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
       ],
       [
         springDailySmsRound('', [
-          { text: "「我回家第一件事就是换拖鞋！」", response: "「這個我懂，換上乾乾的拖鞋真的會覺得人生重新開始了。」" },
-          { text: "「我刚刚真的有一瞬间想把鞋子丢掉。」", response: "「先不要衝動啦，鞋子應該還有救。」" },
-          { text: "「我觉得下雨天最讨厌的就是鞋子湿掉。」", response: "「真的欸，衣服濕掉還可以換，鞋子濕掉就很麻煩。」" }
+          { text: "「我回家第一件事就是换拖鞋！」", response: "「這個我懂，換上乾乾的拖鞋真的會覺得人生重新開始了。」" , affection: 2},
+          { text: "「我刚刚真的有一瞬间想把鞋子丢掉。」", response: "「先不要衝動啦，鞋子應該還有救。」" , affection: 2},
+          { text: "「我觉得下雨天最讨厌的就是鞋子湿掉。」", response: "「真的欸，衣服濕掉還可以換，鞋子濕掉就很麻煩。」" , affection: 2}
         ], {
           outgoing: "「我后来鞋子也湿掉了。」",
           incomingMessages: ["「喔，那個聲音我知道！」", "「而且鞋子濕掉以後，腳會一直覺得不舒服，真的很難受馁。」"]
         }),
         springDailySmsRound('', [
-          { text: "「我今天可是学到了很多！」", response: "「這堂課的學費就是一雙濕掉的鞋子，感覺有點貴喔。」" },
-          { text: "「我觉得我应该买双不怕水的鞋。」", response: "「可以啊，雨天穿比較方便，不然每次都要擔心鞋子。」" },
-          { text: "「你是不是也很讨厌鞋子湿掉？」", response: "「超討厭的，尤其是襪子也濕掉的時候，真的會想立刻回家。」" }
+          { text: "「我今天可是学到了很多！」", response: "「這堂課的學費就是一雙濕掉的鞋子，感覺有點貴喔。」" , affection: 2},
+          { text: "「我觉得我应该买双不怕水的鞋。」", response: "「可以啊，雨天穿比較方便，不然每次都要擔心鞋子。」" , affection: 2},
+          { text: "「你是不是也很讨厌鞋子湿掉？」", response: "「超討厭的，尤其是襪子也濕掉的時候，真的會想立刻回家。」" , affection: 2}
         ], {
           outgoing: "「我刚刚还把鞋垫拿出来晾了。」",
           incomingMessages: ["「這樣就對了啦。」", "「不然明天穿著濕鞋子出門，我光想就覺得不舒服。」"]
         }),
         springDailySmsRound('', [
-          { text: "「我决定明天穿拖鞋出门！」", response: "「妳要看去哪裡啦，拖鞋遇到積水也很容易滑欸。」" },
-          { text: "「你干脆帮我看天气好了。」", response: "「可以啊，妳出門前問我。不過我可能也只是看一下天氣預報而已。」" },
-          { text: "「我已经开始讨厌明天了。」", response: "「盒盒盒，明天還沒來就先被妳討厭了，好可憐喔。」" }
+          { text: "「我决定明天穿拖鞋出门！」", response: "「妳要看去哪裡啦，拖鞋遇到積水也很容易滑欸。」" , affection: 2},
+          { text: "「你干脆帮我看天气好了。」", response: "「可以啊，妳出門前問我。不過我可能也只是看一下天氣預報而已。」" , affection: 2},
+          { text: "「我已经开始讨厌明天了。」", response: "「盒盒盒，明天還沒來就先被妳討厭了，好可憐喔。」" , affection: 2}
         ], {
           outgoing: "「我刚刚看天气预报，明天好像还是会下雨。」",
           incomingMessages: ["「欸，怎麼還下啊。」", "「那妳明天出門要小心一點，傘記得拿好，不要又跟它打架了。」"]
         }),
         springDailySmsRound('', [
-          { text: "「知道啦！你也早点休息。」", response: "「好啦，我會的。妳也不要太晚睡喔。」" },
-          { text: "「你怎么突然这么像我妈啦。」", response: "「欸，我只是提醒一下嘛。好啦，不唸妳了。」" },
-          { text: "「下次下雨我们就找地方躲雨好了！」", response: "「這個可以欸，找個地方坐著喝點東西，總比在外面淋雨好。」" }
+          { text: "「知道啦！你也早点休息。」", response: "「好啦，我會的。妳也不要太晚睡喔。」" , affection: 2},
+          { text: "「你怎么突然这么像我妈啦。」", response: "「欸，我只是提醒一下嘛。好啦，不唸妳了。」" , affection: 2},
+          { text: "「下次下雨我们就找地方躲雨好了！」", response: "「這個可以欸，找個地方坐著喝點東西，總比在外面淋雨好。」" , affection: 2}
         ], {
           outgoing: "「好啦，我要去吹头发了。」",
           incomingMessages: ["「快去啦，頭髮要吹乾一點。」", "「不要濕濕的就跑去睡覺，明天又要不舒服了。」"]
@@ -1146,33 +1146,33 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
       ],
       [
         springDailySmsRound('', [
-          { text: "「你讲得好像很有道理欸。」", response: "「對吧，至少今天多了一個紅豆麵包的經驗。」" },
-          { text: "「但是我还是最喜欢奶油！」", response: "「那我記住了，下次不要幫妳買錯口味。」" },
-          { text: "「我现在又想去买一个了……」", response: "「妳剛剛不是才買一個嗎？盒盒盒，胃還有位置喔？」" }
+          { text: "「你讲得好像很有道理欸。」", response: "「對吧，至少今天多了一個紅豆麵包的經驗。」" , affection: 2},
+          { text: "「但是我还是最喜欢奶油！」", response: "「那我記住了，下次不要幫妳買錯口味。」" , affection: 2},
+          { text: "「我现在又想去买一个了……」", response: "「妳剛剛不是才買一個嗎？盒盒盒，胃還有位置喔？」" , affection: 2}
         ], {
           outgoing: "「我后来本来还想拿回去换。」",
           incomingMessages: ["「那就吃掉嘛，不然放著也可惜。」", "「而且有時候吃到跟原本預期不一樣的東西，也不一定是壞事啦。」"]
         }),
         springDailySmsRound('', [
-          { text: "「那你会不会偷偷观察别人买什么？」", response: "「會啊，有時候看到別人拿的好像不錯，就會突然想改買那個。」" },
-          { text: "「下次我们一起去，你帮我选！」", response: "「好啊，不過妳到時候不要每個都說想吃喔。」" },
-          { text: "「我每次最后都会买最多的那个！」", response: "「妳這樣是不是很容易買到最後吃不完？」" }
+          { text: "「那你会不会偷偷观察别人买什么？」", response: "「會啊，有時候看到別人拿的好像不錯，就會突然想改買那個。」" , affection: 2},
+          { text: "「下次我们一起去，你帮我选！」", response: "「好啊，不過妳到時候不要每個都說想吃喔。」" , affection: 2},
+          { text: "「我每次最后都会买最多的那个！」", response: "「妳這樣是不是很容易買到最後吃不完？」" , affection: 2}
         ], {
           outgoing: "「我发现我每次去面包店都很容易选择困难。」",
           incomingMessages: ["「這個我也會欸。」", "「有時候後面的人都已經排好了，我還在看哪個比較想吃。」"]
         }),
         springDailySmsRound('', [
-          { text: "「那就每天换一种！」", response: "「這樣每天都可以有一點小期待，感覺不錯。」" },
-          { text: "「我可以连续吃一个星期都不腻！」", response: "「真的喔？我可能第三天就想換別的了。」" },
-          { text: "「你喜欢什么口味？我下次帮你留意。」", response: "「我喜歡奶酥的，還有菠蘿麵包也不錯。那種簡單的味道我滿喜歡的。」" }
+          { text: "「那就每天换一种！」", response: "「這樣每天都可以有一點小期待，感覺不錯。」" , affection: 2},
+          { text: "「我可以连续吃一个星期都不腻！」", response: "「真的喔？我可能第三天就想換別的了。」" , affection: 2},
+          { text: "「你喜欢什么口味？我下次帮你留意。」", response: "「我喜歡奶酥的，還有菠蘿麵包也不錯。那種簡單的味道我滿喜歡的。」" , affection: 2}
         ], {
           outgoing: "「我刚刚还想，如果每天都能吃到好吃的面包就好了。」",
           incomingMessages: ["「這個願望聽起來很幸福欸。」", "「不過每天都吃一樣的，應該很快就膩了吧。」"]
         }),
         springDailySmsRound('', [
-          { text: "「我宣布它今天表现合格！」", response: "「盒盒盒，那它今天算是通過考驗了。」" },
-          { text: "「下次我要买两个不同口味！」", response: "「這樣最保險，想吃哪個就吃哪個。」" },
-          { text: "「好啦，晚安阿信！」", response: "「晚安啦，明天見。記得不要再買錯了馁。」" }
+          { text: "「我宣布它今天表现合格！」", response: "「盒盒盒，那它今天算是通過考驗了。」" , affection: 2},
+          { text: "「下次我要买两个不同口味！」", response: "「這樣最保險，想吃哪個就吃哪個。」" , affection: 2},
+          { text: "「好啦，晚安阿信！」", response: "「晚安啦，明天見。記得不要再買錯了馁。」" , affection: 2}
         ], {
           outgoing: "「好啦，我要去把剩下的红豆面包吃掉了。」",
           incomingMessages: ["「慢慢吃啦。」", "「希望它最後有成功讓妳改觀，不要吃到一半又開始想念奶油口味。」"]
@@ -1183,51 +1183,51 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
   masa: {
     openings: [
       springDailySmsRound('', [
-        { text: "「那你不是赚到了！」", response: "「廢話，不然我還要幫它把飲料塞回去喔？」" },
-        { text: "「你这样不会被老板骂吗？」", response: "「我又沒有拆機器，老闆要罵也得先看看是誰的問題吧。」" },
-        { text: "「你根本就是在欺负机器！」", response: "「至少我有實際行動，不像妳，站在那邊用眼神感化它。」" }
+        { text: "「那你不是赚到了！」", response: "「廢話，不然我還要幫它把飲料塞回去喔？」" , affection: 2},
+        { text: "「你这样不会被老板骂吗？」", response: "「我又沒有拆機器，老闆要罵也得先看看是誰的問題吧。」" , affection: 2},
+        { text: "「你根本就是在欺负机器！」", response: "「至少我有實際行動，不像妳，站在那邊用眼神感化它。」" , affection: 2}
       ]),
       springDailySmsRound('', [
-        { text: "「我当时真的吓了一跳！」", response: "「那妳應該順便站起來鞠個躬，畢竟全班都參與了妳的開箱儀式。」" },
-        { text: "「我又不是故意的嘛！」", response: "「我知道，妳只是想讓大家知道妳今天帶了零食。」" },
-        { text: "「换你你肯定也会这样！」", response: "「我不會，我會先確認包裝袋是不是準備好要爆炸。」" }
+        { text: "「我当时真的吓了一跳！」", response: "「那妳應該順便站起來鞠個躬，畢竟全班都參與了妳的開箱儀式。」" , affection: 2},
+        { text: "「我又不是故意的嘛！」", response: "「我知道，妳只是想讓大家知道妳今天帶了零食。」" , affection: 2},
+        { text: "「换你你肯定也会这样！」", response: "「我不會，我會先確認包裝袋是不是準備好要爆炸。」" , affection: 2}
       ]),
       springDailySmsRound('', [
-        { text: "「我本来只是想稍微修短一点！」", response: "「我這就不懂了，妳到底是拿剪刀修劉海，還是跟劉海有仇？」" },
-        { text: "「你不要笑我啦！」", response: "「我沒有笑，我只是在思考這件事到底怎麼發生的。」" },
-        { text: "「你是不是也剪过失败的头发？」", response: "「有啊，所以我後來學會一件事：剪刀不是拿來解決所有問題的。」" }
+        { text: "「我本来只是想稍微修短一点！」", response: "「我這就不懂了，妳到底是拿剪刀修劉海，還是跟劉海有仇？」" , affection: 2},
+        { text: "「你不要笑我啦！」", response: "「我沒有笑，我只是在思考這件事到底怎麼發生的。」" , affection: 2},
+        { text: "「你是不是也剪过失败的头发？」", response: "「有啊，所以我後來學會一件事：剪刀不是拿來解決所有問題的。」" , affection: 2}
       ])
     ],
     tracks: [
       [
         springDailySmsRound('', [
-          { text: "「你是不是欠揍！」", response: "「妳看，飲料沒拿到，脾氣倒是先上來了。」" },
-          { text: "「那你过来帮我拍！」", response: "「我現在過去還來得及嗎？還是妳已經跟老闆告狀了？」" },
-          { text: "「我觉得它比较怕你！」", response: "「那當然，我跟機器之間至少有基本的信任。」" }
+          { text: "「你是不是欠揍！」", response: "「妳看，飲料沒拿到，脾氣倒是先上來了。」" , affection: 2},
+          { text: "「那你过来帮我拍！」", response: "「我現在過去還來得及嗎？還是妳已經跟老闆告狀了？」" , affection: 2},
+          { text: "「我觉得它比较怕你！」", response: "「那當然，我跟機器之間至少有基本的信任。」" , affection: 2}
         ], {
           outgoing: "「我刚刚本来想学你拍一下。」",
           incomingMessages: ["「那妳還挺有自知之明的。」", "「我看妳要是拍下去，可能整台機器都要跟妳說再見。」"]
         }),
         springDailySmsRound('', [
-          { text: "「你闭嘴！！我只是没找到正确的位置！」", response: "「好，位置的問題。跟妳的操作能力完全沒有關係。」" },
-          { text: "「我当时真的很尴尬啦……」", response: "「現在知道尷尬了？剛剛跟機器對看一分鐘的時候不是挺自在的嗎？」" },
-          { text: "「下次你直接帮我买！」", response: "「可以啊，妳把錢給我，我買完再收一點跑腿費。」" }
+          { text: "「你闭嘴！！我只是没找到正确的位置！」", response: "「好，位置的問題。跟妳的操作能力完全沒有關係。」" , affection: 2},
+          { text: "「我当时真的很尴尬啦……」", response: "「現在知道尷尬了？剛剛跟機器對看一分鐘的時候不是挺自在的嗎？」" , affection: 2},
+          { text: "「下次你直接帮我买！」", response: "「可以啊，妳把錢給我，我買完再收一點跑腿費。」" , affection: 2}
         ], {
           outgoing: "「后来我去找老板了。」",
           incomingMessages: ["「…………」", "「所以妳剛剛到底在那邊研究什麼？」", "「人家一按就掉了，妳是把它當成什麼解謎遊戲喔？」"]
         }),
         springDailySmsRound('', [
-          { text: "「你能不能好好说话！」", response: "「我已經很客氣了，不然我還能說得更精彩。」" },
-          { text: "「对啊！我今天运气超好！」", response: "「那我是不是應該恭喜妳，終於有一件事情是越搞越多的？」" },
-          { text: "「你是不是嫉妒我？」", response: "「嫉妒？我只是擔心那台機器明天會不會直接請假。」" }
+          { text: "「你能不能好好说话！」", response: "「我已經很客氣了，不然我還能說得更精彩。」" , affection: 2},
+          { text: "「对啊！我今天运气超好！」", response: "「那我是不是應該恭喜妳，終於有一件事情是越搞越多的？」" , affection: 2},
+          { text: "「你是不是嫉妒我？」", response: "「嫉妒？我只是擔心那台機器明天會不會直接請假。」" , affection: 2}
         ], {
           outgoing: "「但是老板还多送我一罐饮料！」",
           incomingMessages: ["「喔，原來妳的重點在這裡。」", "「所以妳是先花錢買一罐，再靠自己的無能多賺一罐？」"]
         }),
         springDailySmsRound('', [
-          { text: "「我下次一定成功！」", response: "「好啊，我等著看妳創造新的紀錄。」" },
-          { text: "「那你陪我去嘛！」", response: "「行啊，我去旁邊看著。真的不行我再出手，免得妳把機器嚇壞。」" },
-          { text: "「我再也不跟你说话了！」", response: "「好啊，終於安靜了。……欸，妳真的不講話喔？」" }
+          { text: "「我下次一定成功！」", response: "「好啊，我等著看妳創造新的紀錄。」" , affection: 2},
+          { text: "「那你陪我去嘛！」", response: "「行啊，我去旁邊看著。真的不行我再出手，免得妳把機器嚇壞。」" , affection: 2},
+          { text: "「我再也不跟你说话了！」", response: "「好啊，終於安靜了。……欸，妳真的不講話喔？」" , affection: 2}
         ], {
           outgoing: "「好啦，我决定原谅自动贩卖机了。」",
           incomingMessages: ["「妳還敢去？」", "「我建議妳明天先帶個懂操作的人，不然機器又要被妳盯到下班。」"]
@@ -1235,33 +1235,33 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
       ],
       [
         springDailySmsRound('', [
-          { text: "「浪费食物是不对的！」", response: "「那妳下次拆之前先做好防護，別每次都要把教室當廚房。」" },
-          { text: "「你根本不懂我的心情！」", response: "「我是不懂，畢竟我不會為了一顆洋芋片趴在地上找半天。」" },
-          { text: "「你要是看到我肯定也会帮忙吧？」", response: "「我會先問妳是不是還有別的掉了，免得我幫妳撿到明年。」" }
+          { text: "「浪费食物是不对的！」", response: "「那妳下次拆之前先做好防護，別每次都要把教室當廚房。」" , affection: 2},
+          { text: "「你根本不懂我的心情！」", response: "「我是不懂，畢竟我不會為了一顆洋芋片趴在地上找半天。」" , affection: 2},
+          { text: "「你要是看到我肯定也会帮忙吧？」", response: "「我會先問妳是不是還有別的掉了，免得我幫妳撿到明年。」" , affection: 2}
         ], {
           outgoing: "「我后来还拿卫生纸一颗一颗捡。」",
           incomingMessages: ["「妳真的很閒欸。」", "「一顆洋芋片值得妳花這麼多時間？」"]
         }),
         springDailySmsRound('', [
-          { text: "「你可以不要这么直接吗！」", response: "「我已經很委婉了，不然妳想聽什麼？『妳跟洋芋片都辛苦了』？」" },
-          { text: "「下次我买小包的！」", response: "「這個決定很好，終於開始認識自己的極限了。」" },
-          { text: "「你来拆！我就不信你不会翻车！」", response: "「可以啊，拆完我就吃掉，妳連收拾的機會都不用有。」" }
+          { text: "「你可以不要这么直接吗！」", response: "「我已經很委婉了，不然妳想聽什麼？『妳跟洋芋片都辛苦了』？」" , affection: 2},
+          { text: "「下次我买小包的！」", response: "「這個決定很好，終於開始認識自己的極限了。」" , affection: 2},
+          { text: "「你来拆！我就不信你不会翻车！」", response: "「可以啊，拆完我就吃掉，妳連收拾的機會都不用有。」" , affection: 2}
         ], {
           outgoing: "「我后来发现我买的是超大包的。」",
           incomingMessages: ["「喔，懂了。」", "「不是妳手笨，是妳買的份量超出了妳的處理能力。」"]
         }),
         springDailySmsRound('', [
-          { text: "「我不允许它离开我的地盘！」", response: "「妳連一顆洋芋片都要控制，真的很有領導慾欸。」" },
-          { text: "「你能不能认真一点！」", response: "「我很認真啊，要不要幫它登個尋物啟事？」" },
-          { text: "「好吧，祝它幸福。」", response: "「謝謝，失物招領處今天正式下班。」" }
+          { text: "「我不允许它离开我的地盘！」", response: "「妳連一顆洋芋片都要控制，真的很有領導慾欸。」" , affection: 2},
+          { text: "「你能不能认真一点！」", response: "「我很認真啊，要不要幫它登個尋物啟事？」" , affection: 2},
+          { text: "「好吧，祝它幸福。」", response: "「謝謝，失物招領處今天正式下班。」" , affection: 2}
         ], {
           outgoing: "「我现在已经清理干净了。」",
           incomingMessages: ["「妳還在找？」", "「那顆可能已經在桌子底下建立自己的新生活了。」"]
         }),
         springDailySmsRound('', [
-          { text: "「你真的很烦欸！」", response: "「謝謝，妳的稱讚讓我今天心情很好。」" },
-          { text: "「下次我买零食也给你挑！」", response: "「不用，我怕妳又挑一包需要工程師協助的。」" },
-          { text: "「你吃东西的时候不准笑我！」", response: "「好啊，那妳負責不要再製造笑點。」" }
+          { text: "「你真的很烦欸！」", response: "「謝謝，妳的稱讚讓我今天心情很好。」" , affection: 2},
+          { text: "「下次我买零食也给你挑！」", response: "「不用，我怕妳又挑一包需要工程師協助的。」" , affection: 2},
+          { text: "「你吃东西的时候不准笑我！」", response: "「好啊，那妳負責不要再製造笑點。」" , affection: 2}
         ], {
           outgoing: "「好啦，我要继续吃了。」",
           incomingMessages: ["「希望妳這次可以和平解決。」", "「不然我真的要建議妳直接買那種已經打開的。」"]
@@ -1269,33 +1269,33 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
       ],
       [
         springDailySmsRound('', [
-          { text: "「我也不知道为什么会变成这样！」", response: "「妳下次可以先停下來看看，不要一路剪到事情無法挽回。」" },
-          { text: "「我觉得它在报复我！」", response: "「也有可能，畢竟妳下刀的時候它根本沒有反抗能力。」" },
-          { text: "「你帮我想个办法啦！」", response: "「戴帽子。這是目前唯一不需要再次動用剪刀的方案。」" }
+          { text: "「我也不知道为什么会变成这样！」", response: "「妳下次可以先停下來看看，不要一路剪到事情無法挽回。」" , affection: 2},
+          { text: "「我觉得它在报复我！」", response: "「也有可能，畢竟妳下刀的時候它根本沒有反抗能力。」" , affection: 2},
+          { text: "「你帮我想个办法啦！」", response: "「戴帽子。這是目前唯一不需要再次動用剪刀的方案。」" , affection: 2}
         ], {
           outgoing: "「我本来只是想把中间剪短一点。」",
           incomingMessages: ["「這我就不懂了。」", "「妳的剪刀是有自己的想法是不是？」"]
         }),
         springDailySmsRound('', [
-          { text: "「我刚刚确实有这个想法……」", response: "「剪刀呢？先交出來。妳現在需要的是冷靜，不是第二次創作。」" },
-          { text: "「你陪我去啦！」", response: "「我去可以啊，順便看看妳到底怎麼跟設計師描述這場事故。」" },
-          { text: "「我现在真的觉得自己很丑！」", response: "「沒有到那個程度啦，妳不要自己嚇自己。就是劉海有點不聽話而已。」" }
+          { text: "「我刚刚确实有这个想法……」", response: "「剪刀呢？先交出來。妳現在需要的是冷靜，不是第二次創作。」" , affection: 2},
+          { text: "「你陪我去啦！」", response: "「我去可以啊，順便看看妳到底怎麼跟設計師描述這場事故。」" , affection: 2},
+          { text: "「我现在真的觉得自己很丑！」", response: "「沒有到那個程度啦，妳不要自己嚇自己。就是劉海有點不聽話而已。」" , affection: 2}
         ], {
           outgoing: "「可是我明天还要出门欸！」",
           incomingMessages: ["「那就去找設計師啊。」", "「妳不會真的還想自己再修一次吧？」"]
         }),
         springDailySmsRound('', [
-          { text: "「你真的很会记仇欸！」", response: "「這不是記仇，這是值得被保存的歷史事件。」" },
-          { text: "「那你要负责监督我！」", response: "「我才不要，妳自己的頭髮自己負責，別什麼都推給我。」" },
-          { text: "「我觉得花钱剪头发也挺好的。」", response: "「恭喜妳，終於認識到專業人士的價值了。」" }
+          { text: "「你真的很会记仇欸！」", response: "「這不是記仇，這是值得被保存的歷史事件。」" , affection: 2},
+          { text: "「那你要负责监督我！」", response: "「我才不要，妳自己的頭髮自己負責，別什麼都推給我。」" , affection: 2},
+          { text: "「我觉得花钱剪头发也挺好的。」", response: "「恭喜妳，終於認識到專業人士的價值了。」" , affection: 2}
         ], {
           outgoing: "「我决定以后再也不自己剪刘海了。」",
           incomingMessages: ["「不用藏。」", "「妳只要記得今天這個樣子，下次手癢的時候就會冷靜了。」"]
         }),
         springDailySmsRound('', [
-          { text: "「你等着！我一定会变漂亮！」", response: "「好，我等著。這次不要再自己加戲了。」" },
-          { text: "「如果剪得好看，你必须夸我！」", response: "「先看成品，妳不要現在就開始預支誇獎。」" },
-          { text: "「你下次也剪个奇怪的发型给我看！」", response: "「妳還想報復喔？我看妳先把自己的頭髮顧好。」" }
+          { text: "「你等着！我一定会变漂亮！」", response: "「好，我等著。這次不要再自己加戲了。」" , affection: 2},
+          { text: "「如果剪得好看，你必须夸我！」", response: "「先看成品，妳不要現在就開始預支誇獎。」" , affection: 2},
+          { text: "「你下次也剪个奇怪的发型给我看！」", response: "「妳還想報復喔？我看妳先把自己的頭髮顧好。」" , affection: 2}
         ], {
           outgoing: "「好啦，我预约好理发店了！」",
           incomingMessages: ["「行啊。」", "「我倒要看看設計師能不能把這個案子救回來。」"]
@@ -1306,51 +1306,51 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
   stone: {
     openings: [
       springDailySmsRound('', [
-        { text: "「它今天可是我最重要的事情！」", response: "「那今天其他事情都先等等，妳要先欣賞一下妳的盆栽。」" },
-        { text: "「我怀疑它是故意挑今天长出来的！」", response: "「說不定它是在等妳不要再一直盯著它看。」" },
-        { text: "「你以前也养过植物吗？」", response: "「有啊，我以前養過薄荷，剛開始長得很好，後來被我修剪得有點慘。」" }
+        { text: "「它今天可是我最重要的事情！」", response: "「那今天其他事情都先等等，妳要先欣賞一下妳的盆栽。」" , affection: 2},
+        { text: "「我怀疑它是故意挑今天长出来的！」", response: "「說不定它是在等妳不要再一直盯著它看。」" , affection: 2},
+        { text: "「你以前也养过植物吗？」", response: "「有啊，我以前養過薄荷，剛開始長得很好，後來被我修剪得有點慘。」" , affection: 2}
       ]),
       springDailySmsRound('', [
-        { text: "「你那个听起来更惨！」", response: "「真的，那天我清鍋子清了很久，還被自己弄得有點煩。」" },
-        { text: "「那你后来怎么处理的？」", response: "「泡了一下才洗掉，不然我差點想直接換一個鍋子。」" },
-        { text: "「我觉得我们两个都不适合做饭！」", response: "「妳不要太早下結論啦，我們只是跟煎蛋還不太熟。」" }
+        { text: "「你那个听起来更惨！」", response: "「真的，那天我清鍋子清了很久，還被自己弄得有點煩。」" , affection: 2},
+        { text: "「那你后来怎么处理的？」", response: "「泡了一下才洗掉，不然我差點想直接換一個鍋子。」" , affection: 2},
+        { text: "「我觉得我们两个都不适合做饭！」", response: "「妳不要太早下結論啦，我們只是跟煎蛋還不太熟。」" , affection: 2}
       ]),
       springDailySmsRound('', [
-        { text: "「我还认真看了好几遍，字真的很好看！」", response: "「那妳有沒有拍下來？如果字寫得很好看，我可能也會忍不住多看幾眼。」" },
-        { text: "「我差点想把它带回家。」", response: "「妳先冷靜，那是別人的書籤欸。」" },
-        { text: "「我觉得写字好看的人真的很加分。」", response: "「真的，有些人的字看起來就很舒服。我自己的字有時候連自己都不太認得出來。」" }
+        { text: "「我还认真看了好几遍，字真的很好看！」", response: "「那妳有沒有拍下來？如果字寫得很好看，我可能也會忍不住多看幾眼。」" , affection: 2},
+        { text: "「我差点想把它带回家。」", response: "「妳先冷靜，那是別人的書籤欸。」" , affection: 2},
+        { text: "「我觉得写字好看的人真的很加分。」", response: "「真的，有些人的字看起來就很舒服。我自己的字有時候連自己都不太認得出來。」" , affection: 2}
       ])
     ],
     tracks: [
       [
         springDailySmsRound('', [
-          { text: "「我也要做一个成长记录！」", response: "「可以啊，等它長大一點，妳就會有一整排照片了。」" },
-          { text: "「我怕我拍两天就懒了。」", response: "「那就想到的時候再拍，不用每天打卡，妳不要把養植物弄得像交作業。」" },
-          { text: "「那你把以前的照片找给我看！」", response: "「我找找看喔，應該還有。只是照片可能要翻很久，我手機裡東西有點多。」" }
+          { text: "「我也要做一个成长记录！」", response: "「可以啊，等它長大一點，妳就會有一整排照片了。」" , affection: 2},
+          { text: "「我怕我拍两天就懒了。」", response: "「那就想到的時候再拍，不用每天打卡，妳不要把養植物弄得像交作業。」" , affection: 2},
+          { text: "「那你把以前的照片找给我看！」", response: "「我找找看喔，應該還有。只是照片可能要翻很久，我手機裡東西有點多。」" , affection: 2}
         ], {
           outgoing: "「我还特地给它拍了照片！」",
           incomingMessages: ["「這個方法不錯欸。」", "「不然每天看真的不太容易發現差別，我以前也拍過，後來把照片排在一起還滿有趣的。」"]
         }),
         springDailySmsRound('', [
-          { text: "「我就是太喜欢它了嘛！」", response: "「看得出來，妳對它的熱情比它長葉子的速度快多了。」" },
-          { text: "「我差点把它宠坏了！」", response: "「再澆下去，它可能真的要跟妳抗議了。」" },
-          { text: "「我觉得我现在像它的保姆。」", response: "「那妳這個保姆還滿稱職的，連新葉長出來都第一時間發現。」" }
+          { text: "「我就是太喜欢它了嘛！」", response: "「看得出來，妳對它的熱情比它長葉子的速度快多了。」" , affection: 2},
+          { text: "「我差点把它宠坏了！」", response: "「再澆下去，它可能真的要跟妳抗議了。」" , affection: 2},
+          { text: "「我觉得我现在像它的保姆。」", response: "「那妳這個保姆還滿稱職的，連新葉長出來都第一時間發現。」" , affection: 2}
         ], {
           outgoing: "「不过我刚刚差点又给它浇水了。」",
           incomingMessages: ["「妳真的很想讓它快點長大欸。」", "「先忍一下啦，土還濕的時候就不要再加水了。」"]
         }),
         springDailySmsRound('', [
-          { text: "「你怎么连花盆都能买错啦！」", response: "「不要笑，我那時候也站在店裡看了很久，最後還是買錯。」" },
-          { text: "「我有先量过尺寸！我很聪明的！」", response: "「很好，至少妳有吸取我的教訓。」" },
-          { text: "「下次陪我去挑新的植物嘛！」", response: "「可以啊，我知道有幾家店還不錯，妳到時候可以慢慢挑。」" }
+          { text: "「你怎么连花盆都能买错啦！」", response: "「不要笑，我那時候也站在店裡看了很久，最後還是買錯。」" , affection: 2},
+          { text: "「我有先量过尺寸！我很聪明的！」", response: "「很好，至少妳有吸取我的教訓。」" , affection: 2},
+          { text: "「下次陪我去挑新的植物嘛！」", response: "「可以啊，我知道有幾家店還不錯，妳到時候可以慢慢挑。」" , affection: 2}
         ], {
           outgoing: "「我今天还给它换了个漂亮的小花盆。」",
           incomingMessages: ["「喔，那整個感覺應該差很多。」", "「我之前也買過一個很好看的盆，結果回家才發現尺寸不合，放進去整個卡住。」"]
         }),
         springDailySmsRound('', [
-          { text: "「不行！我一定要第一时间检查！」", response: "「好吧，那我就不阻止妳了，記得先吃早餐。」" },
-          { text: "「它现在可是我家重点保护对象！」", response: "「那妳要不要順便幫它辦個保險？」" },
-          { text: "「下次长新叶我第一个告诉你！」", response: "「好啊，我也想看看它之後會長成什麼樣子。」" }
+          { text: "「不行！我一定要第一时间检查！」", response: "「好吧，那我就不阻止妳了，記得先吃早餐。」" , affection: 2},
+          { text: "「它现在可是我家重点保护对象！」", response: "「那妳要不要順便幫它辦個保險？」" , affection: 2},
+          { text: "「下次长新叶我第一个告诉你！」", response: "「好啊，我也想看看它之後會長成什麼樣子。」" , affection: 2}
         ], {
           outgoing: "「好啦，今天的园丁任务完成！」",
           incomingMessages: ["「好，今天就讓它自己長吧。」", "「妳明天不要一睜開眼睛又先跑去看它。」"]
@@ -1358,33 +1358,33 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
       ],
       [
         springDailySmsRound('', [
-          { text: "「你那个听起来真的很惨！」", response: "「真的，那天我還以為自己在煎蛋，結果比較像在清理鍋子。」" },
-          { text: "「你是不是根本没有看火候？」", response: "「有看啦，只是看得太晚了，等我發現的時候已經來不及了。」" },
-          { text: "「我们两个应该组队，看看谁比较厉害！」", response: "「可以啊，不過我覺得我們可能需要先找個人當裁判。」" }
+          { text: "「你那个听起来真的很惨！」", response: "「真的，那天我還以為自己在煎蛋，結果比較像在清理鍋子。」" , affection: 2},
+          { text: "「你是不是根本没有看火候？」", response: "「有看啦，只是看得太晚了，等我發現的時候已經來不及了。」" , affection: 2},
+          { text: "「我们两个应该组队，看看谁比较厉害！」", response: "「可以啊，不過我覺得我們可能需要先找個人當裁判。」" , affection: 2}
         ], {
           outgoing: "「我也是！我后来干脆直接把它弄碎。」",
           incomingMessages: ["「那至少還是蛋啊。」", "「我以前更慘，鍋子太熱，蛋一下去邊緣就焦掉，最後還黏在鍋底。」"]
         }),
         springDailySmsRound('', [
-          { text: "「我当时真的觉得自己很专业！」", response: "「看得出來，裝備倒是很齊全，就是最後成品有點不配合。」" },
-          { text: "「我现在已经不想收拾了……」", response: "「先吃完再收吧，不然妳等一下連吃飯的力氣都沒有了。」" },
-          { text: "「你是不是平常很会做饭？」", response: "「普通啦，會做幾道簡單的。有時候懶得出門，就自己弄一弄。」" }
+          { text: "「我当时真的觉得自己很专业！」", response: "「看得出來，裝備倒是很齊全，就是最後成品有點不配合。」" , affection: 2},
+          { text: "「我现在已经不想收拾了……」", response: "「先吃完再收吧，不然妳等一下連吃飯的力氣都沒有了。」" , affection: 2},
+          { text: "「你是不是平常很会做饭？」", response: "「普通啦，會做幾道簡單的。有時候懶得出門，就自己弄一弄。」" , affection: 2}
         ], {
           outgoing: "「我今天还把厨房弄得乱七八糟。」",
           incomingMessages: ["「妳這是煎一顆蛋，還是準備開一間早餐店？」", "「我以前做飯也會這樣，東西拿出來就忘記收，最後廚房比餐桌還熱鬧。」"]
         }),
         springDailySmsRound('', [
-          { text: "「你怎么站在锅子那边啦！」", response: "「我只是覺得它今天承受了很多，妳不要連鍋子都欺負。」" },
-          { text: "「我下次一定要成功！」", response: "「好啊，下次妳可以試試看，我覺得這次只是火候沒抓好。」" },
-          { text: "「我决定以后还是点外卖好了。」", response: "「這個也可以，至少不用洗鍋子。不過偶爾自己做也滿有趣的。」" }
+          { text: "「你怎么站在锅子那边啦！」", response: "「我只是覺得它今天承受了很多，妳不要連鍋子都欺負。」" , affection: 2},
+          { text: "「我下次一定要成功！」", response: "「好啊，下次妳可以試試看，我覺得這次只是火候沒抓好。」" , affection: 2},
+          { text: "「我决定以后还是点外卖好了。」", response: "「這個也可以，至少不用洗鍋子。不過偶爾自己做也滿有趣的。」" , affection: 2}
         ], {
           outgoing: "「我后来把厨房收拾好了。」",
           incomingMessages: ["「那個鍋子今天也滿辛苦的。」", "「下次可以先把火調小一點，煎蛋不用那麼急。」"]
         }),
         springDailySmsRound('', [
-          { text: "「我会记住的！下次给你看我的作品。」", response: "「好啊，等妳的作品，希望這次鍋子可以平安。」" },
-          { text: "「我觉得我需要一个专属厨房助手。」", response: "「那我是不是還要負責洗碗？這個職位感覺工作很多欸。」" },
-          { text: "「下次你做饭，我来负责吃！」", response: "「妳這個安排倒是滿好的，最輕鬆的工作都被妳選走了。」" }
+          { text: "「我会记住的！下次给你看我的作品。」", response: "「好啊，等妳的作品，希望這次鍋子可以平安。」" , affection: 2},
+          { text: "「我觉得我需要一个专属厨房助手。」", response: "「那我是不是還要負責洗碗？這個職位感覺工作很多欸。」" , affection: 2},
+          { text: "「下次你做饭，我来负责吃！」", response: "「妳這個安排倒是滿好的，最輕鬆的工作都被妳選走了。」" , affection: 2}
         ], {
           outgoing: "「好啦，今天的厨房冒险结束！」",
           incomingMessages: ["「先休息吧。」", "「不過妳今天至少有學到一件事，就是鍋子真的不能開太大火。」"]
@@ -1392,33 +1392,33 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
       ],
       [
         springDailySmsRound('', [
-          { text: "「我突然觉得自己做了一件好事！」", response: "「妳就當作幫忙保管了一下吧。」" },
-          { text: "「不知道那个人现在还记不记得这本书。」", response: "「可能會吧，有些東西放久了反而更容易想起來。」" },
-          { text: "「我也想在书里留下点什么。」", response: "「可以啊，寫張小紙條也不錯，不過記得不要夾在圖書館的書裡喔。」" }
+          { text: "「我突然觉得自己做了一件好事！」", response: "「妳就當作幫忙保管了一下吧。」" , affection: 2},
+          { text: "「不知道那个人现在还记不记得这本书。」", response: "「可能會吧，有些東西放久了反而更容易想起來。」" , affection: 2},
+          { text: "「我也想在书里留下点什么。」", response: "「可以啊，寫張小紙條也不錯，不過記得不要夾在圖書館的書裡喔。」" , affection: 2}
         ], {
           outgoing: "「我后来还是把它留在原来的位置了。」",
           incomingMessages: ["「這樣也好。」", "「不過那個人如果真的回來找，應該會很開心，發現它還在原來的地方。」"]
         }),
         springDailySmsRound('', [
-          { text: "「我觉得像是跟以前的自己打招呼！」", response: "「這個形容滿好的，有點像突然收到以前自己的訊息。」" },
-          { text: "「我肯定会觉得很害羞！」", response: "「我也是欸，想到自己以前寫過什麼，可能會想趕快把它收起來。」" },
-          { text: "「你以前有留过这种东西吗？」", response: "「有啊，偶爾會在舊筆記本裡看到以前寫的東西，有些現在看起來真的滿好笑的。」" }
+          { text: "「我觉得像是跟以前的自己打招呼！」", response: "「這個形容滿好的，有點像突然收到以前自己的訊息。」" , affection: 2},
+          { text: "「我肯定会觉得很害羞！」", response: "「我也是欸，想到自己以前寫過什麼，可能會想趕快把它收起來。」" , affection: 2},
+          { text: "「你以前有留过这种东西吗？」", response: "「有啊，偶爾會在舊筆記本裡看到以前寫的東西，有些現在看起來真的滿好笑的。」" , affection: 2}
         ], {
           outgoing: "「我刚刚还想，如果是我留的东西被别人发现，会不会也觉得很奇妙。」",
           incomingMessages: ["「應該會吧。」", "「尤其是隔了很久，突然有人看到自己以前寫的東西，感覺會有點不真實。」"]
         }),
         springDailySmsRound('', [
-          { text: "「我正想画一只胖胖的小猫！」", response: "「那妳可以把它畫得圓圓的，感覺很適合夾在書裡。」" },
-          { text: "「我可能会写一句很奇怪的话！」", response: "「妳寫什麼？我有點好奇，但我先不評論。」" },
-          { text: "「你也做一张嘛，我们交换！」", response: "「好啊，這個我可以。只是我的畫工可能沒有妳期待的那麼好。」" }
+          { text: "「我正想画一只胖胖的小猫！」", response: "「那妳可以把它畫得圓圓的，感覺很適合夾在書裡。」" , affection: 2},
+          { text: "「我可能会写一句很奇怪的话！」", response: "「妳寫什麼？我有點好奇，但我先不評論。」" , affection: 2},
+          { text: "「你也做一张嘛，我们交换！」", response: "「好啊，這個我可以。只是我的畫工可能沒有妳期待的那麼好。」" , affection: 2}
         ], {
           outgoing: "「我现在有点想自己做一张书签了。」",
           incomingMessages: ["「那妳可以畫一隻小貓。」", "「或者畫一個很簡單的圖案，不用太複雜，做出來自己喜歡就好。」"]
         }),
         springDailySmsRound('', [
-          { text: "「你怎么知道我会这样！」", response: "「因為我覺得妳有可能，先提醒一下而已。」" },
-          { text: "「那你也要认真做！」", response: "「好啦，我會做的，不然到時候妳又要來催我。」" },
-          { text: "「我们可以交换书签，怎么样？」", response: "「可以啊，這樣滿有紀念價值的。以後看到書籤就會想到這次。」" }
+          { text: "「你怎么知道我会这样！」", response: "「因為我覺得妳有可能，先提醒一下而已。」" , affection: 2},
+          { text: "「那你也要认真做！」", response: "「好啦，我會做的，不然到時候妳又要來催我。」" , affection: 2},
+          { text: "「我们可以交换书签，怎么样？」", response: "「可以啊，這樣滿有紀念價值的。以後看到書籤就會想到這次。」" , affection: 2}
         ], {
           outgoing: "「好！我决定了，明天就去买材料！」",
           incomingMessages: ["「好啊，那我等著。」", "「妳不要買了一堆材料，最後只做出一張就放著不管喔。」"]
@@ -1429,86 +1429,86 @@ const springDailySmsChats: Record<SpringCharacterId, SpringDailySmsChat> = {
   yanming: {
     openings: [
       springDailySmsRound("「怎麼不回去問老闆。」", [
-        { text: "「我就是覺得回去很丟臉嘛……」", response: "「不會啦，店家一天要遇到幾十個忘東忘西的人。\n妳又不是第一個。」" },
-        { text: "「我怕老闆覺得我怎麼連筷子都忘記。」", response: "「不會啦，店家每天都會遇到這種事，妳不用想那麼多。」" },
-        { text: "「我真的差點想直接用手吃了。」", response: "「先不要啦，便當是無辜的，還是回去拿一下比較好。」" },
+        { text: "「我就是覺得回去很丟臉嘛……」", response: "「不會啦，店家一天要遇到幾十個忘東忘西的人。\n妳又不是第一個。」" , affection: 2},
+        { text: "「我怕老闆覺得我怎麼連筷子都忘記。」", response: "「不會啦，店家每天都會遇到這種事，妳不用想那麼多。」" , affection: 2},
+        { text: "「我真的差點想直接用手吃了。」", response: "「先不要啦，便當是無辜的，還是回去拿一下比較好。」" , affection: 2},
       ]),
       springDailySmsRound("「一次收一隻。」", [
-        { text: "「我真的把整桶衣服都翻過了！」", response: "「我以前也找過。\n最後是在褲管裡找到，還以為自己買了一雙新襪子。」" },
-        { text: "「我連洗衣籃都翻了，還是沒看到。」", response: "「我那次也是找半天，結果它就卡在褲管裡，完全沒發現。」" },
-        { text: "「我看它是跟其他襪子私奔了！」", response: "「這個說法倒是滿合理的，失蹤案又多一件。」" },
+        { text: "「我真的把整桶衣服都翻過了！」", response: "「我以前也找過。\n最後是在褲管裡找到，還以為自己買了一雙新襪子。」" , affection: 2},
+        { text: "「我連洗衣籃都翻了，還是沒看到。」", response: "「我那次也是找半天，結果它就卡在褲管裡，完全沒發現。」" , affection: 2},
+        { text: "「我看它是跟其他襪子私奔了！」", response: "「這個說法倒是滿合理的，失蹤案又多一件。」" , affection: 2},
       ]),
       springDailySmsRound("「放在口袋裡好好的？」", [
-        { text: "「有啊！放在口袋裡好好的。」", response: "「那它比雞蛋還有存在感。」" },
-        { text: "「有帶啦，只是我逛到最後完全忘記要看。」", response: "「清單都跟著妳出門了，結果還是沒被派上用場。」" },
-        { text: "「我甚至還拿出來看過，然後轉頭就忘了。」", response: "「這個比較厲害欸，清單本人都提醒妳了還是漏掉。」" },
+        { text: "「有啊！放在口袋裡好好的。」", response: "「那它比雞蛋還有存在感。」" , affection: 2},
+        { text: "「有帶啦，只是我逛到最後完全忘記要看。」", response: "「清單都跟著妳出門了，結果還是沒被派上用場。」" , affection: 2},
+        { text: "「我甚至還拿出來看過，然後轉頭就忘了。」", response: "「這個比較厲害欸，清單本人都提醒妳了還是漏掉。」" , affection: 2},
       ]),
     ],
     tracks: [
       [
                 springDailySmsRound("", [
-        { text: "「你講得好像很有經驗。」", response: "「有啊，我以前拿著便當走到一半，才發現自己根本沒拿湯匙。\n回去拿的時候，老闆還問我是不是又來補考。」" },
-        { text: "「你到底去補考幾次啦？」", response: "「沒有很多次啦，只是老闆記性太好，看到我就知道我要幹嘛。」" },
-        { text: "「所以你也是站在店門口發呆的人？」", response: "「我沒有站那麼久啦，至少有走回去拿。」" },
+        { text: "「你講得好像很有經驗。」", response: "「有啊，我以前拿著便當走到一半，才發現自己根本沒拿湯匙。\n回去拿的時候，老闆還問我是不是又來補考。」" , affection: 2},
+        { text: "「你到底去補考幾次啦？」", response: "「沒有很多次啦，只是老闆記性太好，看到我就知道我要幹嘛。」" , affection: 2},
+        { text: "「所以你也是站在店門口發呆的人？」", response: "「我沒有站那麼久啦，至少有走回去拿。」" , affection: 2},
       ]),
         springDailySmsRound("", [
-        { text: "「哈哈哈哈哈哈哈！」", response: "「所以我包包才放兩雙備用筷子。\n一雙給自己，一雙拿來救人。」" },
-        { text: "「你這是有備而來欸。」", response: "「不然每次都要回去補考，很麻煩欸。」" },
-        { text: "「那你包包裡還有什麼？」", response: "「一些有的沒的啦，真的要用的時候就會出現。」" },
+        { text: "「哈哈哈哈哈哈哈！」", response: "「所以我包包才放兩雙備用筷子。\n一雙給自己，一雙拿來救人。」" , affection: 2},
+        { text: "「你這是有備而來欸。」", response: "「不然每次都要回去補考，很麻煩欸。」" , affection: 2},
+        { text: "「那你包包裡還有什麼？」", response: "「一些有的沒的啦，真的要用的時候就會出現。」" , affection: 2},
       ]),
         springDailySmsRound("", [
-        { text: "「那我要不要先預約？」", response: "「可以，借一次記一個便當，利息不用算。」" },
-        { text: "「我可以直接登記成長期會員嗎？」", response: "「可以啊，會員卡先欠著，便當照算。」" },
-        { text: "「那我是不是還要付押金？」", response: "「不用押金啦，記得還我一雙就好。」" },
+        { text: "「那我要不要先預約？」", response: "「可以，借一次記一個便當，利息不用算。」" , affection: 2},
+        { text: "「我可以直接登記成長期會員嗎？」", response: "「可以啊，會員卡先欠著，便當照算。」" , affection: 2},
+        { text: "「那我是不是還要付押金？」", response: "「不用押金啦，記得還我一雙就好。」" , affection: 2},
       ]),
         springDailySmsRound("「好啦，先幫妳留一雙，免得妳下次又忘記。」", [
-        { text: "「好啊！那我下次忘記就找你。你不要到時候說備用筷子也忘記帶了喔。」", response: "「應該不會啦。真的忘了的話，我們兩個就一起回去補考。」" },
+        { text: "「好啊！那我下次忘記就找你。你不要到時候說備用筷子也忘記帶了喔。」", response: "「應該不會啦。真的忘了的話，我們兩個就一起回去補考。」" , affection: 2},
         { text: "「那你要保證二十四小時都能借喔！」", response: "「妳這個要求有點多欸，我又不是筷子客服。」", affection: 3 },
         { text: "「我覺得你可以開個備用筷子出租店。」", response: "「可以啊，妳先當第一個客人，還有折扣。」", affection: 3 },
       ]),
       ],
       [
                 springDailySmsRound("", [
-        { text: "「？？？？你怎麼會連這個都搞錯啦！」", response: "「因為那雙襪子本來就長得很普通。\n放在那邊完全沒有存在感。」" },
-        { text: "「你是不是找太久，已經不認識自己的襪子了？」", response: "「有可能欸，看久了真的會覺得每一雙都很陌生。」" },
-        { text: "「所以你還以為自己多買了一雙喔？」", response: "「對啊，還想說什麼時候買的，後來才發現是失蹤人口。」" },
+        { text: "「？？？？你怎麼會連這個都搞錯啦！」", response: "「因為那雙襪子本來就長得很普通。\n放在那邊完全沒有存在感。」" , affection: 2},
+        { text: "「你是不是找太久，已經不認識自己的襪子了？」", response: "「有可能欸，看久了真的會覺得每一雙都很陌生。」" , affection: 2},
+        { text: "「所以你還以為自己多買了一雙喔？」", response: "「對啊，還想說什麼時候買的，後來才發現是失蹤人口。」" , affection: 2},
       ]),
         springDailySmsRound("", [
-        { text: "「那你後來怎麼辦？」", response: "「找到就繼續穿啊。\n不然還要幫它辦個失而復得的儀式嗎？」" },
-        { text: "「你有沒有考慮幫它拍張紀念照？」", response: "「沒有欸，牠只是襪子，不用搞得這麼隆重吧。」" },
-        { text: "「我覺得它值得一個獎狀。」", response: "「可以，獎狀上寫：成功從褲管逃脫。」" },
+        { text: "「那你後來怎麼辦？」", response: "「找到就繼續穿啊。\n不然還要幫它辦個失而復得的儀式嗎？」" , affection: 2},
+        { text: "「你有沒有考慮幫它拍張紀念照？」", response: "「沒有欸，牠只是襪子，不用搞得這麼隆重吧。」" , affection: 2},
+        { text: "「我覺得它值得一個獎狀。」", response: "「可以，獎狀上寫：成功從褲管逃脫。」" , affection: 2},
       ]),
         springDailySmsRound("", [
-        { text: "「哈哈哈哈哈哈哈哈！」", response: "「妳那隻先留著吧。\n搞不好哪天它自己回來了。」" },
-        { text: "「我已經不抱希望了，可能真的離家出走了。」", response: "「那先把另一隻收好，等它哪天想通了再回來。」" },
-        { text: "「我要不要貼個尋襪啟事？」", response: "「可以啊，酬勞寫一包洋芋片，應該有人願意幫忙。」" },
+        { text: "「哈哈哈哈哈哈哈哈！」", response: "「妳那隻先留著吧。\n搞不好哪天它自己回來了。」" , affection: 2},
+        { text: "「我已經不抱希望了，可能真的離家出走了。」", response: "「那先把另一隻收好，等它哪天想通了再回來。」" , affection: 2},
+        { text: "「我要不要貼個尋襪啟事？」", response: "「可以啊，酬勞寫一包洋芋片，應該有人願意幫忙。」" , affection: 2},
       ]),
         springDailySmsRound("「我覺得先幫它留個位置好了，等另一隻回來。」", [
-        { text: "「好啦，那我先幫它留個位置。等它另一半回家！」", response: "「可以啊，幫它留個位置。\n不過妳記得偶爾看一下，別到時候連這隻也找不到了。」" },
+        { text: "「好啦，那我先幫它留個位置。等它另一半回家！」", response: "「可以啊，幫它留個位置。\n不過妳記得偶爾看一下，別到時候連這隻也找不到了。」" , affection: 2},
         { text: "「那我幫它放在抽屜最顯眼的地方。」", response: "「這樣很好，至少它不會也跟著失蹤。」", affection: 3 },
         { text: "「如果一直找不到，我就幫它找個新搭檔。」", response: "「也可以，襪子應該不會介意重新組隊。」", affection: 3 },
       ]),
       ],
       [
                 springDailySmsRound("", [
-        { text: "「我本來想回家煎蛋的，現在計畫全亂了。」", response: "「我上次也差不多。\n買了醬油跟蔥，回家才發現忘記買麵。」" },
-        { text: "「想做蛋餅啦，現在只能改天了。」", response: "「那就改天再做，材料沒買齊真的很難煮。」" },
-        { text: "「本來想煮個簡單的晚餐，結果最重要的東西沒買。」", response: "「這種最麻煩，其他東西都準備好了，就差那一樣。」" },
+        { text: "「我本來想回家煎蛋的，現在計畫全亂了。」", response: "「我上次也差不多。\n買了醬油跟蔥，回家才發現忘記買麵。」" , affection: 2},
+        { text: "「想做蛋餅啦，現在只能改天了。」", response: "「那就改天再做，材料沒買齊真的很難煮。」" , affection: 2},
+        { text: "「本來想煮個簡單的晚餐，結果最重要的東西沒買。」", response: "「這種最麻煩，其他東西都準備好了，就差那一樣。」" , affection: 2},
       ]),
         springDailySmsRound("", [
-        { text: "「那你最後吃什麼？」", response: "「一碗蔥花醬油湯。\n差點以為自己在做什麼料理實驗。」" },
-        { text: "「你沒有再出去買麵喔？」", response: "「懶得出門了，就先拿家裡有的東西湊一湊。」" },
-        { text: "「聽起來好像很有創意，但我不太敢吃。」", response: "「我自己也沒有很想回憶那個味道。」" },
+        { text: "「那你最後吃什麼？」", response: "「一碗蔥花醬油湯。\n差點以為自己在做什麼料理實驗。」" , affection: 2},
+        { text: "「你沒有再出去買麵喔？」", response: "「懶得出門了，就先拿家裡有的東西湊一湊。」" , affection: 2},
+        { text: "「聽起來好像很有創意，但我不太敢吃。」", response: "「我自己也沒有很想回憶那個味道。」" , affection: 2},
       ]),
         springDailySmsRound("", [
-        { text: "「救命哈哈哈哈哈哈！」", response: "「所以妳不要笑我。\n我們兩個應該差不多。」" },
-        { text: "「我覺得你應該把食譜記下來。」", response: "「不用了，這種實驗一次就夠了。」" },
-        { text: "「你下次煮之前先傳訊息問我好了。」", response: "「好啊，至少有人可以阻止我再做一次。」" },
+        { text: "「救命哈哈哈哈哈哈！」", response: "「所以妳不要笑我。\n我們兩個應該差不多。」" , affection: 2},
+        { text: "「我覺得你應該把食譜記下來。」", response: "「不用了，這種實驗一次就夠了。」" , affection: 2},
+        { text: "「你下次煮之前先傳訊息問我好了。」", response: "「好啊，至少有人可以阻止我再做一次。」" , affection: 2},
       ]),
         springDailySmsRound("「下次買東西還是一起去好了，至少可以互相提醒。」", [
-        { text: "「那下次你陪我去買東西！」", response: "「可以啊。\n我負責提醒妳拿雞蛋，妳負責提醒我不要再買三瓶醬油。」" },
+        { text: "「那下次你陪我去買東西！」", response: "「可以啊。\n我負責提醒妳拿雞蛋，妳負責提醒我不要再買三瓶醬油。」" , affection: 2},
         { text: "「好啊，我負責看清單，你負責拿東西。」", response: "「這個分工可以，應該不會再有人忘記麵或雞蛋。」", affection: 4 },
-        { text: "「那我們兩個最好都不要帶購物清單，靠默契！」", response: "「不行欸，照我們兩個的紀錄，這樣回家可能只剩醬油。」" },
+        { text: "「那我們兩個最好都不要帶購物清單，靠默契！」", response: "「不行欸，照我們兩個的紀錄，這樣回家可能只剩醬油。」" , affection: 2},
       ]),
       ]
     ],

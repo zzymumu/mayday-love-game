@@ -2,9 +2,9 @@ import { useEffect, useState, type ReactNode } from 'react'
 import { ChevronRight } from 'lucide-react'
 
 export type April30Route = 'wen' | 'ashin' | 'masa' | 'stone' | 'yanming'
-export type April30Selection = { route: April30Route; choices: number[] }
+export type April30Selection = { route: April30Route; choices: number[]; comfortChoice: number | null; affection: number }
 type April30Block = { kind: 'narration' | 'dialogue'; text: string; speaker?: string }
-type April30Choice = { text: string; response: April30Block[] }
+type April30Choice = { text: string; response: April30Block[]; affection: number }
 type April30Round = { title: string; scene: April30Block[]; choices: [April30Choice, April30Choice, April30Choice] }
 type April30Phase = 'intro' | 'mainChoice' | 'wen' | 'otherPicker' | 'ashin' | 'schoolPicker' | 'schoolWalk' | 'yanming' | 'complete'
 type April30Progress = {
@@ -14,6 +14,7 @@ type April30Progress = {
   choices: number[]
   pendingChoice: number | null
   pendingComfortChoice: number | null
+  comfortChoice: number | null
 }
 
 const STORAGE_KEY = 'mayday-april30-progress-v2'
@@ -24,11 +25,12 @@ const initialProgress: April30Progress = {
   choices: [],
   pendingChoice: null,
   pendingComfortChoice: null,
+  comfortChoice: null,
 }
 
 const n = (text: string): April30Block => ({ kind: 'narration', text })
 const d = (speaker: string, text: string): April30Block => ({ kind: 'dialogue', speaker, text })
-const c = (text: string, response: April30Block[]): April30Choice => ({ text, response })
+const c = (text: string, response: April30Block[], affection: number): April30Choice => ({ text, response, affection })
 
 const openingBlocks: April30Block[] = [
   n('四月二十日之後，錢佑達就再也沒有來過練團室。'),
@@ -63,18 +65,18 @@ const wenRounds: April30Round[] = [
         d('溫尚翊', '所以妳就特地跑來找我喔？'),
         n('他扯了一下嘴角，像是想開個玩笑，最後卻沒真的笑出來。'),
         d('溫尚翊', '……還是妳今天剛好經過？'),
-      ]),
+      ], 3),
       c('你今天翹課翹得很徹底欸。', [
         d('溫尚翊', '蛤？妳是來抓我回去上課的喔？'),
         d('溫尚翊', '今天不想去啦。'),
         n('他低下頭，拿鞋尖碰了碰地上的空罐。'),
-      ]),
+      ], 1),
       c('你旁邊這些酒是怎麼回事？', [
         d('溫尚翊', '就喝一點啊。'),
         d('溫尚翊', '妳不要一上來就念我啦。'),
         n('他說完，自己也看了一眼旁邊的酒，沒再伸手去拿。'),
         n('你注意到他的眼尾有些泛紅。他發現你在看，便稍稍偏過臉。'),
-      ]),
+      ], 2),
     ],
   },
   {
@@ -90,19 +92,19 @@ const wenRounds: April30Round[] = [
         d('溫尚翊', '只是現在不太想看到練團室那些東西。'),
         n('他抬頭看了一眼遠處，聲音低了下來。'),
         d('溫尚翊', '一進去就會想到一堆有的沒的。'),
-      ]),
+      ], 2),
       c('你至少也該跟大家說一聲吧。', [
         d('溫尚翊', '我又不是小孩子，還要跟人報備喔？'),
         n('他下意識回了一句，停了一下，又放低聲音。'),
         d('溫尚翊', '……好啦，我知道。'),
         d('溫尚翊', '只是現在真的不知道要講什麼。'),
-      ]),
+      ], 1),
       c('你今天一直待在這裡嗎？', [
         d('溫尚翊', '沒有很久啦。'),
         d('溫尚翊', '上午就來坐了一下。'),
         d('溫尚翊', '本來想說坐一下就回去，結果不知不覺就這麼久了。'),
         n('他抬頭看了一眼遠處的校園，又把視線收回來。'),
-      ]),
+      ], 1),
     ],
   },
   {
@@ -120,17 +122,17 @@ const wenRounds: April30Round[] = [
       c('他真的決定好了嗎？', [
         d('溫尚翊', '嗯。'),
         d('溫尚翊', '這次是真的。'),
-      ]),
+      ], 1),
       c('大家不是還在勸他嗎？', [
         d('溫尚翊', '勸過了啊。'),
         d('溫尚翊', '大家都去找過他，該講的也都講了。'),
         d('溫尚翊', '可是他不想回來，我們也沒辦法。'),
-      ]),
+      ], 1),
       c('所以以後練團就沒有他了？', [
         d('溫尚翊', '……對。'),
         n('他停頓了一下。'),
         d('溫尚翊', '以後就少一個人了。'),
-      ]),
+      ], 2),
     ],
   },
   {
@@ -149,18 +151,18 @@ const wenRounds: April30Round[] = [
         d('溫尚翊', '廢話。'),
         d('溫尚翊', '妳以為我現在為什麼坐在這裡？'),
         n('他轉過頭看了你一眼，又把視線移開。'),
-      ]),
+      ], 2),
       c('你是不是很捨不得他？', [
         d('溫尚翊', '……嗯啊。'),
         d('溫尚翊', '一起玩那麼久了，哪有可能說沒差就沒差。'),
         n('這一次，他沒有嘴硬。'),
-      ]),
+      ], 3),
       c('你們以前是不是常常一起練到很晚？', [
         d('溫尚翊', '超常啊。'),
         d('溫尚翊', '有時候根本不知道自己在彈什麼了，還是硬要繼續。'),
         d('溫尚翊', '現在想想真的有夠白痴。'),
         d('溫尚翊', '可是那時候滿好玩的。'),
-      ]),
+      ], 2),
     ],
   },
   {
@@ -183,12 +185,12 @@ const wenRounds: April30Round[] = [
         d('溫尚翊', '妳現在才想到喔？'),
         n('他終於有了一點平常的語氣，卻沒有真的笑出來。'),
         d('溫尚翊', '不然咧，妳以為我很喜歡研究那些東西喔？'),
-      ]),
+      ], 2),
       c('所以你爸爸到現在還是希望你走法律這條路？', [
         d('溫尚翊', '差不多吧。'),
         d('溫尚翊', '他是覺得那條路比較穩啦。'),
         d('溫尚翊', '可是我也不知道我到底適不適合。'),
-      ]),
+      ], 2),
       c('那你自己呢？你想做什麼？', [
         d('溫尚翊', '我？'),
         n('他沉默了很久，視線落在自己的手背上。'),
@@ -197,7 +199,7 @@ const wenRounds: April30Round[] = [
         n('他的聲音漸漸低下去。他抬手揉了一下眼睛，像是想把那點不舒服揉掉。'),
         d('溫尚翊', '……靠，今天風真的很大欸。'),
         n('他說完，卻沒有再抬頭。你沒有拆穿他。'),
-      ]),
+      ], 3),
     ],
   },
 ]
@@ -247,20 +249,20 @@ const ashinRounds: April30Round[] = [
         d('陳信宏', '那我是不是不要練好了？'),
         n('他故意把吉他往旁邊挪了一點。'),
         d('陳信宏', '不然我下次每次都彈錯好了。'),
-      ]),
+      ], 3),
       c('這次有比較好聽欸。', [
         n('陳信宏抬起眼睛，像是在確認你是不是認真的。'),
         d('陳信宏', '真的喔？'),
         d('陳信宏', '那我剛剛沒有白彈。'),
         n('他重新調整了一下手指的位置。'),
         d('陳信宏', '不過還是有一個地方怪怪的，我自己聽得出來。'),
-      ]),
+      ], 2),
       c('你是不是故意彈錯的？', [
         n('陳信宏立刻抬起頭，手還停在琴弦上。'),
         d('陳信宏', '欸！我哪有啦！'),
         n('他笑著搖了搖頭。'),
         d('陳信宏', '我如果真的故意的，應該不會錯得這麼明顯吧。'),
-      ]),
+      ], 1),
     ],
   },
   {
@@ -275,18 +277,18 @@ const ashinRounds: April30Round[] = [
         d('陳信宏', '一個人的時候比較不會有人打斷我。'),
         n('說到這裡，他忽然抬眼看你。'),
         d('陳信宏', '不過妳來了，好像也不算一個人了。'),
-      ]),
+      ], 2),
       c('你今天是不是不太想回去？', [
         n('陳信宏想了一下，手指輕輕撥過琴弦。'),
         d('陳信宏', '也不是不想回去啦。'),
         d('陳信宏', '只是回去好像也不知道要做什麼。'),
         d('陳信宏', '所以就多坐一下。'),
-      ]),
+      ], 1),
       c('你是不是一直在想佑達？', [
         d('陳信宏', '有一點吧。'),
         d('陳信宏', '剛剛彈到某個地方，突然就想到以前練團的時候。'),
         d('陳信宏', '那時候旁邊明明都很吵，現在反而安靜得有點奇怪。'),
-      ]),
+      ], 2),
     ],
   },
   {
@@ -301,18 +303,18 @@ const ashinRounds: April30Round[] = [
         d('陳信宏', '真的欸。'),
         d('陳信宏', '有時候明明才剛開始，他就已經不知道在忙什麼了。'),
         d('陳信宏', '不過如果真的沒有他，可能又會覺得少了什麼。'),
-      ]),
+      ], 2),
       c('你們幾個從附中就認識，應該有很多回憶吧？', [
         d('陳信宏', '嗯，很多啊。'),
         d('陳信宏', '那時候大家都還不知道以後會怎麼樣，只覺得有時間就想去練團。'),
         n('他低頭撥了兩下弦。'),
         d('陳信宏', '現在想想，好像那時候最開心。'),
-      ]),
+      ], 3),
       c('那你現在還會想起以前嗎？', [
         d('陳信宏', '會啊。'),
         d('陳信宏', '尤其是現在。'),
         d('陳信宏', '以前有些事情根本不會特別記得，等到少了一個人，反而突然想起來了。'),
-      ]),
+      ], 2),
     ],
   },
   {
@@ -327,18 +329,18 @@ const ashinRounds: April30Round[] = [
       c('你們是不是都很捨不得他？', [
         d('陳信宏', '當然啊。'),
         d('陳信宏', '一起玩那麼久了，哪有可能突然就不在意。'),
-      ]),
+      ], 3),
       c('你有想過以後練團會是什麼樣子嗎？', [
         n('陳信宏沉默了一下，視線落在吉他的弦上。'),
         d('陳信宏', '還沒有欸。'),
         d('陳信宏', '現在想那些，好像有點太快了。'),
         d('陳信宏', '先把現在的事情弄清楚再說吧。'),
-      ]),
+      ], 2),
       c('那你們還會繼續練團嗎？', [
         d('陳信宏', '會啊。'),
         d('陳信宏', '只是可能要花一點時間重新習慣。'),
         d('陳信宏', '畢竟喜歡音樂這件事，又不是說少一個人就會突然不喜歡了。'),
-      ]),
+      ], 2),
     ],
   },
   {
@@ -353,17 +355,17 @@ const ashinRounds: April30Round[] = [
         n('陳信宏抬起頭，笑了。'),
         d('陳信宏', '好啊。'),
         d('陳信宏', '那妳不要嫌我一直彈同一段喔。'),
-      ]),
+      ], 3),
       c('你再彈一次給我聽，這次不准出錯。', [
         n('陳信宏笑著看你。'),
         d('陳信宏', '欸，妳要求也太高了吧。'),
         d('陳信宏', '那我等一下如果又錯了，妳要負責喔。'),
-      ]),
+      ], 2),
       c('等你想說話的時候再說吧。', [
         n('陳信宏的動作慢了下來。他看了你一會兒，才輕輕笑了一下。'),
         d('陳信宏', '嗯。'),
         d('陳信宏', '謝謝妳喔。'),
-      ]),
+      ], 3),
     ],
   },
 ]
@@ -418,20 +420,20 @@ const masaRounds: April30Round[] = [
         d('瑪莎', '我雞皮疙瘩都起來了欸。'),
         n('走了兩步，他又補了一句。'),
         d('瑪莎', '不過妳有空來也不錯啦。'),
-      ]),
+      ], 3),
       c('我來檢查你有沒有認真上課。', [
         n('瑪莎立刻停下腳步，轉過頭看你。'),
         d('瑪莎', '蛤？妳是我媽喔？'),
         n('他把書包往身前拉了一下。'),
         d('瑪莎', '我今天可是很認真欸，講義都有帶回來。'),
         n('說著，他還特地把那疊講義抽出來給你看。'),
-      ]),
+      ], 2),
       c('我剛好路過嘛。', [
         n('瑪莎眯起眼睛，像是不太相信。'),
         d('瑪莎', '附中跟台大是順路喔？'),
         d('瑪莎', '妳這個路過也太有誠意了吧。'),
         n('他笑了一聲，繼續往前走。'),
-      ]),
+      ], 1),
     ],
   },
   {
@@ -445,20 +447,20 @@ const masaRounds: April30Round[] = [
         d('瑪莎', '不然咧？'),
         d('瑪莎', '我看起來有那麼冷血喔？'),
         d('瑪莎', '一起玩那麼久了，突然說不玩就不玩，誰會沒感覺啊。'),
-      ]),
+      ], 3),
       c('你們最近是不是都不太開心？', [
         n('瑪莎撇了撇嘴，抬手把書包往上提了提。'),
         d('瑪莎', '妳這不是廢話嗎？'),
         d('瑪莎', '練團室少一個人，還能每天開心到唱歌喔？'),
         n('他說完，自己也覺得這話有點重，聲音放低了一些。'),
         d('瑪莎', '反正就……很不習慣啦。'),
-      ]),
+      ], 2),
       c('你有沒有想過他真的不會回來了？', [
         n('瑪莎沉默了一下，踢開路邊一顆小石子。'),
         d('瑪莎', '有啊。'),
         d('瑪莎', '所以才煩啊。'),
         d('瑪莎', '之前還覺得說不定再過幾天就好了，現在看來是真的沒了。'),
-      ]),
+      ], 1),
     ],
   },
   {
@@ -474,19 +476,19 @@ const masaRounds: April30Round[] = [
         d('瑪莎', '我們是放學以後去練團，不是翹課。'),
         n('他頓了一下。'),
         d('瑪莎', '……至少大部分時候是啦。'),
-      ]),
+      ], 1),
       c('那時候你們是不是經常吵架？', [
         n('瑪莎笑了，伸手比了比自己，又朝前面指了一下。'),
         d('瑪莎', '超常啊。'),
         d('瑪莎', '怪獸有時候真的很欠揍，佑達也不是省油的燈。'),
         d('瑪莎', '阿信跟石頭倒是比較常在旁邊看戲。'),
-      ]),
+      ], 2),
       c('你現在還會想起以前嗎？', [
         n('瑪莎低頭看著腳下，踢著路面一顆小石子。'),
         d('瑪莎', '會啊。'),
         d('瑪莎', '尤其現在這種時候。'),
         d('瑪莎', '以前覺得每天都一樣，現在才發現那些日子其實滿珍貴的。'),
-      ]),
+      ], 3),
     ],
   },
   {
@@ -500,20 +502,20 @@ const masaRounds: April30Round[] = [
         d('瑪莎', '真的喔？'),
         d('瑪莎', '那傢伙最近應該也很煩吧。'),
         d('瑪莎', '他跟佑達認識那麼久，現在突然變成這樣，哪有可能沒事。'),
-      ]),
+      ], 2),
       c('你有去找過怪獸嗎？', [
         d('瑪莎', '有啊。'),
         d('瑪莎', '不過他現在可能不太想理人。'),
         n('他看了你一眼，語氣比剛才認真了一點。'),
         d('瑪莎', '妳要是碰到他，就不要一直逼他講話啦。'),
-      ]),
+      ], 3),
       c('你覺得他會不會也想退出？', [
         n('瑪莎立刻皺起眉頭，腳步也停了一下。'),
         d('瑪莎', '蛤？妳在講什麼啦。'),
         d('瑪莎', '他現在只是心情不好，不代表他不想玩音樂了。'),
         n('他把視線移開，聲音低了一點。'),
         d('瑪莎', '至少我不希望他也這樣。'),
-      ]),
+      ], 1),
     ],
   },
   {
@@ -530,18 +532,18 @@ const masaRounds: April30Round[] = [
         d('瑪莎', '妳講得倒是很簡單。'),
         d('瑪莎', '不過也是啦。'),
         d('瑪莎', '總不能因為少一個人，就全部不玩了吧。'),
-      ]),
+      ], 2),
       c('我覺得你們應該先休息一下。', [
         n('瑪莎點了點頭，手指勾著書包帶。'),
         d('瑪莎', '可能吧。'),
         d('瑪莎', '最近大家都太煩了，先不要一直逼自己也好。'),
-      ]),
+      ], 1),
       c('那你自己還想繼續嗎？', [
         n('瑪莎幾乎沒有猶豫，說完才像是意識到自己回答得太快。'),
         d('瑪莎', '想啊。'),
         d('瑪莎', '不然我每天背著這麼重的Bass是背好玩的喔？'),
         n('你忍不住笑了。瑪莎也跟著笑了一下。'),
-      ]),
+      ], 3),
     ],
   },
 ]
@@ -566,16 +568,16 @@ const stoneRounds: April30Round[] = [
         n('石頭笑了一下，順手把肩上的書包帶往上拉好。'),
         d('石錦航', '那很好啊。'),
         d('石錦航', '只是下次可以先跟我說，我怕妳等太久。'),
-      ]),
+      ], 3),
       c('我剛好有時間，就過來了。', [
         d('石錦航', '嗯，最近課業還忙嗎？'),
         n('他沒有繼續追問，只是配合你的步子慢慢往前走。'),
-      ]),
+      ], 1),
       c('我怕你們兩個又偷偷跑去玩音樂。', [
         n('石頭忍不住笑了。'),
         d('石錦航', '我們今天可是有乖乖上課喔。'),
         d('石錦航', '而且妳怎麼只抓我們兩個？'),
-      ]),
+      ], 2),
     ],
   },
   {
@@ -590,16 +592,16 @@ const stoneRounds: April30Round[] = [
         d('石錦航', '嗯。'),
         d('石錦航', '畢竟從附中就在一起玩了，很多事情都已經習慣有他在。'),
         d('石錦航', '現在突然少一個人，真的會覺得怪怪的。'),
-      ]),
+      ], 3),
       c('你們是不是已經勸過他很多次了？', [
         d('石錦航', '嗯，大家都試過了。'),
         d('石錦航', '可是他已經想好了，我們也不想讓他覺得被逼得太緊。'),
-      ]),
+      ], 2),
       c('你覺得他會不會改變主意？', [
         n('石頭想了一會兒，沒有立刻回答。'),
         d('石錦航', '我不知道。'),
         d('石錦航', '不過既然他已經決定了，可能我們也要慢慢接受這件事。'),
-      ]),
+      ], 1),
     ],
   },
   {
@@ -616,18 +618,18 @@ const stoneRounds: April30Round[] = [
         n('石頭笑了，像是想起了什麼。'),
         d('石錦航', '有時候是他啦。'),
         d('石錦航', '不過也不能都怪他，大家其實都滿愛鬧的。'),
-      ]),
+      ], 2),
       c('你們五個是不是從附中就一直在一起？', [
         d('石錦航', '嗯，差不多就是那時候開始的。'),
         d('石錦航', '那時候只要有人說要練團，大家就會想辦法湊出時間。'),
         d('石錦航', '現在想想，真的滿不可思議的。'),
-      ]),
+      ], 3),
       c('那時候你有沒有想過以後會發生這些事？', [
         n('石頭搖搖頭，笑意淡了一點。'),
         d('石錦航', '沒有欸。'),
         d('石錦航', '那時候只覺得今天能不能把歌練好就很重要了。'),
         d('石錦航', '可能就是因為這樣，才會覺得那時候很開心吧。'),
-      ]),
+      ], 2),
     ],
   },
   {
@@ -640,18 +642,18 @@ const stoneRounds: April30Round[] = [
         n('石頭輕輕嘆了一口氣。'),
         d('石錦航', '我猜他應該也不太好受。'),
         d('石錦航', '他們認識那麼久，突然發生這種事，總要一點時間。'),
-      ]),
+      ], 2),
       c('你有去找過他嗎？', [
         d('石錦航', '有啊。'),
         d('石錦航', '不過他最近比較安靜，我也沒有一直追著問。'),
         n('他看了你一眼。'),
         d('石錦航', '有時候陪在旁邊就好了，不一定要一直說話。'),
-      ]),
+      ], 3),
       c('你覺得他現在最需要什麼？', [
         n('石頭想了一下，放慢了腳步。'),
         d('石錦航', '可能是時間吧。'),
         d('石錦航', '等他自己想清楚一點，應該就會好一些了。'),
-      ]),
+      ], 3),
     ],
   },
   {
@@ -666,16 +668,16 @@ const stoneRounds: April30Round[] = [
         n('石頭笑了。'),
         d('石錦航', '嗯，我也是這麼想的。'),
         d('石錦航', '現在突然要大家做決定，可能也不太容易。'),
-      ]),
+      ], 3),
       c('我覺得你們應該先好好休息。', [
         d('石錦航', '也許吧。'),
         d('石錦航', '最近大家都累了，先讓自己喘口氣也好。'),
-      ]),
+      ], 2),
       c('只要你們還喜歡音樂，就不會結束吧。', [
         n('石頭看著你，輕輕笑了一下。'),
         d('石錦航', '希望是這樣。'),
         d('石錦航', '畢竟大家花了那麼多時間，才走到現在。'),
-      ]),
+      ], 3),
     ],
   },
 ]
@@ -704,17 +706,17 @@ const yanmingRounds: April30Round[] = [
       c('所以是真的不會再回來了嗎？', [
         d('劉諺明', '嗯，照目前的情況來看，應該是了。'),
         d('劉諺明', '他不是臨時說說而已。'),
-      ]),
+      ], 2),
       c('大家都勸過他了，還是沒用嗎？', [
         n('諺明哥輕輕嘆了一口氣。'),
         d('劉諺明', '嗯，該說的都說過了。'),
         d('劉諺明', '有些事情不是別人多講幾次，就一定會有不一樣的結果。'),
-      ]),
+      ], 2),
       c('他是什麼時候決定的？', [
         n('諺明哥想了一下，像是在回想這幾天的情況。'),
         d('劉諺明', '這陣子應該就已經有想法了。'),
         d('劉諺明', '只是今天才把事情正式講清楚。'),
-      ]),
+      ], 1),
     ],
   },
   {
@@ -727,16 +729,16 @@ const yanmingRounds: April30Round[] = [
         d('劉諺明', '有啊。'),
         d('劉諺明', '畢竟練團室的事情，我也不能完全不管。'),
         d('劉諺明', '不過我沒有一直勸他回來，還是得看他自己的想法。'),
-      ]),
+      ], 2),
       c('你覺得他是真的想清楚了嗎？', [
         n('諺明哥想了一會兒。'),
         d('劉諺明', '我想，他至少知道自己在做什麼決定。'),
         d('劉諺明', '至於以後會不會後悔，那就不是現在能知道的了。'),
-      ]),
+      ], 3),
       c('你會不會覺得很可惜？', [
         d('劉諺明', '會啊。'),
         d('劉諺明', '不過可惜歸可惜，也不能因為這樣就不尊重他的決定。'),
-      ]),
+      ], 2),
     ],
   },
   {
@@ -750,16 +752,16 @@ const yanmingRounds: April30Round[] = [
         d('劉諺明', '是喔。'),
         d('劉諺明', '我今天也沒碰到他。'),
         d('劉諺明', '他跟佑達認識那麼久，應該需要一點時間整理心情。'),
-      ]),
+      ], 1),
       c('你覺得怪獸會不會很難接受？', [
         d('劉諺明', '應該會吧。'),
         d('劉諺明', '他們幾個從附中就一起玩音樂，這麼多年下來，早就不是單純一起練團的關係了。'),
-      ]),
+      ], 2),
       c('我有點擔心他。', [
         n('諺明哥看了看你，語氣放緩了一些。'),
         d('劉諺明', '會擔心也是正常的。'),
         d('劉諺明', '不過妳不用太著急，等他想說話的時候，自然會找人聊的。'),
-      ]),
+      ], 3),
     ],
   },
   {
@@ -772,16 +774,16 @@ const yanmingRounds: April30Round[] = [
       c('鼓的位置怎麼辦？', [
         d('劉諺明', '先空著吧。'),
         d('劉諺明', '現在急著找人補上，也不一定是好事。'),
-      ]),
+      ], 2),
       c('那大家還會繼續練團嗎？', [
         d('劉諺明', '我想會。'),
         d('劉諺明', '只是可能要重新調整一下，大家也需要時間適應。'),
-      ]),
+      ], 3),
       c('你會不會覺得很麻煩？', [
         n('諺明哥笑了笑，把口袋裡的紙拿出來看了一眼，又重新收好。'),
         d('劉諺明', '當然會啊。'),
         d('劉諺明', '不過開練團室本來就會遇到各種事情，這也沒什麼。'),
-      ]),
+      ], 1),
     ],
   },
   {
@@ -794,18 +796,18 @@ const yanmingRounds: April30Round[] = [
       c('我只是覺得大家這樣很可惜。', [
         d('劉諺明', '我懂。'),
         d('劉諺明', '不過他們幾個從附中一路玩到現在，也不是說遇到一次挫折就會什麼都沒有了。'),
-      ]),
+      ], 2),
       c('你覺得他們還能回到以前嗎？', [
         n('諺明哥沒有馬上回答，視線落在前方。'),
         d('劉諺明', '可能回不到一模一樣的以前了。'),
         d('劉諺明', '不過以後還是可以有新的樣子。'),
         d('劉諺明', '這種事情急不來。'),
-      ]),
+      ], 3),
       c('那我們是不是只能先等一等？', [
         n('諺明哥笑了一下。'),
         d('劉諺明', '嗯，先讓大家喘口氣吧。'),
         d('劉諺明', '該做的事情還是會繼續做，只是不用急著把所有事情一次想完。'),
-      ]),
+      ], 2),
     ],
   },
 ]
@@ -820,7 +822,7 @@ const wenComfortChoices: April30Choice[] = [
     n('你掌心在他背上輕輕拍了兩下。他低著頭，眼尾紅得更明顯，過了好一會兒才慢慢把手落在你的背後。'),
     d('溫尚翊', '……我又沒有哭。'),
     n('他的聲音悶在你肩邊，手指卻悄悄捏住了你衣服的一小角。'),
-  ]),
+  ], 3),
   c('替他擦掉眼角的水氣', [
     n('你沒有拆穿他，只是抽出紙巾，伸手替他擦過眼角。'),
     n('他下意識偏了一下頭，卻沒有真的躲開。'),
@@ -829,7 +831,7 @@ const wenComfortChoices: April30Choice[] = [
     n('他接過紙巾，胡亂在眼角按了一下，吸了口氣。'),
     d('溫尚翊', '……妳真的很煩欸。'),
     n('話還是那句話，這次卻沒什麼力氣，反而把紙巾好好收進口袋。'),
-  ]),
+  ], 2),
   c('握住他的手，陪他多坐一會兒', [
     n('你伸手碰了碰他放在膝上的手背，見他沒有躲，才慢慢把他的手握住。'),
     n('溫尚翊低頭看著你們交握的手，拇指在你手背上蹭了一下。'),
@@ -837,7 +839,7 @@ const wenComfortChoices: April30Choice[] = [
     d('溫尚翊', '……妳今天不用回去喔？'),
     d('你', '不用你操心啦。'),
     n('他終於很輕地笑了一聲，沒有把手抽回去。'),
-  ]),
+  ], 4),
 ]
 
 const ashinComfortChoices: April30Choice[] = [
@@ -849,7 +851,7 @@ const ashinComfortChoices: April30Choice[] = [
     n('空出手後，他沒有立刻說話，只是伸手輕輕抱住你。手臂繞過你的背，力道很輕，像是怕嚇到你。'),
     d('陳信宏', '……謝謝妳喔。'),
     n('他把下巴輕輕靠在你的肩上，安靜地停了一會兒，才慢慢鬆開手。'),
-  ]),
+  ], 3),
   c('朝他張開手臂，讓他自己決定要不要抱過來', [
     n('你沒有多說什麼，只是朝他張開手臂。陳信宏看了你一眼，像是沒想到你會這麼直接。'),
     d('陳信宏', '現在喔？'),
@@ -858,7 +860,7 @@ const ashinComfortChoices: April30Choice[] = [
     n('他伸手環住你的背，抱得很溫柔，掌心在你背上輕輕停著。'),
     d('陳信宏', '那我就抱一下下喔。'),
     n('話是這麼說，他卻沒有急著放開。'),
-  ]),
+  ], 4),
   c('靠近一點，讓他把額頭靠在你的肩上', [
     n('你伸手輕輕碰了碰他的肩膀，在他旁邊坐近了一點。'),
     d('你', '今天不用一直裝作沒事啦。'),
@@ -867,7 +869,7 @@ const ashinComfortChoices: April30Choice[] = [
     d('你', '那就先不要講。'),
     n('他輕輕點頭，手指搭在你的手背上，沒有再把距離拉開。'),
     d('陳信宏', '嗯。這樣就很好了。'),
-  ]),
+  ], 3),
 ]
 
 const masaComfortChoices: April30Choice[] = [
@@ -879,7 +881,7 @@ const masaComfortChoices: April30Choice[] = [
     n('瑪莎張了張嘴，原本想吐槽，最後只嘖了一聲，抬手在你背上拍了兩下。'),
     d('瑪莎', '……好啦，就一下。'),
     n('他嘴上還是嫌棄，卻沒有把你的手拿開，反而放慢了腳步。'),
-  ]),
+  ], 2),
   c('趁他沒注意時，輕輕牽住他的手', [
     n('你伸手握住他垂在身側的手。瑪莎的話一下子停住，低頭看了看你們牽在一起的手。'),
     d('瑪莎', '妳現在是在幹嘛？'),
@@ -888,7 +890,7 @@ const masaComfortChoices: April30Choice[] = [
     d('瑪莎', '誰偷偷不開心了……'),
     n('他把視線轉向前面，耳朵有點紅，過了一會兒才小聲補了一句。'),
     d('瑪莎', '……不過妳牽就牽，不要一直講。'),
-  ]),
+  ], 4),
   c('勾住他的手臂，陪他慢慢走', [
     n('你伸手勾住瑪莎的手臂，故意把腳步放慢了一點。'),
     d('瑪莎', '走路就走路，妳突然黏過來幹嘛？'),
@@ -898,7 +900,7 @@ const masaComfortChoices: April30Choice[] = [
     d('你', '那你也不要一直踢路邊的石頭。'),
     n('瑪莎忍不住笑了一聲，肩膀輕輕撞了你一下。'),
     d('瑪莎', '知道啦，囉嗦。'),
-  ]),
+  ], 3),
 ]
 
 const stoneComfortChoices: April30Choice[] = [
@@ -908,7 +910,7 @@ const stoneComfortChoices: April30Choice[] = [
     d('石錦航', '嗯，我知道。'),
     n('他回握了一下，像是在告訴你他有收到你的心意。'),
     d('石錦航', '有妳陪我走這一段，已經很好了。'),
-  ]),
+  ], 3),
   c('停下腳步，主動抱抱他', [
     n('你停下腳步，往前一步輕輕抱住石頭。'),
     n('他明顯怔了一下，手還停在身側，過了半秒才慢慢抬起來，輕輕環住你的背。'),
@@ -917,15 +919,45 @@ const stoneComfortChoices: April30Choice[] = [
     n('他低下頭，手掌在你背上輕輕拍了兩下，沒有急著放開。'),
     d('石錦航', '嗯。那我就借妳抱一下。'),
     n('他的聲音很輕，抱著你的手卻比剛才更安穩了一點。'),
-  ]),
+  ], 4),
   c('替他理好被風吹亂的頭髮，再輕輕拍一拍肩膀', [
     n('你抬手替他把額前被風吹亂的頭髮理好，指尖掠過他的鬢角，又輕輕拍了拍他的肩。'),
     d('石錦航', '妳這樣，我反而不知道要說什麼了。'),
     d('你', '那就不用說啊。'),
     n('石頭笑了一下，伸手輕輕握住你的手腕，讓你的手在他肩上多停了一會兒。'),
     d('石錦航', '好。那我就先收下這個安慰。'),
-  ]),
+  ], 3),
 ]
+
+function april30RoundsFor(route: April30Route): April30Round[] {
+  if (route === 'wen') return wenRounds
+  if (route === 'ashin') return ashinRounds
+  if (route === 'masa') return masaRounds
+  if (route === 'stone') return stoneRounds
+  return yanmingRounds
+}
+
+function april30ComfortChoicesFor(route: April30Route): April30Choice[] {
+  if (route === 'wen') return wenComfortChoices
+  if (route === 'ashin') return ashinComfortChoices
+  if (route === 'masa') return masaComfortChoices
+  if (route === 'stone') return stoneComfortChoices
+  return []
+}
+
+export function getApril30AffectionTotal(
+  route: April30Route,
+  choices: number[],
+  comfortChoice: number | null = null,
+): number {
+  const rounds = april30RoundsFor(route)
+  const comfort = april30ComfortChoicesFor(route)
+  const dialogueScore = choices.reduce((total, choiceIndex, roundIndex) =>
+    total + (rounds[roundIndex]?.choices[choiceIndex]?.affection ?? 0), 0)
+  const comfortScore = comfortChoice === null ? 0 : (comfort[comfortChoice]?.affection ?? 0)
+  // Choosing a person's route is itself a small relationship choice.
+  return 1 + dialogueScore + comfortScore
+}
 
 const wenEndingBlocks: April30Block[] = [
   n('你沒有再追問，也沒有急著把氣氛拉回平常。溫尚翊把旁邊沒開的酒往遠處推了推，手指在膝蓋上停了一會兒。'),
@@ -978,7 +1010,9 @@ function readProgress(): April30Progress {
       && Number.isInteger(saved.roundIndex) && Array.isArray(saved.choices)
       && (saved.pendingChoice === null || Number.isInteger(saved.pendingChoice))
       && (saved.pendingComfortChoice === undefined || saved.pendingComfortChoice === null
-        || (Number.isInteger(saved.pendingComfortChoice) && saved.pendingComfortChoice >= 0 && saved.pendingComfortChoice <= 2))) {
+        || (Number.isInteger(saved.pendingComfortChoice) && saved.pendingComfortChoice >= 0 && saved.pendingComfortChoice <= 2))
+      && (saved.comfortChoice === undefined || saved.comfortChoice === null
+        || (Number.isInteger(saved.comfortChoice) && saved.comfortChoice >= 0 && saved.comfortChoice <= 2))) {
       // Old v2 saves may contain a selected physical-action option in the fifth round.
       // Reopen that final dialogue choice so the original fifth-round interaction is not skipped.
       const legacyActionWasSelected = saved.pendingComfortChoice === undefined
@@ -991,6 +1025,7 @@ function readProgress(): April30Progress {
         choices: saved.choices.filter((value): value is number => Number.isInteger(value) && value >= 0 && value <= 2),
         pendingChoice: legacyActionWasSelected ? null : saved.pendingChoice as number | null,
         pendingComfortChoice: saved.pendingComfortChoice ?? null,
+        comfortChoice: saved.comfortChoice ?? null,
       }
     }
   } catch {
@@ -1088,16 +1123,22 @@ export function April30Story({
     if (progress.pendingChoice === null) return
     if (progress.roundIndex === 4 && progress.route !== 'yanming' && progress.pendingComfortChoice === null) return
     const nextChoices = [...progress.choices, progress.pendingChoice]
+    const nextComfortChoice = progress.roundIndex === 4 ? progress.pendingComfortChoice : progress.comfortChoice
     if (progress.roundIndex < 4) {
-      commit({ ...progress, roundIndex: progress.roundIndex + 1, choices: nextChoices, pendingChoice: null, pendingComfortChoice: null })
+      commit({ ...progress, roundIndex: progress.roundIndex + 1, choices: nextChoices, pendingChoice: null, pendingComfortChoice: null, comfortChoice: nextComfortChoice })
     } else {
-      commit({ ...progress, phase: 'complete', choices: nextChoices, pendingChoice: null, pendingComfortChoice: null })
+      commit({ ...progress, phase: 'complete', choices: nextChoices, pendingChoice: null, pendingComfortChoice: null, comfortChoice: nextComfortChoice })
     }
   }
 
   const finish = () => {
     if (!progress.route || progress.choices.length !== 5) return
-    onFinish({ route: progress.route, choices: progress.choices })
+    onFinish({
+      route: progress.route,
+      choices: progress.choices,
+      comfortChoice: progress.comfortChoice,
+      affection: getApril30AffectionTotal(progress.route, progress.choices, progress.comfortChoice),
+    })
   }
 
   const routeRounds = progress.phase === 'wen' ? wenRounds

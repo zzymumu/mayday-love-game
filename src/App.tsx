@@ -100,7 +100,7 @@ import { March29Show } from './March29Show'
 import { buildMarch29DiaryData, type March29DiaryCharacter, type March29DiaryData } from './march29Diary'
 import { April12Story, buildApril12DiaryData, type April12Character, type April12DiaryData } from './April12Story'
 import { April20Story, type April20Character } from './April20Story'
-import { April30Story, type April30Selection } from './April30Story'
+import { April30Story, getApril30AffectionTotal, type April30Route, type April30Selection } from './April30Story'
 import { May10Story, type May10Selection } from './May10Story'
 import { buildApril20DiaryData, type April20DiaryData } from './april20Diary'
 import { buildApril30DiaryData, type April30DiaryData } from './april30Diary'
@@ -3270,6 +3270,47 @@ function App() {
     localStorage.setItem(migrationKey, 'true')
   }, [])
 
+  useEffect(() => {
+    const appliedKey = 'mayday-april30-affection-applied'
+    if (localStorage.getItem(appliedKey) === 'true' || localStorage.getItem('mayday-april30-day-complete') !== 'true') return
+    const routeValue = localStorage.getItem('mayday-april30-route')
+    const validRoutes: April30Route[] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
+    let choices: unknown = []
+    try { choices = JSON.parse(localStorage.getItem('mayday-april30-choices') ?? '[]') } catch { choices = [] }
+    if (!routeValue || !validRoutes.includes(routeValue as April30Route) || !Array.isArray(choices) || choices.length !== 5) return
+    const validChoices = choices.filter((value): value is number => Number.isInteger(value) && value >= 0 && value <= 2)
+    if (validChoices.length !== 5) return
+    const amount = getApril30AffectionTotal(routeValue as April30Route, validChoices, null)
+    addRouteAffection(routeValue as April30Route, amount)
+    localStorage.setItem(appliedKey, 'true')
+    localStorage.setItem('mayday-april30-affection-backfill-v1', 'true')
+    localStorage.setItem('mayday-april30-affection-total', String(amount))
+  }, [])
+
+  useEffect(() => {
+    const marker = 'mayday-spring-selection-affection-backfill-v1'
+    if (localStorage.getItem(marker) === 'true' || localStorage.getItem('mayday-spring-day-complete') !== 'true') return
+    const validCharacters: SpringCharacterId[] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
+    const isCharacter = (value: string | null): value is SpringCharacterId => Boolean(value && validCharacters.includes(value as SpringCharacterId))
+    const bonus: Record<SpringCharacterId, number> = { wen: 0, ashin: 0, masa: 0, stone: 0, yanming: 0 }
+    let declined: unknown = []
+    try { declined = JSON.parse(localStorage.getItem('mayday-spring-invite-declined') ?? '[]') } catch { declined = [] }
+    if (Array.isArray(declined)) {
+      declined.forEach((value) => { if (typeof value === 'string' && isCharacter(value)) bonus[value] += 1 })
+    }
+    // Older accepted invites already received a hidden +1 at confirmation; that point now represents the invite-open selection.
+    const afterChoice = localStorage.getItem('mayday-spring-after-choice')
+    if (afterChoice === 'yanming-dinner') bonus.yanming += 1
+    if (afterChoice === 'lesson') {
+      const teacher = localStorage.getItem('mayday-spring-lesson-character')
+      if (isCharacter(teacher) && teacher !== 'yanming') bonus[teacher] += 1
+    }
+    const smsTarget = localStorage.getItem('mayday-spring-sms-target')
+    if (isCharacter(smsTarget)) bonus[smsTarget] += 1
+    validCharacters.forEach((character) => { if (bonus[character] !== 0) addRouteAffection(character, bonus[character]) })
+    localStorage.setItem(marker, 'true')
+  }, [])
+
   const changeStage = (next: StoryStage) => {
     setStoryStage(next)
     localStorage.setItem('mayday-story-stage', next)
@@ -4887,8 +4928,11 @@ function App() {
 
   const chooseSpringInviteTarget = (character: SpringCharacterId) => {
     if (!springInviteCandidates.includes(character) || springInviteDeclined.includes(character) || springStoreCharacter) return
+    if (springInviteTarget) return
     setSpringInviteTarget(character)
     localStorage.setItem('mayday-spring-invite-target', character)
+    // Opening one invitation is a deliberate choice to give that person attention.
+    addRouteAffection(character, 1)
     setSpringInviteReplies([])
     localStorage.setItem('mayday-spring-invite-replies', '[]')
     const sentKey = 'mayday-spring-invite-thread-sent-' + character
@@ -4950,7 +4994,6 @@ function App() {
     if (springInviteFinalChoice.accepted) {
       setSpringStoreCharacter(character)
       localStorage.setItem('mayday-spring-store-character', character)
-      addRouteAffection(character, 1)
       setSpringStoreReply(null)
       localStorage.removeItem('mayday-spring-store-reply')
       setSpringStoreSecondReply(null)
@@ -5015,6 +5058,8 @@ function App() {
 
   const chooseSpringAfterChoice = (choice: 'yanming-dinner' | 'lesson' | 'home') => {
     setSpringAfterChoice(choice)
+    // Dinner is a direct choice to spend one-on-one time with Yanming; lesson points wait until a teacher is chosen, and going home is neutral.
+    if (choice === 'yanming-dinner') addRouteAffection('yanming', 1)
     localStorage.setItem('mayday-spring-after-choice', choice)
     if (choice === 'yanming-dinner') {
       setSpringLessonCharacter(null)
@@ -5051,7 +5096,9 @@ function App() {
   }
 
   const chooseSpringLessonCharacter = (character: Exclude<SpringCharacterId, 'yanming'>) => {
+    if (springLessonCharacter) return
     setSpringLessonCharacter(character)
+    addRouteAffection(character, 1)
     localStorage.setItem('mayday-spring-lesson-character', character)
     setSpringLessonReplies([])
     localStorage.setItem('mayday-spring-lesson-replies', '[]')
@@ -5093,6 +5140,7 @@ function App() {
     setSpringSmsEventStarted(true)
     localStorage.setItem('mayday-spring-sms-event-started', 'true')
     setSpringSmsTarget(character)
+    addRouteAffection(character, 1)
     setSpringSmsRound(0)
     setSpringSmsReplied(false)
     setSpringSmsOpeningSent(false)
@@ -5365,6 +5413,7 @@ function App() {
     localStorage.setItem('mayday-spring-day-complete', 'true')
     localStorage.setItem('mayday-spring-sms-event-started', 'true')
     localStorage.setItem('mayday-spring-sms-event-complete', 'true')
+    localStorage.setItem('mayday-spring-selection-affection-backfill-v1', 'true')
     localStorage.setItem('mayday-march28-started', 'true')
     setActiveApp(null)
     setSelectedSmsThread(null)
@@ -5592,6 +5641,12 @@ function App() {
     setApril30DiaryUnlocked(true)
     localStorage.setItem('mayday-april30-complete', 'true')
     localStorage.setItem('mayday-april30-day-complete', 'true')
+    if (localStorage.getItem('mayday-april30-affection-applied') !== 'true') {
+      addRouteAffection(selection.route, selection.affection)
+      localStorage.setItem('mayday-april30-affection-applied', 'true')
+    }
+    localStorage.setItem('mayday-april30-affection-total', String(selection.affection))
+    localStorage.setItem('mayday-april30-comfort-choice', selection.comfortChoice === null ? '' : String(selection.comfortChoice))
     localStorage.setItem('mayday-april30-route', selection.route)
     localStorage.setItem('mayday-april30-choices', JSON.stringify(selection.choices))
     localStorage.setItem('mayday-april30-diary-data', JSON.stringify(diaryData))
@@ -5783,7 +5838,7 @@ function App() {
   }
 
   const resetLocalData = () => {
-    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-month-visit-target', 'mayday-month-visit-choice', 'mayday-month-visit-replies', 'mayday-month-visit-complete', 'mayday-month-free-chat-target', 'mayday-month-free-chat-choice-pending', 'mayday-month-free-chat-round', 'mayday-month-free-chat-replied', 'mayday-month-free-chat-started', 'mayday-month-free-chat-opening-sent', 'mayday-month-free-chat-replies', 'mayday-month-free-chat-complete', 'mayday-month-day-complete', 'mayday-next-month-started', 'mayday-next-month-invite-candidates', 'mayday-next-month-invite-target', 'mayday-next-month-invite-tease-choice', 'mayday-next-month-invite-reply-choice', 'mayday-next-month-invite-date-replies', 'mayday-next-month-invite-thread-started', 'mayday-next-month-event-kind', 'mayday-next-month-event-character', 'mayday-next-month-open-day-target', 'mayday-next-month-open-day-replies', 'mayday-next-month-free-chat-target', 'mayday-next-month-free-chat-round', 'mayday-next-month-free-chat-replied', 'mayday-next-month-free-chat-opening-sent', 'mayday-next-month-free-chat-replies', 'mayday-next-month-diary-unlocked', 'mayday-next-month-diary-data', 'mayday-wen-open-day-guitar-praise-v1', 'mayday-next-month-day-complete', 'mayday-route-affection', 'mayday-shared-experience-log', 'mayday-call-experience-context', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-month-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming', 'mayday-active-call-character', 'mayday-call-round-index', 'mayday-call-replied', 'mayday-call-transcript', 'mayday-year-end-started', 'mayday-year-end-invite-check-done', 'mayday-year-end-invite-candidates', 'mayday-year-end-invite-target', 'mayday-year-end-shopping-reply-choice', 'mayday-year-end-shopping-replies', 'mayday-year-end-shopping-complete', 'mayday-year-end-fireworks-replies', 'mayday-year-end-fireworks-complete', 'mayday-year-end-greeting-queue', 'mayday-year-end-greeting-index', 'mayday-year-end-greeting-target', 'mayday-year-end-chat-mode', 'mayday-year-end-first-reply-sent', 'mayday-year-end-free-chat-round', 'mayday-year-end-free-chat-replied', 'mayday-year-end-free-chat-replies', 'mayday-year-end-proactive-sent', 'mayday-year-end-extended-chat-characters', 'mayday-year-end-diary-unlocked', 'mayday-year-end-diary-data', 'mayday-year-end-day-complete', 'mayday-year-end-shopping-invite-sent-wen', 'mayday-year-end-shopping-invite-sent-masa', 'mayday-year-end-shopping-invite-sent-ashin', 'mayday-year-end-shopping-invite-sent-stone', 'mayday-year-end-shopping-invite-sent-yanming', 'mayday-winter-exam-chat-started', 'mayday-winter-exam-chat-reply-choice', 'mayday-winter-exam-tutoring-unlocked', 'mayday-winter-exam-replies', 'mayday-winter-practice-replies', 'mayday-winter-yanming-pickup-available', 'mayday-winter-bus-stop-character', 'mayday-winter-diary-unlocked', 'mayday-winter-diary-data', 'mayday-winter-break-day-complete', 'mayday-february-secret-target', 'mayday-february-secret-reply', 'mayday-february-dinner-reply', 'mayday-february-table-character', 'mayday-february-after-dinner-character', 'mayday-february-after-dinner-replies', 'mayday-february-diary-unlocked', 'mayday-february-diary-data', 'mayday-february-day-complete', 'mayday-spring-invites-sent', 'mayday-spring-invite-candidates', 'mayday-spring-invite-target', 'mayday-spring-invite-replies', 'mayday-spring-invite-declined', 'mayday-spring-store-character', 'mayday-spring-store-reply', 'mayday-spring-after-choice', 'mayday-spring-lesson-character', 'mayday-spring-lesson-touch-choice', 'mayday-spring-lesson-reply', 'mayday-spring-dinner-replies', 'mayday-spring-dinner-reply', 'mayday-spring-sms-target', 'mayday-spring-sms-round', 'mayday-spring-sms-replied', 'mayday-spring-sms-opening-sent', 'mayday-spring-sms-opening-choice', 'mayday-spring-sms-replies', 'mayday-spring-sms-mode', 'mayday-spring-sms-event-started', 'mayday-spring-sms-event-complete', 'mayday-spring-sms-history-restore-v1', 'mayday-spring-free-chat-eligible-v1', 'mayday-spring-free-chat-started', 'mayday-spring-free-chat-complete', 'mayday-spring-diary-unlocked', 'mayday-spring-diary-data', 'mayday-spring-diary-pending-data', 'mayday-spring-day-complete', 'mayday-march28-started', 'mayday-march28-visit-character', 'mayday-march28-visit-replies', 'mayday-march28-visit-complete', 'mayday-march28-day-complete', 'mayday-march29-started', 'mayday-march28-park-choice', 'mayday-march28-park-stay-replies', 'mayday-march28-morning-character', 'mayday-march28-morning-replies', 'mayday-march28-morning-complete', 'mayday-march28-diary-unlocked', 'mayday-march28-diary-data', 'mayday-march28-diary-copy-version', 'mayday-march29-progress', 'mayday-march29-aftershow-progress', 'mayday-march29-complete', 'mayday-march29-diary-unlocked', 'mayday-march29-diary-data', 'mayday-april12-started', 'mayday-april12-progress', 'mayday-april12-clock', 'mayday-april12-complete', 'mayday-april12-diary-unlocked', 'mayday-april12-diary-data', 'mayday-april20-started', 'mayday-april20-progress', 'mayday-april20-clock', 'mayday-april20-complete', 'mayday-april20-day-complete', 'mayday-april20-sms-seeded', 'mayday-april20-route', 'mayday-april20-character', 'mayday-april20-choices', 'mayday-april20-diary-unlocked', 'mayday-april20-diary-data', 'mayday-may10-started', 'mayday-may10-progress-v1', 'mayday-may10-clock', 'mayday-may10-complete', 'mayday-may10-day-complete', 'mayday-may10-character', 'mayday-may10-choices', 'mayday-may10-jealousy-character', 'mayday-may10-jealousy-choices', 'mayday-current-drummer', 'mayday-drummer-joined-date', 'mayday-spring-free-chat-return-stage'].forEach((key) => localStorage.removeItem(key))
+    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-month-visit-target', 'mayday-month-visit-choice', 'mayday-month-visit-replies', 'mayday-month-visit-complete', 'mayday-month-free-chat-target', 'mayday-month-free-chat-choice-pending', 'mayday-month-free-chat-round', 'mayday-month-free-chat-replied', 'mayday-month-free-chat-started', 'mayday-month-free-chat-opening-sent', 'mayday-month-free-chat-replies', 'mayday-month-free-chat-complete', 'mayday-month-day-complete', 'mayday-next-month-started', 'mayday-next-month-invite-candidates', 'mayday-next-month-invite-target', 'mayday-next-month-invite-tease-choice', 'mayday-next-month-invite-reply-choice', 'mayday-next-month-invite-date-replies', 'mayday-next-month-invite-thread-started', 'mayday-next-month-event-kind', 'mayday-next-month-event-character', 'mayday-next-month-open-day-target', 'mayday-next-month-open-day-replies', 'mayday-next-month-free-chat-target', 'mayday-next-month-free-chat-round', 'mayday-next-month-free-chat-replied', 'mayday-next-month-free-chat-opening-sent', 'mayday-next-month-free-chat-replies', 'mayday-next-month-diary-unlocked', 'mayday-next-month-diary-data', 'mayday-wen-open-day-guitar-praise-v1', 'mayday-next-month-day-complete', 'mayday-route-affection', 'mayday-shared-experience-log', 'mayday-call-experience-context', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-month-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming', 'mayday-active-call-character', 'mayday-call-round-index', 'mayday-call-replied', 'mayday-call-transcript', 'mayday-year-end-started', 'mayday-year-end-invite-check-done', 'mayday-year-end-invite-candidates', 'mayday-year-end-invite-target', 'mayday-year-end-shopping-reply-choice', 'mayday-year-end-shopping-replies', 'mayday-year-end-shopping-complete', 'mayday-year-end-fireworks-replies', 'mayday-year-end-fireworks-complete', 'mayday-year-end-greeting-queue', 'mayday-year-end-greeting-index', 'mayday-year-end-greeting-target', 'mayday-year-end-chat-mode', 'mayday-year-end-first-reply-sent', 'mayday-year-end-free-chat-round', 'mayday-year-end-free-chat-replied', 'mayday-year-end-free-chat-replies', 'mayday-year-end-proactive-sent', 'mayday-year-end-extended-chat-characters', 'mayday-year-end-diary-unlocked', 'mayday-year-end-diary-data', 'mayday-year-end-day-complete', 'mayday-year-end-shopping-invite-sent-wen', 'mayday-year-end-shopping-invite-sent-masa', 'mayday-year-end-shopping-invite-sent-ashin', 'mayday-year-end-shopping-invite-sent-stone', 'mayday-year-end-shopping-invite-sent-yanming', 'mayday-winter-exam-chat-started', 'mayday-winter-exam-chat-reply-choice', 'mayday-winter-exam-tutoring-unlocked', 'mayday-winter-exam-replies', 'mayday-winter-practice-replies', 'mayday-winter-yanming-pickup-available', 'mayday-winter-bus-stop-character', 'mayday-winter-diary-unlocked', 'mayday-winter-diary-data', 'mayday-winter-break-day-complete', 'mayday-february-secret-target', 'mayday-february-secret-reply', 'mayday-february-dinner-reply', 'mayday-february-table-character', 'mayday-february-after-dinner-character', 'mayday-february-after-dinner-replies', 'mayday-february-diary-unlocked', 'mayday-february-diary-data', 'mayday-february-day-complete', 'mayday-spring-invites-sent', 'mayday-spring-invite-candidates', 'mayday-spring-invite-target', 'mayday-spring-invite-replies', 'mayday-spring-invite-declined', 'mayday-spring-store-character', 'mayday-spring-store-reply', 'mayday-spring-after-choice', 'mayday-spring-lesson-character', 'mayday-spring-lesson-touch-choice', 'mayday-spring-lesson-reply', 'mayday-spring-dinner-replies', 'mayday-spring-dinner-reply', 'mayday-spring-sms-target', 'mayday-spring-sms-round', 'mayday-spring-sms-replied', 'mayday-spring-sms-opening-sent', 'mayday-spring-sms-opening-choice', 'mayday-spring-sms-replies', 'mayday-spring-sms-mode', 'mayday-spring-sms-event-started', 'mayday-spring-sms-event-complete', 'mayday-spring-sms-history-restore-v1', 'mayday-spring-free-chat-eligible-v1', 'mayday-spring-free-chat-started', 'mayday-spring-free-chat-complete', 'mayday-spring-diary-unlocked', 'mayday-spring-diary-data', 'mayday-spring-diary-pending-data', 'mayday-spring-day-complete', 'mayday-march28-started', 'mayday-march28-visit-character', 'mayday-march28-visit-replies', 'mayday-march28-visit-complete', 'mayday-march28-day-complete', 'mayday-march29-started', 'mayday-march28-park-choice', 'mayday-march28-park-stay-replies', 'mayday-march28-morning-character', 'mayday-march28-morning-replies', 'mayday-march28-morning-complete', 'mayday-march28-diary-unlocked', 'mayday-march28-diary-data', 'mayday-march28-diary-copy-version', 'mayday-march29-progress', 'mayday-march29-aftershow-progress', 'mayday-march29-complete', 'mayday-march29-diary-unlocked', 'mayday-march29-diary-data', 'mayday-april12-started', 'mayday-april12-progress', 'mayday-april12-clock', 'mayday-april12-complete', 'mayday-april12-diary-unlocked', 'mayday-april12-diary-data', 'mayday-april20-started', 'mayday-april20-progress', 'mayday-april20-clock', 'mayday-april20-complete', 'mayday-april20-day-complete', 'mayday-april20-sms-seeded', 'mayday-april20-route', 'mayday-april20-character', 'mayday-april20-choices', 'mayday-april20-diary-unlocked', 'mayday-april20-diary-data', 'mayday-april30-affection-applied', 'mayday-april30-affection-backfill-v1', 'mayday-april30-affection-total', 'mayday-april30-comfort-choice', 'mayday-spring-selection-affection-backfill-v1', 'mayday-may10-started', 'mayday-may10-progress-v1', 'mayday-may10-clock', 'mayday-may10-complete', 'mayday-may10-day-complete', 'mayday-may10-character', 'mayday-may10-choices', 'mayday-may10-jealousy-character', 'mayday-may10-jealousy-choices', 'mayday-current-drummer', 'mayday-drummer-joined-date', 'mayday-spring-free-chat-return-stage'].forEach((key) => localStorage.removeItem(key))
     ;(['wen', 'ashin', 'masa', 'stone', 'yanming'] as SpringCharacterId[]).forEach((character) => localStorage.removeItem('mayday-spring-invite-thread-sent-' + character))
     SAVE_SLOT_IDS.forEach((slot) => localStorage.removeItem(SAVE_SLOT_PREFIX + slot))
     setPlayerName('')
