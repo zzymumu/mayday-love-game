@@ -89,7 +89,7 @@ function chatEntry(character: JuneStudyCharacter, choices: number[]): string[] {
   switch (character) {
     case 'wen':
       return [
-        '晚上回到家，我又拿起手機找怪獸聊天。本來只是想跟他說早上買早餐時差點把豆漿灑出來，結果講著講著，連袋子破掉、旁邊的人看過來這種丟臉小事都一起交代了。',
+        '晚上回到家，我又拿起手機找怪獸聊天。本來只是想跟他說早上買早餐時差點把豆漿灑出來，結果三言兩語就被他問出一堆細節。',
         first === 0
           ? '他照例先吐槽我到底拿了多少東西，還提醒我下次不要什麼都塞在同一隻手上。嘴巴真的很不饒人，可是這種熟悉的鬥嘴反而讓人覺得很放鬆。'
           : first === 1
@@ -103,7 +103,7 @@ function chatEntry(character: JuneStudyCharacter, choices: number[]): string[] {
       ]
     case 'ashin':
       return [
-        '晚上回到家，我又找阿信聊了一會兒。開頭只是跟他說今天看到一朵雲，長得像一隻正在睡覺的兔子，沒想到他真的追問牠是趴著還是躺著，還說自己突然也想去看雲。',
+        '晚上回到家，我又找阿信聊了一會兒。開頭只是跟他說今天看到一朵雲，長得像一隻正在睡覺的兔子。沒想到這種小事也能讓我們聊上好一會兒。',
         first === 0
           ? '我跟他描述那朵雲有多像兔子，他居然認真問牠是怎麼睡的。明明只是一朵雲，卻被我們聊得好像真的有一隻兔子躺在天上。'
           : first === 1
@@ -117,7 +117,7 @@ function chatEntry(character: JuneStudyCharacter, choices: number[]): string[] {
       ]
     case 'masa':
       return [
-        '晚上回到家，我突然想到小時候的事，就傳訊息去鬧瑪莎。明明只是想問他以前是不是很小氣，結果一下子又聊到分零食、搶自己喜歡的東西，連誰比較幼稚都能爭半天。',
+        '晚上回到家，我突然想到小時候的事，就傳訊息去鬧瑪莎。結果一下子又聊到分零食、搶自己喜歡的東西，連誰比較幼稚都能爭半天。',
         first === 0
           ? '我說他小時候很小氣，他立刻追問我哪來的結論，還不肯承認。這個人真的從小到大都很會替自己辯護。'
           : first === 1
@@ -131,7 +131,7 @@ function chatEntry(character: JuneStudyCharacter, choices: number[]): string[] {
       ]
     case 'stone':
       return [
-        '晚上回到家，我想起回來路上看到的那隻小貓，就傳訊息跟石頭分享。白白的，尾巴尖尖還帶一點灰，光是回想就覺得好可愛。',
+        '晚上回到家，我想起回來路上看到的那隻小貓，就傳訊息跟石頭分享。明明只是路上遇到的小傢伙，回想起來還是覺得很可愛。',
         first === 0
           ? '我把牠的樣子仔細描述給石頭聽，他還問牠有沒有讓我摸。連這種小事他都會先替小貓想，真的很細心。'
           : first === 1
@@ -145,7 +145,7 @@ function chatEntry(character: JuneStudyCharacter, choices: number[]): string[] {
       ]
     case 'yanming':
       return [
-        '晚上回到家，我又找諺明哥聊了幾句。本來只是想跟他分享今天煮麵時忘記放鹽的蠢事，結果連自己到底有沒有資格說會煮飯都被他拿來吐槽。',
+        '晚上回到家，我又找諺明哥聊了幾句。本來只是想跟他分享今天做飯時鬧出的笑話，結果連自己到底有沒有資格說會煮飯都被他拿來吐槽。',
         first === 0
           ? '我跟他說那碗麵吃起來像在嚼白開水，他問我到底是在煮麵還是在煮一碗熱水。明明是很正經的人，吐槽起來也挺準的。'
           : first === 1
@@ -170,7 +170,7 @@ export function buildJuneDiaryData(selection: JuneDiarySelection): JuneDiaryData
     '啊，對了，明天一定要記得繼續寫報告。今天先到這裡，不然又要拖到半夜了。晚安！',
   ]
   return {
-    title: '六月的日子，還是有很多小事值得記下來。',
+    title: '今天還挺值得記一下的。',
     text: paragraphs.join('\\n\\n'),
   }
 }
