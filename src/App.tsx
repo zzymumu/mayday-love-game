@@ -4868,7 +4868,7 @@ function App() {
   }
 
   const chooseSpringSmsOpening = (choiceIndex: number) => {
-    if (!springSmsTarget || springSmsOpeningSent || (springSmsMode === 'free' && springFreeChatComplete)) return
+    if (!springSmsTarget || springSmsOpeningSent || (springSmsMode === 'free' && (!springFreeChatStarted || springFreeChatComplete))) return
     const context: SpringDayContext = {
       storeCharacter: springStoreCharacter,
       afterChoice: springAfterChoice,
@@ -4920,7 +4920,7 @@ function App() {
   }
 
   const chooseSpringSmsReply = (choiceIndex: number) => {
-    if (!springSmsTarget || !springSmsOpeningSent || springSmsReplied || (springSmsMode === 'free' && springFreeChatComplete)) return
+    if (!springSmsTarget || !springSmsOpeningSent || springSmsReplied || (springSmsMode === 'free' && (!springFreeChatStarted || springFreeChatComplete))) return
     const context: SpringDayContext = {
       storeCharacter: springStoreCharacter,
       afterChoice: springAfterChoice,
@@ -5304,6 +5304,18 @@ function App() {
     if (!springFreeChatStarted || springFreeChatComplete || springSmsTarget
       || localStorage.getItem('mayday-spring-free-chat-complete') === 'true') return
     chooseSpringSmsTarget(character, 'free')
+  }
+
+  const resumeSpringFreeChat = () => {
+    if (!springFreeChatStarted || springFreeChatComplete) return
+    setActiveApp('messages')
+    if (springSmsTarget) {
+      setSelectedSmsThread(springSmsTarget)
+      changeStage('spring-free-chat')
+    } else {
+      setSelectedSmsThread(null)
+      changeStage('spring-free-chat-picker')
+    }
   }
 
   const finishSpringFreeChat = () => {
@@ -8380,6 +8392,9 @@ function App() {
                             </div>
                             {localStorage.getItem('mayday-spring-day-complete') === 'true' && !springFreeChatStarted && !springFreeChatComplete && (
                               <button className="story-primary-button" onClick={startSpringFreeChat}>自由聊天 <ChevronRight size={15} /></button>
+                            )}
+                            {springFreeChatStarted && !springFreeChatComplete && (
+                              <button className="story-primary-button" onClick={resumeSpringFreeChat}>繼續自由聊天 <ChevronRight size={15} /></button>
                             )}
                             {inboxThreads.map((thread) => (
                               <button className="sms-thread-row" key={thread.id} onClick={() => openSmsThread(thread.id)}>
