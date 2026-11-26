@@ -45,15 +45,15 @@ const may10DiaryParagraphs = [
 
 const jealousyDiaryText: Record<May10Character, (mainCharacter: May10Character | null) => string> = {
   wen: (mainCharacter) =>
-    `本來還在跟${mainCharacter ? NAMES[mainCharacter] : '他'}聊著，怪獸就從另一頭走過來叫我。說是剛才有個地方還想問我，結果講著講著，注意力倒一直繞回我怎麼跟別人聊那麼久。嘴上明明不肯承認在等，手裡那個撥片卻轉個不停。這個人真的很不會拐彎。`,
+    `本來還在跟${mainCharacter ? NAMES[mainCharacter] : '他'}聊著，怪獸就從另一頭走過來叫我，說剛才有個地方還想問我。結果聊著聊著，話題又繞回我怎麼跟別人聊那麼久。明明有話想說，偏偏又不肯好好講，這個人真的很不會拐彎。`,
   ashin: (mainCharacter) =>
-    `本來還在跟${mainCharacter ? NAMES[mainCharacter] : '他'}聊著，阿信後來抱著吉他和樂譜走過來，說剛才那段還想再彈給我聽。他沒有直接打斷我們，一直等到我轉過頭才開口。坐下來之後又很留意我有沒有認真聽，害我連想分心都不好意思。`,
+    `本來還在跟${mainCharacter ? NAMES[mainCharacter] : '他'}聊著，阿信後來抱著吉他和樂譜走過來，說剛才那段還想再彈給我聽。他沒有直接打斷我們，一直等到我轉過頭才開口。後來那段時間，他倒是很認真地留給我，連我說話也好好聽著。`,
   masa: (mainCharacter) =>
-    `本來還在跟${mainCharacter ? NAMES[mainCharacter] : '他'}聊著，瑪莎就靠過來問我是不是很忙，還說要不要拿號碼牌。明明一副在看熱鬧的樣子，話裡話外卻一直拿我跟別人聊天這件事開玩笑。後來還敲我額頭，真的是……嘴巴那麼壞，倒是很會找機會把人留下來。`,
+    `本來還在跟${mainCharacter ? NAMES[mainCharacter] : '他'}聊著，瑪莎就靠過來問我是不是很忙，還說要不要拿號碼牌。明明一副在看熱鬧的樣子，話裡話外卻一直拿我跟別人聊天這件事開玩笑。最後還不忘提醒我，等一下不要又被別人叫走。真的是，嘴巴那麼壞，自己倒很會把人留下來。`,
   stone: (mainCharacter) =>
-    `本來還在跟${mainCharacter ? NAMES[mainCharacter] : '他'}聊著，石頭等我轉過頭才輕聲叫我，沒有急著插話。他說剛才就想找我，只是看我聊得開心，才多等了一下。話說得不多，卻一直把時間留給我，讓人不知不覺就安靜下來。`,
+    `本來還在跟${mainCharacter ? NAMES[mainCharacter] : '他'}聊著，石頭等我轉過頭才輕聲叫我，沒有急著插話。後來他攤開樂譜，慢慢跟我聊起剛才那段，最後還說下次來要再拿給我看。石頭講話總是輕輕的，卻會讓人不知不覺把那些小事記住。`,
   yanming: (mainCharacter) =>
-    `本來還在跟${mainCharacter ? NAMES[mainCharacter] : '他'}聊著，諺明哥忙完鼓組才過來，沒有急著打斷我們，只跟我聊起陳泳錩剛才打鼓的事。說到下次練團，他還提醒我來之前跟他說一聲。跟諺明哥講話就是這樣，明明很平常，卻會把事情替人想得很周到。`,
+    `本來還在跟${mainCharacter ? NAMES[mainCharacter] : '他'}聊著，諺明哥忙完鼓組才過來，沒有急著打斷我們，只跟我聊起陳泳錩剛才打鼓的事。最後還說，下次過來不用客氣，直接進來就好。跟諺明哥講話就是這樣，明明很平常，卻總讓人覺得被照顧到了。`,
 }
 
 export function buildMay10DiaryData(selection?: May10DiarySelection): May10DiaryData {
