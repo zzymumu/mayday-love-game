@@ -2797,17 +2797,6 @@ function App() {
         'mayday-spring-free-chat-complete',
         'mayday-spring-free-chat-return-stage',
       ].forEach((key) => delete restoredData[key])
-      // Clear only the temporary free-chat session state; the saved historical SMS
-      // conversation itself remains untouched.
-      ;[
-        'mayday-spring-sms-target',
-        'mayday-spring-sms-round',
-        'mayday-spring-sms-replied',
-        'mayday-spring-sms-opening-sent',
-        'mayday-spring-sms-opening-choice',
-        'mayday-spring-sms-replies',
-      ].forEach((key) => delete restoredData[key])
-      restoredData['mayday-spring-sms-mode'] = 'day'
     } else {
       const resumableSpringChat =
         savedTimelineStage === 'spring-free-chat' &&
