@@ -9219,7 +9219,7 @@ function App() {
                                     <div className="diary-section-label">星期三 · 校園</div>
                                     <DiarySection label="日記" text={april30DiaryData.text} />
                                   </div>
-                                ) :                                 {selectedDiaryDate === '1997-04-20' && april20DiaryUnlocked && april20DiaryData ? (
+                                ) : selectedDiaryDate === '1997-04-20' && april20DiaryUnlocked && april20DiaryData ? (
                                   <>
                                     <div className="diary-paper">
                                       <span className="diary-date">1997 年 4 月 20 日・星期日</span>
