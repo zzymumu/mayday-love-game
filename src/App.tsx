@@ -2890,15 +2890,20 @@ function App() {
       restoredData['mayday-spring-free-chat-eligible-v1'] = 'true'
       if (savedTimelineStage === 'spring-free-chat-picker' || savedTimelineStage === 'spring-free-chat') {
         restoredData['mayday-spring-free-chat-started'] = 'true'
-        restoredData['mayday-spring-free-chat-return-stage'] = 'spring-diary'
+        restoredData['mayday-spring-free-chat-return-stage'] = 'spring-sms-chat'
         if (savedTimelineStage === 'spring-free-chat' &&
           (!restoredData['mayday-spring-sms-target'] || restoredData['mayday-spring-sms-mode'] !== 'free')) {
           delete restoredData['mayday-spring-sms-target']
           restoredData['mayday-story-stage'] = 'spring-free-chat-picker'
           if (saved.stage === 'paused') restoredData['mayday-resume-stage'] = 'spring-free-chat-picker'
         }
+      } else if (savedTimelineStage === 'spring-diary') {
+        // Reaching the diary means the player either completed or skipped the optional chat.
+        restoredData['mayday-spring-free-chat-started'] = 'true'
+        restoredData['mayday-spring-free-chat-complete'] = 'true'
+        delete restoredData['mayday-spring-free-chat-return-stage']
       } else {
-        // The diary is the only place where a new 17 February chat can be opened.
+        // The regular 2/17 SMS checkpoint is still before the optional chat choice.
         restoredData['mayday-spring-free-chat-started'] = 'false'
         restoredData['mayday-spring-free-chat-complete'] = 'false'
         delete restoredData['mayday-spring-free-chat-return-stage']
@@ -5249,16 +5254,32 @@ function App() {
     return { title, text }
   }
 
-  const startSpringDiary = () => {
-    if (!springSmsTarget || !springSmsOpeningSent || !springSmsReplied || springSmsRound !== 4 || springSmsReplies.length !== 5) return
-    const data = buildSpringDiaryData()
+  const enterSpringDiary = (data: { title: string; text: string }) => {
     setSpringDiaryData(data)
     setSpringDiaryUnlocked(true)
+    setSpringFreeChatStarted(true)
+    setSpringFreeChatComplete(true)
     localStorage.setItem('mayday-spring-diary-data', JSON.stringify(data))
     localStorage.setItem('mayday-spring-diary-unlocked', 'true')
+    localStorage.setItem('mayday-spring-day-complete', 'true')
+    localStorage.setItem('mayday-spring-free-chat-eligible-v1', 'true')
+    localStorage.setItem('mayday-spring-free-chat-started', 'true')
+    localStorage.setItem('mayday-spring-free-chat-complete', 'true')
+    localStorage.removeItem('mayday-spring-diary-pending-data')
+    localStorage.removeItem('mayday-spring-free-chat-return-stage')
     setActiveApp(null)
     setSelectedSmsThread(null)
     changeStage('spring-diary')
+  }
+
+  const startSpringDiary = () => {
+    if (storyStage !== 'spring-sms-chat' || effectiveDateStage !== 'spring-sms-chat' ||
+      saveGameDate !== '1997.02.17' || springSmsMode !== 'day' ||
+      !springSmsTarget || !springSmsOpeningSent || !springSmsReplied ||
+      springSmsRound !== 4 || springSmsReplies.length !== 5 ||
+      springFreeChatStarted || springFreeChatComplete) return
+    // Choosing the diary instead of the optional chat consumes the one-night opportunity.
+    enterSpringDiary(buildSpringDiaryData())
   }
 
   const finishSpringDiary = () => {
@@ -5467,17 +5488,21 @@ function App() {
   }
 
   const startSpringFreeChat = () => {
-    if (storyStage !== 'spring-diary' || effectiveDateStage !== 'spring-diary' ||
-      saveGameDate !== '1997.02.17' || currentTime < '21:00' || !springDiaryData) return
+    if (storyStage !== 'spring-sms-chat' || effectiveDateStage !== 'spring-sms-chat' ||
+      saveGameDate !== '1997.02.17' || currentTime < '21:00' || springSmsMode !== 'day' ||
+      !springSmsTarget || !springSmsOpeningSent || !springSmsReplied ||
+      springSmsRound !== 4 || springSmsReplies.length !== 5) return
     if (springFreeChatStarted || springFreeChatComplete
       || localStorage.getItem('mayday-spring-free-chat-started') === 'true'
       || localStorage.getItem('mayday-spring-free-chat-complete') === 'true') return
+    // Preserve the diary's source context before switching the active SMS thread to free chat.
+    localStorage.setItem('mayday-spring-diary-pending-data', JSON.stringify(buildSpringDiaryData()))
     setSpringFreeChatStarted(true)
     // Mark the 17 February checkpoint so an in-progress chat can be resumed from its save.
     localStorage.setItem('mayday-spring-day-complete', 'true')
     localStorage.setItem('mayday-spring-free-chat-eligible-v1', 'true')
     localStorage.setItem('mayday-spring-free-chat-started', 'true')
-    localStorage.setItem('mayday-spring-free-chat-return-stage', 'spring-diary')
+    localStorage.setItem('mayday-spring-free-chat-return-stage', 'spring-sms-chat')
     setSpringSmsTarget(null)
     setSpringSmsRound(0)
     setSpringSmsReplied(false)
@@ -5506,7 +5531,7 @@ function App() {
 
   const resumeSpringFreeChat = () => {
     if (!springFreeChatStarted || springFreeChatComplete || saveGameDate !== '1997.02.17' ||
-      !['spring-diary', 'spring-free-chat-picker', 'spring-free-chat'].includes(effectiveDateStage)) return
+      !['spring-sms-chat', 'spring-free-chat-picker', 'spring-free-chat'].includes(effectiveDateStage)) return
     setActiveApp('messages')
     if (springSmsTarget) {
       setSelectedSmsThread(springSmsTarget)
@@ -5520,17 +5545,22 @@ function App() {
   const finishSpringFreeChat = () => {
     if (!springSmsTarget || !springSmsOpeningSent || !springSmsReplied || springSmsRound !== 4 ||
       saveGameDate !== '1997.02.17' || effectiveDateStage !== 'spring-free-chat' ||
-      springFreeChatComplete || localStorage.getItem('mayday-spring-free-chat-complete') === 'true') return
+      springSmsMode !== 'free' || springFreeChatComplete ||
+      localStorage.getItem('mayday-spring-free-chat-complete') === 'true') return
+    let pendingDiary: { title?: unknown; text?: unknown } | null = null
+    try {
+      pendingDiary = JSON.parse(localStorage.getItem('mayday-spring-diary-pending-data') ?? 'null')
+    } catch { pendingDiary = null }
+    const diaryData = pendingDiary && typeof pendingDiary.title === 'string' && typeof pendingDiary.text === 'string'
+      ? { title: pendingDiary.title, text: pendingDiary.text }
+      : springDiaryData ?? buildSpringDiaryData()
     setSpringFreeChatStarted(true)
     setSpringFreeChatComplete(true)
     localStorage.setItem('mayday-spring-free-chat-started', 'true')
     localStorage.setItem('mayday-spring-free-chat-complete', 'true')
-    setActiveApp(null)
-    setSelectedSmsThread(null)
     setSpringSmsTarget(null)
     localStorage.removeItem('mayday-spring-sms-target')
-    localStorage.removeItem('mayday-spring-free-chat-return-stage')
-    changeStage('spring-diary')
+    enterSpringDiary(diaryData)
   }
 
   useEffect(() => {
@@ -5674,7 +5704,7 @@ function App() {
   }
 
   const resetLocalData = () => {
-    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-month-visit-target', 'mayday-month-visit-choice', 'mayday-month-visit-replies', 'mayday-month-visit-complete', 'mayday-month-free-chat-target', 'mayday-month-free-chat-choice-pending', 'mayday-month-free-chat-round', 'mayday-month-free-chat-replied', 'mayday-month-free-chat-started', 'mayday-month-free-chat-opening-sent', 'mayday-month-free-chat-replies', 'mayday-month-free-chat-complete', 'mayday-month-day-complete', 'mayday-next-month-started', 'mayday-next-month-invite-candidates', 'mayday-next-month-invite-target', 'mayday-next-month-invite-tease-choice', 'mayday-next-month-invite-reply-choice', 'mayday-next-month-invite-date-replies', 'mayday-next-month-invite-thread-started', 'mayday-next-month-event-kind', 'mayday-next-month-event-character', 'mayday-next-month-open-day-target', 'mayday-next-month-open-day-replies', 'mayday-next-month-free-chat-target', 'mayday-next-month-free-chat-round', 'mayday-next-month-free-chat-replied', 'mayday-next-month-free-chat-opening-sent', 'mayday-next-month-free-chat-replies', 'mayday-next-month-diary-unlocked', 'mayday-next-month-diary-data', 'mayday-wen-open-day-guitar-praise-v1', 'mayday-next-month-day-complete', 'mayday-route-affection', 'mayday-shared-experience-log', 'mayday-call-experience-context', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-month-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming', 'mayday-active-call-character', 'mayday-call-round-index', 'mayday-call-replied', 'mayday-call-transcript', 'mayday-year-end-started', 'mayday-year-end-invite-check-done', 'mayday-year-end-invite-candidates', 'mayday-year-end-invite-target', 'mayday-year-end-shopping-reply-choice', 'mayday-year-end-shopping-replies', 'mayday-year-end-shopping-complete', 'mayday-year-end-fireworks-replies', 'mayday-year-end-fireworks-complete', 'mayday-year-end-greeting-queue', 'mayday-year-end-greeting-index', 'mayday-year-end-greeting-target', 'mayday-year-end-chat-mode', 'mayday-year-end-first-reply-sent', 'mayday-year-end-free-chat-round', 'mayday-year-end-free-chat-replied', 'mayday-year-end-free-chat-replies', 'mayday-year-end-proactive-sent', 'mayday-year-end-extended-chat-characters', 'mayday-year-end-diary-unlocked', 'mayday-year-end-diary-data', 'mayday-year-end-day-complete', 'mayday-year-end-shopping-invite-sent-wen', 'mayday-year-end-shopping-invite-sent-masa', 'mayday-year-end-shopping-invite-sent-ashin', 'mayday-year-end-shopping-invite-sent-stone', 'mayday-year-end-shopping-invite-sent-yanming', 'mayday-winter-exam-chat-started', 'mayday-winter-exam-chat-reply-choice', 'mayday-winter-exam-tutoring-unlocked', 'mayday-winter-exam-replies', 'mayday-winter-practice-replies', 'mayday-winter-yanming-pickup-available', 'mayday-winter-bus-stop-character', 'mayday-winter-diary-unlocked', 'mayday-winter-diary-data', 'mayday-winter-break-day-complete', 'mayday-february-secret-target', 'mayday-february-secret-reply', 'mayday-february-dinner-reply', 'mayday-february-table-character', 'mayday-february-after-dinner-character', 'mayday-february-after-dinner-replies', 'mayday-february-diary-unlocked', 'mayday-february-diary-data', 'mayday-february-day-complete', 'mayday-spring-invites-sent', 'mayday-spring-invite-candidates', 'mayday-spring-invite-target', 'mayday-spring-invite-replies', 'mayday-spring-invite-declined', 'mayday-spring-store-character', 'mayday-spring-store-reply', 'mayday-spring-after-choice', 'mayday-spring-lesson-character', 'mayday-spring-lesson-touch-choice', 'mayday-spring-lesson-reply', 'mayday-spring-dinner-replies', 'mayday-spring-dinner-reply', 'mayday-spring-sms-target', 'mayday-spring-sms-round', 'mayday-spring-sms-replied', 'mayday-spring-sms-opening-sent', 'mayday-spring-sms-opening-choice', 'mayday-spring-sms-replies', 'mayday-spring-sms-mode', 'mayday-spring-sms-history-restore-v1', 'mayday-spring-free-chat-eligible-v1', 'mayday-spring-free-chat-started', 'mayday-spring-free-chat-complete', 'mayday-spring-diary-unlocked', 'mayday-spring-diary-data', 'mayday-spring-day-complete', 'mayday-march28-started', 'mayday-march28-visit-character', 'mayday-march28-visit-replies', 'mayday-march28-visit-complete', 'mayday-march28-day-complete', 'mayday-march29-started', 'mayday-march28-park-choice', 'mayday-march28-park-stay-replies', 'mayday-march28-morning-character', 'mayday-march28-morning-replies', 'mayday-march28-morning-complete', 'mayday-march28-diary-unlocked', 'mayday-march28-diary-data', 'mayday-march28-diary-copy-version', 'mayday-march29-progress', 'mayday-march29-aftershow-progress', 'mayday-march29-complete', 'mayday-march29-diary-unlocked', 'mayday-march29-diary-data', 'mayday-april12-started', 'mayday-april12-progress', 'mayday-april12-clock', 'mayday-april12-complete', 'mayday-april12-diary-unlocked', 'mayday-april12-diary-data', 'mayday-spring-free-chat-return-stage'].forEach((key) => localStorage.removeItem(key))
+    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-month-visit-target', 'mayday-month-visit-choice', 'mayday-month-visit-replies', 'mayday-month-visit-complete', 'mayday-month-free-chat-target', 'mayday-month-free-chat-choice-pending', 'mayday-month-free-chat-round', 'mayday-month-free-chat-replied', 'mayday-month-free-chat-started', 'mayday-month-free-chat-opening-sent', 'mayday-month-free-chat-replies', 'mayday-month-free-chat-complete', 'mayday-month-day-complete', 'mayday-next-month-started', 'mayday-next-month-invite-candidates', 'mayday-next-month-invite-target', 'mayday-next-month-invite-tease-choice', 'mayday-next-month-invite-reply-choice', 'mayday-next-month-invite-date-replies', 'mayday-next-month-invite-thread-started', 'mayday-next-month-event-kind', 'mayday-next-month-event-character', 'mayday-next-month-open-day-target', 'mayday-next-month-open-day-replies', 'mayday-next-month-free-chat-target', 'mayday-next-month-free-chat-round', 'mayday-next-month-free-chat-replied', 'mayday-next-month-free-chat-opening-sent', 'mayday-next-month-free-chat-replies', 'mayday-next-month-diary-unlocked', 'mayday-next-month-diary-data', 'mayday-wen-open-day-guitar-praise-v1', 'mayday-next-month-day-complete', 'mayday-route-affection', 'mayday-shared-experience-log', 'mayday-call-experience-context', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-month-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming', 'mayday-active-call-character', 'mayday-call-round-index', 'mayday-call-replied', 'mayday-call-transcript', 'mayday-year-end-started', 'mayday-year-end-invite-check-done', 'mayday-year-end-invite-candidates', 'mayday-year-end-invite-target', 'mayday-year-end-shopping-reply-choice', 'mayday-year-end-shopping-replies', 'mayday-year-end-shopping-complete', 'mayday-year-end-fireworks-replies', 'mayday-year-end-fireworks-complete', 'mayday-year-end-greeting-queue', 'mayday-year-end-greeting-index', 'mayday-year-end-greeting-target', 'mayday-year-end-chat-mode', 'mayday-year-end-first-reply-sent', 'mayday-year-end-free-chat-round', 'mayday-year-end-free-chat-replied', 'mayday-year-end-free-chat-replies', 'mayday-year-end-proactive-sent', 'mayday-year-end-extended-chat-characters', 'mayday-year-end-diary-unlocked', 'mayday-year-end-diary-data', 'mayday-year-end-day-complete', 'mayday-year-end-shopping-invite-sent-wen', 'mayday-year-end-shopping-invite-sent-masa', 'mayday-year-end-shopping-invite-sent-ashin', 'mayday-year-end-shopping-invite-sent-stone', 'mayday-year-end-shopping-invite-sent-yanming', 'mayday-winter-exam-chat-started', 'mayday-winter-exam-chat-reply-choice', 'mayday-winter-exam-tutoring-unlocked', 'mayday-winter-exam-replies', 'mayday-winter-practice-replies', 'mayday-winter-yanming-pickup-available', 'mayday-winter-bus-stop-character', 'mayday-winter-diary-unlocked', 'mayday-winter-diary-data', 'mayday-winter-break-day-complete', 'mayday-february-secret-target', 'mayday-february-secret-reply', 'mayday-february-dinner-reply', 'mayday-february-table-character', 'mayday-february-after-dinner-character', 'mayday-february-after-dinner-replies', 'mayday-february-diary-unlocked', 'mayday-february-diary-data', 'mayday-february-day-complete', 'mayday-spring-invites-sent', 'mayday-spring-invite-candidates', 'mayday-spring-invite-target', 'mayday-spring-invite-replies', 'mayday-spring-invite-declined', 'mayday-spring-store-character', 'mayday-spring-store-reply', 'mayday-spring-after-choice', 'mayday-spring-lesson-character', 'mayday-spring-lesson-touch-choice', 'mayday-spring-lesson-reply', 'mayday-spring-dinner-replies', 'mayday-spring-dinner-reply', 'mayday-spring-sms-target', 'mayday-spring-sms-round', 'mayday-spring-sms-replied', 'mayday-spring-sms-opening-sent', 'mayday-spring-sms-opening-choice', 'mayday-spring-sms-replies', 'mayday-spring-sms-mode', 'mayday-spring-sms-history-restore-v1', 'mayday-spring-free-chat-eligible-v1', 'mayday-spring-free-chat-started', 'mayday-spring-free-chat-complete', 'mayday-spring-diary-unlocked', 'mayday-spring-diary-data', 'mayday-spring-diary-pending-data', 'mayday-spring-day-complete', 'mayday-march28-started', 'mayday-march28-visit-character', 'mayday-march28-visit-replies', 'mayday-march28-visit-complete', 'mayday-march28-day-complete', 'mayday-march29-started', 'mayday-march28-park-choice', 'mayday-march28-park-stay-replies', 'mayday-march28-morning-character', 'mayday-march28-morning-replies', 'mayday-march28-morning-complete', 'mayday-march28-diary-unlocked', 'mayday-march28-diary-data', 'mayday-march28-diary-copy-version', 'mayday-march29-progress', 'mayday-march29-aftershow-progress', 'mayday-march29-complete', 'mayday-march29-diary-unlocked', 'mayday-march29-diary-data', 'mayday-april12-started', 'mayday-april12-progress', 'mayday-april12-clock', 'mayday-april12-complete', 'mayday-april12-diary-unlocked', 'mayday-april12-diary-data', 'mayday-spring-free-chat-return-stage'].forEach((key) => localStorage.removeItem(key))
     ;(['wen', 'ashin', 'masa', 'stone', 'yanming'] as SpringCharacterId[]).forEach((character) => localStorage.removeItem('mayday-spring-invite-thread-sent-' + character))
     SAVE_SLOT_IDS.forEach((slot) => localStorage.removeItem(SAVE_SLOT_PREFIX + slot))
     setPlayerName('')
@@ -8091,12 +8121,6 @@ function App() {
                     <div className="reunion-pause-note">這篇日記會保留在日記列表裡，之後可以隨時重讀。</div>
                   </div>
                   <div className="story-action-bar">
-                    {!springFreeChatStarted && !springFreeChatComplete && (
-                      <button className="story-primary-button secondary-chat-action" onClick={startSpringFreeChat}>睡前聊幾句 <ChevronRight size={15} /></button>
-                    )}
-                    {springFreeChatStarted && !springFreeChatComplete && (
-                      <button className="story-primary-button secondary-chat-action" onClick={resumeSpringFreeChat}>繼續自由聊天 <ChevronRight size={15} /></button>
-                    )}
                     <button className="story-primary-button" onClick={finishSpringDiary}>合上日記，結束今天 <ChevronRight size={15} /></button>
                   </div>
                 </div>
@@ -8605,7 +8629,7 @@ function App() {
                               <span>{isSpringTerm ? "收件匣 · 1997" : "收件匣 · 1996"}</span>
                             </div>
                             {springFreeChatStarted && !springFreeChatComplete && saveGameDate === '1997.02.17' &&
-                              ['spring-diary', 'spring-free-chat-picker', 'spring-free-chat'].includes(effectiveDateStage) && (
+                              ['spring-sms-chat', 'spring-free-chat-picker', 'spring-free-chat'].includes(effectiveDateStage) && (
                               <button className="story-primary-button" onClick={resumeSpringFreeChat}>繼續自由聊天 <ChevronRight size={15} /></button>
                             )}
                             {inboxThreads.map((thread) => (
@@ -8932,7 +8956,10 @@ function App() {
                               )}
                               {storyStage === 'spring-sms-chat' && springSmsTarget && selectedSmsThread === springSmsTarget && springSmsReplied && (
                                 <div className="sms-thread-actions">
-                                  <div className="reply-note">聊到這裡，今天的訊息也該收好了。</div>
+                                  <div className="reply-note">聊到這裡，今天的訊息也該收好了。睡前還有一點時間，要不要再找一個人聊幾句？</div>
+                                  {!springFreeChatStarted && !springFreeChatComplete && (
+                                    <button className="story-primary-button secondary-chat-action" onClick={startSpringFreeChat}>睡前再聊幾句 <ChevronRight size={15} /></button>
+                                  )}
                                   <button className="story-primary-button" onClick={startSpringDiary}>收起手機，寫下今天的日記 <ChevronRight size={15} /></button>
                                 </div>
                               )}
