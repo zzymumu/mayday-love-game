@@ -5117,6 +5117,7 @@ function App() {
     if (!springSmsTarget || !springSmsOpeningSent || springSmsReplied || !springSmsEventStarted || springSmsEventComplete ||
       localStorage.getItem('mayday-spring-sms-replied') === 'true' ||
       localStorage.getItem('mayday-spring-sms-event-complete') === 'true' ||
+      Number(localStorage.getItem('mayday-spring-sms-round') ?? '0') !== springSmsRound ||
       saveGameDate !== '1997.02.17' || storyStage !== 'spring-sms-chat') return
     const context: SpringDayContext = {
       storeCharacter: springStoreCharacter,
