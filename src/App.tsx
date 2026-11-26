@@ -5507,7 +5507,9 @@ function App() {
   }
 
   const finishApril20Story = (selection: { route: 'park' | 'rehearsal'; character: April20Character; choices: number[] }) => {
-    if (selection.choices.length !== 3) return
+    const expectedChoices = selection.route === 'park' || selection.character === 'wen' ? 3 : 5
+    const legacyThreeRoundCompletion = selection.route === 'rehearsal' && selection.character !== 'wen' && selection.choices.length === 3
+    if (selection.choices.length !== expectedChoices && !legacyThreeRoundCompletion) return
     localStorage.setItem('mayday-april20-complete', 'true')
     localStorage.setItem('mayday-april20-day-complete', 'true')
     localStorage.setItem('mayday-april20-route', selection.route)
