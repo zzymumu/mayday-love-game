@@ -1941,7 +1941,7 @@ function App() {
   const [day2StrollAccepted, setDay2StrollAccepted] = useState(() => localStorage.getItem('mayday-day2-after-ice-choice') === 'accept')
   const [day2DiaryUnlocked, setDay2DiaryUnlocked] = useState(() => localStorage.getItem('mayday-day2-diary-unlocked') === 'true')
   const [monthDiaryUnlocked, setMonthDiaryUnlocked] = useState(() => localStorage.getItem('mayday-month-diary-unlocked') === 'true' || localStorage.getItem('mayday-month-day-complete') === 'true')
-  const [selectedDiaryDate, setSelectedDiaryDate] = useState<'1996-10-15' | '1996-10-16' | '1996-11-16' | '1996-12-14' | '1996-12-31' | '1997-01-22' | '1997-02-03' | '1997-02-17' | '1997-03-28' | '1997-03-29' | '1997-04-12' | null>(null)
+  const [selectedDiaryDate, setSelectedDiaryDate] = useState<'1996-10-15' | '1996-10-16' | '1996-11-16' | '1996-12-14' | '1996-12-31' | '1997-01-22' | '1997-02-03' | '1997-02-17' | '1997-03-28' | '1997-03-29' | '1997-04-12' | '1997-04-20' | null>(null)
   const [chatMessages, setChatMessages] = useState<Record<CharacterId, SmsMessage[]>>(() => {
     // Keep the refreshed conversation copy, but restore the player's original 17 February
     // messages automatically from the most complete existing save slot.
