@@ -5561,7 +5561,7 @@ function App() {
   }
 
   const finishApril30Story = (selection: April30Selection) => {
-    const expectedChoices = selection.route === 'wen' ? 5 : selection.route === 'ashin' || selection.route === 'yanming' ? 1 : 0
+    const expectedChoices = 5
     if (selection.choices.length !== expectedChoices) return
     localStorage.setItem('mayday-april30-complete', 'true')
     localStorage.setItem('mayday-april30-day-complete', 'true')
