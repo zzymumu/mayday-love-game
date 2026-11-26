@@ -102,6 +102,7 @@ import { April12Story, buildApril12DiaryData, type April12Character, type April1
 import { April20Story, type April20Character } from './April20Story'
 import { April30Story, type April30Selection } from './April30Story'
 import { buildApril20DiaryData, type April20DiaryData } from './april20Diary'
+import { buildApril30DiaryData, type April30DiaryData } from './april30Diary'
 import {
   YEAR_END_INVITE_THRESHOLD,
   yearEndIntroBlocks,
@@ -2550,6 +2551,22 @@ function App() {
       const rebuilt = buildApril20DiaryData(route)
       localStorage.setItem('mayday-april20-diary-data', JSON.stringify(rebuilt))
       localStorage.setItem('mayday-april20-diary-unlocked', 'true')
+      return rebuilt
+    }
+    return null
+  })
+  const [april30DiaryUnlocked, setApril30DiaryUnlocked] = useState(() =>
+    localStorage.getItem('mayday-april30-diary-unlocked') === 'true' || localStorage.getItem('mayday-april30-day-complete') === 'true'
+  )
+  const [april30DiaryData, setApril30DiaryData] = useState<April30DiaryData | null>(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('mayday-april30-diary-data') ?? 'null') as Partial<April30DiaryData> | null
+      if (saved && typeof saved.title === 'string' && typeof saved.text === 'string') return { title: saved.title, text: saved.text }
+    } catch { /* Rebuild the entry from the completed day below. */ }
+    if (localStorage.getItem('mayday-april30-day-complete') === 'true') {
+      const rebuilt = buildApril30DiaryData()
+      localStorage.setItem('mayday-april30-diary-data', JSON.stringify(rebuilt))
+      localStorage.setItem('mayday-april30-diary-unlocked', 'true')
       return rebuilt
     }
     return null
@@ -5563,12 +5580,17 @@ function App() {
   const finishApril30Story = (selection: April30Selection) => {
     const expectedChoices = 5
     if (selection.choices.length !== expectedChoices) return
+    const diaryData = buildApril30DiaryData()
+    setApril30DiaryData(diaryData)
+    setApril30DiaryUnlocked(true)
     localStorage.setItem('mayday-april30-complete', 'true')
     localStorage.setItem('mayday-april30-day-complete', 'true')
     localStorage.setItem('mayday-april30-route', selection.route)
     localStorage.setItem('mayday-april30-choices', JSON.stringify(selection.choices))
-    setActiveApp(null)
-    setSelectedDiaryDate(null)
+    localStorage.setItem('mayday-april30-diary-data', JSON.stringify(diaryData))
+    localStorage.setItem('mayday-april30-diary-unlocked', 'true')
+    setActiveApp('diary')
+    setSelectedDiaryDate('1997-04-30')
     setSelectedSmsThread(null)
     changeStage('completed')
   }
@@ -9097,6 +9119,13 @@ function App() {
                                   <strong>寫下來的日子</strong>
                                   <small>點選日期，可以重新讀一遍當時的心情。</small>
                                 </div>
+                                {april30DiaryUnlocked && april30DiaryData && (
+                                  <button className="diary-entry-row" onClick={() => setSelectedDiaryDate('1997-04-30')}>
+                                    <span className="diary-entry-date">30<br/><small>APR</small></span>
+                                    <span className="diary-entry-copy"><strong>{april30DiaryData.title}</strong><small>{april30DiaryData.text.slice(0, 48)}…</small></span>
+                                    <ChevronRight size={16} />
+                                  </button>
+                                )}
                                 {april20DiaryUnlocked && april20DiaryData && (
                                   <button className="diary-entry-row" onClick={() => setSelectedDiaryDate('1997-04-20')}>
                                     <span className="diary-entry-date">20<br/><small>APR</small></span>
@@ -9183,7 +9212,14 @@ function App() {
                             ) : (
                               <>
                                 <button className="diary-detail-back" onClick={() => setSelectedDiaryDate(null)}><ArrowLeft size={13}/> 返回日記列表</button>
-                                {selectedDiaryDate === '1997-04-20' && april20DiaryUnlocked && april20DiaryData ? (
+                                {selectedDiaryDate === '1997-04-30' && april30DiaryUnlocked && april30DiaryData ? (
+                                  <div className="diary-paper">
+                                    <span className="diary-date">1997 年 4 月 30 日・星期三</span>
+                                    <h2>{april30DiaryData.title}</h2>
+                                    <div className="diary-section-label">星期三 · 校園</div>
+                                    <DiarySection label="日記" text={april30DiaryData.text} />
+                                  </div>
+                                ) :                                 {selectedDiaryDate === '1997-04-20' && april20DiaryUnlocked && april20DiaryData ? (
                                   <>
                                     <div className="diary-paper">
                                       <span className="diary-date">1997 年 4 月 20 日・星期日</span>
