@@ -2576,7 +2576,7 @@ function App() {
   const [selectedProfile, setSelectedProfile] = useState<string | null>(null)
   const [resumeStage, setResumeStage] = useState<StoryStage>(() => {
     const saved = localStorage.getItem('mayday-resume-stage')
-    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete', 'month-free-time', 'month-visit', 'month-visit-complete', 'month-free-chat', 'month-diary', 'next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-chat', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete', 'next-month-free-chat', 'next-month-diary', 'year-end-intro', 'year-end-invite-notification', 'year-end-invite-picker', 'year-end-shopping-notification', 'year-end-shopping-chat', 'year-end-shopping', 'year-end-fireworks', 'year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary', 'winter-exam-intro', 'winter-exam-notification', 'winter-exam-chat', 'winter-exam-tutoring', 'winter-break-practice', 'winter-break-gig', 'winter-break-pickup', 'winter-break-bus-choice', 'winter-break-bus', 'winter-diary', 'february-intro', 'february-secret', 'february-dinner', 'february-table', 'february-after-dinner-picker', 'february-after-dinner', 'february-diary', 'spring-term-intro', 'spring-invite-picker', 'spring-invite-notification', 'spring-invite-chat', 'spring-store', 'spring-rehearsal', 'spring-after-picker', 'spring-lesson', 'spring-dinner', 'spring-sms-picker', 'spring-sms-chat', 'spring-diary', 'spring-free-chat-picker', 'spring-free-chat', 'march28-intro', 'march28-visit', 'march28-end', 'march28-park', 'march28-park-stay', 'march28-morning', 'march28-diary', 'march29-show', 'april12-story']
+    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete', 'month-free-time', 'month-visit', 'month-visit-complete', 'month-free-chat', 'month-diary', 'next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-chat', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete', 'next-month-free-chat', 'next-month-diary', 'year-end-intro', 'year-end-invite-notification', 'year-end-invite-picker', 'year-end-shopping-notification', 'year-end-shopping-chat', 'year-end-shopping', 'year-end-fireworks', 'year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary', 'winter-exam-intro', 'winter-exam-notification', 'winter-exam-chat', 'winter-exam-tutoring', 'winter-break-practice', 'winter-break-gig', 'winter-break-pickup', 'winter-break-bus-choice', 'winter-break-bus', 'winter-diary', 'february-intro', 'february-secret', 'february-dinner', 'february-table', 'february-after-dinner-picker', 'february-after-dinner', 'february-diary', 'spring-term-intro', 'spring-invite-picker', 'spring-invite-notification', 'spring-invite-chat', 'spring-store', 'spring-rehearsal', 'spring-after-picker', 'spring-lesson', 'spring-dinner', 'spring-sms-picker', 'spring-sms-chat', 'spring-diary', 'march28-intro', 'march28-visit', 'march28-end', 'march28-park', 'march28-park-stay', 'march28-morning', 'march28-diary', 'march29-show', 'april12-story']
     return saved && valid.includes(saved as StoryStage) ? saved as StoryStage : 'reunion'
   })
   const messageScrollRef = useRef<HTMLDivElement>(null)
@@ -2641,7 +2641,7 @@ function App() {
   const isWinterExam = ['winter-exam-intro', 'winter-exam-notification', 'winter-exam-chat', 'winter-exam-tutoring'].includes(effectiveDateStage)
   const isFebruary = ['february-intro', 'february-secret', 'february-dinner', 'february-table', 'february-after-dinner-picker', 'february-after-dinner', 'february-diary'].includes(effectiveDateStage) || localStorage.getItem('mayday-february-day-complete') === 'true'
   const isMarch28 = localStorage.getItem('mayday-march29-complete') !== 'true' && (['march28-intro', 'march28-visit', 'march28-end', 'march28-park', 'march28-park-stay', 'march28-morning', 'march28-diary'].includes(effectiveDateStage) || localStorage.getItem('mayday-march28-started') === 'true' || localStorage.getItem('mayday-march28-day-complete') === 'true')
-  const isSpringTerm = ['spring-term-intro', 'spring-invite-picker', 'spring-invite-notification', 'spring-invite-chat', 'spring-store', 'spring-rehearsal', 'spring-after-picker', 'spring-lesson', 'spring-dinner', 'spring-sms-picker', 'spring-sms-chat', 'spring-diary', 'spring-free-chat-picker', 'spring-free-chat', 'march28-intro', 'march28-visit', 'march28-end', 'march28-park', 'march28-park-stay', 'march28-morning', 'march28-diary', 'march29-show'].includes(effectiveDateStage) || localStorage.getItem('mayday-spring-day-complete') === 'true'
+  const isSpringTerm = ['spring-term-intro', 'spring-invite-picker', 'spring-invite-notification', 'spring-invite-chat', 'spring-store', 'spring-rehearsal', 'spring-after-picker', 'spring-lesson', 'spring-dinner', 'spring-sms-picker', 'spring-sms-chat', 'spring-diary', 'march28-intro', 'march28-visit', 'march28-end', 'march28-park', 'march28-park-stay', 'march28-morning', 'march28-diary', 'march29-show'].includes(effectiveDateStage) || localStorage.getItem('mayday-spring-day-complete') === 'true'
   const isWinterBreak = ['winter-break-practice', 'winter-break-gig', 'winter-break-pickup', 'winter-break-bus-choice', 'winter-break-bus', 'winter-diary'].includes(effectiveDateStage) || isFebruary || localStorage.getItem('mayday-winter-break-day-complete') === 'true'
   const isYearEnd = ['year-end-intro', 'year-end-invite-notification', 'year-end-invite-picker', 'year-end-shopping-notification', 'year-end-shopping-chat', 'year-end-shopping', 'year-end-fireworks', 'year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary'].includes(effectiveDateStage) || localStorage.getItem('mayday-year-end-day-complete') === 'true'
   const isNewYear = ['year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary'].includes(effectiveDateStage) || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-year-end-day-complete') === 'true' && localStorage.getItem('mayday-winter-break-day-complete') !== 'true')
@@ -2869,6 +2869,11 @@ function App() {
         'mayday-spring-sms-opening-choice',
         'mayday-spring-sms-replies',
       ].forEach((key) => delete restoredData[key])
+      ;[
+        'mayday-spring-day-complete',
+        'mayday-spring-diary-unlocked',
+        'mayday-spring-diary-data',
+      ].forEach((key) => delete restoredData[key])
       restoredData['mayday-spring-sms-mode'] = 'day'
     } else if (saved.gameDate === '1997.02.17' && eventTimelineStage === 'spring-sms-picker') {
       // A 2/17 daytime or pre-selection save can still enter the SMS once that evening.
@@ -2881,6 +2886,11 @@ function App() {
         'mayday-spring-sms-opening-sent',
         'mayday-spring-sms-opening-choice',
         'mayday-spring-sms-replies',
+      ].forEach((key) => delete restoredData[key])
+      ;[
+        'mayday-spring-day-complete',
+        'mayday-spring-diary-unlocked',
+        'mayday-spring-diary-data',
       ].forEach((key) => delete restoredData[key])
       restoredData['mayday-spring-sms-mode'] = 'day'
     } else if (saved.gameDate === '1997.02.17' && eventTimelineStage === 'spring-sms-chat') {
@@ -5088,7 +5098,7 @@ function App() {
         time: springSmsHour + ':' + String(firstRoundStartMinute + (firstRound.outgoing ? 1 : 0) + index).padStart(2, '0'),
       })),
     ], springSmsHistoryDate)
-    if (springSmsMode === 'day') localStorage.setItem('mayday-spring-sms-history-restore-v1', 'true')
+    localStorage.setItem('mayday-spring-sms-history-restore-v1', 'true')
     addRouteAffection(springSmsTarget, opening.affection)
     setSpringSmsOpeningChoice(choiceIndex)
     localStorage.setItem('mayday-spring-sms-opening-choice', String(choiceIndex))
@@ -8007,7 +8017,7 @@ function App() {
                     {springDinnerReplies.length === springYanmingDinnerRounds.length ? (
                       <>
                         <StoryBlocks blocks={springYanmingDinnerEndingBlocks} />
-                        <div className="story-action-bar"><button className="story-primary-button" onClick={() => changeStage('spring-sms-picker')}>吃完飯，回家 <ChevronRight size={15} /></button></div>
+                        <div className="story-action-bar"><button className="story-primary-button" onClick={openSpringSmsPicker}>吃完飯，回家 <ChevronRight size={15} /></button></div>
                       </>
                     ) : null}
                   </div>
