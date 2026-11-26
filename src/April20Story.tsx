@@ -974,11 +974,10 @@ export function April20Story({
           <div className="sms-thread-scroll">
             <div className="story-date-label">1997 年 4 月 20 日・下午</div>
             {progress.messages.map((message, index) => (
-              <div className="message-row-wrap" key={index}>
+              <div key={index}>
                 <div className={message.from === 'me' ? 'message-row mine' : 'message-row'}>
                   <div className={message.from === 'me' ? 'message-bubble mine' : 'message-bubble'}>{message.text}</div>
                 </div>
-                <small className="sms-message-time">{message.time}</small>
               </div>
             ))}
           </div>
