@@ -2584,10 +2584,17 @@ function App() {
   const [may10DiaryData, setMay10DiaryData] = useState<May10DiaryData | null>(() => {
     try {
       const saved = JSON.parse(localStorage.getItem('mayday-may10-diary-data') ?? 'null') as Partial<May10DiaryData> | null
-      if (saved && typeof saved.title === 'string' && typeof saved.text === 'string') return { title: saved.title, text: saved.text }
+      if (saved && saved.version === 2 && typeof saved.title === 'string' && typeof saved.text === 'string') return { version: 2, title: saved.title, text: saved.text }
     } catch { /* Rebuild the entry from the completed day below. */ }
     if (localStorage.getItem('mayday-may10-day-complete') === 'true') {
-      const rebuilt = buildMay10DiaryData()
+      const validCharacters: May10Character[] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
+      const savedCharacter = localStorage.getItem('mayday-may10-character')
+      const savedJealousyCharacter = localStorage.getItem('mayday-may10-jealousy-character')
+      const selection = {
+        character: validCharacters.includes(savedCharacter as May10Character) ? savedCharacter as May10Character : null,
+        jealousyCharacter: validCharacters.includes(savedJealousyCharacter as May10Character) ? savedJealousyCharacter as May10Character : null,
+      }
+      const rebuilt = buildMay10DiaryData(selection)
       localStorage.setItem('mayday-may10-diary-data', JSON.stringify(rebuilt))
       localStorage.setItem('mayday-may10-diary-unlocked', 'true')
       return rebuilt
@@ -5704,7 +5711,7 @@ function App() {
     if (selection.choices.length !== 3) return
     if (selection.jealousyCharacter && selection.jealousyChoices.length !== 3) return
     if (!selection.jealousyCharacter && selection.jealousyChoices.length !== 0) return
-    const diaryData = buildMay10DiaryData()
+    const diaryData = buildMay10DiaryData({ character: selection.character, jealousyCharacter: selection.jealousyCharacter })
     setMay10DiaryData(diaryData)
     setMay10DiaryUnlocked(true)
     localStorage.setItem('mayday-may10-complete', 'true')
