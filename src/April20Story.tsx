@@ -857,10 +857,11 @@ export function April20Story({
     if (progress.smsPendingChoice === null) return
     if (progress.smsRound < smsRounds.length - 1) {
       const nextRound = progress.smsRound + 1
-      const incoming = smsRounds[nextRound].incoming.map((text, index) => ({
+      const incomingTime = ['15:20', '15:24', '15:28', '15:32'][nextRound - 1]
+      const incoming = smsRounds[nextRound].incoming.map((text) => ({
         from: 'youda' as const,
         text,
-        time: ['15:20', '15:20', '15:21'][index] ?? '15:20',
+        time: incomingTime,
       }))
       setProgress((current) => ({
         ...current,
@@ -937,7 +938,7 @@ export function April20Story({
     onFinish({ route: progress.route, character: progress.character, choices: progress.choices })
   }
 
-  const currentRoute = progress.phase === 'park'
+  const currentRoute = progress.route === 'park'
     ? parkRoute
     : progress.character ? characterRoutes[progress.character] : null
 
