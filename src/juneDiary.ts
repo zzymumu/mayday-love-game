@@ -12,14 +12,6 @@ export type JuneDiaryData = {
   text: string
 }
 
-const studyNames: Record<JuneStudyCharacter, string> = {
-  wen: '溫尚翊',
-  ashin: '陳信宏',
-  masa: '瑪莎',
-  stone: '石錦航',
-  yanming: '諺明哥',
-}
-
 const chatNames: Record<JuneStudyCharacter, string> = {
   wen: '怪獸',
   ashin: '阿信',
@@ -177,7 +169,6 @@ function chatEntry(character: JuneStudyCharacter, choices: number[]): string[] {
 }
 
 export function buildJuneDiaryData(selection: JuneDiarySelection): JuneDiaryData {
-  const studyName = studyNames[selection.studyCharacter]
   const chatName = chatNames[selection.chatCharacter]
   const paragraphs = [
     '六月十五日，星期日。今天熱得我真的很想把自己塞進冰箱。五月十日之後一眨眼就到了六月中旬，期末報告也終於追到眼前。最近每天抱著講義跑來跑去，連去買個東西都恨不得把參考書一起帶上，今天總算逼自己坐下來好好處理了。',
