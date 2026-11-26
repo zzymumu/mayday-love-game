@@ -13,6 +13,7 @@ type April30Progress = {
   roundIndex: number
   choices: number[]
   pendingChoice: number | null
+  pendingComfortChoice: number | null
 }
 
 const STORAGE_KEY = 'mayday-april30-progress-v2'
@@ -22,6 +23,7 @@ const initialProgress: April30Progress = {
   roundIndex: 0,
   choices: [],
   pendingChoice: null,
+  pendingComfortChoice: null,
 }
 
 const n = (text: string): April30Block => ({ kind: 'narration', text })
@@ -177,31 +179,24 @@ const wenRounds: April30Round[] = [
     ],
 
     choices: [
-      c('我伸手把他搂進懷裡，先不說話。', [
-        n('你往他身邊挪近了一點，抬手環住他的肩膀，沒有用力，只是把他輕輕帶向自己。'),
-        d('溫尚翊', '欸……妳幹嘛啦？'),
-        n('他整個人僵了一下，手抬到一半，像是想把你推開，最後卻只是停在半空。'),
-        d('你', '先不要講話啦。'),
-        n('你掌心在他背上輕輕拍了兩下。他低著頭，眼尾紅得更明顯，過了好一會兒才慢慢把手落在你的背後。'),
-        d('溫尚翊', '……我又沒有哭。'),
-        n('他的聲音悶在你肩邊，手指卻悄悄捏住了你衣服的一小角。'),
+      c('難怪你會選修法律……我之前還在想你怎麼會去修那門課。', [
+        d('溫尚翊', '妳現在才想到喔？'),
+        n('他終於有了一點平常的語氣，卻沒有真的笑出來。'),
+        d('溫尚翊', '不然咧，妳以為我很喜歡研究那些東西喔？'),
       ]),
-      c('我伸手替他擦掉眼角的水氣。', [
-        n('你沒有拆穿他，只是抽出紙巾，伸手替他擦過眼角。'),
-        d('溫尚翊', '欸，等一下啦。'),
-        n('他下意識偏了一下頭，卻沒有真的躲開。'),
-        d('你', '好啦，不笑你。'),
-        n('他接過紙巾，胡亂在眼角按了一下，吸了口氣。'),
-        d('溫尚翊', '……妳真的很煩欸。'),
-        n('話還是那句話，這次卻沒什麼力氣，反而把紙巾好好收進口袋。'),
+      c('所以你爸爸到現在還是希望你走法律這條路？', [
+        d('溫尚翊', '差不多吧。'),
+        d('溫尚翊', '他是覺得那條路比較穩啦。'),
+        d('溫尚翊', '可是我也不知道我到底適不適合。'),
       ]),
-      c('我握住他的手，跟他說我可以陪他坐久一點。', [
-        n('你伸手碰了碰他放在膝上的手背，見他沒有躲，才慢慢把他的手握住。'),
-        d('你', '你不用現在就想清楚啊，我可以陪你坐久一點。'),
-        n('溫尚翊低頭看著你們交握的手，拇指在你手背上蹭了一下。'),
-        d('溫尚翊', '……妳今天不用回去喔？'),
-        d('你', '不用你操心啦。'),
-        n('他終於很輕地笑了一聲，沒有把手抽回去。'),
+      c('那你自己呢？你想做什麼？', [
+        d('溫尚翊', '我？'),
+        n('他沉默了很久，視線落在自己的手背上。'),
+        d('溫尚翊', '我就想繼續玩音樂啊。'),
+        d('溫尚翊', '可是現在連團裡都變成這樣了……'),
+        n('他的聲音漸漸低下去。他抬手揉了一下眼睛，像是想把那點不舒服揉掉。'),
+        d('溫尚翊', '……靠，今天風真的很大欸。'),
+        n('他說完，卻沒有再抬頭。你沒有拆穿他。'),
       ]),
     ],
   },
@@ -354,32 +349,20 @@ const ashinRounds: April30Round[] = [
     ],
 
     choices: [
-      c('我伸手握住他放在琴弦上的手。', [
-        n('你伸手握住他剛剛還停在琴弦上的手指，細細的弦音一下子斷了。陳信宏低頭看了一眼，才抬起眼睛。'),
-        d('陳信宏', '怎麼啦？'),
-        d('你', '你不用一直彈啦，休息一下也沒關係。'),
-        n('他看了看你，又看了看腿上的木吉他，最後小心地把吉他靠到旁邊的椅子上。'),
-        n('空出手後，他沒有立刻說話，只是伸手輕輕抱住你。手臂繞過你的背，力道很輕，像是怕嚇到你。'),
-        d('陳信宏', '……謝謝妳喔。'),
-        n('他把下巴輕輕靠在你的肩上，安靜地停了一會兒，才慢慢鬆開手。'),
+      c('那我陪你再坐一下好了。', [
+        n('陳信宏抬起頭，笑了。'),
+        d('陳信宏', '好啊。'),
+        d('陳信宏', '那妳不要嫌我一直彈同一段喔。'),
       ]),
-      c('我張開手臂，問他要不要抱一下。', [
-        n('你沒有多說什麼，只是朝他張開手臂。陳信宏看了你一眼，像是沒想到你會這麼直接。'),
-        d('陳信宏', '現在喔？'),
-        d('你', '不然你要預約明天嗎？'),
-        n('他被你逗得笑了一下，把木吉他仔細放到椅子上，才起身走近你。'),
-        n('他伸手環住你的背，抱得很溫柔，掌心在你背上輕輕停著。'),
-        d('陳信宏', '那我就抱一下下喔。'),
-        n('話是這麼說，他卻沒有急著放開。'),
+      c('你再彈一次給我聽，這次不准出錯。', [
+        n('陳信宏笑著看你。'),
+        d('陳信宏', '欸，妳要求也太高了吧。'),
+        d('陳信宏', '那我等一下如果又錯了，妳要負責喔。'),
       ]),
-      c('我輕輕碰了碰他的肩膀，靠過去陪他坐著。', [
-        n('你伸手輕輕碰了碰他的肩膀，在他旁邊坐近了一點。'),
-        d('你', '今天不用一直裝作沒事啦。'),
-        n('陳信宏安靜了一下，才把肩膀往你這邊靠過來，額頭輕輕抵在你的肩側。'),
-        d('陳信宏', '我沒有裝啦……只是有點不知道要怎麼講。'),
-        d('你', '那就先不要講。'),
-        n('他輕輕點頭，手指搭在你的手背上，沒有再把距離拉開。'),
-        d('陳信宏', '嗯。這樣就很好了。'),
+      c('等你想說話的時候再說吧。', [
+        n('陳信宏的動作慢了下來。他看了你一會兒，才輕輕笑了一下。'),
+        d('陳信宏', '嗯。'),
+        d('陳信宏', '謝謝妳喔。'),
       ]),
     ],
   },
@@ -542,33 +525,22 @@ const masaRounds: April30Round[] = [
     ],
 
     choices: [
-      c('我伸手搂住他的肩膀，把他往自己這邊帶了一下。', [
-        n('你往瑪莎身邊靠了一步，伸手勾住他的肩膀，把他往自己這邊帶了帶。'),
-        d('瑪莎', '欸欸欸！妳幹嘛啦？'),
-        n('他整個人先是僵住，還低頭看了一眼你搭在他肩上的手，像是想確認你是不是認真的。'),
-        d('你', '安慰你一下不行喔？'),
-        n('瑪莎張了張嘴，原本想吐槽，最後只嘖了一聲，抬手在你背上拍了兩下。'),
-        d('瑪莎', '……好啦，就一下。'),
-        n('他嘴上還是嫌棄，卻沒有把你的手拿開，反而放慢了腳步。'),
+      c('當然會啊，你們不是都很喜歡音樂嗎？', [
+        n('瑪莎笑了一聲，低頭踢了踢路邊的石子。'),
+        d('瑪莎', '妳講得倒是很簡單。'),
+        d('瑪莎', '不過也是啦。'),
+        d('瑪莎', '總不能因為少一個人，就全部不玩了吧。'),
       ]),
-      c('我趁他說話時輕輕握住他的手。', [
-        n('你伸手握住他垂在身側的手。瑪莎的話一下子停住，低頭看了看你們牽在一起的手。'),
-        d('瑪莎', '妳現在是在幹嘛？'),
-        d('你', '怕你又一個人偷偷不開心啊。'),
-        n('他像是想反駁，手指卻先一步回握住你。'),
-        d('瑪莎', '誰偷偷不開心了……'),
-        n('他把視線轉向前面，耳朵有點紅，過了一會兒才小聲補了一句。'),
-        d('瑪莎', '……不過妳牽就牽，不要一直講。'),
+      c('我覺得你們應該先休息一下。', [
+        n('瑪莎點了點頭，手指勾著書包帶。'),
+        d('瑪莎', '可能吧。'),
+        d('瑪莎', '最近大家都太煩了，先不要一直逼自己也好。'),
       ]),
-      c('我勾住他的手臂，故意把步子放慢。', [
-        n('你伸手勾住瑪莎的手臂，故意把腳步放慢了一點。'),
-        d('瑪莎', '走路就走路，妳突然黏過來幹嘛？'),
-        d('你', '陪你走慢一點啊，不然你又要自己亂想。'),
-        n('他瞥了你一眼，沒有把手臂抽走，反而配合著你的速度往前走。'),
-        d('瑪莎', '妳今天不用一直想辦法逗我啦。'),
-        d('你', '那你也不要一直踢路邊的石頭。'),
-        n('瑪莎忍不住笑了一聲，肩膀輕輕撞了你一下。'),
-        d('瑪莎', '知道啦，囉嗦。'),
+      c('那你自己還想繼續嗎？', [
+        n('瑪莎幾乎沒有猶豫，說完才像是意識到自己回答得太快。'),
+        d('瑪莎', '想啊。'),
+        d('瑪莎', '不然我每天背著這麼重的Bass是背好玩的喔？'),
+        n('你忍不住笑了。瑪莎也跟著笑了一下。'),
       ]),
     ],
   },
@@ -690,28 +662,19 @@ const stoneRounds: April30Round[] = [
     ],
 
     choices: [
-      c('我伸手牽住他的手，輕輕捏了捏。', [
-        n('你伸手牽住石頭的手，拇指輕輕捏了捏他的指節。石頭低頭看了一眼，沒有抽開，只是把手指慢慢收攏，穩穩地握住你。'),
-        d('你', '你也不用什麼事情都自己想好啊。'),
-        d('石錦航', '嗯，我知道。'),
-        n('他回握了一下，像是在告訴你他有收到你的心意。'),
-        d('石錦航', '有妳陪我走這一段，已經很好了。'),
+      c('先繼續練團吧，慢慢來就好了。', [
+        n('石頭笑了。'),
+        d('石錦航', '嗯，我也是這麼想的。'),
+        d('石錦航', '現在突然要大家做決定，可能也不太容易。'),
       ]),
-      c('我往前一步，主動抱了抱他。', [
-        n('你停下腳步，往前一步輕輕抱住石頭。'),
-        n('他明顯怔了一下，手還停在身側，過了半秒才慢慢抬起來，輕輕環住你的背。'),
-        d('石錦航', '……怎麼突然抱我？'),
-        d('你', '因為你也會難過啊。'),
-        n('他低下頭，手掌在你背上輕輕拍了兩下，沒有急著放開。'),
-        d('石錦航', '嗯。那我就借妳抱一下。'),
-        n('他的聲音很輕，抱著你的手卻比剛才更安穩了一點。'),
+      c('我覺得你們應該先好好休息。', [
+        d('石錦航', '也許吧。'),
+        d('石錦航', '最近大家都累了，先讓自己喘口氣也好。'),
       ]),
-      c('我替他理了理被風吹亂的頭髮，再輕輕拍了拍他的肩。', [
-        n('你抬手替他把額前被風吹亂的頭髮理好，指尖掠過他的鬢角，又輕輕拍了拍他的肩。'),
-        d('石錦航', '妳這樣，我反而不知道要說什麼了。'),
-        d('你', '那就不用說啊。'),
-        n('石頭笑了一下，伸手輕輕握住你的手腕，讓你的手在他肩上多停了一會兒。'),
-        d('石錦航', '好。那我就先收下這個安慰。'),
+      c('只要你們還喜歡音樂，就不會結束吧。', [
+        n('石頭看著你，輕輕笑了一下。'),
+        d('石錦航', '希望是這樣。'),
+        d('石錦航', '畢竟大家花了那麼多時間，才走到現在。'),
       ]),
     ],
   },
@@ -847,6 +810,123 @@ const yanmingRounds: April30Round[] = [
   },
 ]
 
+
+const wenComfortChoices: April30Choice[] = [
+  c('伸手把他輕輕摟進懷裡', [
+    n('你往他身邊挪近了一點，抬手環住他的肩膀，沒有用力，只是把他輕輕帶向自己。'),
+    n('溫尚翊整個人僵了一下，手抬到一半，像是想把你推開，最後卻只是停在半空。'),
+    d('溫尚翊', '欸……妳幹嘛啦？'),
+    d('你', '先不要講話啦。'),
+    n('你掌心在他背上輕輕拍了兩下。他低著頭，眼尾紅得更明顯，過了好一會兒才慢慢把手落在你的背後。'),
+    d('溫尚翊', '……我又沒有哭。'),
+    n('他的聲音悶在你肩邊，手指卻悄悄捏住了你衣服的一小角。'),
+  ]),
+  c('替他擦掉眼角的水氣', [
+    n('你沒有拆穿他，只是抽出紙巾，伸手替他擦過眼角。'),
+    n('他下意識偏了一下頭，卻沒有真的躲開。'),
+    d('溫尚翊', '欸，等一下啦。'),
+    d('你', '好啦，不笑你。'),
+    n('他接過紙巾，胡亂在眼角按了一下，吸了口氣。'),
+    d('溫尚翊', '……妳真的很煩欸。'),
+    n('話還是那句話，這次卻沒什麼力氣，反而把紙巾好好收進口袋。'),
+  ]),
+  c('握住他的手，陪他多坐一會兒', [
+    n('你伸手碰了碰他放在膝上的手背，見他沒有躲，才慢慢把他的手握住。'),
+    n('溫尚翊低頭看著你們交握的手，拇指在你手背上蹭了一下。'),
+    d('你', '不用現在就想清楚，我可以陪你坐久一點。'),
+    d('溫尚翊', '……妳今天不用回去喔？'),
+    d('你', '不用你操心啦。'),
+    n('他終於很輕地笑了一聲，沒有把手抽回去。'),
+  ]),
+]
+
+const ashinComfortChoices: April30Choice[] = [
+  c('握住他停在琴弦上的手', [
+    n('你伸手握住他剛剛還停在琴弦上的手指，細細的弦音一下子斷了。陳信宏低頭看了一眼，才抬起眼睛。'),
+    d('陳信宏', '怎麼啦？'),
+    d('你', '你不用一直彈啦，休息一下也沒關係。'),
+    n('他看了看你，又看了看腿上的木吉他，最後小心地把吉他靠到旁邊的椅子上。'),
+    n('空出手後，他沒有立刻說話，只是伸手輕輕抱住你。手臂繞過你的背，力道很輕，像是怕嚇到你。'),
+    d('陳信宏', '……謝謝妳喔。'),
+    n('他把下巴輕輕靠在你的肩上，安靜地停了一會兒，才慢慢鬆開手。'),
+  ]),
+  c('朝他張開手臂，讓他自己決定要不要抱過來', [
+    n('你沒有多說什麼，只是朝他張開手臂。陳信宏看了你一眼，像是沒想到你會這麼直接。'),
+    d('陳信宏', '現在喔？'),
+    d('你', '嗯，想抱一下嗎？'),
+    n('他被你逗得笑了一下，把木吉他仔細放到椅子上，才起身走近你。'),
+    n('他伸手環住你的背，抱得很溫柔，掌心在你背上輕輕停著。'),
+    d('陳信宏', '那我就抱一下下喔。'),
+    n('話是這麼說，他卻沒有急著放開。'),
+  ]),
+  c('靠近一點，讓他把額頭靠在你的肩上', [
+    n('你伸手輕輕碰了碰他的肩膀，在他旁邊坐近了一點。'),
+    d('你', '今天不用一直裝作沒事啦。'),
+    n('陳信宏安靜了一下，才把肩膀往你這邊靠過來，額頭輕輕抵在你的肩側。'),
+    d('陳信宏', '我沒有裝啦……只是有點不知道要怎麼講。'),
+    d('你', '那就先不要講。'),
+    n('他輕輕點頭，手指搭在你的手背上，沒有再把距離拉開。'),
+    d('陳信宏', '嗯。這樣就很好了。'),
+  ]),
+]
+
+const masaComfortChoices: April30Choice[] = [
+  c('伸手摟住他的肩膀', [
+    n('你往瑪莎身邊靠了一步，伸手勾住他的肩膀，把他往自己這邊帶了帶。'),
+    d('瑪莎', '欸欸欸！妳幹嘛啦？'),
+    n('他整個人先是僵住，還低頭看了一眼你搭在他肩上的手，像是想確認你是不是認真的。'),
+    d('你', '安慰你一下不行喔？'),
+    n('瑪莎張了張嘴，原本想吐槽，最後只嘖了一聲，抬手在你背上拍了兩下。'),
+    d('瑪莎', '……好啦，就一下。'),
+    n('他嘴上還是嫌棄，卻沒有把你的手拿開，反而放慢了腳步。'),
+  ]),
+  c('趁他沒注意時，輕輕牽住他的手', [
+    n('你伸手握住他垂在身側的手。瑪莎的話一下子停住，低頭看了看你們牽在一起的手。'),
+    d('瑪莎', '妳現在是在幹嘛？'),
+    d('你', '怕你又一個人偷偷不開心啊。'),
+    n('他像是想反駁，手指卻先一步回握住你。'),
+    d('瑪莎', '誰偷偷不開心了……'),
+    n('他把視線轉向前面，耳朵有點紅，過了一會兒才小聲補了一句。'),
+    d('瑪莎', '……不過妳牽就牽，不要一直講。'),
+  ]),
+  c('勾住他的手臂，陪他慢慢走', [
+    n('你伸手勾住瑪莎的手臂，故意把腳步放慢了一點。'),
+    d('瑪莎', '走路就走路，妳突然黏過來幹嘛？'),
+    d('你', '陪你走慢一點啊，不然你又要自己亂想。'),
+    n('他瞥了你一眼，沒有把手臂抽走，反而配合著你的速度往前走。'),
+    d('瑪莎', '妳今天不用一直想辦法逗我啦。'),
+    d('你', '那你也不要一直踢路邊的石頭。'),
+    n('瑪莎忍不住笑了一聲，肩膀輕輕撞了你一下。'),
+    d('瑪莎', '知道啦，囉嗦。'),
+  ]),
+]
+
+const stoneComfortChoices: April30Choice[] = [
+  c('輕輕牽住他的手', [
+    n('你伸手牽住石頭的手，拇指輕輕捏了捏他的指節。石頭低頭看了一眼，沒有抽開，只是把手指慢慢收攏，穩穩地握住你。'),
+    d('你', '你也不用什麼事情都自己想好啊。'),
+    d('石錦航', '嗯，我知道。'),
+    n('他回握了一下，像是在告訴你他有收到你的心意。'),
+    d('石錦航', '有妳陪我走這一段，已經很好了。'),
+  ]),
+  c('停下腳步，主動抱抱他', [
+    n('你停下腳步，往前一步輕輕抱住石頭。'),
+    n('他明顯怔了一下，手還停在身側，過了半秒才慢慢抬起來，輕輕環住你的背。'),
+    d('石錦航', '……怎麼突然抱我？'),
+    d('你', '因為你也會難過啊。'),
+    n('他低下頭，手掌在你背上輕輕拍了兩下，沒有急著放開。'),
+    d('石錦航', '嗯。那我就借妳抱一下。'),
+    n('他的聲音很輕，抱著你的手卻比剛才更安穩了一點。'),
+  ]),
+  c('替他理好被風吹亂的頭髮，再輕輕拍一拍肩膀', [
+    n('你抬手替他把額前被風吹亂的頭髮理好，指尖掠過他的鬢角，又輕輕拍了拍他的肩。'),
+    d('石錦航', '妳這樣，我反而不知道要說什麼了。'),
+    d('你', '那就不用說啊。'),
+    n('石頭笑了一下，伸手輕輕握住你的手腕，讓你的手在他肩上多停了一會兒。'),
+    d('石錦航', '好。那我就先收下這個安慰。'),
+  ]),
+]
+
 const wenEndingBlocks: April30Block[] = [
   n('你沒有再追問，也沒有急著把氣氛拉回平常。溫尚翊把旁邊沒開的酒往遠處推了推，手指在膝蓋上停了一會兒。'),
   n('天台的風還是很大，他卻沒有再拿風當藉口。你留在他身邊，兩個人安靜地坐了一會兒。'),
@@ -896,13 +976,21 @@ function readProgress(): April30Progress {
     if (saved && typeof saved.phase === 'string' && phases.includes(saved.phase as April30Phase)
       && (saved.route === null || routes.includes(saved.route as April30Route))
       && Number.isInteger(saved.roundIndex) && Array.isArray(saved.choices)
-      && (saved.pendingChoice === null || Number.isInteger(saved.pendingChoice))) {
+      && (saved.pendingChoice === null || Number.isInteger(saved.pendingChoice))
+      && (saved.pendingComfortChoice === undefined || saved.pendingComfortChoice === null
+        || (Number.isInteger(saved.pendingComfortChoice) && saved.pendingComfortChoice >= 0 && saved.pendingComfortChoice <= 2))) {
+      // Old v2 saves may contain a selected physical-action option in the fifth round.
+      // Reopen that final dialogue choice so the original fifth-round interaction is not skipped.
+      const legacyActionWasSelected = saved.pendingComfortChoice === undefined
+        && saved.phase !== 'complete' && saved.roundIndex === 4
+        && saved.pendingChoice !== null && saved.route !== 'yanming'
       return {
         phase: saved.phase as April30Phase,
         route: saved.route as April30Route | null,
         roundIndex: Math.max(0, Math.min(4, saved.roundIndex as number)),
         choices: saved.choices.filter((value): value is number => Number.isInteger(value) && value >= 0 && value <= 2),
-        pendingChoice: saved.pendingChoice as number | null,
+        pendingChoice: legacyActionWasSelected ? null : saved.pendingChoice as number | null,
+        pendingComfortChoice: saved.pendingComfortChoice ?? null,
       }
     }
   } catch {
@@ -987,16 +1075,23 @@ export function April30Story({
 
   const chooseRound = (index: number) => {
     if (progress.pendingChoice !== null) return
-    commit({ ...progress, pendingChoice: index })
+    commit({ ...progress, pendingChoice: index, pendingComfortChoice: null })
+  }
+
+  const chooseComfort = (index: number) => {
+    if (progress.pendingChoice === null || progress.roundIndex !== 4
+      || !progress.route || progress.route === 'yanming' || progress.pendingComfortChoice !== null) return
+    commit({ ...progress, pendingComfortChoice: index })
   }
 
   const continueRound = () => {
     if (progress.pendingChoice === null) return
+    if (progress.roundIndex === 4 && progress.route !== 'yanming' && progress.pendingComfortChoice === null) return
     const nextChoices = [...progress.choices, progress.pendingChoice]
     if (progress.roundIndex < 4) {
-      commit({ ...progress, roundIndex: progress.roundIndex + 1, choices: nextChoices, pendingChoice: null })
+      commit({ ...progress, roundIndex: progress.roundIndex + 1, choices: nextChoices, pendingChoice: null, pendingComfortChoice: null })
     } else {
-      commit({ ...progress, phase: 'complete', choices: nextChoices, pendingChoice: null })
+      commit({ ...progress, phase: 'complete', choices: nextChoices, pendingChoice: null, pendingComfortChoice: null })
     }
   }
 
@@ -1098,6 +1193,13 @@ export function April30Story({
   if (routeRounds && (progress.phase === 'wen' || progress.phase === 'ashin' || progress.phase === 'yanming' || progress.phase === 'schoolWalk')) {
     const currentRound = routeRounds[progress.roundIndex]
     const selected = progress.pendingChoice !== null ? currentRound.choices[progress.pendingChoice] : null
+    const comfortChoices = progress.route === 'wen' ? wenComfortChoices
+      : progress.route === 'ashin' ? ashinComfortChoices
+        : progress.route === 'masa' ? masaComfortChoices
+          : progress.route === 'stone' ? stoneComfortChoices
+            : null
+    const selectedComfort = progress.pendingComfortChoice !== null && comfortChoices
+      ? comfortChoices[progress.pendingComfortChoice] : null
     return (
       <April30Frame title={routeTitle} kicker={routeKicker}>
         <h2 className="story-scene-title">{routeHeading}</h2>
@@ -1120,9 +1222,32 @@ export function April30Story({
           {selected ? (
             <>
               <April30Blocks blocks={[d('你', selected.text), ...selected.response]} />
-              <div className="story-action-bar story-inline-action">
-                <button className="story-primary-button" onClick={continueRound}>{progress.roundIndex < 4 ? '繼續下一輪' : '看今天的結尾'} <ChevronRight size={15} /></button>
-              </div>
+              {progress.roundIndex === 4 && progress.route !== 'yanming' && comfortChoices ? (
+                selectedComfort ? (
+                  <>
+                    <div className="month-visit-round-history">
+                      <div className="choice-heading">你選擇用這種方式陪他</div>
+                      <April30Blocks blocks={selectedComfort.response} />
+                    </div>
+                    <div className="story-action-bar story-inline-action">
+                      <button className="story-primary-button" onClick={continueRound}>看今天的結尾 <ChevronRight size={15} /></button>
+                    </div>
+                  </>
+                ) : (
+                  <div className="choice-area">
+                    <div className="choice-heading">你想怎麼安慰他？</div>
+                    {comfortChoices.map((choice, index) => (
+                      <button className="reply-choice" key={index} onClick={() => chooseComfort(index)}>
+                        <span>{choice.text}</span><ChevronRight size={15} />
+                      </button>
+                    ))}
+                  </div>
+                )
+              ) : (
+                <div className="story-action-bar story-inline-action">
+                  <button className="story-primary-button" onClick={continueRound}>{progress.roundIndex < 4 ? '繼續下一輪' : '看今天的結尾'} <ChevronRight size={15} /></button>
+                </div>
+              )}
             </>
           ) : (
             <div className="choice-area">
