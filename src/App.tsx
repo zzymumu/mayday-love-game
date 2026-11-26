@@ -2874,6 +2874,7 @@ function App() {
       restoredData['mayday-spring-free-chat-started'] = 'true'
       restoredData['mayday-spring-free-chat-complete'] = 'true'
       delete restoredData['mayday-spring-free-chat-return-stage']
+      delete restoredData['mayday-spring-diary-pending-data']
       if (savedTimelineStage === 'spring-free-chat-picker' || savedTimelineStage === 'spring-free-chat') {
         restoredData['mayday-story-stage'] = 'spring-diary'
         if (saved.stage === 'paused') restoredData['mayday-resume-stage'] = 'spring-diary'
@@ -2884,6 +2885,7 @@ function App() {
         'mayday-spring-free-chat-started',
         'mayday-spring-free-chat-complete',
         'mayday-spring-free-chat-return-stage',
+        'mayday-spring-diary-pending-data',
       ].forEach((key) => delete restoredData[key])
     } else if (saved.gameDate === '1997.02.17' && restoredData['mayday-spring-day-complete'] === 'true') {
       // Only the selected 17 February night checkpoint may start or resume this event.
@@ -2902,11 +2904,13 @@ function App() {
         restoredData['mayday-spring-free-chat-started'] = 'true'
         restoredData['mayday-spring-free-chat-complete'] = 'true'
         delete restoredData['mayday-spring-free-chat-return-stage']
+        delete restoredData['mayday-spring-diary-pending-data']
       } else {
         // The regular 2/17 SMS checkpoint is still before the optional chat choice.
         restoredData['mayday-spring-free-chat-started'] = 'false'
         restoredData['mayday-spring-free-chat-complete'] = 'false'
         delete restoredData['mayday-spring-free-chat-return-stage']
+        delete restoredData['mayday-spring-diary-pending-data']
       }
     } else if (saved.gameDate > '1997.02.17') {
       // A save beyond 17 February has passed this one-night window.
@@ -2914,6 +2918,7 @@ function App() {
       restoredData['mayday-spring-free-chat-started'] = 'true'
       restoredData['mayday-spring-free-chat-complete'] = 'true'
       delete restoredData['mayday-spring-free-chat-return-stage']
+      delete restoredData['mayday-spring-diary-pending-data']
     }
 
     // Keep the message archive aligned with the selected save, not with the furthest
@@ -5293,6 +5298,7 @@ function App() {
     localStorage.setItem('mayday-spring-free-chat-started', 'true')
     localStorage.setItem('mayday-spring-free-chat-complete', 'true')
     localStorage.removeItem('mayday-spring-free-chat-return-stage')
+    localStorage.removeItem('mayday-spring-diary-pending-data')
     localStorage.setItem('mayday-march28-started', 'true')
     setActiveApp(null)
     setSelectedSmsThread(null)
@@ -8965,7 +8971,7 @@ function App() {
                               )}
                               {storyStage === 'spring-free-chat' && springSmsTarget && selectedSmsThread === springSmsTarget && springSmsReplied && (
                                 <div className="sms-thread-actions">
-                                  <div className="reply-note">這段聊天會保留在訊息紀錄裡。想聊的話，之後還可以再開啟新的對話。</div>
+                                  <div className="reply-note">這段聊天會保留在訊息紀錄裡，之後可以隨時回來重看。</div>
                                   <button className="story-primary-button" onClick={finishSpringFreeChat}>結束聊天 <ChevronRight size={15} /></button>
                                 </div>
                               )}
