@@ -2002,7 +2002,7 @@ function App() {
     if (bestArchive) {
       const restored: Record<CharacterId, SmsMessage[]> = { ...current }
       const messageOrder = (message: SmsMessage) => {
-        const match = message.id.match(/^[^-]+-(\\d+)-(\\d+)$/)
+        const match = message.id.match(/^[^-]+-(\d+)-(\d+)$/)
         return match ? Number(match[1]) * 100 + Number(match[2]) : 0
       }
       const isDuplicate = (left: SmsMessage, right: SmsMessage) =>
