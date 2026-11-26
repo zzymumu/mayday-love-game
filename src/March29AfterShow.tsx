@@ -1024,11 +1024,24 @@ export function March29AfterShow({
                   <span>你</span>
                   <p>{'「' + selectedChoice.text + '」'}</p>
                 </div>
-                <div className="narrative-dialogue">
-                  <span>{escortRoute.name}</span>
-                  <p>{'「' + selectedChoice.response + '」'}</p>
-                </div>
-                <p className="narrative-paragraph">{selectedChoice.afterResponse}</p>
+                {escortRoute.name === '溫尚翊' && progress.roundIndex === 1 &&
+                  selectedChoice.text === '把手伸過來，我幫你呼呼。' ? (
+                  <>
+                    <p className="narrative-paragraph">{selectedChoice.afterResponse}</p>
+                    <div className="narrative-dialogue">
+                      <span>{escortRoute.name}</span>
+                      <p>{'「' + selectedChoice.response + '」'}</p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="narrative-dialogue">
+                      <span>{escortRoute.name}</span>
+                      <p>{'「' + selectedChoice.response + '」'}</p>
+                    </div>
+                    <p className="narrative-paragraph">{selectedChoice.afterResponse}</p>
+                  </>
+                )}
                 {progress.roundIndex === 2 && <March29Blocks blocks={escortRoute.ending} />}
                 <div className="story-action-bar story-inline-action">
                   <button className="story-primary-button" onClick={continueEscort}>
