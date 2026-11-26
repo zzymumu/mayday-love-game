@@ -101,7 +101,7 @@ import { buildMarch29DiaryData, type March29DiaryCharacter, type March29DiaryDat
 import { April12Story, buildApril12DiaryData, type April12Character, type April12DiaryData } from './April12Story'
 import { April20Story, type April20Character } from './April20Story'
 import { April30Story, getApril30AffectionTotal, type April30Route, type April30Selection } from './April30Story'
-import { May10Story, type May10Selection } from './May10Story'
+import { May10Story, type May10Character, type May10Selection } from './May10Story'
 import { buildApril20DiaryData, type April20DiaryData } from './april20Diary'
 import { buildApril30DiaryData, type April30DiaryData } from './april30Diary'
 import {
