@@ -28,6 +28,7 @@ type Progress = {
 }
 
 const STORAGE_KEY = 'mayday-may10-progress-v1'
+const CHARACTER_SELECTION_AFFECTION_KEY = 'mayday-may10-character-selection-affection-v1'
 const ORDER: May10Character[] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
 const NAMES: Record<May10Character, string> = {
   wen: '溫尚翊',
@@ -538,6 +539,14 @@ export function May10Story({
     localStorage.setItem(STORAGE_KEY, JSON.stringify(progress))
     onClockChange(clockForProgress(progress))
   }, [progress, onClockChange])
+
+  // The one-person route picker is also a relationship choice. Apply its point
+  // once, including when resuming a save made after the character was selected.
+  useEffect(() => {
+    if (!progress.character || localStorage.getItem(CHARACTER_SELECTION_AFFECTION_KEY) === 'true') return
+    onAddAffection(progress.character, 1)
+    localStorage.setItem(CHARACTER_SELECTION_AFFECTION_KEY, 'true')
+  }, [progress.character, onAddAffection])
 
   const chooseCharacter = (character: May10Character) => {
     const maxAffection = Math.max(...ORDER.map((id) => Number(affection[id] ?? 0)))
