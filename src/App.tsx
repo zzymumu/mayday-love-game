@@ -5816,6 +5816,8 @@ function App() {
     setMarch29DiaryData(null)
     setApril12DiaryUnlocked(false)
     setApril12DiaryData(null)
+    setApril20DiaryUnlocked(false)
+    setApril20DiaryData(null)
     setApril12Clock('14:30')
     setMarch28VisitCharacter(null)
     setMarch28VisitReplies([])
@@ -9149,7 +9151,7 @@ function App() {
                                   <div className="diary-paper">
                                     <span className="diary-date">1997 年 4 月 20 日・星期日</span>
                                     <h2>{april20DiaryData.title}</h2>
-                                    <div className="diary-section-label">星期日 · 練團室</div>
+                                    <div className="diary-section-label">{localStorage.getItem('mayday-april20-route') === 'park' ? '星期日 · 公園' : '星期日 · 練團室'}</div>
                                     <DiarySection label="日記" text={april20DiaryData.text} />
                                   </div>
                                 ) : selectedDiaryDate === '1997-04-12' && april12DiaryUnlocked && april12DiaryData ? (
