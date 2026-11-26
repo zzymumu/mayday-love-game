@@ -763,6 +763,7 @@ export function May10Story({
         {progress.phase === 'jealousyIntro' && jealousyRoute && progress.jealousyCharacter && progress.character && (
           <>
             <h2 className="story-scene-title">有人好像等得有點久了。</h2>
+            <Blocks blocks={[n(`你和${NAMES[progress.character]}又聊了一會兒。剛才的面試自然還是話題之一，聊著聊著，又說到下次練團和其他零零碎碎的小事。你正聽他說到一半，練團室另一頭忽然傳來一點動靜。`)]} />
             <Blocks blocks={jealousyRoute.intro} />
             <Blocks blocks={[
               d(NAMES[progress.character], ({
