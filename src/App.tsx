@@ -2627,7 +2627,8 @@ function App() {
                                                                         : storyStage === 'spring-rehearsal' ? '16:30'
                                                                           : storyStage === 'spring-after-picker' ? '18:30'
                                                                             : storyStage === 'spring-lesson' || storyStage === 'spring-dinner' ? '19:00'
-                                                                              : ['spring-sms-picker', 'spring-sms-chat', 'spring-free-chat-picker', 'spring-free-chat'].includes(storyStage) ? '21:00'
+                                                                              : ['spring-sms-picker', 'spring-sms-chat'].includes(storyStage) ? '21:00'
+                                                                                : ['spring-free-chat-picker', 'spring-free-chat'].includes(storyStage) ? '22:30'
                                                                                 : storyStage === 'spring-diary' ? '22:30'
                                                                      : storyStage === 'march28-intro' ? '09:40'
                                                                        : storyStage === 'march28-visit' ? '13:20'
@@ -2857,11 +2858,10 @@ function App() {
       restoredData['mayday-spring-free-chat-eligible-v1'] = 'true'
       restoredData['mayday-spring-free-chat-started'] = 'true'
       restoredData['mayday-spring-free-chat-complete'] = 'true'
-      const returnStage = restoredData['mayday-spring-free-chat-return-stage'] || 'march28-intro'
       delete restoredData['mayday-spring-free-chat-return-stage']
       if (savedTimelineStage === 'spring-free-chat-picker' || savedTimelineStage === 'spring-free-chat') {
-        restoredData['mayday-story-stage'] = returnStage
-        if (saved.stage === 'paused') restoredData['mayday-resume-stage'] = returnStage
+        restoredData['mayday-story-stage'] = 'spring-diary'
+        if (saved.stage === 'paused') restoredData['mayday-resume-stage'] = 'spring-diary'
       }
     } else if (beforeSpringFreeChatCheckpoint) {
       ;[
@@ -2870,25 +2870,30 @@ function App() {
         'mayday-spring-free-chat-complete',
         'mayday-spring-free-chat-return-stage',
       ].forEach((key) => delete restoredData[key])
-    } else if (restoredData['mayday-spring-day-complete'] === 'true') {
-      // The 17 February story has reached the free-SMS checkpoint, but this
-      // selected save has not consumed the optional free chat yet.
+    } else if (saved.gameDate === '1997.02.17' && restoredData['mayday-spring-day-complete'] === 'true') {
+      // Only the selected 17 February night checkpoint may start or resume this event.
       restoredData['mayday-spring-free-chat-eligible-v1'] = 'true'
       if (savedTimelineStage === 'spring-free-chat-picker' || savedTimelineStage === 'spring-free-chat') {
-        // Preserve an in-progress event (including the picker before choosing
-        // a character) so the player can resume it instead of opening a new one.
         restoredData['mayday-spring-free-chat-started'] = 'true'
+        restoredData['mayday-spring-free-chat-return-stage'] = 'spring-diary'
         if (savedTimelineStage === 'spring-free-chat' &&
           (!restoredData['mayday-spring-sms-target'] || restoredData['mayday-spring-sms-mode'] !== 'free')) {
+          delete restoredData['mayday-spring-sms-target']
           restoredData['mayday-story-stage'] = 'spring-free-chat-picker'
           if (saved.stage === 'paused') restoredData['mayday-resume-stage'] = 'spring-free-chat-picker'
         }
       } else {
-        // This save reached the checkpoint but had not started the optional chat.
+        // The diary is the only place where a new 17 February chat can be opened.
         restoredData['mayday-spring-free-chat-started'] = 'false'
         restoredData['mayday-spring-free-chat-complete'] = 'false'
         delete restoredData['mayday-spring-free-chat-return-stage']
       }
+    } else if (saved.gameDate > '1997.02.17') {
+      // A save beyond 17 February has passed this one-night window.
+      restoredData['mayday-spring-free-chat-eligible-v1'] = 'true'
+      restoredData['mayday-spring-free-chat-started'] = 'true'
+      restoredData['mayday-spring-free-chat-complete'] = 'true'
+      delete restoredData['mayday-spring-free-chat-return-stage']
     }
 
     // Keep the message archive aligned with the selected save, not with the furthest
@@ -5020,34 +5025,36 @@ function App() {
     if (!opening || !firstRound) return
     const openingTextMessages = opening.textMessages?.length ? opening.textMessages : [opening.text]
     const openingResponseMessages = opening.responseMessages?.length ? opening.responseMessages : [opening.response]
+    const springSmsHour = springSmsMode === 'free' ? '22' : '21'
+    const openingStartMinute = springSmsMode === 'free' ? 31 : 8
     const openingEntries = [
       ...openingTextMessages.map((text, index) => ({
         from: 'me' as const,
         text,
-        time: '21:' + String(8 + index).padStart(2, '0'),
+        time: springSmsHour + ':' + String(openingStartMinute + index).padStart(2, '0'),
       })),
       ...openingResponseMessages.map((text, index) => ({
         from: springSmsTarget as CharacterId,
         text,
-        time: '21:' + String(8 + openingTextMessages.length + index).padStart(2, '0'),
+        time: springSmsHour + ':' + String(openingStartMinute + openingTextMessages.length + index).padStart(2, '0'),
       })),
     ]
     const firstRoundIncoming = firstRound.incomingMessages?.length
       ? firstRound.incomingMessages
       : firstRound.incoming ? [firstRound.incoming] : []
-    const firstRoundStartMinute = 8 + openingEntries.length
-    const springSmsHistoryDate = springSmsMode === 'free' ? '1997年3月28日・晚上' : '1997年2月17日・晚上'
+    const firstRoundStartMinute = openingStartMinute + openingEntries.length
+    const springSmsHistoryDate = '1997年2月17日・晚上'
     appendChatMessages(springSmsTarget, [
       ...openingEntries,
       ...(firstRound.outgoing ? [{
         from: 'me' as const,
         text: firstRound.outgoing,
-        time: '21:' + String(firstRoundStartMinute).padStart(2, '0'),
+        time: springSmsHour + ':' + String(firstRoundStartMinute).padStart(2, '0'),
       }] : []),
       ...firstRoundIncoming.map((text, index) => ({
         from: springSmsTarget as CharacterId,
         text,
-        time: '21:' + String(firstRoundStartMinute + (firstRound.outgoing ? 1 : 0) + index).padStart(2, '0'),
+        time: springSmsHour + ':' + String(firstRoundStartMinute + (firstRound.outgoing ? 1 : 0) + index).padStart(2, '0'),
       })),
     ], springSmsHistoryDate)
     if (springSmsMode === 'day') localStorage.setItem('mayday-spring-sms-history-restore-v1', 'true')
@@ -5075,7 +5082,10 @@ function App() {
     if (!choice) return
     const nextReplies = [...springSmsReplies, choiceIndex]
     const nextRounds = getSpringSmsRounds(springSmsTarget, context, nextReplies, springSmsOpeningChoice)
-    const minute = (springSmsTarget === 'wen' ? 12 : 11) + springSmsRound * (springSmsTarget === 'wen' ? 7 : 3)
+    const springSmsHour = springSmsMode === 'free' ? '22' : '21'
+    const minute = springSmsMode === 'free'
+      ? 40 + springSmsRound * (springSmsTarget === 'wen' ? 4 : 3)
+      : (springSmsTarget === 'wen' ? 12 : 11) + springSmsRound * (springSmsTarget === 'wen' ? 7 : 3)
     const nextRound = springSmsRound < 4 ? nextRounds[springSmsRound + 1] : null
     const nextRoundIncoming = nextRound
       ? (nextRound.incomingMessages?.length ? nextRound.incomingMessages : nextRound.incoming ? [nextRound.incoming] : [])
@@ -5084,18 +5094,18 @@ function App() {
       ...(nextRound.outgoing ? [{
         from: 'me' as const,
         text: nextRound.outgoing,
-        time: '21:' + String(minute + choice.response.length + 1).padStart(2, '0'),
+        time: springSmsHour + ':' + String(minute + choice.response.length + 1).padStart(2, '0'),
       }] : []),
       ...nextRoundIncoming.map((text, index) => ({
         from: springSmsTarget as CharacterId,
         text,
-        time: '21:' + String(minute + choice.response.length + (nextRound.outgoing ? 2 : 1) + index).padStart(2, '0'),
+        time: springSmsHour + ':' + String(minute + choice.response.length + (nextRound.outgoing ? 2 : 1) + index).padStart(2, '0'),
       })),
     ] : []
     const springSmsHistoryDate = springSmsMode === 'free' ? '1997年3月28日・晚上' : '1997年2月17日・晚上'
     appendChatMessages(springSmsTarget, [
-      { from: 'me', text: choice.text, time: '21:' + String(minute).padStart(2, '0') },
-      ...choice.response.map((text, index) => ({ from: springSmsTarget, text, time: '21:' + String(minute + index + 1).padStart(2, '0') })),
+      { from: 'me', text: choice.text, time: springSmsHour + ':' + String(minute).padStart(2, '0') },
+      ...choice.response.map((text, index) => ({ from: springSmsTarget, text, time: springSmsHour + ':' + String(minute + index + 1).padStart(2, '0') })),
       ...nextRoundMessages,
     ], springSmsHistoryDate)
     setSpringSmsReplies(nextReplies)
@@ -5239,8 +5249,14 @@ function App() {
   const finishSpringDiary = () => {
     if (!springDiaryData) return
     setSpringDiaryUnlocked(true)
+    // Closing the diary also closes the one-night free-chat window if it was skipped.
+    setSpringFreeChatStarted(true)
+    setSpringFreeChatComplete(true)
     localStorage.setItem('mayday-spring-day-complete', 'true')
     localStorage.setItem('mayday-spring-free-chat-eligible-v1', 'true')
+    localStorage.setItem('mayday-spring-free-chat-started', 'true')
+    localStorage.setItem('mayday-spring-free-chat-complete', 'true')
+    localStorage.removeItem('mayday-spring-free-chat-return-stage')
     localStorage.setItem('mayday-march28-started', 'true')
     setActiveApp(null)
     setSelectedSmsThread(null)
@@ -5436,14 +5452,17 @@ function App() {
   }
 
   const startSpringFreeChat = () => {
-    if (localStorage.getItem('mayday-spring-day-complete') !== 'true') return
+    if (storyStage !== 'spring-diary' || effectiveDateStage !== 'spring-diary' ||
+      saveGameDate !== '1997.02.17' || currentTime < '21:00' || !springDiaryData) return
     if (springFreeChatStarted || springFreeChatComplete
       || localStorage.getItem('mayday-spring-free-chat-started') === 'true'
       || localStorage.getItem('mayday-spring-free-chat-complete') === 'true') return
     setSpringFreeChatStarted(true)
+    // Mark the 17 February checkpoint so an in-progress chat can be resumed from its save.
+    localStorage.setItem('mayday-spring-day-complete', 'true')
+    localStorage.setItem('mayday-spring-free-chat-eligible-v1', 'true')
     localStorage.setItem('mayday-spring-free-chat-started', 'true')
-    const returnStage = ['march28-intro', 'march28-visit', 'march28-end', 'march28-park', 'march28-park-stay', 'march28-morning', 'march28-diary', 'march29-show'].includes(storyStage) ? storyStage : march28DayComplete ? 'completed' : 'march28-intro'
-    localStorage.setItem('mayday-spring-free-chat-return-stage', returnStage)
+    localStorage.setItem('mayday-spring-free-chat-return-stage', 'spring-diary')
     setSpringSmsTarget(null)
     setSpringSmsRound(0)
     setSpringSmsReplied(false)
@@ -5492,12 +5511,8 @@ function App() {
     setSelectedSmsThread(null)
     setSpringSmsTarget(null)
     localStorage.removeItem('mayday-spring-sms-target')
-    const savedReturnStage = localStorage.getItem('mayday-spring-free-chat-return-stage')
     localStorage.removeItem('mayday-spring-free-chat-return-stage')
-    const returnStage = savedReturnStage && ['march28-intro', 'march28-visit', 'march28-end', 'march28-park', 'march28-park-stay', 'march28-morning', 'march28-diary', 'march29-show', 'completed'].includes(savedReturnStage)
-      ? savedReturnStage as StoryStage
-      : march28DayComplete ? 'completed' : 'march28-intro'
-    changeStage(returnStage)
+    changeStage('spring-diary')
   }
 
   useEffect(() => {
@@ -8057,7 +8072,15 @@ function App() {
                     <div className="diary-paper story-diary-paper"><span className="diary-date">1997 年 2 月 17 日</span><h2>{springDiaryData.title}</h2><DiarySection label="日記" text={springDiaryData.text} /></div>
                     <div className="reunion-pause-note">這篇日記會保留在日記列表裡，之後可以隨時重讀。</div>
                   </div>
-                  <div className="story-action-bar"><button className="story-primary-button" onClick={finishSpringDiary}>合上日記，結束今天 <ChevronRight size={15} /></button></div>
+                  <div className="story-action-bar">
+                    {!springFreeChatStarted && !springFreeChatComplete && (
+                      <button className="story-primary-button secondary-chat-action" onClick={startSpringFreeChat}>睡前聊幾句 <ChevronRight size={15} /></button>
+                    )}
+                    {springFreeChatStarted && !springFreeChatComplete && (
+                      <button className="story-primary-button secondary-chat-action" onClick={resumeSpringFreeChat}>繼續自由聊天 <ChevronRight size={15} /></button>
+                    )}
+                    <button className="story-primary-button" onClick={finishSpringDiary}>合上日記，結束今天 <ChevronRight size={15} /></button>
+                  </div>
                 </div>
               )}
 
@@ -8563,9 +8586,6 @@ function App() {
                               <strong>訊息列表</strong>
                               <span>{isSpringTerm ? "收件匣 · 1997" : "收件匣 · 1996"}</span>
                             </div>
-                            {localStorage.getItem('mayday-spring-day-complete') === 'true' && !springFreeChatStarted && !springFreeChatComplete && (
-                              <button className="story-primary-button" onClick={startSpringFreeChat}>自由聊天 <ChevronRight size={15} /></button>
-                            )}
                             {springFreeChatStarted && !springFreeChatComplete && (
                               <button className="story-primary-button" onClick={resumeSpringFreeChat}>繼續自由聊天 <ChevronRight size={15} /></button>
                             )}
