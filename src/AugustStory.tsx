@@ -360,6 +360,112 @@ function readProgressWithoutStorage(candidates: AugustCharacter[]): Progress {
   }
 }
 
+
+export function rewindAugustStoryToStart(
+  source: Record<string, string>,
+  callThreshold = 10,
+): Record<string, string> | null {
+  const data = { ...source }
+  const validPhase = (value: unknown): value is Phase =>
+    typeof value === 'string' && ['transition', 'store-intro', 'store-interaction', 'store-ending', 'evening-choice', 'fried-intro', 'fried-picker', 'yanming-intro', 'evening-interaction', 'evening-ending'].includes(value)
+  const validChoice = (value: unknown): value is number =>
+    Number.isInteger(value) && Number(value) >= 0 && Number(value) <= 2
+  const parseArray = (value: string | undefined): unknown[] => {
+    try {
+      const parsed = JSON.parse(value ?? '[]') as unknown
+      return Array.isArray(parsed) ? parsed : []
+    } catch {
+      return []
+    }
+  }
+
+  let progress: Partial<Progress> | null = null
+  const rawProgress = data[STORAGE_KEY]
+  if (rawProgress) {
+    try {
+      progress = JSON.parse(rawProgress) as Partial<Progress>
+      if (!validPhase(progress.phase)) return null
+    } catch {
+      return null
+    }
+  } else if (data['mayday-august-day-complete'] === 'true') {
+    return null
+  }
+
+  const candidates = progress
+    ? (Array.isArray(progress.storeCandidates) ? progress.storeCandidates.filter((item): item is AugustCharacter => ORDER.includes(item as AugustCharacter)) : [])
+    : parseArray(data['mayday-august-store-candidates']).filter((item): item is AugustCharacter => typeof item === 'string' && ORDER.includes(item as AugustCharacter))
+  const storeChoicesRaw = progress ? progress.storeChoices : parseArray(data['mayday-august-store-choices'])
+  const storeChoices = Array.isArray(storeChoicesRaw) ? storeChoicesRaw.filter(validChoice).slice(0, 5) : []
+  const eveningCharacterValue = progress ? progress.eveningCharacter : data['mayday-august-evening-character']
+  const eveningCharacter = ORDER.includes(eveningCharacterValue as AugustCharacter) ? eveningCharacterValue as AugustCharacter : null
+  const eveningChoicesRaw = progress ? progress.eveningChoices : parseArray(data['mayday-august-evening-choices'])
+  const eveningChoices = Array.isArray(eveningChoicesRaw) ? eveningChoicesRaw.filter(validChoice).slice(0, 5) : []
+  if (storeChoicesRaw && Array.isArray(storeChoicesRaw) && storeChoices.length !== storeChoicesRaw.length) return null
+  if (eveningChoicesRaw && Array.isArray(eveningChoicesRaw) && eveningChoices.length !== eveningChoicesRaw.length) return null
+  if (storeChoices.length && !candidates.length) return null
+  if (eveningChoices.length && !eveningCharacter) return null
+
+  const earned: Record<AugustCharacter, number> = { wen: 0, ashin: 0, masa: 0, stone: 0, yanming: 0 }
+  for (let index = 0; index < storeChoices.length; index += 1) {
+    const round = candidates.length === 1
+      ? buildSpecRound(soloStoreSpecs[candidates[0]][index], SPEAKER_NAMES[candidates[0]])
+      : buildGroupStoreRound(candidates, index)
+    const selected = round.choices[storeChoices[index]]
+    if (!selected) return null
+    if (selected.affectionByCharacter) {
+      Object.entries(selected.affectionByCharacter).forEach(([character, amount]) => {
+        if (ORDER.includes(character as AugustCharacter) && typeof amount === 'number') earned[character as AugustCharacter] += amount
+      })
+    } else {
+      earned[candidates[0]] += selected.affection
+    }
+  }
+  if (eveningChoices.length && eveningCharacter) {
+    for (let index = 0; index < eveningChoices.length; index += 1) {
+      const round = buildSpecRound(eveningSpecs[eveningCharacter][index], SPEAKER_NAMES[eveningCharacter])
+      const selected = round.choices[eveningChoices[index]]
+      if (!selected) return null
+      earned[eveningCharacter] += selected.affection
+    }
+  }
+
+  let currentAffection: Partial<Record<AugustCharacter, number>>
+  try {
+    currentAffection = JSON.parse(data['mayday-route-affection'] ?? 'null') as Partial<Record<AugustCharacter, number>>
+    if (!currentAffection || typeof currentAffection !== 'object' || Array.isArray(currentAffection)) return null
+  } catch {
+    return null
+  }
+  const restoredAffection: Partial<Record<AugustCharacter, number>> = { ...currentAffection }
+  ORDER.forEach((character) => {
+    const current = currentAffection[character]
+    if (typeof current !== 'number' || !Number.isFinite(current)) return
+    restoredAffection[character] = current - earned[character]
+  })
+  data['mayday-route-affection'] = JSON.stringify(restoredAffection)
+
+  const pending = data['mayday-pending-call']
+  if (pending && ORDER.includes(pending as AugustCharacter)) {
+    const character = pending as AugustCharacter
+    const before = restoredAffection[character]
+    const after = currentAffection[character]
+    if (typeof before === 'number' && typeof after === 'number' &&
+      before < callThreshold && after >= callThreshold &&
+      data['mayday-call-v2-triggered-' + character] !== 'true') {
+      delete data['mayday-pending-call']
+    }
+  }
+
+  Object.keys(data).forEach((key) => {
+    if (key.startsWith('mayday-august-') && key !== 'mayday-august-started') delete data[key]
+  })
+  data['mayday-august-started'] = 'true'
+  data['mayday-august-clock'] = '15:05'
+  data['mayday-story-stage'] = 'august-story'
+  return data
+}
+
 function clockForProgress(progress: Progress): string {
   if (progress.phase === 'transition') return '15:05'
   if (progress.phase === 'store-intro') return '15:12'
