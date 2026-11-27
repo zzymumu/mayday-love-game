@@ -18,19 +18,19 @@ export type SeptemberSelection = {
   rivalryChoices: number[]
 }
 type Block = { kind: 'narration' | 'dialogue'; text: string; speaker?: string }
-type Choice = { text: string; response: Block[]; affection: number }
+type Choice = { kind: 'action' | 'dialogue'; text: string; response: Block[]; affection: number }
 type Round = { title: string; blocks: Block[]; choices: [Choice, Choice, Choice] }
-type GroupChoice = { text: string; target: SeptemberCharacter; affection: number; response: Block[] }
+type GroupChoice = { kind: 'action'; text: string; target: SeptemberCharacter; affection: number; response: Block[] }
 type GroupRound = { title: string; blocks: Block[]; choices: [GroupChoice, GroupChoice, GroupChoice] }
 type Interaction = { character: SeptemberCharacter | null; roundIndex: number; pendingChoice: number | null; choices: number[] }
 type GroupProgress = { roundIndex: number; pendingChoice: number | null; choices: number[] }
 type Phase =
-  | 'trip-intro' | 'train-picker' | 'train-interaction' | 'arrival' | 'homestay-arrival'
+  | 'trip-intro' | 'station' | 'train-picker' | 'train-interaction' | 'arrival' | 'homestay-arrival'
   | 'poker' | 'homestay-picker' | 'homestay-interaction' | 'day-two-morning'
-  | 'scooter-picker' | 'scooter-interaction' | 'coast-photo' | 'sunset-group'
+  | 'scooter-picker' | 'scooter-interaction' | 'seaside-play' | 'coast-photo' | 'sunset-group'
   | 'sunset-picker' | 'sunset-interaction' | 'sunset-rivalry' | 'return' | 'ending'
 type Progress = {
-  version: 1
+  version: 2
   phase: Phase
   train: Interaction
   poker: GroupProgress
@@ -45,17 +45,30 @@ type Progress = {
 type Section = 'train' | 'homestay' | 'scooter' | 'sunset'
 type CharacterRecord = Record<SeptemberCharacter, [Round, Round, Round, Round, Round]>
 
-const STORAGE_KEY = 'mayday-september-story-progress-v4'
+const STORAGE_KEY = 'mayday-september-story-progress-v5'
 const ORDER: SeptemberCharacter[] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
 const NAMES: Record<SeptemberCharacter, string> = {
   wen: '溫尚翊', ashin: '陳信宏', masa: '瑪莎', stone: '石錦航', yanming: '劉諺明',
 }
 const n = (text: string): Block => ({ kind: 'narration', text })
 const d = (speaker: string, text: string): Block => ({ kind: 'dialogue', speaker, text })
-const act = (text: string): Block => n(text.startsWith('你') ? text : '你' + text)
-const option = (text: string, speaker: string, reply: string, affection = 1): Choice => ({
-  text, response: [d(speaker, reply)], affection,
-})
+const actionNarration = (text: string): string => {
+  const clean = text.trim().replace(/[。！？!?]+$/g, '')
+  return (clean.startsWith('你') ? clean : '你' + clean) + '。'
+}
+const act = (text: string): Block => n(actionNarration(text))
+const isActionOption = (text: string): boolean =>
+  /^(把|把手|伸手|往|趁|故意|坐到|坐進|朝|跟著|拿起|拿過|拉住|站到|走到|蹲下|靠近|拍|推|摸|撿起|先把|先拿|接過|抬手|低頭|將|用手|替|輕輕|慢慢|挪到|脫下|踩著|握住|轉過身|拿出)/.test(text.trim())
+const option = (text: string, speaker: string, reply: string, affection = 1): Choice => {
+  const kind = isActionOption(text) ? 'action' : 'dialogue'
+  return {
+    kind, text,
+    response: kind === 'action'
+      ? [n(actionNarration(text)), d(speaker, reply)]
+      : [d('你', text), d(speaker, reply)],
+    affection,
+  }
+}
 const routeRound = (
   title: string,
   blocks: Block[],
@@ -72,7 +85,7 @@ const routeRound = (
   ],
 })
 const gc = (text: string, target: SeptemberCharacter, speaker: string, reply: string, affection = 1): GroupChoice => ({
-  text, target, affection, response: [d(speaker, reply)],
+  kind: 'action', text, target, affection, response: [d(speaker, reply)],
 })
 const groupRound = (title: string, blocks: Block[], choices: [GroupChoice, GroupChoice, GroupChoice]): GroupRound => ({ title, blocks, choices })
 
@@ -83,7 +96,7 @@ const trainRoutes: CharacterRecord = {
       d('溫尚翊', '妳坐裡面啦，靠走道等一下每個人都要撞到妳。'),
       n('你才剛坐好，車身便輕輕晃了一下。他一手扶住椅背，另一手把你放在膝上的車票抽走，看了一眼又還給你。'),
     ], '溫尚翊',
-      ['你是不是早就想坐窗邊？', '那你幫我看行李，我要睡一下。', '坐裡面可以啊，那你不要一直擋住風景。'],
+      ['你是不是早就想坐窗邊？', '把背包往座位底下推好，順手把車票收進書裡。', '坐裡面可以啊，那你不要一直擋住風景。'],
       ['不然咧？我又不是要跟妳搶。妳要看就往前一點，玻璃又不會跑掉。', '妳才剛上車就要睡喔？好啦，睡妳的，東西掉了我再叫妳。', '蛤？我哪有擋，妳自己坐好就看得到啦。']),
     routeRound('晃了一下', [
       n('列車經過彎道，桌上的車票滑到地上。你彎腰去撿，剛好又遇上一陣晃動，額頭差點碰到前面的椅背。溫尚翊伸手擋了一下，手掌停在你額前，等車身穩了才收回去。'),
@@ -107,13 +120,13 @@ const trainRoutes: CharacterRecord = {
       ['我在看你啊，玻璃裡看得比較清楚。', '你坐這麼近，我想看窗外也很難欸。', '前面真的有海嗎？你幫我找。'],
       ['……妳很無聊欸。看外面啦，等一下真的看到了再叫妳。', '是妳自己一直往這邊靠好不好。……不然我坐過去一點？', '有啦，快了。妳不要一直探，等一下又撞到玻璃。'],
       [2, 1, 1]),
-    routeRound('快到站前的靠近', [
-      n('列車忽然晃了一下，行李架上的小包往外滑。溫尚翊伸手把它接住，另一隻手順勢扶住你的肩，等車身穩了才慢慢收回。他低頭看見你還抓著他的袖口，嘴角動了一下。'),
-      d('溫尚翊', '這次抓得倒是很快喔。'),
-      n('他把小包放回原位，卻沒有急著坐回去，先確認你的車票還好好夾在書裡。'),
+    routeRound('睡意慢慢靠過來', [
+      n('車廂裡的聲音漸漸低下來，你原本還在看窗外，眼皮卻不知不覺變得很重。頭一點一點往窗邊偏，溫尚翊本來看著前方，發現你快撞上玻璃，立刻伸手擋在你和窗戶中間。'),
+      d('溫尚翊', '欸，睏了就睡啦，玻璃很硬欸。'),
+      n('他把自己的外套折了一下，墊在你頭側，嘴上說只是怕你撞到，手臂卻一直留在那裡。'),
     ], '溫尚翊',
-      ['你剛剛扶我肩膀了欸。', '我怕你又說我跟地板有仇啊。', '那你先不要走，陪我等到站。'],
-      ['不然咧？車子晃成那樣，總不能看妳撞上去吧。', '妳還記得喔？記性最好就是用在這種地方。', '我本來就坐這裡啊。快到了，妳先把東西收好。'],
+      ['把額頭輕輕靠到他的肩上。', '你不用特地照顧我啦，我只是閉目養神。', '伸手抓住他的袖口，假裝自己還很清醒。'],
+      ['……妳真的睡喔？好啦，靠一下沒關係。', '知道啦。妳先閉眼，到了我叫妳。', '妳手抓那麼緊是怕我跑掉喔？睡啦，別硬撐。'],
       [2, 1, 2]),
   ],
   ashin: [
@@ -129,7 +142,7 @@ const trainRoutes: CharacterRecord = {
       d('陳信宏', '這首我最近一直在聽，想說妳可能也會喜歡。'),
       n('前奏響起時，列車正好穿過一段樹影。你們誰也沒有急著說話，偶爾對上眼，就一起笑一下。'),
     ], '陳信宏',
-      ['你怎麼知道我會喜歡？', '那你等一下要跟我說這首歌叫什麼。', '耳機線好短喔，我們是不是要坐近一點？'],
+      ['你怎麼知道我會喜歡？', '那你等一下要跟我說這首歌叫什麼。', '把耳機往他那邊挪一點，肩膀跟著靠過去。'],
       ['不知道欸，就覺得妳應該會喜歡。聽完再告訴妳我為什麼。', '好啊，我記得。等一下下車前再跟妳講。', '哈哈，真的有一點短。妳不要勉強，這樣聽得到就好馁。']),
     routeRound('快到台東了', [
       n('廣播提醒列車即將抵達台東。阿信把耳機收回盒子裡，卻沒有馬上起身。他看見你一直望著窗外，便把自己的小本子遞過來，裡面畫著剛才那朵兔子雲，旁邊還多了一個很小的笑臉。'),
@@ -147,14 +160,14 @@ const trainRoutes: CharacterRecord = {
       ['你喜歡哪一段？我想聽你說。', '你是不是每次都會把喜歡的歌聽到爛掉？', '那你把這首借我，我回去也要聽。'],
       ['副歌前面那個轉折吧，聽起來有一點像突然看到很遠的地方。', '哈哈，有一點欸。可是每次聽又會注意到不一樣的地方。', '好啊，等一下我把歌名寫給妳，回去比較好找。'],
       [2, 1, 2]),
-    routeRound('寫在票根背面', [
-      n('阿信翻出一張舊車票，拿筆在背面寫下剛才那首歌的名字，還順手畫了一個歪歪的海浪。他把票根放到你掌心，手指卻在你合起手掌前停了一下。'),
-      d('陳信宏', '先給妳留著，回去不要弄丟喔。'),
-      n('你把票根收進錢包時，他低頭笑了一下，像是對這個小小的紀念品也有點滿意。'),
+    routeRound('肩膀靠過來了', [
+      n('阿信把隨身聽的音量轉小，還想問你要不要再聽一首，卻發現你已經安靜下來。列車晃過彎道，你的肩膀慢慢靠向他，他先低頭看了一眼，沒有急著動。'),
+      d('陳信宏', '妳是不是有點累了？要不要先休息一下馁？'),
+      n('他把耳機從你耳邊輕輕拿開，讓你靠得舒服一點。你快睡著時，他才把自己的肩膀稍微往你那邊挪。'),
     ], '陳信宏',
-      ['那你要不要再寫一句話？不然只有歌名很孤單。', '我會收好的，這個很有紀念價值欸。', '你畫的海浪好像一條小魚喔。'],
-      ['要寫什麼啦？……好，那我想一下，不能亂寫。', '那就好。等妳哪天翻到，應該還會想起今天。', '欸，真的有像嗎？那我下次畫一隻完整的給妳。'],
-      [2, 2, 1]),
+      ['把頭輕輕靠在他的肩上。', '我沒有睡著啦，只是眼睛休息一下。', '你也靠過來一點，這樣比較不會被耳機線拉到。'],
+      ['好啊，妳睡一下。等看到海我再叫妳。', '哈哈，好，我不拆穿妳。', '這樣有比較舒服嗎？耳機我先收起來好了。'],
+      [2, 1, 2]),
   ],
   masa: [
     routeRound('誰坐窗邊', [
@@ -169,7 +182,7 @@ const trainRoutes: CharacterRecord = {
       d('瑪莎', '欸，妳不要吃太快，這包是大家的。'),
       n('他自己倒是吃得很順手，還把碎屑拍到掌心裡，沒有掉到你裙子上。'),
     ], '瑪莎',
-      ['你剛剛明明吃最多。', '那我偏要拿最大的那片。', '你手伸過來的時候差點碰到我欸。'],
+      ['你剛剛明明吃最多。', '趁他伸手拿餅乾時，故意把袋子往自己這邊收。', '你手伸過來的時候差點碰到我欸。'],
       ['我那叫試吃，妳那叫搶劫。', '拿啊，妳看妳等一下會不會掉滿身。', '不然咧？餅乾又不會自己飛過去。妳很在意喔？']),
     routeRound('快到站了', [
       n('廣播響起時，你開始把小包包裡的東西一樣樣收好。瑪莎看見你把車票夾進書裡，伸手幫你把滑出來的票根壓平，嘴上還嫌你什麼都能弄丟。'),
@@ -187,14 +200,14 @@ const trainRoutes: CharacterRecord = {
       ['你明明就是留給我的嘛。', '那我不客氣，整包都收下囉。', '你手酸就直說啊，我又不會笑你。'],
       ['妳少自作多情，我只是懶得拿。', '妳敢，等一下我就跟大家說妳獨吞。', '我哪有手酸？……拿啦，快吃。'],
       [2, 1, 1]),
-    routeRound('下車前的暗號', [
-      n('車廂廣播提醒快到台東了，瑪莎把車票夾回口袋，忽然伸出小指在你面前晃了晃。他說等一下下船如果大家走散，就用小時候那個暗號找人。'),
-      d('瑪莎', '妳還記不記得？以前我們走丟都這樣。'),
-      n('他說完才像是想起你們中間空白了好幾年，手指停在半空，笑容也短暫收了一下。'),
+    routeRound('難得安靜的幾分鐘', [
+      n('瑪莎本來還在講剛才誰吃掉最後一片餅乾，講到一半卻發現你沒回嘴。你靠著椅背睡著了，手裡還捏著那張車票。他把零食袋往旁邊挪開，連拆包裝的聲音都放輕。'),
+      d('瑪莎', '欸，先不要吵她啦。她睡著了。'),
+      n('溫尚翊從前排回頭看了一眼，想說什麼又忍住。瑪莎把快滑下去的車票輕輕塞回你手裡，難得沒有趁機捉弄你。'),
     ], '瑪莎',
-      ['當然記得啊，你不要以為我忘了。', '那你先說一次，我要確認你有沒有記錯。', '我記得，只是沒想到你也還記得。'],
-      ['最好是啦。等一下真的走散，妳不要裝不認識我。', '妳很煩欸，明明就是妳以前先想出來的。', '……這種事哪有那麼容易忘記。好了，收東西啦。'],
-      [2, 1, 2]),
+      ['把眼睛睜開一條縫，假裝自己什麼都聽到了。', '醒來後小聲跟他說謝謝。', '伸手把零食袋往他那邊推，示意他繼續吃。'],
+      ['妳醒了喔？裝睡裝得還滿像的嘛。', '謝什麼啦，妳睡得跟小朋友一樣。', '好啦，我小聲一點。等一下到站再叫妳。'],
+      [2, 2, 1]),
   ],
   stone: [
     routeRound('把琴袋放好', [
@@ -209,7 +222,7 @@ const trainRoutes: CharacterRecord = {
       d('石錦航', '光線滿好的，想說可以留一張。妳不想拍也沒關係。'),
       n('你還沒回答，他已經把相機放低，耐心等你決定。'),
     ], '石錦航',
-      ['可以啊，但你要拍得好看一點。', '先拍風景啦，我等一下再入鏡。', '那我們一起拍一張好了。'],
+      ['可以啊，但你要拍得好看一點。', '先拍風景啦，我等一下再入鏡。', '把相機接過來，對著窗外的海線拍一張。'],
       ['好，我會注意角度。等洗出來再給妳看。', '好啊，這邊的光很漂亮，等一下還有機會。', '可以。等一下我找個不會晃的位置，拍完妳再挑。']),
     routeRound('抵達前的小提醒', [
       n('列車開始減速，石頭把相機收進袋子，順手把你放在桌上的車票遞過來。他看見你一直往窗外張望，便指了指遠處一閃而過的海線。'),
@@ -264,7 +277,7 @@ const trainRoutes: CharacterRecord = {
       d('劉諺明', '好啦，暫時不看了。妳想聊什麼？'),
       n('他把水瓶遞給你，自己也靠回椅背，肩膀總算放鬆下來。'),
     ], '劉諺明',
-      ['聊聊你自己啊，不要每次都只顧大家。', '你平常是不是也這麼會安排旅行？', '我想看窗外，你陪我一起看。'],
+      ['聊聊你自己啊，不要每次都只顧大家。', '你平常是不是也這麼會安排旅行？', '把行程表輕輕合起來，拉他一起看窗外。'],
       ['我自己沒什麼特別的。倒是妳，想去哪裡可以直接說。', '不一定，主要是怕大家臨時找不到方向。', '好啊。這段路不用趕，我陪妳看。'],
       [2, 1, 2]),
     routeRound('到站前的休息', [
@@ -284,7 +297,7 @@ const homestayRoutes: CharacterRecord = {
       n('牌局散了以後，大家還在客廳爭論最後一把到底算不算重來。你走到陽台透氣，才發現溫尚翊已經靠在欄杆旁，手裡拿著兩瓶冰汽水。看見你，他把其中一瓶遞過來。'),
       d('溫尚翊', '喏，妳的。剛剛看妳一直拿水喝，換這個啦。'),
     ], '溫尚翊',
-      ['你怎麼知道我想喝這個？', '你是不是輸牌輸到睡不著？', '那你幫我開，我手有點冰。'],
+      ['你怎麼知道我想喝這個？', '你是不是輸牌輸到睡不著？', '把汽水瓶遞到他面前，讓他幫忙開。'],
       ['就看到了啊。妳上次不是也拿這個？', '誰睡不著？我只是在等風小一點。', '蛤，妳自己不會開喔？……拿來啦。']),
     routeRound('風把頭髮吹亂', [
       n('海風從院子那邊繞進來，你的頭髮被吹到嘴邊。你正要伸手撥開，溫尚翊先抬起手，卻在碰到之前停了一下，最後只用指節示意你把那撮頭髮勾到耳後。'),
@@ -354,78 +367,89 @@ const homestayRoutes: CharacterRecord = {
       [2, 2, 1]),
   ],
   masa: [
-    routeRound('誰輸了誰買宵夜', [
-      n('你才剛走出客廳，瑪莎就跟了上來，手裡還拿著剛才輸牌欠下的零錢。他把硬幣在掌心晃了晃，說要去附近買宵夜，問你要不要一起。'),
-      d('瑪莎', '走啦，輸的人請客。妳剛剛不是笑最大聲？'),
+routeRound('被藏起來的牌', [
+      n('牌局散了，瑪莎說自己只是去拿水，卻把幾張牌順手塞進外套口袋。你看見他袖口露出一小截紅色牌背，故意沒有立刻拆穿。'),
+      d('瑪莎', '看什麼？我臉上有寫字喔？'),
+      n('他把水瓶擰開，還沒喝一口，你已經盯上他外套口袋。'),
     ], '瑪莎',
-      ['我陪你去啊，免得你亂買。', '你輸了還這麼理直氣壯？', '那我要吃你最喜歡的那個。'],
-      ['妳是怕我偷吃吧？走啦，讓妳監督。', '不然咧？願賭服輸，我又沒賴帳。', '妳很會挑欸。好啦，買給妳。']),
-    routeRound('最後一包餅乾', [
-      n('便利店的燈很亮，瑪莎站在貨架前挑了半天，最後拿起一包你小時候常吃的餅乾。他看見你盯著包裝，故意把它舉高了一點。'),
-      d('瑪莎', '這個妳還吃喔？口味都沒變欸。'),
-    ], '瑪莎',
-      ['你不是也記得很清楚？', '買啦，我們分著吃。', '你再拿高一點，我真的搶不到喔。'],
-      ['我只是記性好，不代表我特地記得。', '好啊，回去不要跟怪獸說，不然他又要搶。', '妳跳啊，我看看妳搶不搶得到。']),
-    routeRound('走回民宿', [
-      n('回程路上，你們一人拿著一袋宵夜。瑪莎走在靠馬路那側，嘴上還在算剛才牌局到底誰作弊。你伸手去拿他袋子裡的餅乾，他故意把袋子往外挪，卻沒有真的躲開。'),
-      d('瑪莎', '欸，妳自己的那包不吃，專挑我的？'),
-    ], '瑪莎',
-      ['因為你的比較好吃啊。', '我只是幫你減輕重量。', '那你分我一半，我就不搶了。'],
-      ['這句我記下來了，下次買兩包都給妳挑。', '妳這理由也太爛了吧。拿啦，反正又不重。', '好啦，分妳。不要等一下又說不夠。']),
-
-    routeRound('牌桌上的小動作', [
-      n('你回客廳拿水，剛好看見瑪莎把兩張牌塞到盒子底下。他抬頭對上你的眼神，手立刻壓住牌盒，臉上卻裝得若無其事。你走近一步，他就把盒子往自己身後挪。'),
-      d('瑪莎', '幹嘛？妳那個表情很像要抓賊欸。'),
-      n('他嘴角已經忍不住往上翹，明顯等著看你會怎麼拆穿他。'),
-    ], '瑪莎',
-      ['我都看到了，你最好自己交代。', '我不說出去，但你要賄賂我。', '你把盒子拿出來，我要檢查。'],
-      ['妳看到什麼啦？那是我剛剛掉的牌。', '喔？那妳想要什麼？先講好，不要太貴。', '蛤？妳是裁判喔？……好啦，給妳看。'],
-      [2, 2, 1]),
-    routeRound('門口的糖果', [
-      n('你們走回房間前，瑪莎從口袋摸出一顆水果糖，拋到你手裡。他說是剛才買宵夜時多拿的，語氣隨便得像是根本不記得這回事。'),
-      d('瑪莎', '拿去啦，妳剛剛不是一直盯著那個口味？'),
-      n('他轉身要走，卻又停了一下，回頭確認你真的接住了才繼續往前。'),
-    ], '瑪莎',
-      ['你怎麼連我看哪個口味都知道？', '那你也吃一顆，我們交換。', '你是不是特地留給我的？'],
-      ['就站在旁邊是要看不到多難？妳不要想太多。', '好啊，妳挑一個不要太酸的。', '……妳很會問欸。快收好啦，等一下被怪獸看到又要搶。'],
+      ['趁他轉身時，伸手把藏起來的牌抽走。', '你是不是把好牌藏起來了？', '把手掌攤開，叫他自己交代。'],
+      ['欸！妳什麼時候看到的？還我啦！', '蛤？妳有證據嗎？不要亂講欸。', '妳這樣很像在搜查欸，等一下，真的要看喔？'],
       [2, 1, 2]),
+    routeRound('追過走廊', [
+      n('瑪莎一看你手裡真的多了一張牌，立刻伸手來搶。你往後退，他也跟著追了兩步，兩個人繞過客廳的椅子，差點把靠牆的琴袋撞倒。'),
+      d('瑪莎', '妳給我站住啦！那張真的不是作弊用的！'),
+      n('阿信從客廳探頭看了一眼，還沒來得及問發生什麼事，你們已經跑到走廊另一頭。'),
+    ], '瑪莎',
+      ['把牌舉高一點，故意不讓他拿到。', '你先停下來，我們講條件。', '伸手拉住他的袖子，讓他不要再追。'],
+      ['妳很幼稚欸！快點還我啦！', '好啊，妳要什麼條件？先說喔，不要太過分。', '好啦好啦，我不追了。妳先放手。'],
+      [2, 2, 2]),
+    routeRound('差點撞到門框', [
+      n('你們同時伸手去拿那張牌，瑪莎突然停住，手掌撐在門框旁邊，另一隻手還捏著牌角。你差點撞上他的胸口，抬頭時才發現兩個人靠得很近。'),
+      d('瑪莎', '欸，小心一點啦。真的撞到怎麼辦？'),
+      n('他本來還想笑你，視線卻在你臉上停了一下，才把手裡的牌慢慢放低。'),
+    ], '瑪莎',
+      ['抬頭看他，故意問他是不是怕我撞到。', '把手裡的牌塞回他掌心，往後退半步。', '你現在才知道要小心喔？剛剛還追那麼快。'],
+      ['我是不想等一下被妳告狀啦。', '這樣才對嘛，先把牌還我。', '妳還敢講？剛剛是誰先跑的？'],
+      [2, 1, 1]),
+    routeRound('被大家抓包', [
+      n('你們剛走回客廳，溫尚翊就看見瑪莎手裡那張牌，立刻問他是不是又在搞小動作。瑪莎說你才是共犯，阿信笑到把吉他放歪，石頭趕緊伸手扶住琴袋。'),
+      d('溫尚翊', '你們兩個到底在幹嘛？民宿是給你們跑百米喔？'),
+      d('瑪莎', '她先搶我牌的欸！'),
+      n('諺明哥從桌邊抬起頭，看到你手裡還捏著另一張牌，終於也笑了。'),
+    ], '瑪莎',
+      ['把牌藏到身後，假裝什麼都不知道。', '直接把牌交給諺明哥，請他主持公道。', '靠到瑪莎旁邊，說我們只是玩一下。'],
+      ['欸！妳不要把我一個人賣掉啦！', '諺明哥你看，她也有份啦！', '對啊，就玩一下嘛。妳不要講得好像我欺負妳。'],
+      [2, 1, 2]),
+    routeRound('牌的賠償', [
+      n('大家終於散開，瑪莎把那幾張牌收回盒子裡，嘴上還在抱怨你害他被全員圍剿。他從口袋摸出一顆糖，放到你掌心，像是拿來封口。'),
+      d('瑪莎', '拿去啦。剛剛追妳追到口乾舌燥，這個算妳賠我的。'),
+      n('他說完就靠到你旁邊坐下，肩膀輕輕碰了一下，卻沒有馬上挪開。'),
+    ], '瑪莎',
+      ['把糖剝開，分一半給他。', '你明明就是怕我真的生氣。', '把糖收進口袋，說這次先放過他。'],
+      ['蛤？糖也可以分一半喔？好啦，給我一點。', '妳想太多了啦。……不過妳有笑就好。', '謝謝大小姐不殺之恩。下次我會藏好一點。'],
+      [2, 2, 1])
   ],
   stone: [
-    routeRound('相機裡的照片', [
-      n('石頭坐在公共區域的木桌旁，正把白天拍的底片相機收好。你走近時，他把相機旁邊幾張沖印店給的樣張推過來，裡面有一張是你在火車上看窗外的側影。'),
-      d('石錦航', '這張光線剛好，我就先留著了。妳覺得呢？'),
+routeRound('院子裡的琴弦', [
+      n('夜裡的院子比客廳安靜很多。石頭坐在矮凳上整理吉他弦，旁邊放著一小包備用弦和剪線鉗。你走過去時，他先把剪線鉗收好，才抬頭朝你笑。'),
+      d('石錦航', '還沒睡喔？我想說把弦換好，明天就不用忙了。'),
+      n('他把吉他轉向你，讓你看琴弦末端繞在弦鈕上的位置。'),
     ], '石錦航',
-      ['我都不知道你有拍到我。', '拍得很好看，可以給我一張嗎？', '你怎麼每次都拍到我沒注意的時候？'],
-      ['妳那時候在看窗外，很專心，我沒有叫妳。', '可以啊，等洗好我再多印一張給妳。', '因為妳不看鏡頭的時候，表情比較自然。']),
-    routeRound('一起挑照片', [
-      n('他把幾張照片排在桌面上，你們的手指同時停在同一張海岸線上。石頭先把手收回去，讓你挑；你說這張好看，他便把它放到最上面，還用鉛筆在背面寫下日期。'),
-      d('石錦航', '這張留著吧，明天如果天氣好，還可以拍更漂亮的。'),
-    ], '石錦航',
-      ['那明天你要幫我拍一張跟海的合照。', '你把這張送我好了。', '那我可以幫你挑一張嗎？'],
-      ['好啊，明天找個光線好的地方。', '可以，這張我本來就想留給妳。', '當然可以。妳挑的我也想看看。']),
-    routeRound('院子裡的晚風', [
-      n('院子裡的燈亮了，其他人還在客廳吵著要不要再玩一局。石頭把照片收進信封，抬頭問你明天想不想早點去看海。他說清晨的海面顏色不太一樣，光線也比較柔。'),
-      d('石錦航', '如果妳起得來，我可以陪妳先走一小段。'),
-    ], '石錦航',
-      ['那你要記得叫我。', '我想看，明天一定起床。', '如果我起不來，你就拍給我看。'],
-      ['好，我會敲門，不會讓妳睡過頭。', '那就說好了。明天早上見。', '可以啊，我拍清楚一點，回來給妳看。']),
-
-    routeRound('照片還沒洗出來', [
-      n('石頭把相機袋放在桌上，拿出一卷還沒拍完的底片盒給你看。他說今天拍的照片要等回台北送去沖印，現在沒辦法立刻看到。你有點失望，他便笑著說，這樣反而多了一點期待。'),
-      d('石錦航', '等洗出來再看，說不定會有意外喜歡的那一張。'),
-      n('他把底片盒放回袋子時，特地讓你看清楚盒子上的日期標記。'),
-    ], '石錦航',
-      ['那我可以先預約第一張嗎？', '我喜歡這種要等一下才知道的感覺。', '你到時候要記得拿給我看喔。'],
-      ['可以啊，妳想要哪一張，我們一起挑。', '嗯，有些事情慢一點才會記得久一點。', '會的，我已經記下來了。'],
+      ['坐到他旁邊，問他為什麼要現在換弦。', '你整理得好仔細，我可以幫忙嗎？', '把備用弦拿起來，問他這條是不是比較粗。'],
+      ['明天要帶出去，先弄好比較安心。妳坐這裡，不會弄到手。', '可以啊，幫我把那個小袋子拿過來就好。', '這條是低音弦，摸起來會比較粗一點。'],
       [2, 2, 1]),
-    routeRound('走廊盡頭的風', [
-      n('你們從公共區域走到走廊盡頭，外面只剩海浪聲和遠處幾盞燈。石頭把手裡的照片袋收好，問你明天想不想再去同一段海岸。他沒有把話說得像邀約，只是很自然地把選擇留給你。'),
-      d('石錦航', '如果妳還想去，我們可以再繞回去看看。'),
-      n('他站在你旁邊，沒有催你回答。海風吹過來時，他替你把被吹到肩上的背帶理順。'),
+    routeRound('小時候的事情', [
+      n('石頭把換下來的舊弦繞成一圈，放進紙袋裡。你們聊起以前第一次接觸樂器的事，他說自己小時候常把吉他當成比自己還大的玩具，抱著走路都會撞到桌角。'),
+      d('石錦航', '那時候我也不知道自己能不能一直學下去，只是覺得拿著吉他很開心。'),
+      n('他說得很輕，手指還在琴身邊緣慢慢畫了一下。'),
     ], '石錦航',
-      ['我想去，最好還是跟你一起。', '那你明天要幫我找一個更漂亮的角度。', '如果大家都想去，我們就一起去。'],
-      ['好啊，那明天再一起走走。', '可以，我會慢慢找，不用趕。', '嗯，大家一起也很好。'],
-      [2, 2, 1]),
+      ['那你現在還會有這種感覺嗎？', '我覺得你一直都很認真欸。', '把自己的手放到琴身旁邊，問他以前是不是也這樣抱著。'],
+      ['會啊，只是現在多了很多要顧的東西。', '沒有啦，很多時候也是大家一起撐過來的。', '差不多吧。只是以前手比較小，抱起來更吃力。'],
+      [2, 1, 2]),
+    routeRound('借我試一個和弦', [
+      n('石頭把吉他遞給你，先用手掌托住琴頸，等你坐穩才鬆手。他把左手放在你手指旁邊，示範怎麼按才不會碰到隔壁的弦。'),
+      d('石錦航', '妳先試這個，手指不要太用力，慢慢來就好。'),
+      n('你按下去時有一根弦悶住了，他沒有笑，只把自己的指尖靠近你的手背，提醒你換個角度。'),
+    ], '石錦航',
+      ['把手指往旁邊挪一點，重新試一次。', '你幫我調一下，我怕自己按錯。', '你手指靠得好近，我有點分心。'],
+      ['對，就是這樣。妳看，聲音有出來了。', '好，我幫妳把位置放好，妳再自己按一次。', '哈哈，沒關係，不用急。先聽聲音就好。'],
+      [2, 2, 2]),
+    routeRound('沒有說出口的小事', [
+      n('你們把吉他放回琴袋旁，石頭忽然說起以前有一段時間，他總覺得自己不太會表達，很多話到了嘴邊就又吞回去。說完他有點不好意思，低頭把那包舊弦的紙袋折好。'),
+      d('石錦航', '有時候我不是不想說，只是會想很久，怕講得不夠好。'),
+      n('院子裡的燈光落在他側臉上。他沒有急著把話題帶走，只安靜等你回應。'),
+    ], '石錦航',
+      ['那你現在可以慢慢說，我會聽。', '伸手輕輕碰一下他的手背，讓他不用緊張。', '我也有很多話會先放在心裡。'],
+      ['謝謝妳。跟妳說，好像沒有那麼難。', '……嗯，我知道。妳在這裡就好。', '那我們可以慢慢交換，不用一次說完。'],
+      [2, 2, 2]),
+    routeRound('再多坐一下', [
+      n('客廳裡傳來瑪莎最後一聲笑，接著終於安靜下來。石頭把吉他袋拉鍊拉好，卻沒有立刻起身。他看見你還坐在原地，便把旁邊的椅子往你這邊挪了一點。'),
+      d('石錦航', '如果妳還不想回房間，我可以再陪妳坐一下。'),
+      n('他把手放在膝上，沒有催你，也沒有刻意找話題。'),
+    ], '石錦航',
+      ['把椅子往他那邊挪近一點。', '我想再聽你說一件小時候的事。', '那我們就安靜坐一下，不用急著說話。'],
+      ['這樣會不會太近？……好，妳坐舒服就好。', '好啊，我想想看，有一件事我還記得很清楚。', '嗯。今天這樣就很好。'],
+      [2, 2, 2])
   ],
   yanming: [
     routeRound('明天的路線表', [
@@ -452,7 +476,7 @@ const homestayRoutes: CharacterRecord = {
       d('劉諺明', '妳收得比他們認真多了。'),
       n('他把零食袋摺好放到一旁，終於也坐下來，不再忙著替所有人安排事情。'),
     ], '劉諺明',
-      ['那你要不要頒個獎給我？', '因為我不想讓你一個人收。', '你平常是不是都最後一個休息？'],
+      ['那你要不要頒個獎給我？', '把桌上的牌一張張收齊，坐到他旁邊。', '你平常是不是都最後一個休息？'],
       ['可以啊，獎品是明天早餐多一顆蛋。', '謝謝妳。有人一起收，真的快很多。', '差不多吧，習慣看大家都弄好了才坐下。'],
       [1, 2, 2]),
     routeRound('夜裡的風聲', [
@@ -480,7 +504,7 @@ const scooterRoutes: CharacterRecord = {
       d('溫尚翊', '前面路有點碎，手不要抓那個，扶我腰比較穩。'),
       n('你遲疑了半秒，他已經把視線轉回前方，像是怕多看一眼就會被你發現自己也有點不自在。'),
     ], '溫尚翊',
-      ['你確定喔？我真的要抓了喔。', '我抓外套就好了啦。', '你不要突然加速喔。'],
+      ['你確定喔？我真的要抓了喔。', '伸手拉住他的外套下擺，先確認自己坐穩。', '你不要突然加速喔。'],
       ['不然咧？我叫妳抓穩又不是叫妳抓空氣。', '隨便妳啦，反正不要一晃就整個人往後倒。', '知道啦，我又不是第一次騎。妳坐好就好。'],
       [2, 1, 2]),
     routeRound('路面顛了一下', [
@@ -521,7 +545,7 @@ const scooterRoutes: CharacterRecord = {
       d('陳信宏', '抓著就好，不用不好意思。這段路有一點顛。'),
       n('他從後照鏡看了你一眼，確認你坐穩後才把視線放回前方。海風把他的衣角吹起來，你的手指也跟著碰到他的腰側。'),
     ], '陳信宏',
-      ['我怕你會覺得很奇怪。', '你騎得好穩喔。', '那我可以再靠近一點嗎？'],
+      ['我怕你會覺得很奇怪。', '你騎得好穩喔。', '往他身邊靠近一點，貼近耳邊說話。'],
       ['不會啊，妳坐穩比較重要。真的不用想太多。', '哈哈，還好啦。我有看到前面的路況。', '可以啊，妳自己覺得舒服就好。']),
     routeRound('那片海先停下來', [
       n('你看見右邊的海忽然變得很開闊，忍不住抬手指了一下。阿信順著你的方向看過去，沒有邊騎邊回頭，只先打方向燈，找到前面能停車的空地才慢慢靠過去。'),
@@ -569,7 +593,7 @@ const scooterRoutes: CharacterRecord = {
       d('瑪莎', '拿去啦。我怕妳等一下又怪我把妳吹成這樣。'),
       n('你踮腳去拿，他這才把梳子放進你手裡，順手把卡在帽帶裡的髮絲拉出來。'),
     ], '瑪莎',
-      ['你怎麼會隨身帶梳子？', '你幫我梳啦，我手上拿東西。', '謝謝啦，這次算你有良心。'],
+      ['你怎麼會隨身帶梳子？', '趁他停車時，把梳子遞給他，讓他幫我整理瀏海。', '謝謝啦，這次算你有良心。'],
       ['民宿拿的啦。妳不要問那麼多，快整理。', '蛤？妳真的很會使喚人欸……好啦，頭低一點。', '記得喔，我今天已經幫妳很多次了。'],
       [1, 2, 1]),
     routeRound('後照鏡裡的眼神', [
@@ -602,7 +626,7 @@ const scooterRoutes: CharacterRecord = {
       d('石錦航', '看得到喔，不用探出去。等一下停車再慢慢看。'),
       n('他沒有催你，只把車速維持得很穩。等路面直了，才輕輕提醒你可以扶在他的腰側，會比抓後面安全。'),
     ], '石錦航',
-      ['你是不是怕我掉下去？', '好啦，我等一下再看。', '那你等一下要陪我多停一會兒。'],
+      ['你是不是怕我掉下去？', '好啦，我等一下再看。', '伸手拉住他的衣角，指向前面那片海。'],
       ['會啊，妳坐在後面，我當然要注意。', '嗯，前面有個地方可以停，視野很好。', '可以啊，今天本來就不用趕時間。'],
       [2, 1, 2]),
     routeRound('把海拍下來', [
@@ -643,7 +667,7 @@ const scooterRoutes: CharacterRecord = {
       d('劉諺明', '抓著就好，不用客氣。這段路我會慢慢騎。'),
       n('他沒有回頭，只在後照鏡裡確認你坐好了，接著才平順地帶過彎道。'),
     ], '劉諺明',
-      ['我怕你會不習慣。', '你騎得很穩，坐著很安心。', '那我就不放手囉。'],
+      ['我怕你會不習慣。', '你騎得很穩，坐著很安心。', '把手輕輕搭在他的腰側，提醒自己坐穩。'],
       ['不會，妳坐穩最重要。', '那就好。等一下有想停的地方，我們再停。', '好啊，抓牢一點，前面有個彎。']),
     routeRound('停下來喝水', [
       n('諺明哥把車停在能避開車流的空地，先熄火才回身幫你解開安全帽扣帶。他把水瓶擰開遞給你，又從自己的背包拿出面紙，放到你手邊。'),
@@ -675,41 +699,46 @@ const scooterRoutes: CharacterRecord = {
 
 const sunsetRoutes: CharacterRecord = {
   wen: [
-    routeRound('琴弦上的夕陽', [
-      n('大家把樂器搬到避風的地方，溫尚翊坐在一塊平坦的石頭上調弦。夕陽把他的手背照得暖暖的，你在旁邊坐下，他把撥片在指間轉了一圈，沒有像平常那樣急著跟你鬥嘴。'),
-      d('溫尚翊', '剛剛那段妳有聽到喔？'),
+routeRound('從熱鬧裡走出來', [
+      n('剛才還在跟瑪莎互嗆的溫尚翊，收起琴以後反而安靜下來。他把導線繞好，朝海邊比較暗的那一段抬了抬下巴，問你要不要走過去吹風。'),
+      d('溫尚翊', '那邊比較沒人，走一下啦。一直坐在那裡很悶欸。'),
+      n('他先走了兩步，發現你還在看他，便回頭等你跟上。'),
     ], '溫尚翊',
-      ['有啊，我一直在看你彈。', '你彈得比在練團室還好聽。', '你再彈一次給我聽嘛。'],
-      ['看我幹嘛，看琴啦。……妳有聽到就好。', '妳不要亂講，這裡風比較大，聲音聽起來不一樣而已。', '好啦，等我把這個音調好。妳不要跑掉。']),
-    routeRound('離得有點近', [
-      n('他把吉他往你這邊轉了一點，示意你看琴弦。你俯身時，肩膀輕輕碰到他的手臂，他沒有躲開，只是把撥片放到你掌心，讓你試著撥一下。'),
-      d('溫尚翊', '不是這樣啦，手指放這邊。慢慢來。'),
+      ['跟上他的腳步，故意走得比他慢一點。', '你剛剛不是還很吵？怎麼突然安靜了？', '把鞋子脫下來，踩著潮濕的沙走到他旁邊。'],
+      ['妳走快一點啦，等一下真的看不到海了。', '吵累了不行喔？妳很會管欸。', '小心一點，這裡有些地方不平。'],
+      [2, 1, 2]),
+    routeRound('濕滑的石頭', [
+      n('你們沿著海岸走了一小段，浪退下去時露出幾塊深色的石頭。你低頭想跨過去，鞋底剛踩上去就滑了一下。溫尚翊幾乎沒有思考，手已經先伸過來抓住你的手腕，把你往自己身邊帶。'),
+      d('溫尚翊', '欸！小心啦！'),
+      n('他握得很緊，等你站穩才低頭看了一眼你的腳。海風把他的頭髮吹亂，他卻像沒發現一樣。'),
     ], '溫尚翊',
-      ['你手不要放開，我還沒學會。', '你教得這麼認真喔？', '我是不是碰到你手了？'],
-      ['我又沒說要放開。妳先把位置記住。', '不然咧？妳等一下又說我只會嘴巴講。', '有啦，怎樣？琴又不會咬人，妳緊張什麼。']),
-    routeRound('把今天留久一點', [
-      n('遠處的大家還在收拾線材，溫尚翊把撥片放回口袋，抬頭看了一眼快沉下去的太陽。他說明天就要回台北了，講得像是在提醒時間，手卻沒有急著把琴收起來。'),
-      d('溫尚翊', '今天還滿好玩的啦。'),
+      ['反手握住他的手，說我沒事。', '你剛剛反應也太快了吧。', '低頭看著兩個人還握在一起的手。'],
+      ['妳先站好，不要急著講話。', '不然咧？真的跌下去怎麼辦。', '……看什麼啦，先走到乾一點的地方。'],
+      [2, 1, 2]),
+    routeRound('手還沒有放開', [
+      n('走到比較平的沙地後，溫尚翊才像是想起來似的低頭看了看你們交握的手。他的手指動了一下，卻沒有立刻鬆開。你也沒有提醒他，兩個人就這樣慢慢走了幾步。'),
+      d('溫尚翊', '現在應該不會滑了啦。'),
+      n('他終於放開，手掌卻在你手背旁邊停了半秒，像是還沒找到自然收回去的方式。'),
     ], '溫尚翊',
-      ['那下次再一起來啊。', '你是不是也不想回去？', '我會記得今天的。'],
-      ['可以啊，妳先不要忘記今天自己講過什麼。', '誰說的？我只是還沒彈完。……好啦，有一點。', '嗯，記得就好。不要只記得我輸牌那段。']),
-
-    routeRound('只彈給你聽的那一段', [
-      n('大家還在收拾導線，溫尚翊卻把吉他重新抱回腿上，低頭彈了剛才沒接好的那段旋律。他沒有喊其他人，只用撥片敲了敲身旁的石頭，示意你坐近一點。'),
-      d('溫尚翊', '剛剛那段不是彈錯啦，我是想換個方式。妳聽聽看。'),
-      n('他彈完抬眼看你，像是在等你給評語，手指卻一直在琴弦上輕輕摩挲。'),
+      ['把手指輕輕勾住他的手指。', '你剛剛是不是忘記放開了？', '我知道啊，可是你剛剛抓得很緊欸。'],
+      ['……妳不要亂動啦，等一下又踩到石頭。', '蛤？我哪有。妳不要一直講這個。', '那是怕妳跌倒，不然咧。'],
+      [2, 2, 1]),
+    routeRound('浪退下去的時候', [
+      n('你們停在一塊乾燥的礁石旁，海浪一層一層退回去。溫尚翊把手插進口袋，偶爾踢開腳邊的小石子，說剛才那段路如果再暗一點就不讓你走了。'),
+      d('溫尚翊', '妳下次不要看到水就往前衝，真的很危險欸。'),
+      n('他講得像在念你，視線卻一直落在你剛才滑了一下的那隻腳上。'),
     ], '溫尚翊',
-      ['我覺得你剛剛那樣最好聽。', '你是不是特地留到現在彈給我聽？', '再一次，我想記住。'],
-      ['妳不要只會講好聽話啦。……不過妳喜歡就好。', '哪有，剛好還沒收琴而已。', '好啦，這次妳認真聽，不要分心。'],
-      [2, 2, 2]),
-    routeRound('還不想收琴', [
-      n('其他人已經把樂器放回琴袋，溫尚翊卻還坐在原地，慢慢把導線一圈圈繞好。他看見你走回來，手上的動作停了一下，接著把琴袋往旁邊挪，替你留出位置。'),
-      d('溫尚翊', '妳不是說想再聽一次海浪？坐一下啦。'),
-      n('他把琴袋拉鍊拉到一半又停住，像是也不急著結束這個晚上。'),
+      ['那你下次要牽好我啊。', '我知道啦，下次會看路。', '伸手把他口袋裡的手拉出來，說海邊不用一直插口袋。'],
+      ['妳很會要求欸……好啦，走路看路。', '知道就好，不要每次都讓人嚇一跳。', '妳幹嘛啦。……手很冰欸。'],
+      [2, 1, 2]),
+    routeRound('回去前的幾句話', [
+      n('遠處傳來瑪莎喊大家集合的聲音。溫尚翊看了一眼那邊，又看了看你，沒有馬上轉身。他把被風吹歪的琴袋帶子拉正，像是想找一件事情讓自己多留一下。'),
+      d('溫尚翊', '差不多要回去了。今天還滿好玩的啦。'),
+      n('他說完便低頭笑了一下，沒有再補充。你們並肩往大家的方向走，肩膀偶爾碰到，誰都沒有刻意躲開。'),
     ], '溫尚翊',
-      ['你是不是也捨不得回去？', '那我陪你坐到大家叫我們。', '你今天真的很帥，尤其剛剛彈那段。'],
-      ['……有一點啦。妳不要到處講喔。', '好啊，反正也沒差這幾分鐘。', '蛤？突然講這個幹嘛。……妳少來。'],
-      [2, 2, 2]),
+      ['那下次還要一起來。', '你剛剛安靜的樣子，我也有看到。', '伸手替他把肩上的琴袋帶子拉好。'],
+      ['好啊，等有空再說。', '妳很會觀察欸。快走啦，大家在等。', '我自己會弄啦……不過，謝了。'],
+      [2, 2, 2])
   ],
   ashin: [
     routeRound('木吉他的最後一段', [
@@ -722,7 +751,7 @@ const sunsetRoutes: CharacterRecord = {
       n('他把吉他稍微往你這邊靠，讓你看清楚左手按弦的位置。你試著按了一次，指尖卻總是差一點。他沒有直接替你擺好，而是用自己的手指在琴頸旁邊比給你看。'),
       d('陳信宏', '這裡再往下一格，對，就是這樣。妳看，聲音是不是比較乾淨？'),
     ], '陳信宏',
-      ['你再教我一次，我想記住。', '我的手指好像不太聽話。', '你坐近一點，我看不清楚啦。'],
+      ['坐到他身邊，把手指放到琴弦上再試一次。', '我的手指好像不太聽話。', '把手指放到他的手指旁邊，跟著他重新按一次和弦。'],
       ['好啊，我慢慢來，妳不用急。', '第一次都這樣啦，按久一點就會習慣。', '哈哈，好，這樣有比較看得到嗎？']),
     routeRound('海風裡的約定', [
       n('阿信把吉他收進袋子前，拿出剛才在火車上畫的那張小紙條，背面又補了幾個和弦。他說回台北後想把旋律整理完整，等有空再彈給你聽。'),
@@ -759,7 +788,7 @@ const sunsetRoutes: CharacterRecord = {
       n('你伸手去拿他放在琴袋上的撥片，瑪莎故意用手掌蓋住，說這是他的戰利品。你們一來一回，最後他把撥片放到你手心，卻沒有立刻鬆手。'),
       d('瑪莎', '拿去啦，妳到底要不要？'),
     ], '瑪莎',
-      ['要啊，你放手。', '你不放手我怎麼拿？', '那你送我好了。'],
+      ['伸手去搶他手裡的撥片，故意不肯鬆手。', '你不放手我怎麼拿？', '那你送我好了。'],
       ['我有放啊，是妳自己抓太慢。', '妳真的很會找麻煩欸。……好啦，給妳。', '蛤？妳很會欸。拿去啦，反正我還有。']),
     routeRound('不想散場', [
       n('夕陽剩下一小截時，瑪莎把琴袋拉鍊拉好，卻沒有馬上站起來。他用鞋尖撥了撥沙子，問你回去之後會不會又忙到沒空出門。'),
@@ -796,7 +825,7 @@ const sunsetRoutes: CharacterRecord = {
       n('你們沿著海邊走了一小段，石頭把步子放得很慢，讓你可以停下來看潮水退去。浪花碰到鞋尖時，你往後縮了一下，他伸手扶住你的手腕，等你站穩才放開。'),
       d('石錦航', '小心，這裡的石頭有點滑。'),
     ], '石錦航',
-      ['你剛剛扶我那一下很及時。', '那我們再走一點點就好。', '我想把這裡記下來。'],
+      ['你剛剛扶我那一下很及時。', '脫下鞋子，沿著海邊慢慢走到他身旁。', '我想把這裡記下來。'],
       ['還好有扶到。妳慢慢走，不用急。', '好啊，走到前面那塊平一點的地方就回來。', '我也想。回去可以把照片和今天寫在一起。']),
     routeRound('明天回台北', [
       n('天色暗下來，石頭把相機收好，卻把那張六人合照的底片編號寫在小本子上。他說等洗出來會先讓你看，因為你今天一直問照片拍得怎麼樣。'),
@@ -833,7 +862,7 @@ const sunsetRoutes: CharacterRecord = {
       n('他把鼓棒放到你掌心，先示範四下，再讓你跟著敲。你敲到第三下就慢了半拍，他沒有笑，只把自己的節奏放慢，陪你重新來一次。'),
       d('劉諺明', '沒關係，再一次。這次聽我的拍子。'),
     ], '劉諺明',
-      ['你不要放慢啦，我想跟上你。', '這樣是不是好多了？', '我想再試一次。'],
+      ['你不要放慢啦，我想跟上你。', '這樣是不是好多了？', '拿起旁邊的鼓棒，跟著他敲四拍。'],
       ['好，那我再打一次，妳跟著聽。', '有，這次很穩了。', '來，這次我們一起。']),
     routeRound('把今天收進記憶', [
       n('最後一點夕陽落到海面後，諺明哥把鼓棒收回袋子。他看著大家還在討論剛才的旋律，笑著說這趟旅行很值得。你問他是不是也玩得開心，他點點頭。'),
@@ -861,6 +890,14 @@ const sunsetRoutes: CharacterRecord = {
   ],
 }
 
+const trainCameos: Record<number, Block[]> = {
+  0: [d('瑪莎', '欸，等一下零食從後面傳，妳不要睡到沒拿到。'), d('溫尚翊', '你先顧好自己的琴袋啦。')],
+  1: [n('前排的石頭把窗簾拉開一點，讓靠走道的人也看得到外面的田。'), d('石錦航', '那邊有一小段海線，等一下就看得到。')],
+  2: [d('陳信宏', '你們要不要吃橘子？我剛剝好。'), d('劉諺明', '車票先收好，等一下到站不要臨時找。')],
+  3: [d('瑪莎', '誰把我的耳機線壓住了啦？'), d('溫尚翊', '你東西不要亂放啦。')],
+  4: [d('劉諺明', '快到站了，先把票找出來。'), d('瑪莎', '我早就拿好了好不好。')],
+}
+
 const rivalryRoutes: Record<SeptemberCharacter, [Round, Round, Round]> = {
   wen: [
     routeRound('有人走過來了', [
@@ -876,7 +913,7 @@ const rivalryRoutes: Record<SeptemberCharacter, [Round, Round, Round]> = {
       d('溫尚翊', '這個扣子不要又弄反，等一下戴半天戴不起來。'),
       n('他抬起眼，發現你一直看著他，手上的動作停了半拍。'),
     ], '溫尚翊',
-      ['你剛剛是不是一直看我們？', '那你幫我扣啊，我怕又弄錯。', '你不用特地過來拿啦，我自己會回去。'],
+      ['你剛剛是不是一直看我們？', '伸手接過安全帽，故意沒有立刻鬆開他的手。', '你不用特地過來拿啦，我自己會回去。'],
       ['我是在看妳有沒有把東西忘在那邊。妳想太多了啦。', '……妳真的很會使喚人欸。好啦，頭低一點。', '我知道啊。只是剛好拿過來，順便一起走。'],
       [2, 2, 1]),
     routeRound('留在身邊的位置', [
@@ -894,7 +931,7 @@ const rivalryRoutes: Record<SeptemberCharacter, [Round, Round, Round]> = {
       d('陳信宏', '我剛剛想說妳是不是還在這裡。海風很大，先喝一點水啦。'),
       n('他的視線在你臉上停了一下，又很快落到手裡的瓶蓋，像是有些話還在心裡排隊。'),
     ], '陳信宏',
-      ['你特地拿來給我的嗎？', '你剛剛也一直在找我嗎？', '謝謝你，我們正要回去。'],
+      ['接過他遞來的水，指尖在他手上停了一下。', '你剛剛也一直在找我嗎？', '謝謝你，我們正要回去。'],
       ['嗯，剛好有多拿一瓶。妳先喝，不要客氣馁。', '有一點啦。只是想說妳會不會想一起看最後那點夕陽。', '好啊，那我們一起走回去。大家應該也快準備好了。'],
       [2, 2, 1]),
     routeRound('沒說完的話', [
@@ -920,7 +957,7 @@ const rivalryRoutes: Record<SeptemberCharacter, [Round, Round, Round]> = {
       d('瑪莎', '欸，妳很忙欸。剛剛找不到人，原來在這裡開小型座談會喔？'),
       n('他把餅乾袋往你手裡一塞，嘴上嫌你走太遠，腳步卻放慢等你跟上。'),
     ], '瑪莎',
-      ['你是來找我的嗎？', '什麼座談會啦，我們只是聊天。', '你不要打擾我們啦。'],
+      ['你是來找我的嗎？', '什麼座談會啦，我們只是聊天。', '拉住他的袖口，故意不讓他先走。'],
       ['我只是怕妳等一下又忘記集合時間。不要想太多。', '喔？那妳們聊得滿認真的嘛。', '好啊，那我走囉。……妳真的要我走喔？'],
       [2, 1, 2]),
     routeRound('餅乾分一半', [
@@ -954,7 +991,7 @@ const rivalryRoutes: Record<SeptemberCharacter, [Round, Round, Round]> = {
       d('石錦航', '剛剛看妳笑得很開心，我也覺得很好。只是有一點想把今天看到的風景先講給妳聽。'),
       n('他說完笑了一下，像是覺得自己這句話有點太直接。'),
     ], '石錦航',
-      ['那你現在講給我聽，我會好好聽。', '你可以不用等我一個人時才說。', '我也想先把今天的事情告訴你。'],
+      ['往他身邊挪了一點，讓他坐到自己旁邊。', '你可以不用等我一個人時才說。', '我也想先把今天的事情告訴你。'],
       ['好。其實剛剛那片海，我覺得妳站在旁邊的樣子最好看。', '嗯，我知道。只是想讓這段時間安靜一點。', '那我們交換，好不好？我先聽妳說。'],
       [2, 2, 2]),
     routeRound('合照前的空位', [
@@ -980,7 +1017,7 @@ const rivalryRoutes: Record<SeptemberCharacter, [Round, Round, Round]> = {
       d('劉諺明', '我剛剛本來想陪妳走一段，不過看妳有人陪，就先讓妳聊完。'),
       n('他說得坦然，沒有責怪的意思，只是把自己的想法也告訴你。'),
     ], '劉諺明',
-      ['下次你可以直接邀我，不用等。', '那現在還來得及一起走一段。', '我其實也想跟你單獨聊聊。'],
+      ['下次你可以直接邀我，不用等。', '把他手裡的袋子接過來，示意他坐下休息。', '我其實也想跟你單獨聊聊。'],
       ['好，那我下次就不客氣了。', '可以啊，走到大家那邊剛好。', '那我們等一下慢慢聊，不用趕。'],
       [2, 2, 2]),
     routeRound('站到大家中間', [
@@ -1078,7 +1115,7 @@ const sunsetSoloRoutes: CharacterRecord = sunsetRoutes
 const initialInteraction = (): Interaction => ({ character: null, roundIndex: 0, pendingChoice: null, choices: [] })
 const initialGroup = (): GroupProgress => ({ roundIndex: 0, pendingChoice: null, choices: [] })
 const initialProgress = (): Progress => ({
-  version: 1, phase: 'trip-intro', train: initialInteraction(), poker: initialGroup(),
+  version: 2, phase: 'trip-intro', train: initialInteraction(), poker: initialGroup(),
   homestay: initialInteraction(), scooter: initialInteraction(), photoChoice: null,
   sunsetGroup: initialGroup(), sunset: initialInteraction(), rivalCharacter: null, rivalry: initialInteraction(),
 })
@@ -1104,14 +1141,14 @@ const validGroup = (value: unknown): value is GroupProgress => {
   if (!value || typeof value !== 'object') return false
   const item = value as Partial<GroupProgress>
   return Number.isInteger(item.roundIndex) && Number(item.roundIndex) >= 0 && Number(item.roundIndex) <= 2 &&
-    (item.pendingChoice === null || (Number.isInteger(item.pendingChoice) && Number(item.pendingChoice) >= 0 && Number(item.pendingChoice) <= 4)) &&
+    (item.pendingChoice === null || (Number.isInteger(item.pendingChoice) && Number(item.pendingChoice) >= 0 && Number(item.pendingChoice) <= 2)) &&
     validChoices(item.choices)
 }
 function readProgress(): Progress {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null') as Partial<Progress> | null
-    const phases: Phase[] = ['trip-intro', 'train-picker', 'train-interaction', 'arrival', 'homestay-arrival', 'poker', 'homestay-picker', 'homestay-interaction', 'day-two-morning', 'scooter-picker', 'scooter-interaction', 'coast-photo', 'sunset-group', 'sunset-picker', 'sunset-interaction', 'sunset-rivalry', 'return', 'ending']
-    if (saved?.version === 1 && saved.phase && phases.includes(saved.phase) &&
+    const phases: Phase[] = ['trip-intro', 'station', 'train-picker', 'train-interaction', 'arrival', 'homestay-arrival', 'poker', 'homestay-picker', 'homestay-interaction', 'day-two-morning', 'scooter-picker', 'scooter-interaction', 'seaside-play', 'coast-photo', 'sunset-group', 'sunset-picker', 'sunset-interaction', 'sunset-rivalry', 'return', 'ending']
+    if (saved?.version === 2 && saved.phase && phases.includes(saved.phase) &&
       validInteraction(saved.train) && validGroup(saved.poker) && validInteraction(saved.homestay) &&
       validInteraction(saved.scooter) && validGroup(saved.sunsetGroup) && validInteraction(saved.sunset) &&
       (saved.photoChoice === null || (Number.isInteger(saved.photoChoice) && Number(saved.photoChoice) >= 0 && Number(saved.photoChoice) <= 4))) {
@@ -1127,12 +1164,13 @@ function readProgress(): Progress {
 
 const phaseDate = (phase: Phase): string => {
   if (phase === 'trip-intro') return '1997.09.03'
-  if (['day-two-morning', 'scooter-picker', 'scooter-interaction', 'coast-photo', 'sunset-group', 'sunset-picker', 'sunset-interaction', 'sunset-rivalry'].includes(phase)) return '1997.09.05'
+  if (['day-two-morning', 'scooter-picker', 'scooter-interaction', 'seaside-play', 'coast-photo', 'sunset-group', 'sunset-picker', 'sunset-interaction', 'sunset-rivalry'].includes(phase)) return '1997.09.05'
   if (phase === 'return' || phase === 'ending') return '1997.09.06'
   return '1997.09.04'
 }
 const phaseClock = (progress: Progress): string => {
   if (progress.phase === 'trip-intro') return '19:20'
+  if (progress.phase === 'station') return '06:45'
   if (progress.phase === 'train-picker') return '07:10'
   if (progress.phase === 'train-interaction') return ['08:10', '08:55', '09:40', '10:25', '11:10'][progress.train.roundIndex]
   if (progress.phase === 'arrival') return '12:30'
@@ -1143,12 +1181,13 @@ const phaseClock = (progress: Progress): string => {
   if (progress.phase === 'day-two-morning') return '08:05'
   if (progress.phase === 'scooter-picker') return '09:15'
   if (progress.phase === 'scooter-interaction') return ['09:45', '10:10', '10:35', '11:00', '11:25'][progress.scooter.roundIndex]
+  if (progress.phase === 'seaside-play') return '15:00'
   if (progress.phase === 'coast-photo') return '15:30'
   if (progress.phase === 'sunset-group') return ['17:10', '17:35', '18:00'][progress.sunsetGroup.roundIndex]
   if (progress.phase === 'sunset-picker') return '18:15'
   if (progress.phase === 'sunset-interaction') return ['18:25', '18:40', '18:55', '19:10', '19:25'][progress.sunset.roundIndex]
   if (progress.phase === 'sunset-rivalry') return ['19:30', '19:40', '19:50'][progress.rivalry.roundIndex]
-  if (progress.phase === 'return') return '09:30'
+  if (progress.phase === 'return') return '08:30'
   return '16:20'
 }
 
@@ -1238,7 +1277,7 @@ export function SeptemberStory({
   }
   const sectionNextPhase: Record<Section, Phase> = {
     train: 'arrival', homestay: 'day-two-morning',
-    scooter: 'coast-photo', sunset: 'return',
+    scooter: 'seaside-play', sunset: 'return',
   }
   const sectionRoutes: Record<Section, CharacterRecord> = {
     train: trainRoutes, homestay: homestayRoutes, scooter: scooterRoutes, sunset: sunsetSoloRoutes,
@@ -1370,13 +1409,16 @@ export function SeptemberStory({
     setProgress((state) => ({ ...state, photoChoice: index }))
   }
 
+  const continueSeasidePlay = () => setProgress((state) => ({ ...state, phase: 'coast-photo' }))
+
   const continuePhoto = () => {
     if (progress.photoChoice === null) return
     choiceLock.current = false
     setProgress((state) => ({ ...state, phase: 'sunset-group' }))
   }
 
-  const startTrain = () => setProgress((state) => ({ ...state, phase: 'train-picker' }))
+  const startTrain = () => setProgress((state) => ({ ...state, phase: 'station' }))
+  const startTrainPicker = () => setProgress((state) => ({ ...state, phase: 'train-picker' }))
   const startArrival = () => setProgress((state) => ({ ...state, phase: 'homestay-arrival' }))
   const startPoker = () => setProgress((state) => ({ ...state, phase: 'poker', poker: initialGroup() }))
   const startScooter = () => setProgress((state) => ({ ...state, phase: 'scooter-picker' }))
@@ -1385,7 +1427,7 @@ export function SeptemberStory({
   const finish = () => {
     if (progress.phase !== 'ending' || finishLock.current) return
     const { train, poker, homestay, scooter, sunsetGroup, sunset, photoChoice } = progress
-    const validSoloLength = (length: number) => length === 5 || length === 3
+    const validSoloLength = (length: number) => length === 5
     if (!train.character || !validSoloLength(train.choices.length) || poker.choices.length !== 3 ||
       !homestay.character || !validSoloLength(homestay.choices.length) ||
       !scooter.character || !validSoloLength(scooter.choices.length) || photoChoice === null ||
@@ -1442,14 +1484,13 @@ export function SeptemberStory({
       <>
         <h2 className="story-scene-title">{round.title}</h2>
         <div className="reunion-pause-note">和{NAMES[state.character!]}同行・第 {state.roundIndex + 1}／5 段</div>
-        <Blocks blocks={round.blocks} />
+        <Blocks blocks={section === 'train' ? [...round.blocks, ...(trainCameos[state.roundIndex] ?? [])] : round.blocks} />
         {selected ? (
           <>
-            <Blocks blocks={[d('你', selected.text)]} />
             <Blocks blocks={selected.response} />
             <div className="story-action-bar story-inline-action">
               <button className="story-primary-button" onClick={() => continueRouteRound(section)}>
-                {state.roundIndex < 4 ? '繼續這段旅程' : section === 'train' ? '抵達台東，準備轉船' : section === 'homestay' ? '天亮了，準備出發' : section === 'scooter' ? '午後停在海邊，拍張合照' : '收好樂器，準備回民宿'} <ChevronRight size={15} />
+                {state.roundIndex < 4 ? '繼續這段旅程' : section === 'train' ? '抵達台東，準備轉船' : section === 'homestay' ? '天亮了，準備出發' : section === 'scooter' ? '停下來休息，去踩踩海水' : '收好樂器，準備回民宿'} <ChevronRight size={15} />
               </button>
             </div>
           </>
@@ -1516,7 +1557,6 @@ export function SeptemberStory({
         <Blocks blocks={round.blocks} />
         {selected ? (
           <>
-            <Blocks blocks={[d('你', selected.text)]} />
             <Blocks blocks={selected.response} />
             <div className="story-action-bar story-inline-action">
               <button className="story-primary-button" onClick={continueRivalryRound}>
@@ -1540,7 +1580,7 @@ export function SeptemberStory({
 
   const dayLabel = progress.phase === 'trip-intro'
     ? '1997 年 9 月 3 日・星期三・晚上'
-    : progress.phase === 'day-two-morning' || progress.phase === 'scooter-picker' || progress.phase === 'scooter-interaction' || progress.phase === 'coast-photo' || progress.phase === 'sunset-group' || progress.phase === 'sunset-picker' || progress.phase === 'sunset-interaction' || progress.phase === 'sunset-rivalry'
+    : progress.phase === 'day-two-morning' || progress.phase === 'scooter-picker' || progress.phase === 'scooter-interaction' || progress.phase === 'seaside-play' || progress.phase === 'coast-photo' || progress.phase === 'sunset-group' || progress.phase === 'sunset-picker' || progress.phase === 'sunset-interaction' || progress.phase === 'sunset-rivalry'
     ? '1997 年 9 月 5 日・星期五'
     : progress.phase === 'return' || progress.phase === 'ending'
       ? '1997 年 9 月 6 日・星期六'
