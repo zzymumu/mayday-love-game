@@ -789,7 +789,7 @@ const makeMonthChatRound = (
 ): ChatRound => ({ incoming, choices: [first, second, third] })
 
 // Every message reply round presents three distinct responses and affection outcomes (including neutral or negative choices).
-// Author-only continuity note: in 1996, Masa (蔡昇晏) and Shitou (石錦航) are both university first-years. The heroine is already a third-year student at NTU; Masa is one year younger than her. She does not yet know why the two of them entered university later than their peers. Do not explain their academic history in early narration or messages; let her ask Masa about it in the later check-in conversation.
+// Author-only continuity note: in 1996, Masa (蔡昇晏) and Shitou (石錦航) are both university first-years after repeating a year in high school. The heroine is already a third-year student at NTU; Masa is one year younger than her. She does not yet know the details behind their delayed academic progress. Do not explain it in early narration or messages; let her ask Masa about it in the later check-in conversation.
 const greetingChats: Record<CharacterId, ChatRound[]> = {
   wen: [
     makeChatRound('妳到家了嗎？今天謝謝妳跟我們去。', '到了啦，今天還滿好玩的。', '那就好，我還怕妳會覺得無聊。', '剛到家。你今天也辛苦了。', '還好啦，今天有人陪著，時間過得比較快。', '你是不是怕我回家以後就忘記今天了？', '我只是想確認妳平安到家，妳不要什麼都想得那麼複雜。', -1),
