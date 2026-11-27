@@ -370,49 +370,44 @@ const ashinRounds: April30Round[] = [
   },
 ]
 
-const schoolIntroBlocks: April30Block[] = [
-  n('下午，你想起瑪莎和石頭今天都還有課，於是決定去他們上課的校園找找。'),
-  n('下午的課剛好結束，教學大樓的走廊裡擠滿了收拾書包的學生。你站在教室外面等了一會兒，終於看見兩個人一起走出來。'),
-  n('瑪莎手裡拿著一疊講義，石頭正低頭把筆收進筆袋。'),
-  d('瑪莎', '……欸？'),
-  d('瑪莎', '妳怎麼會跑來這裡？'),
-  d('你', '我來找你們啊。'),
-  d('瑪莎', '台大太無聊喔？'),
-  n('石頭看見你，笑了一下。'),
-  d('石錦航', '妳等很久了嗎？'),
-  d('你', '沒有啦，我剛到。'),
-  n('你們三個站在走廊邊說了幾句話。瑪莎把講義捲起來，敲了敲自己的書包。'),
-  d('瑪莎', '對了，有件事妳應該還不知道。'),
-  d('瑪莎', '佑達退團了。'),
-  d('你', '真的？'),
-  d('石錦航', '嗯，他已經跟大家說清楚了。'),
-  d('石錦航', '這陣子大家都勸過他，不過他還是決定不繼續了。'),
-  d('瑪莎', '那傢伙這次還真的挺乾脆的。'),
-  n('他說完，自己也安靜了一下。'),
-  d('石錦航', '怪獸今天也沒來學校吧？'),
-  d('你', '嗯。'),
-  d('瑪莎', '我們幾個從附中就一起玩音樂了，現在突然少一個人，哪有那麼容易習慣。'),
-  n('石頭看了瑪莎一眼，沒有接著調侃。'),
-  n('你們準備一起離開教室時，瑪莎忽然用手肘輕輕碰了你一下。'),
-  d('瑪莎', '欸，妳等一下要去哪？'),
+const masaWalkIntroBlocks: April30Block[] = [
+  n('下午，你從台大搭車來到新莊的輔仁大學。下午的課剛結束，教學大樓外有不少學生抱著講義往外走，穿堂裡還留著剛下課的熱鬧聲。'),
+  n('你照著瑪莎之前提過的教室位置找過去，遠遠就看見他把講義捲成一疊，正一邊走一邊跟同學說話。'),
+  n('瑪莎一抬頭看見你，腳步立刻停了下來，先是愣了一下，接著才朝你走過來。'),
+  d('瑪莎', '……欸？妳怎麼跑來輔大？'),
+  d('你', '來找你啊。'),
+  n('他低頭看了看你，又往你身後望了一眼，像是在確認你是不是還有別的同伴。'),
+  d('瑪莎', '妳一個人從台大跑過來喔？'),
+  d('你', '對啊，不行喔？'),
+  d('瑪莎', '可以啦，我只是覺得妳今天很有行動力欸。'),
+  n('他把講義塞進書包，陪你沿著教學大樓外的步道慢慢往前走。經過公告欄時，他順手指了指上面新貼的社團海報，嘴上還不忘吐槽其中一張排版很醜。'),
+  n('走了一小段，他才像忽然想起什麼似的，收起玩笑。'),
+  d('瑪莎', '對了，佑達退團的事，妳知道了吧？'),
+  d('你', '知道了。'),
+  d('瑪莎', '嗯。大家都勸過了，他還是決定不回來。'),
+  n('他說得很輕，手指卻一直捏著書包肩帶。你沒有急著接話，只陪他繼續往前走。'),
 ]
 
-const masaWalkIntroBlocks: April30Block[] = [
-  n('石頭先一步走到前面，回頭朝你們揮了揮手。'),
-  d('石錦航', '那我先走啦，明天見。'),
-  n('瑪莎隨便抬了抬手。'),
-  d('瑪莎', '知道啦，快走。'),
-  n('等石頭走遠，瑪莎才把書包往肩上重新扯了一下。'),
-  d('瑪莎', '走啦。'),
-  n('你們一起穿過教學大樓的走廊。剛好有一群學生從樓梯口跑下來，瑪莎下意識往旁邊讓了一步，伸手擋了一下，免得你被撞到。'),
-  d('瑪莎', '小心啦。'),
-  n('等那群人過去，他才轉過頭看你。'),
+const stoneWalkIntroBlocks: April30Block[] = [
+  n('下午，你從台大搭車一路來到淡水，走進淡江大學的校園。校園裡有幾段緩緩往上的坡道，樹影落在路面上，遠處不時傳來下課後學生說笑的聲音。'),
+  n('你照著石頭之前告訴你的位置，沿著教學大樓旁的步道找過去。沒等多久，就看見他背著書包從教室裡走出來，手裡還拿著幾張剛收好的講義。'),
+  n('石頭一開始沒有注意到你，直到你走近了些，他才抬起頭。看見你站在那裡，他明顯愣了一下，隨即露出笑容。'),
+  d('石錦航', '妳怎麼跑來淡水了？'),
+  d('你', '來找你啊。'),
+  d('石錦航', '從台北過來不近欸，怎麼沒先跟我說？'),
+  d('你', '想給你一個驚喜嘛。'),
+  n('他低頭笑了一下，把手裡的講義收進書包，又仔細拉好拉鍊。'),
+  d('石錦航', '那妳等我一下，我先把東西放好。'),
+  n('他把書包背好，陪你沿著校園裡的坡道慢慢往校門方向走。走到樹蔭底下時，他放慢腳步，配合著你的速度，偶爾還會回頭確認你有沒有跟上。'),
 ]
 
 const masaRounds: April30Round[] = [
   {
-    title: '第一輪互動：特地來看我們？',
-    scene: [d('瑪莎', '妳今天怎麼突然想到來找我們？')],
+    title: '第一輪互動：特地跑來輔大？',
+    scene: [
+      n('瑪莎把講義往腋下一夾，偏過頭看你，嘴角帶著一點忍不住的笑。'),
+      d('瑪莎', '妳今天不是還有課？怎麼有空跑這麼遠？'),
+    ],
     choices: [
       c('想你們了不行喔？', [
         n('瑪莎瞥了你一眼，故意搓了搓手臂。'),
@@ -549,20 +544,25 @@ const masaRounds: April30Round[] = [
 ]
 
 const stoneWalkIntroBlocks: April30Block[] = [
-  n('瑪莎先一步離開，走之前還不忘回頭喊了一句。'),
-  d('瑪莎', '石頭，妳記得把她送到校門口喔！'),
-  n('石頭笑著搖搖頭。'),
-  d('石錦航', '知道啦。'),
-  n('等瑪莎走遠，你們才一起離開教室。石頭把講義整理好，放進書包裡，走在你旁邊。'),
-  n('他的步子不快，偶爾還會側過頭聽你說話。走出校門時，剛好有一群學生從旁邊經過，他稍稍往你這邊靠了一點，讓你避開迎面而來的人群。'),
-  d('石錦航', '今天人好多喔。'),
-  n('你們走到路邊，終於不用再被來來往往的學生擠著。'),
+  n('下午，你從台大搭車一路來到淡水，走進淡江大學的校園。校園裡有幾段緩緩往上的坡道，樹影落在路面上，遠處不時傳來下課後學生說笑的聲音。'),
+  n('你照著石頭之前告訴你的位置，沿著教學大樓旁的步道找過去。沒等多久，就看見他背著書包從教室裡走出來，手裡還拿著幾張剛收好的講義。'),
+  n('石頭一開始沒有注意到你，直到你走近了些，他才抬起頭。看見你站在那裡，他明顯愣了一下，隨即露出笑容。'),
+  d('石錦航', '妳怎麼跑來淡水了？'),
+  d('你', '來找你啊。'),
+  d('石錦航', '從台北過來不近欸，怎麼沒先跟我說？'),
+  d('你', '想給你一個驚喜嘛。'),
+  n('他低頭笑了一下，把手裡的講義收進書包，又仔細拉好拉鍊。'),
+  d('石錦航', '那妳等我一下，我先把東西放好。'),
+  n('他把書包背好，陪你沿著校園裡的坡道慢慢往校門方向走。走到樹蔭底下時，他放慢腳步，配合著你的速度，偶爾還會回頭確認你有沒有跟上。'),
 ]
 
 const stoneRounds: April30Round[] = [
   {
-    title: '第一輪互動：今天怎麼想到來找我們？',
-    scene: [d('石錦航', '今天怎麼突然想到來找我們？')],
+    title: '第一輪互動：特地跑來淡水？',
+    scene: [
+      n('石頭看了看你，又看了一眼校園外的方向，像是還有點意外你真的跑了這麼遠。'),
+      d('石錦航', '一路過來累不累？淡水今天風有點大。'),
+    ],
     choices: [
       c('我想來看看你們嘛。', [
         n('石頭笑了一下，順手把肩上的書包帶往上拉好。'),
@@ -607,7 +607,7 @@ const stoneRounds: April30Round[] = [
   {
     title: '第三輪互動：以前一起玩音樂的日子',
     scene: [
-      n('你們經過一排店面，石頭忽然想起什麼似的笑了一下。'),
+      n('你們沿著校園裡的步道慢慢往前走，經過一排教室時，石頭忽然想起什麼似的笑了一下。'),
       d('石錦航', '其實以前練團的時候，有很多很好笑的事情。'),
       d('你', '什麼事情？'),
       n('他搖搖頭。'),
@@ -659,7 +659,7 @@ const stoneRounds: April30Round[] = [
   {
     title: '第五輪互動：接下來怎麼辦？',
     scene: [
-      n('走到一個路口時，石頭停下來等一輛車經過，才轉過頭看你。'),
+      n('走到校門附近時，石頭停下腳步，看了看天色，又轉過頭來看你。'),
       d('石錦航', '妳覺得我們接下來應該怎麼辦？'),
     ],
 
@@ -984,10 +984,41 @@ const masaEndingBlocks: April30Block[] = [
 ]
 
 const stoneEndingBlocks: April30Block[] = [
-  n('石頭把手裡的講義往書包裡收好，陪你走到路口。'),
-  d('石錦航', '妳回去小心一點喔。'),
-  d('石錦航', '下次有空再過來。'),
-  n('他朝你揮了揮手，直到你走出一段距離，才轉身離開。'),
+  n('走到淡江大學校門口時，石頭沒有像平常那樣直接跟你道別，而是看了看天色，又看了眼你手上的包。'),
+  d('石錦航', '妳等一下要怎麼回去？'),
+  d('你', '先搭車啊，從淡水回去還要轉一下。'),
+  d('石錦航', '都跑這麼遠來了，還要自己慢慢轉車喔？我騎車送妳回去。'),
+  d('你', '會不會太麻煩你？'),
+  d('石錦航', '不會啦，妳等我一下，我去牽車。'),
+  n('他帶你走到停車的地方，先把書包放進車廂，再拿出另一頂安全帽遞給你。'),
+  d('石錦航', '這頂給妳。扣帶要扣好，不然騎到一半會一直晃。'),
+  n('你把安全帽戴好，低頭摸索著扣帶。他看你弄了兩下還沒扣上，便走近一步，替你把帶子拉順，確認扣環確實扣住才退開。'),
+  d('石錦航', '好了。坐上去吧，腳踩穩一點。'),
+  n('你坐上後座，先抓住後座扶手。石頭等你坐穩，才跨上車發動引擎，還特地回頭確認了一次。'),
+  d('石錦航', '準備好了嗎？'),
+  d('你', '好了！'),
+  n('機車慢慢從校門口騎出去。淡水傍晚的風比校園裡更大一些，路邊的店家一間間亮起燈，你起初還抓著後座扶手，轉過一個彎時，手指卻不自覺地捏住了他外套後側的布料。'),
+  n('石頭騎得很穩，遇到路口就提前放慢速度。等紅燈時，他稍稍側過頭，聲音隔著安全帽傳過來。'),
+  d('石錦航', '風會不會太大？妳還好嗎？'),
+  d('你', '還好啦，就是有點聽不清楚你講話。'),
+  d('石錦航', '那我等紅燈再跟妳講，不然妳在後面一直喊，我也怕妳累。'),
+  n('綠燈亮起，他重新騎上往台北方向的路。車流慢慢多了起來，兩旁的招牌和路燈往後退，你靠著他的背，忽然覺得這段路好像沒有想像中那麼長。'),
+  n('下一個紅燈停下來時，你想起剛才一路聊到的事情，忍不住又開口。'),
+  d('你', '你剛剛說，大家都還在想佑達的事。那你自己呢？有沒有比較好一點？'),
+  d('石錦航', '有一點吧。只是有時候還是會想起以前練團的樣子。'),
+  d('石錦航', '以前只要有人喊一聲要練團，大家就會自己想辦法出現。現在少了一個人，才發現很多事情都不是理所當然的。'),
+  d('你', '可是你們還是會繼續練下去吧？'),
+  n('石頭安靜了一會兒，才輕輕笑了一下。'),
+  d('石錦航', '嗯，應該會吧。至少我還是想繼續。'),
+  d('石錦航', '而且今天妳跑這麼遠來找我，我心情有好一點。'),
+  d('你', '我只是想看看你啊。'),
+  d('石錦航', '我知道。就是因為這樣，才覺得很謝謝妳。'),
+  n('後面的路，他沒有再刻意找話題。偶爾遇到紅燈，他會問你冷不冷、坐得舒不舒服；你也會趁車停下來時跟他說兩句，等燈一變綠，他便重新專心看路。'),
+  n('到你家附近時，石頭把車停在路邊，先等你下車站穩，才伸手替你解開安全帽扣帶。'),
+  d('石錦航', '到了。今天跑這麼遠，回去好好休息。'),
+  d('你', '你回去也小心，到了跟我說一聲。'),
+  d('石錦航', '好啊。妳先進去吧，我等妳走到門口再走。'),
+  n('你把安全帽還給他，往前走了幾步，又忍不住回頭。他還停在原地，見你回頭，便抬手朝你揮了揮。等你轉身走進巷子，他才重新戴好安全帽，慢慢騎離。'),
 ]
 
 const yanmingEndingBlocks: April30Block[] = [
@@ -1042,6 +1073,7 @@ function clockForProgress(progress: April30Progress): string {
   if (progress.phase === 'ashin' || progress.phase === 'yanming' || progress.phase === 'schoolWalk') {
     return ['16:45', '16:55', '17:05', '17:15', '17:25'][progress.roundIndex] ?? '17:25'
   }
+  if (progress.phase === 'complete' && progress.route === 'stone') return '18:20'
   return '17:30'
 }
 
@@ -1099,13 +1131,12 @@ export function April30Story({
     else commit({ ...initialProgress, phase: 'otherPicker' })
   }
 
-  const chooseOtherRoute = (route: April30Route | 'school') => {
-    if (route === 'school') commit({ ...initialProgress, phase: 'schoolPicker' })
-    else if (route === 'ashin' || route === 'yanming') commit({ ...initialProgress, phase: route, route })
-  }
-
-  const chooseSchoolCompanion = (route: 'masa' | 'stone') => {
-    commit({ ...initialProgress, phase: 'schoolWalk', route })
+  const chooseOtherRoute = (route: April30Route) => {
+    if (route === 'masa' || route === 'stone') {
+      commit({ ...initialProgress, phase: 'schoolWalk', route })
+    } else {
+      commit({ ...initialProgress, phase: route, route })
+    }
   }
 
   const chooseRound = (index: number) => {
@@ -1151,20 +1182,20 @@ export function April30Story({
   const routeTitle = progress.phase === 'wen' ? '學校天台・溫尚翊'
     : progress.phase === 'ashin' ? '一個人的練團室・陳信宏'
       : progress.phase === 'yanming' ? '系館外・劉諺明'
-        : progress.route === 'masa' ? '下課路上・瑪莎'
-           : '下課路上・石頭'
+        : progress.route === 'masa' ? '輔仁大學・瑪莎'
+          : '淡江大學・石錦航'
 
   const routeKicker = progress.phase === 'wen' ? 'ROOFTOP · WITH WEN'
     : progress.phase === 'ashin' ? 'THE REHEARSAL ROOM · ASHIN'
       : progress.phase === 'yanming' ? 'A VISIT TO CAMPUS · YANMING'
-        : progress.route === 'masa' ? 'WALKING HOME · WITH MASA'
-          : 'WALKING HOME · WITH STONE'
+        : progress.route === 'masa' ? 'FU JEN CATHOLIC UNIVERSITY · WITH MASA'
+          : 'TAMKANG UNIVERSITY · WITH STONE'
 
   const routeHeading = progress.phase === 'wen' ? '天台上的風'
     : progress.phase === 'ashin' ? '木吉他的聲音'
       : progress.phase === 'yanming' ? '帶來消息的人'
-        : progress.route === 'masa' ? '跟瑪莎一起走'
-          : '跟石頭一起走'
+        : progress.route === 'masa' ? '輔大校園的午後'
+          : '淡水的風'
 
   const routeIntro = progress.phase === 'ashin' ? ashinIntroBlocks
     : progress.phase === 'yanming' ? yanmingIntroBlocks
@@ -1207,25 +1238,12 @@ export function April30Story({
     return (
       <April30Frame title="下午的安排" kicker="AFTER CLASS · WHERE TO GO">
         <h2 className="story-scene-title">不去找他，你想去哪裡？</h2>
-        <April30Blocks blocks={[n('你想了想，決定去看看其他人。')]} />
+        <April30Blocks blocks={[n('你想了想，決定分開去看看大家。')]} />
         <div className="march29-reply-list">
           <button className="reply-choice" onClick={() => chooseOtherRoute('ashin')}><span>去練團室找陳信宏</span><ChevronRight size={15} /></button>
-          <button className="reply-choice" onClick={() => chooseOtherRoute('school')}><span>去教學大樓找瑪莎和石頭</span><ChevronRight size={15} /></button>
+          <button className="reply-choice" onClick={() => chooseOtherRoute('masa')}><span>去輔仁大學找瑪莎</span><ChevronRight size={15} /></button>
+          <button className="reply-choice" onClick={() => chooseOtherRoute('stone')}><span>去淡江大學找石頭</span><ChevronRight size={15} /></button>
           <button className="reply-choice" onClick={() => chooseOtherRoute('yanming')}><span>留在學校，遇見來找你的諺明哥</span><ChevronRight size={15} /></button>
-        </div>
-      </April30Frame>
-    )
-  }
-
-  if (progress.phase === 'schoolPicker') {
-    return (
-      <April30Frame title="校園・下課後" kicker="AFTER CLASS · CAMPUS">
-        <h2 className="story-scene-title">今天下課，你想跟誰一起走？</h2>
-        <April30Blocks blocks={schoolIntroBlocks} />
-        <div className="choice-area">
-          <div className="choice-heading">選一個人，陪你走一段路</div>
-          <button className="reply-choice" onClick={() => chooseSchoolCompanion('masa')}><span>跟瑪莎一起走</span><ChevronRight size={15} /></button>
-          <button className="reply-choice" onClick={() => chooseSchoolCompanion('stone')}><span>跟石頭一起走</span><ChevronRight size={15} /></button>
         </div>
       </April30Frame>
     )
@@ -1308,8 +1326,8 @@ export function April30Story({
   if (progress.phase === 'complete' && progress.route) {
     const title = progress.route === 'wen' ? '天台上的午後'
       : progress.route === 'ashin' ? '一個人的練團室'
-        : progress.route === 'masa' ? '下課路上的瑪莎'
-          : progress.route === 'stone' ? '下課路上的石頭'
+        : progress.route === 'masa' ? '輔仁大學的午後'
+          : progress.route === 'stone' ? '淡水回家的路'
             : '帶著消息的午後'
     return (
       <April30Frame title="今天先到這裡" kicker="APRIL 30 · END OF DAY">
