@@ -6016,11 +6016,15 @@ function App() {
 
   const finishJulyLostKeyStory = (selection: JulyLostKeySelection) => {
     const validCharacters: JulyLostKeySelection['character'][] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
+    const validFlirtTargets = ['wen', 'ashin']
     if (!validCharacters.includes(selection.character) || selection.choices.length !== 5 || !selection.choices.every((choice) => Number.isInteger(choice) && choice >= 0 && choice <= 2)) return
+    if (selection.flirtTarget !== null && !validFlirtTargets.includes(selection.flirtTarget)) return
+    if (selection.character !== 'wen' && selection.character !== 'ashin' && selection.flirtTarget !== null) return
     localStorage.setItem('mayday-july-lost-key-complete', 'true')
     localStorage.setItem('mayday-july-lost-key-day-complete', 'true')
     localStorage.setItem('mayday-july-lost-key-character', selection.character)
     localStorage.setItem('mayday-july-lost-key-choices', JSON.stringify(selection.choices))
+    localStorage.setItem('mayday-july-lost-key-flirt-target', selection.flirtTarget ?? '')
     localStorage.setItem('mayday-july-lost-key-date', '1997.07.15')
     setActiveApp(null)
     setSelectedDiaryDate(null)
