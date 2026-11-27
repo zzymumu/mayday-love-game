@@ -45,7 +45,7 @@ type Progress = {
 type Section = 'train' | 'homestay' | 'scooter' | 'sunset'
 type CharacterRecord = Record<SeptemberCharacter, [Round, Round, Round, Round, Round]>
 
-const STORAGE_KEY = 'mayday-september-story-progress-v2'
+const STORAGE_KEY = 'mayday-september-story-progress-v3'
 const ORDER: SeptemberCharacter[] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
 const NAMES: Record<SeptemberCharacter, string> = {
   wen: '溫尚翊', ashin: '陳信宏', masa: '瑪莎', stone: '石錦航', yanming: '劉諺明',
