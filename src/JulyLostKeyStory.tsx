@@ -851,7 +851,7 @@ export function rewindJulyLostKeyStoryToStart(
   ORDER.forEach((id) => {
     const current = currentAffection[id]
     if (typeof current !== 'number' || !Number.isFinite(current)) {
-      if (earned[id] !== 0) restoredAffection[id] = 0
+      if (earned[id] !== 0) return null
       return
     }
     restoredAffection[id] = current - earned[id]
