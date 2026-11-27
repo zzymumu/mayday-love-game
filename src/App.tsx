@@ -9562,7 +9562,7 @@ function App() {
                   </div>
                   <div className="story-action-bar">
                     <button className="story-primary-button" onClick={startSeptemberStory}>
-                      出發去綠島 <ChevronRight size={15} />
+                      看看大家在商量什麼 <ChevronRight size={15} />
                     </button>
                     <button className="diary-detail-back" onClick={() => { setActiveApp('diary'); setSelectedDiaryDate('1997-08-01') }}>
                       回看八月日記
