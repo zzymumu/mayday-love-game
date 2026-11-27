@@ -476,8 +476,8 @@ const DAY_START_STAGE_DATES: Partial<Record<StoryStage, string>> = {
   'august-story': '1997.08.01',
 }
 
-const isAtDayOpening = (stage: StoryStage): boolean => {
-  const progressKeys: Partial<Record<StoryStage, { key: string; phase: string }>> = {
+const isAtDayOpening = (stage: StoryStage, savedData?: Record<string, string>): boolean => {
+  const progressChecks: Partial<Record<StoryStage, { key: string; phase?: string; emptyArray?: boolean; companionKey?: string }>> = {
     'april12-story': { key: 'mayday-april12-progress', phase: 'discussion' },
     'april20-story': { key: 'mayday-april20-progress', phase: 'notification' },
     'april30-story': { key: 'mayday-april30-progress-v2', phase: 'intro' },
@@ -485,14 +485,22 @@ const isAtDayOpening = (stage: StoryStage): boolean => {
     'june-study': { key: 'mayday-june-study-progress-v1', phase: 'intro' },
     'july-lost-key': { key: 'mayday-july-lost-key-progress-v1', phase: 'intro' },
     'august-story': { key: 'mayday-august-story-progress-v1', phase: 'transition' },
+    'winter-exam-tutoring': { key: 'mayday-winter-exam-replies', emptyArray: true },
+    'winter-break-practice': { key: 'mayday-winter-practice-replies', emptyArray: true },
+    'march28-morning': { key: 'mayday-march28-morning-replies', emptyArray: true, companionKey: 'mayday-march28-morning-character' },
   }
-  const progress = progressKeys[stage]
-  if (!progress) return true
-  const raw = localStorage.getItem(progress.key)
+  const check = progressChecks[stage]
+  if (!check) return true
+  const raw = savedData ? savedData[check.key] : localStorage.getItem(check.key)
+  const companion = check.companionKey
+    ? (savedData ? savedData[check.companionKey] : localStorage.getItem(check.companionKey))
+    : null
+  if (companion) return false
   if (!raw) return true
   try {
-    const saved = JSON.parse(raw) as { phase?: unknown } | null
-    return saved?.phase === progress.phase
+    const saved = JSON.parse(raw) as { phase?: unknown } | unknown
+    if (check.emptyArray) return Array.isArray(saved) && saved.length === 0
+    return Boolean(saved && typeof saved === 'object' && (saved as { phase?: unknown }).phase === check.phase)
   } catch {
     return false
   }
@@ -6447,6 +6455,16 @@ function App() {
                 data: julyStartData,
               },
             })
+          }
+        }
+
+        // Older dates are offered only when a manual save is demonstrably at that day's opening scene.
+        for (const slot of getSaveSlotIds()) {
+          const manualSave = readSaveSlot(slot)
+          if (!manualSave) continue
+          const manualDate = DAY_START_STAGE_DATES[manualSave.stage]
+          if (manualDate && manualDate === manualSave.gameDate && isAtDayOpening(manualSave.stage, manualSave.data)) {
+            pendingRecords.push({ date: manualDate, snapshot: manualSave })
           }
         }
 
