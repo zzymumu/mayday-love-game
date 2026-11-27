@@ -7,9 +7,6 @@ export type SeptemberDiaryData = {
   photoCaption: string
 }
 
-const NAMES: Record<SeptemberCharacter, string> = {
-  wen: '怪獸', ashin: '阿信', masa: '瑪莎', stone: '石頭', yanming: '諺明哥',
-}
 const pick = (values: string[], index: number) => values[index] ?? values[0]
 
 function trainMemory(character: SeptemberCharacter, choices: number): string {
