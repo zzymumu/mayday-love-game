@@ -1956,3 +1956,110 @@ button { cursor: pointer; }
   .march29-band-heading { padding: 9px 10px; }
   .story-inline-action { margin: 11px -14px -16px; }
 }
+
+
+/* September Green Island keepsake photo */
+.september-person-picker {
+  margin-top: 14px;
+}
+.september-photo-print {
+  width: min(100%, 320px);
+  margin: 18px auto 20px;
+  padding: 9px 9px 13px;
+  border: 1px solid #e8d9c8;
+  background: #fffdf8;
+  box-shadow: 0 5px 16px rgba(85, 65, 49, .13);
+  transform: rotate(-.65deg);
+}
+.september-photo-image {
+  position: relative;
+  height: 154px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #f3cda8 0%, #f4d9b6 35%, #b7c9c0 36%, #8eaaa6 100%);
+}
+.september-photo-sun {
+  position: absolute;
+  top: 24px;
+  right: 44px;
+  width: 31px;
+  height: 31px;
+  border-radius: 50%;
+  background: #fff0c8;
+  box-shadow: 0 0 22px rgba(255, 237, 190, .65);
+}
+.september-photo-sea {
+  position: absolute;
+  left: -8%;
+  right: -8%;
+  bottom: 0;
+  height: 51%;
+  background: linear-gradient(180deg, rgba(94, 145, 147, .76), #557f82 72%, #426b70);
+  clip-path: polygon(0 18%, 12% 10%, 25% 18%, 39% 8%, 52% 16%, 68% 7%, 82% 17%, 100% 9%, 100% 100%, 0 100%);
+}
+.september-photo-people {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 10px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 5px;
+}
+.september-photo-person {
+  position: relative;
+  display: block;
+  width: 23px;
+  height: 53px;
+  flex: 0 0 23px;
+}
+.september-photo-person::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #4c4541;
+}
+.september-photo-person::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 1px;
+  width: 21px;
+  height: 38px;
+  border-radius: 9px 9px 3px 3px;
+  background: #6f7773;
+}
+.september-photo-person.person-wen { height: 61px; }
+.september-photo-person.person-wen::after { background: #6d665d; }
+.september-photo-person.person-ashin { height: 57px; }
+.september-photo-person.person-ashin::after { background: #9a7770; }
+.september-photo-person.person-masa { height: 55px; }
+.september-photo-person.person-masa::after { background: #657b79; }
+.september-photo-person.person-stone { height: 59px; }
+.september-photo-person.person-stone::after { background: #a28b72; }
+.september-photo-person.person-yanming { height: 62px; }
+.september-photo-person.person-yanming::after { background: #5f696e; }
+.september-photo-person.person-you { height: 58px; }
+.september-photo-person.person-you::after { background: #bd8d80; }
+.september-photo-caption {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 3px 0;
+  color: #806b5b;
+}
+.september-photo-caption strong {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 10px;
+  letter-spacing: .04em;
+}
+.september-photo-caption span {
+  color: #aa9582;
+  font-size: 8px;
+}
