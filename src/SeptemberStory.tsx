@@ -1421,6 +1421,7 @@ export function SeptemberStory({
                   n('你剛把人拉到身邊，石頭就按下倒數。你們六個人往鏡頭前擠，鞋底踩進細沙裡，肩膀挨著肩膀。瑪莎在最後一秒還不忘做鬼臉，溫尚翊笑著偏過頭，阿信也跟著笑起來。快門就在一陣笑聲裡落下。'),
                   n('石頭跑回來把相機遞給大家看。六個人全都入鏡了，沒有誰被切掉。照片裡的海很藍，風很大，而你們看起來像是把整個夏天都留在那一秒。'),
                 ]} />
+                <SeptemberCamera />
                 <SeptemberPhotoCard />
                 <div className="reunion-pause-note">這張六人合照已經收進九月旅行的回憶裡。</div>
                 <div className="story-action-bar story-inline-action">
