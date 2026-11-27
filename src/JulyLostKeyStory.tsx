@@ -848,14 +848,14 @@ export function rewindJulyLostKeyStoryToStart(
     return null
   }
   const restoredAffection: Partial<Record<JulyLostKeyCharacter, number>> = { ...currentAffection }
-  ORDER.forEach((id) => {
+  for (const id of ORDER) {
     const current = currentAffection[id]
     if (typeof current !== 'number' || !Number.isFinite(current)) {
       if (earned[id] !== 0) return null
-      return
+      continue
     }
     restoredAffection[id] = current - earned[id]
-  })
+  }
   data['mayday-route-affection'] = JSON.stringify(restoredAffection)
 
   const pending = data['mayday-pending-call']
