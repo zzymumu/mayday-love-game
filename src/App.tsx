@@ -570,7 +570,7 @@ const DAY_START_STAGE_DATES: Partial<Record<StoryStage, string>> = {
   'june-study': '1997.06.15',
   'july-lost-key': '1997.07.15',
   'august-story': '1997.08.01',
-  'september-intro': '1997.09.04',
+  'september-intro': '1997.09.03',
   'september-story': '1997.09.04',
 }
 
@@ -3195,8 +3195,8 @@ function App() {
     storyStage === 'paused' && resumeStage === 'september-story' ? septemberClock
       : storyStage === 'september-story' ? septemberClock
         : storyStage === 'september-diary' ? '21:30'
-          : storyStage === 'paused' && resumeStage === 'september-intro' ? '06:35'
-            : storyStage === 'september-intro' ? '06:35'
+          : storyStage === 'paused' && resumeStage === 'september-intro' ? '19:10'
+            : storyStage === 'september-intro' ? '19:10'
         : storyStage === 'paused' && resumeStage === 'august-diary' ? '21:30'
           : storyStage === 'august-diary' ? '21:30'
             : storyStage === 'paused' && resumeStage === 'august-story' ? augustClock
@@ -3275,7 +3275,7 @@ function App() {
   const isWinterBreak = ['winter-break-practice', 'winter-break-gig', 'winter-break-pickup', 'winter-break-bus-choice', 'winter-break-bus', 'winter-diary'].includes(effectiveDateStage) || isFebruary || localStorage.getItem('mayday-winter-break-day-complete') === 'true'
   const isYearEnd = ['year-end-intro', 'year-end-invite-notification', 'year-end-invite-picker', 'year-end-shopping-notification', 'year-end-shopping-chat', 'year-end-shopping', 'year-end-fireworks', 'year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary'].includes(effectiveDateStage) || localStorage.getItem('mayday-year-end-day-complete') === 'true'
   const isNewYear = ['year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary'].includes(effectiveDateStage) || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-year-end-day-complete') === 'true' && localStorage.getItem('mayday-winter-break-day-complete') !== 'true')
-  const saveGameDate = effectiveDateStage === 'september-intro' ? '1997.09.04' : effectiveDateStage === 'september-story' || effectiveDateStage === 'september-diary' ? (localStorage.getItem('mayday-september-date') ?? '1997.09.04') : effectiveDateStage === 'completed' && localStorage.getItem('mayday-september-day-complete') === 'true' ? '1997.09.06' : effectiveDateStage === 'august-story' || effectiveDateStage === 'august-diary' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-august-day-complete') === 'true') ? '1997.08.01' : effectiveDateStage === 'july-lost-key' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-july-lost-key-day-complete') === 'true') ? '1997.07.15' : effectiveDateStage === 'june-study' || effectiveDateStage === 'june-free-chat' || effectiveDateStage === 'june-diary' || effectiveDateStage === 'june-study-complete' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-june-study-day-complete') === 'true') ? '1997.06.15' : effectiveDateStage === 'may10-story' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-may10-day-complete') === 'true') ? '1997.05.10' : effectiveDateStage === 'april30-story' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-april30-day-complete') === 'true') ? '1997.04.30' : effectiveDateStage === 'april20-story' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-april20-day-complete') === 'true') ? '1997.04.20' : effectiveDateStage === 'april12-story' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-april12-diary-unlocked') === 'true') ? '1997.04.12' : effectiveDateStage === 'march29-show' || effectiveDateStage === 'march28-morning' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-march29-diary-unlocked') === 'true') || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-march28-park-choice') === 'stay' && localStorage.getItem('mayday-march28-day-complete') === 'true') ? '1997.03.29' : isMarch28 ? '1997.03.28' : isSpringTerm ? '1997.02.17' : isFebruary ? '1997.02.03' : isWinterBreak ? '1997.01.22' : isWinterExam ? (effectiveDateStage === 'winter-exam-tutoring' ? '1997.01.08' : '1997.01.07') : isNewYear ? '1997.01.01' : isYearEnd ? '1996.12.31' : isNextMonth ? '1996.12.14' : isMonthLater ? '1996.11.16' : isSecondDay ? '1996.10.16' : '1996.10.15'
+  const saveGameDate = effectiveDateStage === 'september-intro' ? '1997.09.03' : effectiveDateStage === 'september-story' || effectiveDateStage === 'september-diary' ? (localStorage.getItem('mayday-september-date') ?? '1997.09.04') : effectiveDateStage === 'completed' && localStorage.getItem('mayday-september-day-complete') === 'true' ? '1997.09.06' : effectiveDateStage === 'august-story' || effectiveDateStage === 'august-diary' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-august-day-complete') === 'true') ? '1997.08.01' : effectiveDateStage === 'july-lost-key' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-july-lost-key-day-complete') === 'true') ? '1997.07.15' : effectiveDateStage === 'june-study' || effectiveDateStage === 'june-free-chat' || effectiveDateStage === 'june-diary' || effectiveDateStage === 'june-study-complete' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-june-study-day-complete') === 'true') ? '1997.06.15' : effectiveDateStage === 'may10-story' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-may10-day-complete') === 'true') ? '1997.05.10' : effectiveDateStage === 'april30-story' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-april30-day-complete') === 'true') ? '1997.04.30' : effectiveDateStage === 'april20-story' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-april20-day-complete') === 'true') ? '1997.04.20' : effectiveDateStage === 'april12-story' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-april12-diary-unlocked') === 'true') ? '1997.04.12' : effectiveDateStage === 'march29-show' || effectiveDateStage === 'march28-morning' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-march29-diary-unlocked') === 'true') || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-march28-park-choice') === 'stay' && localStorage.getItem('mayday-march28-day-complete') === 'true') ? '1997.03.29' : isMarch28 ? '1997.03.28' : isSpringTerm ? '1997.02.17' : isFebruary ? '1997.02.03' : isWinterBreak ? '1997.01.22' : isWinterExam ? (effectiveDateStage === 'winter-exam-tutoring' ? '1997.01.08' : '1997.01.07') : isNewYear ? '1997.01.01' : isYearEnd ? '1996.12.31' : isNextMonth ? '1996.12.14' : isMonthLater ? '1996.11.16' : isSecondDay ? '1996.10.16' : '1996.10.15'
   const [calendarYear, calendarMonth, calendarDay] = saveGameDate.split('.')
   const calendarDate = new Date(Number(calendarYear), Number(calendarMonth) - 1, Number(calendarDay))
   const calendarWeekday = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'][calendarDate.getDay()]
@@ -6641,7 +6641,7 @@ function App() {
 
   const startSeptemberIntro = () => {
     localStorage.setItem('mayday-september-started', 'true')
-    localStorage.setItem('mayday-september-date', '1997.09.04')
+    localStorage.setItem('mayday-september-date', '1997.09.03')
     setActiveApp(null)
     setSelectedDiaryDate(null)
     setSelectedSmsThread(null)
@@ -6650,7 +6650,7 @@ function App() {
 
   const startSeptemberStory = () => {
     localStorage.setItem('mayday-september-started', 'true')
-    if (!localStorage.getItem('mayday-september-date')) localStorage.setItem('mayday-september-date', '1997.09.04')
+    localStorage.setItem('mayday-september-date', '1997.09.04')
     setActiveApp(null)
     setSelectedDiaryDate(null)
     setSelectedSmsThread(null)
@@ -9550,7 +9550,7 @@ function App() {
                     <div className="chapter-mark">九月・出發前</div>
                     <div className="story-contact-title">
                       <strong>夏天的海，和我們</strong>
-                      <small>1997 年 9 月 4 日・星期四</small>
+                      <small>1997 年 9 月 3 日・星期三・晚上</small>
                     </div>
                     <span className="story-head-spacer" />
                   </div>
