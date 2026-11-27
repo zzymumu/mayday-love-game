@@ -579,7 +579,7 @@ const initialProgress = (): Progress => ({
   sunsetGroup: initialGroup(), sunset: initialInteraction(),
 })
 const isCharacter = (value: unknown): value is SeptemberCharacter => typeof value === 'string' && ORDER.includes(value as SeptemberCharacter)
-const validChoices = (value: unknown): value is number[] => Array.isArray(value) && value.every((item) => Number.isInteger(item) && item >= 0 && item <= 4)
+const validChoices = (value: unknown): value is number[] => Array.isArray(value) && value.every((item) => Number.isInteger(item) && item >= 0 && item <= 2)
 const validInteraction = (value: unknown): value is Interaction => {
   if (!value || typeof value !== 'object') return false
   const item = value as Partial<Interaction>
@@ -669,12 +669,10 @@ export function SeptemberPhotoCard({ caption = '1997.09.05 · 綠島海邊 · �
 }
 
 export function SeptemberStory({
-  affection,
   onAddAffection,
   onClockChange,
   onFinish,
 }: {
-  affection: Record<SeptemberCharacter, number>
   onAddAffection: (character: SeptemberCharacter, amount: number) => void
   onClockChange: (time: string) => void
   onFinish: (selection: SeptemberSelection) => void
@@ -798,12 +796,8 @@ export function SeptemberStory({
   const startTrain = () => setProgress((state) => ({ ...state, phase: 'train-picker' }))
   const startArrival = () => setProgress((state) => ({ ...state, phase: 'homestay-arrival' }))
   const startPoker = () => setProgress((state) => ({ ...state, phase: 'poker', poker: initialGroup() }))
-  const startHomestaySolo = () => setProgress((state) => ({ ...state, phase: 'homestay-picker' }))
-  const startDayTwo = () => setProgress((state) => ({ ...state, phase: 'day-two-morning' }))
   const startScooter = () => setProgress((state) => ({ ...state, phase: 'scooter-picker' }))
-  const startPhoto = () => setProgress((state) => ({ ...state, phase: 'coast-photo' }))
-  const startSunsetSolo = () => setProgress((state) => ({ ...state, phase: 'sunset-picker' }))
-  const startReturn = () => setProgress((state) => ({ ...state, phase: 'return' }))
+  const continueReturn = () => setProgress((state) => ({ ...state, phase: 'ending' }))
 
   const finish = () => {
     if (progress.phase !== 'ending' || finishLock.current) return
@@ -1026,10 +1020,10 @@ export function SeptemberStory({
             <Blocks blocks={[
               n('繞過一段沿海公路後，大家在一處能直接看見海的空地停下來。風把衣角吹得亂飛，遠處的浪一層一層推上岸。你才剛摘下安全帽，瑪莎就說這裡很適合拍照；石頭把相機拿出來，找了一塊平穩的石頭架好，調整自拍定時器。'),
               d('石錦航', '這次大家都要入鏡，不可以有人只負責拍照。'),
-              n('諺明哥把鼓棒和小袋子放到一旁，溫尚翊走過來幫你把被風吹到臉上的頭髮撥開一點，手伸到一半又改成指了指你的髮尾。阿信站在你另一邊，笑著問要不要把安全帽拿在手上；瑪莎則已經跑到鏡頭前面，說自己一定要站在最中間。'),
+              n('諺明哥把鼓棒和小袋子放到一旁。溫尚翊走過來，像是想替你撥開黏在臉上的髮絲，手抬到一半又停住，只用下巴指了指你的耳邊，示意你自己勾好。阿信站在另一邊，笑著問要不要把安全帽拿在手上；瑪莎則已經跑到鏡頭前面，說自己一定要站在最中間。'),
               d('溫尚翊', '你站好啦，等一下倒數完不要又突然跑掉。'),
-              n('石頭按下定時器，快門的倒數聲響起。六個人一邊喊一邊往鏡頭前擠，最後你被推到中間，左邊是溫尚翊，右邊是阿信；瑪莎在後面做了個很欠揍的表情，石頭和諺明哥也總算趕進畫面。快門落下的那一刻，海風正好把大家的頭髮吹得亂七八糟。'),
-              n('石頭跑回來看照片時，大家立刻圍上去。照片裡沒有人站得很整齊，卻每個人都在笑。你突然覺得，這張照片一定要好好留著。'),
+              n('石頭把相機架好，調整自拍定時器，倒數的燈一閃一閃。你們六個人開始往鏡頭前擠，誰都不肯站到最邊邊。瑪莎還在嫌大家擋住他，溫尚翊卻伸手把你往中間帶了一點，阿信也往你這邊靠過來。快門落下前，諺明哥剛好趕到，石頭也從相機旁邊跑進畫面。海風把每個人的頭髮吹得亂七八糟，偏偏六個人都笑得很開心。'),
+              n('石頭跑回來看照片時，大家立刻圍上去。照片裡沒有人站得很整齊，瑪莎的表情還有點欠揍，怪獸像是想裝酷卻沒忍住笑，阿信的頭髮被風吹得翹起來。你站在中間，兩邊都是熟悉的人。你突然覺得，這張照片一定要好好留著。'),
             ]} />
             {progress.photoChoice === null ? (
               <div className="choice-area">
@@ -1044,6 +1038,10 @@ export function SeptemberStory({
               <>
                 <Blocks blocks={[d('你', photoChoices[progress.photoChoice].text)]} />
                 <Blocks blocks={photoChoices[progress.photoChoice].response} />
+                <Blocks blocks={[
+                  n('石頭看了一眼定時器，立刻朝大家揮手。你被身旁的人輕輕帶到位置上，鞋底踩進細沙裡，肩膀挨著旁邊的人。倒數聲越來越急，瑪莎還在最後一秒做鬼臉，快門就在一陣笑聲裡落下。'),
+                  n('石頭跑回來把相機遞給大家看。六個人全都入鏡了，沒有誰被切掉。照片裡的海很藍，風很大，而你們看起來像是把整個夏天都留在那一秒。'),
+                ]} />
                 <SeptemberPhotoCard />
                 <div className="reunion-pause-note">這張六人合照已經收進九月旅行的回憶裡。</div>
                 <div className="story-action-bar story-inline-action">
@@ -1075,7 +1073,7 @@ export function SeptemberStory({
             ]} />
             <div className="reunion-pause-note">1997 年 9 月 6 日・星期六・旅行結束</div>
             <div className="story-action-bar story-inline-action">
-              <button className="story-primary-button" onClick={startReturn}>寫下這趟旅行 <ChevronRight size={15} /></button>
+              <button className="story-primary-button" onClick={continueReturn}>寫下這趟旅行 <ChevronRight size={15} /></button>
             </div>
           </>
         )}
