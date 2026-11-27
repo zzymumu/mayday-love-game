@@ -268,19 +268,34 @@ type CharacterExperienceRecord = {
 type SaveSlotData = { version: 1; savedAt: string; gameDate: string; gameTime: string; stage: StoryStage; stageLabel: string; data: Record<string, string> }
 
 type DaySnapshotRecord = { date: string; snapshot: SaveSlotData }
+type AutoStepSnapshotRecord = { id: string; timestamp: number; date: string; time: string; stageLabel: string; fingerprint: string; snapshot: SaveSlotData }
 const DAY_SNAPSHOT_DB_NAME = 'mayday-day-start-snapshots-v1'
 const DAY_SNAPSHOT_STORE_NAME = 'day-starts'
+const AUTO_STEP_SNAPSHOT_STORE_NAME = 'auto-steps'
+
+const getSaveSnapshotFingerprint = (snapshot: SaveSlotData): string => {
+  const serialized = JSON.stringify({ gameDate: snapshot.gameDate, gameTime: snapshot.gameTime, stage: snapshot.stage, data: snapshot.data })
+  let hash = 2166136261
+  for (let index = 0; index < serialized.length; index += 1) {
+    hash ^= serialized.charCodeAt(index)
+    hash = Math.imul(hash, 16777619)
+  }
+  return serialized.length + ':' + (hash >>> 0).toString(36)
+}
 
 const openDaySnapshotDatabase = (): Promise<IDBDatabase> => new Promise((resolve, reject) => {
   if (typeof indexedDB === 'undefined') {
     reject(new Error('這個瀏覽器不支援時間回溯紀錄。'))
     return
   }
-  const request = indexedDB.open(DAY_SNAPSHOT_DB_NAME, 1)
+  const request = indexedDB.open(DAY_SNAPSHOT_DB_NAME, 2)
   request.onupgradeneeded = () => {
     const database = request.result
     if (!database.objectStoreNames.contains(DAY_SNAPSHOT_STORE_NAME)) {
       database.createObjectStore(DAY_SNAPSHOT_STORE_NAME, { keyPath: 'date' })
+    }
+    if (!database.objectStoreNames.contains(AUTO_STEP_SNAPSHOT_STORE_NAME)) {
+      database.createObjectStore(AUTO_STEP_SNAPSHOT_STORE_NAME, { keyPath: 'id' })
     }
   }
   request.onsuccess = () => resolve(request.result)
@@ -395,11 +410,88 @@ const deleteDaySnapshotsAfter = async (date: string): Promise<void> => {
   })
 }
 
+
+const listAutoStepSnapshots = async (): Promise<AutoStepSnapshotRecord[]> => {
+  const database = await openDaySnapshotDatabase()
+  return new Promise((resolve, reject) => {
+    const transaction = database.transaction(AUTO_STEP_SNAPSHOT_STORE_NAME, 'readonly')
+    const request = transaction.objectStore(AUTO_STEP_SNAPSHOT_STORE_NAME).getAll()
+    let records: AutoStepSnapshotRecord[] = []
+    request.onsuccess = () => {
+      records = (request.result as AutoStepSnapshotRecord[]).filter((record) =>
+        record && typeof record.id === 'string' && Number.isFinite(record.timestamp) &&
+        typeof record.fingerprint === 'string' && record.snapshot && record.snapshot.version === 1)
+    }
+    request.onerror = () => reject(request.error ?? new Error('讀取自動進度紀錄失敗。'))
+    transaction.oncomplete = () => {
+      database.close()
+      resolve(records.sort((left, right) => left.timestamp - right.timestamp))
+    }
+    transaction.onerror = () => {
+      database.close()
+      reject(transaction.error ?? new Error('讀取自動進度紀錄失敗。'))
+    }
+    transaction.onabort = () => {
+      database.close()
+      reject(transaction.error ?? new Error('讀取自動進度紀錄已中斷。'))
+    }
+  })
+}
+
+const putAutoStepSnapshot = async (record: AutoStepSnapshotRecord): Promise<void> => {
+  const database = await openDaySnapshotDatabase()
+  return new Promise((resolve, reject) => {
+    const transaction = database.transaction(AUTO_STEP_SNAPSHOT_STORE_NAME, 'readwrite')
+    transaction.objectStore(AUTO_STEP_SNAPSHOT_STORE_NAME).put(record)
+    transaction.oncomplete = () => {
+      database.close()
+      resolve()
+    }
+    transaction.onerror = () => {
+      database.close()
+      reject(transaction.error ?? new Error('保存自動進度失敗。'))
+    }
+    transaction.onabort = () => {
+      database.close()
+      reject(transaction.error ?? new Error('保存自動進度已中斷。'))
+    }
+  })
+}
+
+const deleteAutoStepSnapshotsAfter = async (timestamp: number): Promise<void> => {
+  const database = await openDaySnapshotDatabase()
+  return new Promise((resolve, reject) => {
+    const transaction = database.transaction(AUTO_STEP_SNAPSHOT_STORE_NAME, 'readwrite')
+    const request = transaction.objectStore(AUTO_STEP_SNAPSHOT_STORE_NAME).openCursor()
+    request.onsuccess = () => {
+      const cursor = request.result
+      if (!cursor) return
+      const record = cursor.value as AutoStepSnapshotRecord
+      if (record.timestamp > timestamp) cursor.delete()
+      cursor.continue()
+    }
+    request.onerror = () => reject(request.error ?? new Error('整理自動進度紀錄失敗。'))
+    transaction.oncomplete = () => {
+      database.close()
+      resolve()
+    }
+    transaction.onerror = () => {
+      database.close()
+      reject(transaction.error ?? new Error('整理自動進度紀錄失敗。'))
+    }
+    transaction.onabort = () => {
+      database.close()
+      reject(transaction.error ?? new Error('整理自動進度紀錄已中斷。'))
+    }
+  })
+}
+
 const clearDaySnapshots = async (): Promise<void> => {
   const database = await openDaySnapshotDatabase()
   return new Promise((resolve, reject) => {
-    const transaction = database.transaction(DAY_SNAPSHOT_STORE_NAME, 'readwrite')
+    const transaction = database.transaction([DAY_SNAPSHOT_STORE_NAME, AUTO_STEP_SNAPSHOT_STORE_NAME], 'readwrite')
     transaction.objectStore(DAY_SNAPSHOT_STORE_NAME).clear()
+    transaction.objectStore(AUTO_STEP_SNAPSHOT_STORE_NAME).clear()
     transaction.oncomplete = () => {
       database.close()
       resolve()
@@ -2117,6 +2209,15 @@ function App() {
   const [daySnapshots, setDaySnapshots] = useState<DaySnapshotRecord[]>([])
   const [daySnapshotLoading, setDaySnapshotLoading] = useState(true)
   const [daySnapshotError, setDaySnapshotError] = useState('')
+  const [autoStepSnapshots, setAutoStepSnapshots] = useState<AutoStepSnapshotRecord[]>([])
+  const [autoStepSnapshotLoading, setAutoStepSnapshotLoading] = useState(true)
+  const [autoStepSnapshotError, setAutoStepSnapshotError] = useState('')
+  const autoStepCaptureRef = useRef<(() => SaveSlotData) | null>(null)
+  const autoStepScheduleRef = useRef<(() => void) | null>(null)
+  const autoStepReadyRef = useRef(false)
+  const autoStepLastFingerprintRef = useRef('')
+  const autoStepSequenceRef = useRef(0)
+
 
   const [selectedSmsThread, setSelectedSmsThread] = useState<CharacterId | null>(null)
   const [smsMessages, setSmsMessages] = useState<SmsMessage[]>(() => {
@@ -3231,8 +3332,79 @@ function App() {
       stageLabel: storyStageLabels[storyStage],
       data,
     }
+
     return saved
   }
+
+  autoStepCaptureRef.current = buildCurrentSaveSnapshot
+
+  // Capture a complete game-state checkpoint after each persisted story step.
+  // Storage writes from the same interaction are grouped so the checkpoint is
+  // taken only after React has committed the selected choice and affection.
+  useEffect(() => {
+    const storage = window.localStorage
+    const nativeSetItem = storage.setItem.bind(storage)
+    const nativeRemoveItem = storage.removeItem.bind(storage)
+    let timer: number | null = null
+
+    const scheduleCapture = () => {
+      if (!autoStepReadyRef.current) return
+      if (timer !== null) window.clearTimeout(timer)
+      timer = window.setTimeout(() => {
+        timer = null
+        if (!autoStepReadyRef.current) return
+        const capture = autoStepCaptureRef.current
+        if (!capture) return
+        try {
+          const snapshot = capture()
+          if (!snapshot.data['mayday-player-name']) return
+          const fingerprint = getSaveSnapshotFingerprint(snapshot)
+          if (fingerprint === autoStepLastFingerprintRef.current) return
+
+          const sequence = ++autoStepSequenceRef.current
+          const timestamp = Date.now() + sequence / 1000
+          const record: AutoStepSnapshotRecord = {
+            id: 'step-' + Math.floor(timestamp) + '-' + sequence,
+            timestamp,
+            date: snapshot.gameDate,
+            time: snapshot.gameTime,
+            stageLabel: snapshot.stageLabel,
+            fingerprint,
+            snapshot,
+          }
+          autoStepLastFingerprintRef.current = fingerprint
+          void putAutoStepSnapshot(record).then(() => {
+            setAutoStepSnapshots((current) => [...current, record])
+            setAutoStepSnapshotError('')
+          }).catch(() => {
+            if (autoStepLastFingerprintRef.current === fingerprint) autoStepLastFingerprintRef.current = ''
+            setAutoStepSnapshotError('有一個進度節點未能保存，請確認瀏覽器允許本機資料儲存。')
+          })
+        } catch {
+          setAutoStepSnapshotError('自動記錄暫時失敗，請重新整理頁面後再試。')
+        }
+      }, 90)
+    }
+
+    autoStepScheduleRef.current = scheduleCapture
+    const wrappedSetItem: Storage['setItem'] = (key, value) => {
+      nativeSetItem(key, value)
+      if (key.startsWith('mayday-') && !key.startsWith(SAVE_SLOT_PREFIX)) scheduleCapture()
+    }
+    const wrappedRemoveItem: Storage['removeItem'] = (key) => {
+      nativeRemoveItem(key)
+      if (key.startsWith('mayday-') && !key.startsWith(SAVE_SLOT_PREFIX)) scheduleCapture()
+    }
+    storage.setItem = wrappedSetItem
+    storage.removeItem = wrappedRemoveItem
+
+    return () => {
+      if (timer !== null) window.clearTimeout(timer)
+      if (storage.setItem === wrappedSetItem) storage.setItem = nativeSetItem
+      if (storage.removeItem === wrappedRemoveItem) storage.removeItem = nativeRemoveItem
+      autoStepScheduleRef.current = null
+    }
+  }, [])
 
   const saveCurrentProgress = (slot: number) => {
     if (saveSlots[slot] && !window.confirm('要覆蓋第 ' + slot + ' 格存檔嗎？原本的存檔會被新的進度取代。')) return
@@ -3392,9 +3564,12 @@ function App() {
     if (!window.confirm('確定讀取第 ' + slot + ' 格存檔嗎？目前未保存的進度會被這份存檔取代。')) return
     try {
       await deleteDaySnapshotsAfter(saved.gameDate)
+      const savedAt = Date.parse(saved.savedAt)
+      if (Number.isFinite(savedAt)) await deleteAutoStepSnapshotsAfter(savedAt)
       setDaySnapshots((current) => current.filter((record) => record.date <= saved.gameDate))
+      setAutoStepSnapshots((current) => current.filter((record) => !Number.isFinite(savedAt) || record.timestamp <= savedAt))
     } catch {
-      setSaveFeedback('時間回溯紀錄暫時無法更新，仍會讀取你的手動存檔。')
+      setSaveFeedback('自動時間線暫時無法更新，仍會讀取你的手動存檔。')
     }
     restoreSaveData(saved)
   }
@@ -3406,9 +3581,31 @@ function App() {
         setSaveFeedback('找不到這一天的日初紀錄，請重新整理後再試。')
         return
       }
-      if (!window.confirm('確定回到 ' + date + ' 的第一幕嗎？目前未保存的進度會被取代；手動存檔會完整保留。')) return
+      if (!window.confirm('確定回到 ' + date + ' 的第一幕嗎？目前進度會回到當天開場；此前的劇情與選擇會保留，手動存檔也不受影響。')) return
+      const startTimestamp = Date.parse(record.snapshot.savedAt)
+      if (Number.isFinite(startTimestamp)) await deleteAutoStepSnapshotsAfter(startTimestamp)
       await deleteDaySnapshotsAfter(date)
       setDaySnapshots((current) => current.filter((item) => item.date <= date))
+      setAutoStepSnapshots((current) => current.filter((item) => !Number.isFinite(startTimestamp) || item.timestamp <= startTimestamp))
+      restoreSaveData(record.snapshot)
+    } catch {
+      setSaveFeedback('時間回溯失敗，原本進度沒有變動。請重新整理後再試。')
+    }
+  }
+
+  const rollbackToAutoStep = async (id: string) => {
+    try {
+      const record = autoStepSnapshots.find((item) => item.id === id)
+      if (!record) {
+        setSaveFeedback('找不到這個自動記錄節點，請重新整理後再試。')
+        return
+      }
+      if (!window.confirm('確定回到 ' + record.date + ' ' + record.time + ' 的「' + record.stageLabel + '」嗎？這一步之前的劇情、訊息和玩家選擇都會保留；之後的時間線會從這裡重新開始。手動存檔不受影響。')) return
+      await deleteAutoStepSnapshotsAfter(record.timestamp)
+      await deleteDaySnapshotsAfter(record.date)
+      setAutoStepSnapshots((current) => current.filter((item) => item.timestamp <= record.timestamp))
+      setDaySnapshots((current) => current.filter((item) => item.date <= record.date))
+      autoStepLastFingerprintRef.current = record.fingerprint
       restoreSaveData(record.snapshot)
     } catch {
       setSaveFeedback('時間回溯失敗，原本進度沒有變動。請重新整理後再試。')
@@ -6401,8 +6598,15 @@ function App() {
     const initializeDaySnapshots = async () => {
       try {
         const records = await listDaySnapshots()
+        const stepRecords = await listAutoStepSnapshots()
         if (cancelled) return
         setDaySnapshots(records)
+        setAutoStepSnapshots(stepRecords)
+        autoStepLastFingerprintRef.current = stepRecords.length ? stepRecords[stepRecords.length - 1].fingerprint : ''
+        autoStepReadyRef.current = true
+        setAutoStepSnapshotLoading(false)
+        setAutoStepSnapshotError('')
+        autoStepScheduleRef.current?.()
 
         if (!playerName) {
           setDaySnapshotLoading(false)
@@ -6486,7 +6690,9 @@ function App() {
       } catch {
         if (!cancelled) {
           setDaySnapshotError('無法讀取自動時間回溯紀錄。請確認瀏覽器允許網站使用本機資料。')
+          setAutoStepSnapshotError('無法讀取自動進度紀錄。請確認瀏覽器允許網站使用本機資料。')
           setDaySnapshotLoading(false)
+          setAutoStepSnapshotLoading(false)
         }
       }
     }
@@ -10323,6 +10529,34 @@ function App() {
                               <div className="day-snapshot-empty">
                                 {daySnapshotError || '目前還沒有可回溯的日初紀錄。從新的故事日期開始，系統會自動保存當天開頭。'}
                               </div>
+                            )}
+                          </div>
+                          <div className="save-center-timeline auto-step-timeline">
+                            <div className="save-center-timeline-heading">
+                              <strong>自動記錄的每一步</strong>
+                              <small>每次劇情推進、選擇與訊息變化都會自動留下完整進度，不需要先手動存檔。回到某一步時，此前的故事和選項會完整保留。</small>
+                            </div>
+                            {autoStepSnapshotLoading ? (
+                              <div className="day-snapshot-empty">正在整理自動記錄……</div>
+                            ) : autoStepSnapshots.length ? (
+                              <div className="auto-step-list">
+                                {[...autoStepSnapshots].sort((left, right) => right.timestamp - left.timestamp).map((record) => (
+                                  <section className="day-snapshot-card auto-step-card" key={record.id}>
+                                    <div className="day-snapshot-details">
+                                      <strong>{record.date} · {record.time}</strong>
+                                      <small>{record.stageLabel}</small>
+                                    </div>
+                                    <button className="day-snapshot-action" onClick={() => { void rollbackToAutoStep(record.id) }}>回到這一步</button>
+                                  </section>
+                                ))}
+                              </div>
+                            ) : (
+                              <div className="day-snapshot-empty">
+                                {autoStepSnapshotError || '開始遊玩後，系統就會自動記錄每一步，不需要手動存檔。'}
+                              </div>
+                            )}
+                            {autoStepSnapshotError && autoStepSnapshots.length > 0 && (
+                              <small className="auto-step-warning">{autoStepSnapshotError}</small>
                             )}
                           </div>
                           <div className="save-center-reset">
