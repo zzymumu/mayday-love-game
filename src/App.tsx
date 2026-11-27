@@ -789,7 +789,7 @@ const makeMonthChatRound = (
 ): ChatRound => ({ incoming, choices: [first, second, third] })
 
 // Every message reply round presents three distinct responses and affection outcomes (including neutral or negative choices).
-// Author-only continuity note: in 1996, Masa (蔡昇晏) and Shitou (石錦航) are both repeat students in their final year at 師大附中. Masa is one year younger than the heroine. The heroine does not know their school year or repeat-year history yet; never reveal it in her narration, unlocked profile, or these early messages.
+// Author-only continuity note: in 1996, Masa (蔡昇晏) and Shitou (石錦航) are both university first-years. The heroine is already a third-year student at NTU; Masa is one year younger than her. She does not yet know why the two of them entered university later than their peers. Do not explain their academic history in early narration or messages; let her ask Masa about it in the later check-in conversation.
 const greetingChats: Record<CharacterId, ChatRound[]> = {
   wen: [
     makeChatRound('妳到家了嗎？今天謝謝妳跟我們去。', '到了啦，今天還滿好玩的。', '那就好，我還怕妳會覺得無聊。', '剛到家。你今天也辛苦了。', '還好啦，今天有人陪著，時間過得比較快。', '你是不是怕我回家以後就忘記今天了？', '我只是想確認妳平安到家，妳不要什麼都想得那麼複雜。', -1),
@@ -1026,13 +1026,13 @@ const freeTimeChats: Record<RouteCharacterId, ChatRound[]> = {
   masa: [
     makeChatRound('妳今天有沒有好好上課？昨天吃飯的時候大家一直把話題繞到以前，我都還沒問妳最近過得怎麼樣。', '還不錯啊，就是最近課業有點忙。', '大學生聽起來也沒有比較輕鬆嘛。', '你不是也要顧學校跟練團？先管好自己吧。', '我有在管啦，妳不要一開口就唸我。', '你是想知道我這幾年過得怎麼樣嗎？', '不然咧？都隔這麼久才又碰到，總要問一下吧。', 3),
     makeChatRound('昨天吃飯的時候，大家一直問我們小時候的事。妳有沒有覺得很尷尬？', '還好啊，反而覺得滿好笑的。', '我就知道妳不會介意，妳以前臉皮就很厚。', '有一點啦，突然被大家問，我都不知道怎麼回答。', '那我下次先幫妳擋一下，免得他們又一直問。', '你自己明明也講得很起勁，還敢說要幫我擋？', '我那是在幫大家補充好不好，妳不要亂講。', 3),
-    makeChatRound('今天跟石頭被老師留下來念了一下，現在想想還是滿倒楣的。', '誰叫你們要翹課，被抓到也不意外吧。', '妳現在是站在老師那邊喔？', '至少老師沒有真的把你們怎麼樣吧？', '就念了幾句而已啦，沒事了。', '你下次還敢不敢？我看你根本學不乖。', '妳很煩欸，這種事哪有下次啦。', -1),
+    makeChatRound('今天跟石頭翹課被老師抓到，還被留下來念了一下，現在想想還是滿倒楣的。', '誰叫你們要翹課，被抓到也不意外吧。', '妳現在是站在老師那邊喔？', '至少老師沒有真的把你們怎麼樣吧？', '就念了幾句而已啦，沒事了。', '你下次還敢不敢？我看你根本學不乖。', '妳很煩欸，這種事哪有下次啦。', -1),
     makeChatRound('對了，昨天重新見到妳，我本來有好多話想問，結果一下子就被大家打斷了。', '那你現在可以問啊，我又沒有不讓你問。', '好啊，那我就不客氣了。', '你先想好要問什麼，不要又問一半忘記。', '我哪有那麼誇張，妳才是想到什麼就講什麼。', '你是不是其實也有點緊張？', '……有一點啦。很久沒見了，突然不知道怎麼開口也正常吧。', 3),
     makeChatRound('有空再找時間聊吧。這次不要又隔那麼久，連妳最近喜歡什麼都不知道。', '好啊，那你要記得主動找我。', '知道啦，我會傳訊息給妳。', '你也可以跟我說說你最近在忙什麼。', '好啊，等我把學校跟練團的事弄完再慢慢講。', '那下次見面你請客，我們把昨天沒聊完的補回來。', '妳真的很會安排欸……好啦，找一天再說。', 3),
   ],
   ashin: ashinAfternoonFreeTimeChats,
   stone: [
-    makeChatRound('妳下午還特地傳訊息問我，謝謝妳。今天被老師留下來只是挨了幾句念，沒有什麼大事。', '沒事就好，我只是有點擔心你們。', '謝謝妳，真的不用擔心啦。', '你跟瑪莎下次還是小心一點，不要再被抓了。', '哈哈，我會記得的。今天確實是我們不對。', '你們兩個被留下來，應該等很久吧？', '還好啦，主要是聽老師講了幾句，後來就回去了。', 3),
+    makeChatRound('妳下午還特地傳訊息問我，謝謝妳。今天被老師留下來念了幾句，沒有什麼大事。', '沒事就好，我只是有點擔心你們。', '謝謝妳，真的不用擔心啦。', '你跟瑪莎下次還是小心一點，不要再被抓了。', '哈哈，我會記得的。今天確實是我們不對。', '你們兩個被留下來，應該等很久吧？', '還好啦，主要是聽老師講了幾句，後來就回去了。', 3),
     makeChatRound('昨天妳坐在牆邊那個位置，會不會覺得離器材太近？我後來想想，第一次來可能不太熟悉。', '不會啊，你幫我挪的位置剛剛好。', '那就好，我當時只是怕妳走動時會踩到線。', '其實我覺得坐那裡看得很清楚。', '嗯，那個角度還不錯，也比較不會擋到大家。', '你是不是有偷偷注意我有沒有坐得不舒服？', '有稍微看一下啦，畢竟妳是第一次來。', 3),
     makeChatRound('昨天練團的聲音會不會太大？我們有時候一練起來，就很容易忘記旁邊還有人。', '不會啊，我覺得現場聽很有感覺。', '那就好，還怕妳第一次來會不習慣。', '有幾段真的滿大聲的，不過我沒有被嚇到。', '哈哈，那妳適應得比我想像中快。', '下次我還想坐近一點，看你們怎麼彈。', '可以啊，不過要先找個安全的位置，別被線絆到。', 3),
     makeChatRound('昨天看到妳和瑪莎聊以前的事，感覺你們真的認識很久了。', '對啊，小時候就認識了，只是後來失去聯絡。', '難怪他昨天一直想把以前的事情講給大家聽。', '他嘴巴還是跟以前一樣，完全停不下來。', '哈哈，這點我倒是看得出來。', '你們是不是也常常被他吐槽？', '滿常的啦，不過大家都習慣了，他其實很熱心。', 3),
@@ -1218,13 +1218,13 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
   },
   stone: {
     label: '石錦航',
-    subtitle: '師大附中附近・送便當給他',
-    location: '師大附中附近的補習班',
+    subtitle: '師大附近・送便當給他',
+    location: '師大附近的補習班',
     title: '午休時間的便當',
-    kicker: '中午・師大附中附近',
+    kicker: '中午・師大附近',
     blocks: [
-      { kind: 'narration', text: '午餐時間快到了，你提著便當來到師大附中附近，照著石頭之前提過的地址，找到他正在上課的補習班。巷口的機車一台接一台經過，騎樓下有學生拿著塑膠袋匆匆走過，也有人靠著牆翻講義，空氣裡混著便當店飄來的飯菜香。' },
-      { kind: 'narration', text: '你站在門邊等了一會兒，聽見裡頭下課鐘聲響起，學生陸續抱著課本走出來。石頭拿著課本和紅筆跟在人群後面，看見你時明顯愣了一下，隨即把手上的東西換到一邊，快步走近。' },
+      { kind: 'narration', text: '午餐時間快到了，你提著便當來到師大附近，照著石頭之前提過的地址，找到他兼職當助教的補習班。巷口的機車一台接一台經過，騎樓下有學生拿著塑膠袋匆匆走過，也有人靠著牆翻講義，空氣裡混著便當店飄來的飯菜香。' },
+      { kind: 'narration', text: '你站在門邊等了一會兒，教室裡的下課鐘聲響起，學生陸續抱著課本走出來。石頭留在最後，手裡拿著剛收好的作業和紅筆，正低頭確認有沒有漏掉的講義。看見你時，他明顯愣了一下，隨即把手上的東西交給櫃檯，快步走近。' },
       { kind: 'dialogue', speaker: '石錦航', text: '妳怎麼會來？' },
       { kind: 'dialogue', speaker: '你', text: '今天剛好有空，想說過來看看你。' },
       { kind: 'narration', text: '他這才注意到你手裡的便當，視線停在袋子上，像是忽然明白你今天特地跑這一趟的原因。他伸手接過去時先確認袋口有沒有歪，接著看了看你被太陽曬得微微發紅的臉，側身替你讓出騎樓裡比較涼的位置。' },
@@ -1240,7 +1240,7 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
         ]
       },
       {
-        scene: '他把課本和紅筆整齊放到桌邊，先替你拉開靠牆、比較不會被人來人往撞到的椅子，等你坐好才把便當放平。休息時間不長，他卻沒有急著拆開筷子，而是先看了看你的神情，確認你一路過來沒有被太陽曬得不舒服。',
+        scene: '他把講義和紅筆整齊放到桌邊，先替你拉開靠牆、比較不會被人來人往撞到的椅子，等你坐好才把便當放平。休息時間不長，他卻沒有急著拆開筷子，而是先看了看你的神情，確認你一路過來沒有被太陽曬得不舒服。',
         prompt: '最近課業還好嗎？這陣子是不是也有不少報告？',
         choices: [
           { text: '還可以啦，就是偶爾會忙到忘記時間。', response: ['忙的時候更要記得吃飯。', '事情可以慢慢做，不用每一件都趕在同一天。'], affection: 3 },
@@ -1262,7 +1262,7 @@ const monthVisitRoutes: Record<RouteCharacterId, MonthVisitRoute> = {
       { kind: 'narration', text: '你們坐在騎樓邊的長椅上一起吃午飯。石頭吃得不快，聽你說話時會停下筷子；騎樓外偶爾有機車經過，他就稍微側過身替你擋一下濺起的水花。你說到一半，他還會記得把便當裡比較好吃的那塊配菜往你這邊推，見你吃了才低頭繼續吃自己的。' },
       { kind: 'narration', text: '牆上的時鐘慢慢走近上課時間，裡頭已經有人開始翻找講義。石頭把便當盒蓋好，仔細收進袋子裡，又確認桌面沒有留下湯汁或筷子。' },
       { kind: 'dialogue', speaker: '石錦航', text: '今天真的謝謝妳。回去路上小心，到家再跟我說一聲。' },
-      { kind: 'narration', text: '他陪你走到門口，還替你把便當袋的提把整理好，提醒你外面車多要看路。你走出騎樓時回頭看了一眼，他已經拿起課本準備回去上課，卻還是特地停下來朝你點了點頭。' }
+      { kind: 'narration', text: '他陪你走到門口，還替你把便當袋的提把整理好，提醒你外面車多要看路。你走出騎樓時回頭看了一眼，他已經拿起講義準備回去幫忙下一堂課，卻還是特地停下來朝你點了點頭。' }
     ]
   },
   yanming: {
@@ -1751,12 +1751,12 @@ const studioScenes: StoryScene[] = [
 const classroomIntroChoices: ChatChoice[] = [
   {
     text: '大忙人今天怎麼沒去練團？',
-    response: ['今天練團取消啦。', '瑪莎跟石頭兩個人翹課被抓，現在還被老師留在學校，湊不齊人。'],
+    response: ['今天練團取消啦。', '瑪莎跟石頭兩個人翹課被老師抓到，現在還被留下來談話，湊不齊人。'],
     affection: 3,
   },
   {
     text: '你今天不用練團喔？居然有空約我吃冰。',
-    response: ['今天剛好不用練啦。', '本來想練的，結果瑪莎跟石頭翹課被抓，兩個人都被留在學校了。'],
+    response: ['今天剛好不用練啦。', '本來想練的，結果瑪莎跟石頭翹課被老師抓到，兩個人現在還被留下來談話。'],
     affection: 2,
   },
   {
@@ -1767,20 +1767,20 @@ const classroomIntroChoices: ChatChoice[] = [
 ]
 
 const classroomChoices: ChatChoice[] = [
-  { text: '蛤？大學翹課也會被抓喔？', response: ['不是啦，妳在想什麼。', '他們兩個還在師大附中讀高三啦。', '今天想偷跑出去，剛好被老師逮到，現在都被留在學校了。'], affection: 3 },
-  { text: '等一下，你說的是大學的課嗎？', response: ['不是啦，妳先聽我講完。', '石頭跟瑪莎都還在念高三，今天翹課被老師抓個正著。', '所以今天練團才湊不齊人。'], affection: 1 },
+  { text: '蛤？大學翹課也會被抓喔？', response: ['會啊，妳以為大學老師都不點名喔？', '他們兩個都才大一，今天想偷跑出去，剛好被老師逮到。', '現在還被留下來談話，今天練團才湊不齊人。'], affection: 3 },
+  { text: '他們兩個不是才大一嗎，膽子倒是不小欸。', response: ['妳也覺得喔？', '平常看起來都很乖，今天倒是很有默契，一起翹課、一起被抓。', '所以今天練團才湊不齊人。'], affection: 1 },
   { text: '你們練團的人怎麼老是出包？', response: ['妳講話很難聽欸。', '他們兩個今天只是翹課被抓，跟練團有什麼關係。', '妳到底是要不要來吃冰？'], affection: -1 },
 ]
 const masaCheckinRounds: ChatChoice[][] = [
   [
-    { text: '蛤？你們真的還在讀高三喔？我以為你們都上大學了欸。', response: ['妳反應也太大了吧。', '我跟石頭本來就還在念書啊，今天只是想偷跑出去一下，誰知道就被抓了。'], affection: 2 },
-    { text: '等一下，你現在還是高三？', response: ['不然咧？妳以為我已經畢業了喔？', '老師今天剛好在附近，才這麼倒楣。'], affection: 1 },
-    { text: '你不是只比我小一歲嗎？我還以為你也上大學了。', response: ['一歲就不能差一個學制喔？', '反正我現在就是還在念高三，妳先不要笑。'], affection: 3 },
+    { text: '蛤？你們真的才大一喔？我還以為你們至少大二了欸。', response: ['妳反應也太大了吧。', '我跟石頭本來就晚了一點啊，現在才大一。今天只是想偷跑出去一下，誰知道就被抓了。'], affection: 2 },
+    { text: '等一下，你現在才大一？', response: ['不然咧？妳以為我一轉眼就大三喔？', '老師今天剛好在附近，才這麼倒楣。'], affection: 1 },
+    { text: '你不是只比我小一歲嗎？我還以為你跟我差不多年級。', response: ['一歲就不能差兩個年級喔？', '反正我現在就是大一，妳先不要笑。'], affection: 3 },
   ],
   [
-    { text: '可是你怎麼會到現在才高三啊？', response: ['妳這問題問得很直接欸。', '以前有些事情耽擱了一下，就比別人晚了一點。'], affection: 3 },
+    { text: '可是你怎麼會到現在才大一啊？', response: ['妳這問題問得很直接欸。', '以前有些事情耽擱了一下，就比別人晚了一點。'], affection: 3 },
     { text: '你之前是不是有休學過？', response: ['沒有啦，妳不要自己亂猜。', '反正就是晚了一點，講起來有點複雜，改天有空再跟妳說。'], affection: 2 },
-    { text: '所以你現在還要準備考大學喔？', response: ['對啊，不然咧。', '先把眼前的事情弄好再說，考試還早。'], affection: 1 },
+    { text: '所以你現在還在適應大學生活喔？', response: ['差不多啦，跟高中還是有點不一樣。', '先把眼前的課顧好就好，妳不用替我操心。'], affection: 1 },
   ],
   [
     { text: '那石頭也是跟你一樣，晚了一點嗎？', response: ['石頭的事妳自己問他啦。', '我不能替他講那麼多，妳不是也可以傳訊息給他？'], affection: 2 },
@@ -9378,7 +9378,7 @@ function App() {
                             )}
                             {storyStage === 'masa-checkin' && selectedSmsThread === 'masa' && masaCheckInSent && (
                               <div className="sms-thread-actions">
-                                <div className="reply-note">你終於稍微弄清楚了：瑪莎和石頭都還在讀高三。至於為什麼比你想像中晚了一點，他似乎還不太想細說。</div>
+                                <div className="reply-note">你終於弄清楚了：瑪莎和石頭現在都才大一。至於他為什麼比你晚了兩個年級，他似乎還不太想細說。</div>
                                 <button className="story-primary-button secondary-chat-action" onClick={startStoneCheckIn}>也傳訊息關心石頭 <ChevronRight size={15} /></button>
                                 <button className="story-primary-button" onClick={goToIceDate}>先不打擾他們，去找溫尚翊 <ChevronRight size={15} /></button>
                               </div>
