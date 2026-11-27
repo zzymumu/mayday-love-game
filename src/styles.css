@@ -1652,7 +1652,11 @@ button { cursor: pointer; }
 }
 .save-center-timeline-heading small,
 .day-snapshot-details small,
-
+.day-snapshot-empty {
+  color: #9a8878;
+  font-size: 8px;
+  line-height: 1.65;
+}
 .auto-step-timeline {
   margin-top: 10px;
 }
@@ -1675,11 +1679,6 @@ button { cursor: pointer; }
   color: #a56f50;
   font-size: 8px;
   line-height: 1.5;
-}
-.day-snapshot-empty {
-  color: #9a8878;
-  font-size: 8px;
-  line-height: 1.65;
 }
 .day-snapshot-list {
   display: flex;
