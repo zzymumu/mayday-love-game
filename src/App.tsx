@@ -5764,7 +5764,7 @@ function App() {
   const finishApril30Story = (selection: April30Selection) => {
     const expectedChoices = 5
     if (selection.choices.length !== expectedChoices) return
-    const diaryData = buildApril30DiaryData()
+    const diaryData = buildApril30DiaryData(selection.route)
     setApril30DiaryData(diaryData)
     setApril30DiaryUnlocked(true)
     localStorage.setItem('mayday-april30-complete', 'true')
