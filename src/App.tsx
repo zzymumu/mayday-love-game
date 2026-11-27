@@ -10549,7 +10549,7 @@ function App() {
                                       <DiarySection label="日記" text={septemberDiaryData.text} />
                                     </div>
                                   </>
-                                ) :                                 {selectedDiaryDate === '1997-08-01' && augustDiaryUnlocked && augustDiaryData ? (
+                                ) : selectedDiaryDate === '1997-08-01' && augustDiaryUnlocked && augustDiaryData ? (
                                   <>
                                     <div className="diary-paper">
                                       <span className="diary-date">1997 年 8 月 1 日・星期五</span>
