@@ -571,7 +571,7 @@ const DAY_START_STAGE_DATES: Partial<Record<StoryStage, string>> = {
   'july-lost-key': '1997.07.15',
   'august-story': '1997.08.01',
   'september-intro': '1997.09.03',
-  'september-story': '1997.09.04',
+  'september-story': '1997.09.03',
 }
 
 const isAtDayOpening = (stage: StoryStage, savedData?: Record<string, string>): boolean => {
