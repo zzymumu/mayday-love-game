@@ -272,8 +272,24 @@ type MonthVisitRound = { scene?: string; prompt: string; choices: MonthVisitChoi
 type MonthFreeChatOpening = { text: string; response: string; affection: number }
 type MonthVisitRoute = { label: string; subtitle: string; location: string; title: string; kicker: string; blocks: StoryBlock[]; rounds: MonthVisitRound[]; ending: StoryBlock[] }
 
-const SAVE_SLOT_IDS = [1, 2, 3] as const
 const SAVE_SLOT_PREFIX = 'mayday-save-slot-'
+const getSaveSlotIds = (): number[] => {
+  const ids = new Set<number>()
+  for (let index = 0; index < localStorage.length; index += 1) {
+    const key = localStorage.key(index)
+    const match = key?.match(/^mayday-save-slot-(\d+)$/)
+    if (!match) continue
+    const slot = Number(match[1])
+    if (Number.isSafeInteger(slot) && slot > 0) ids.add(slot)
+  }
+  return Array.from(ids).sort((left, right) => left - right)
+}
+const getNextSaveSlotId = (slots: Record<number, SaveSlotData | null>): number => {
+  const occupied = new Set(Object.keys(slots).map(Number))
+  let next = 1
+  while (occupied.has(next)) next += 1
+  return next
+}
 const storyStageLabels: Record<StoryStage, string> = {
   notification: '收到練團室邀約', messages: '回覆邀約', reply: '準備出發', walk: '前往練團室',
   studio: '練團室初訪', reunion: '意外重逢', 'reunion-chat': '久別重逢', nickname: 'Masa 的由來',
@@ -1892,7 +1908,7 @@ function App() {
   const [activeApp, setActiveApp] = useState<AppKey | null>(null)
   const [showNameSetup, setShowNameSetup] = useState(() => !localStorage.getItem('mayday-player-name'))
   const [showResetConfirm, setShowResetConfirm] = useState(false)
-  const [saveSlots, setSaveSlots] = useState<Record<number, SaveSlotData | null>>(() => ({ 1: readSaveSlot(1), 2: readSaveSlot(2), 3: readSaveSlot(3) }))
+  const [saveSlots, setSaveSlots] = useState<Record<number, SaveSlotData | null>>(() => Object.fromEntries(getSaveSlotIds().map((slot) => [slot, readSaveSlot(slot)])))
   const [saveFeedback, setSaveFeedback] = useState('')
   const [selectedSmsThread, setSelectedSmsThread] = useState<CharacterId | null>(null)
   const [smsMessages, setSmsMessages] = useState<SmsMessage[]>(() => {
@@ -2066,7 +2082,7 @@ function App() {
         localStorage.getItem('mayday-spring-sms-opening-sent') === 'true' ||
         localStorage.getItem('mayday-spring-day-complete') === 'true'
       ))
-    const savedArchives = canRestoreSpringSmsArchive ? SAVE_SLOT_IDS.flatMap((slot) => {
+    const savedArchives = canRestoreSpringSmsArchive ? getSaveSlotIds().flatMap((slot) => {
       const save = readSaveSlot(slot)
       const raw = save?.data['mayday-chat-messages']
       if (!save || !raw) return []
@@ -2983,7 +2999,7 @@ function App() {
       setSaveSlots((current) => ({ ...current, [slot]: saved }))
       setSaveFeedback('已保存至存檔 ' + slot + '。')
     } catch {
-      setSaveFeedback('保存失敗：瀏覽器儲存空間可能不足，請先清理不需要的存檔。')
+      setSaveFeedback('保存失敗：瀏覽器本機儲存空間可能已滿，暫時無法保存這份進度。')
     }
   }
 
@@ -6186,159 +6202,13 @@ function App() {
   }
 
   const resetLocalData = () => {
-    ;['mayday-player-name', 'mayday-story-stage', 'mayday-studio-step', 'mayday-reply', 'mayday-affection-wen', 'mayday-reunion-reply', 'mayday-nickname-question', 'mayday-dinner-reply', 'mayday-affection-martha', 'mayday-chapter1-complete', 'mayday-resume-stage', 'mayday-sms-messages', 'mayday-chat-messages', 'mayday-greetings-complete', 'mayday-greeting-index', 'mayday-greeting-round', 'mayday-greeting-replied', 'mayday-classroom-reply-sent', 'mayday-classroom-reply-sent-v2', 'mayday-classroom-intro-replied-v1', 'mayday-masa-checkin-sent', 'mayday-masa-checkin-complete-v2', 'mayday-masa-checkin-round-v2', 'mayday-masa-checkin-replied-v2', 'mayday-stone-checkin-sent', 'mayday-free-chat-target', 'mayday-free-chat-round', 'mayday-free-chat-replied', 'mayday-free-chat-complete', 'mayday-june-free-chat-target', 'mayday-june-free-chat-round', 'mayday-june-free-chat-replied', 'mayday-june-free-chat-started', 'mayday-june-free-chat-replies', 'mayday-june-free-chat-complete', 'mayday-june-diary-unlocked', 'mayday-june-diary-data', 'mayday-june-diary-pending-data', 'mayday-month-visit-target', 'mayday-month-visit-choice', 'mayday-month-visit-replies', 'mayday-month-visit-complete', 'mayday-month-free-chat-target', 'mayday-month-free-chat-choice-pending', 'mayday-month-free-chat-round', 'mayday-month-free-chat-replied', 'mayday-month-free-chat-started', 'mayday-month-free-chat-opening-sent', 'mayday-month-free-chat-replies', 'mayday-month-free-chat-complete', 'mayday-month-day-complete', 'mayday-next-month-started', 'mayday-next-month-invite-candidates', 'mayday-next-month-invite-target', 'mayday-next-month-invite-tease-choice', 'mayday-next-month-invite-reply-choice', 'mayday-next-month-invite-date-replies', 'mayday-next-month-invite-thread-started', 'mayday-next-month-event-kind', 'mayday-next-month-event-character', 'mayday-next-month-open-day-target', 'mayday-next-month-open-day-replies', 'mayday-next-month-free-chat-target', 'mayday-next-month-free-chat-round', 'mayday-next-month-free-chat-replied', 'mayday-next-month-free-chat-opening-sent', 'mayday-next-month-free-chat-replies', 'mayday-next-month-diary-unlocked', 'mayday-next-month-diary-data', 'mayday-wen-open-day-guitar-praise-v1', 'mayday-next-month-day-complete', 'mayday-route-affection', 'mayday-shared-experience-log', 'mayday-call-experience-context', 'mayday-day2-after-ice-choice', 'mayday-day2-diary-unlocked', 'mayday-month-diary-unlocked', 'mayday-call-history', 'mayday-pending-call', 'mayday-incoming-call', 'mayday-call-triggered-wen', 'mayday-call-triggered-masa', 'mayday-call-triggered-ashin', 'mayday-call-triggered-stone', 'mayday-call-triggered-yanming', 'mayday-call-v2-triggered-wen', 'mayday-call-v2-triggered-masa', 'mayday-call-v2-triggered-ashin', 'mayday-call-v2-triggered-stone', 'mayday-call-v2-triggered-yanming', 'mayday-active-call-character', 'mayday-call-round-index', 'mayday-call-replied', 'mayday-call-transcript', 'mayday-year-end-started', 'mayday-year-end-invite-check-done', 'mayday-year-end-invite-candidates', 'mayday-year-end-invite-target', 'mayday-year-end-shopping-reply-choice', 'mayday-year-end-shopping-replies', 'mayday-year-end-shopping-complete', 'mayday-year-end-fireworks-replies', 'mayday-year-end-fireworks-complete', 'mayday-year-end-greeting-queue', 'mayday-year-end-greeting-index', 'mayday-year-end-greeting-target', 'mayday-year-end-chat-mode', 'mayday-year-end-first-reply-sent', 'mayday-year-end-free-chat-round', 'mayday-year-end-free-chat-replied', 'mayday-year-end-free-chat-replies', 'mayday-year-end-proactive-sent', 'mayday-year-end-extended-chat-characters', 'mayday-year-end-diary-unlocked', 'mayday-year-end-diary-data', 'mayday-year-end-day-complete', 'mayday-year-end-shopping-invite-sent-wen', 'mayday-year-end-shopping-invite-sent-masa', 'mayday-year-end-shopping-invite-sent-ashin', 'mayday-year-end-shopping-invite-sent-stone', 'mayday-year-end-shopping-invite-sent-yanming', 'mayday-winter-exam-chat-started', 'mayday-winter-exam-chat-reply-choice', 'mayday-winter-exam-tutoring-unlocked', 'mayday-winter-exam-replies', 'mayday-winter-practice-replies', 'mayday-winter-yanming-pickup-available', 'mayday-winter-bus-stop-character', 'mayday-winter-diary-unlocked', 'mayday-winter-diary-data', 'mayday-winter-break-day-complete', 'mayday-february-secret-target', 'mayday-february-secret-reply', 'mayday-february-dinner-reply', 'mayday-february-table-character', 'mayday-february-after-dinner-character', 'mayday-february-after-dinner-replies', 'mayday-february-diary-unlocked', 'mayday-february-diary-data', 'mayday-february-day-complete', 'mayday-spring-invites-sent', 'mayday-spring-invite-candidates', 'mayday-spring-invite-target', 'mayday-spring-invite-replies', 'mayday-spring-invite-declined', 'mayday-spring-store-character', 'mayday-spring-store-reply', 'mayday-spring-after-choice', 'mayday-spring-lesson-character', 'mayday-spring-lesson-touch-choice', 'mayday-spring-lesson-reply', 'mayday-spring-dinner-replies', 'mayday-spring-dinner-reply', 'mayday-spring-sms-target', 'mayday-spring-sms-round', 'mayday-spring-sms-replied', 'mayday-spring-sms-opening-sent', 'mayday-spring-sms-opening-choice', 'mayday-spring-sms-replies', 'mayday-spring-sms-mode', 'mayday-spring-sms-event-started', 'mayday-spring-sms-event-complete', 'mayday-spring-sms-history-restore-v1', 'mayday-spring-free-chat-eligible-v1', 'mayday-spring-free-chat-started', 'mayday-spring-free-chat-complete', 'mayday-spring-diary-unlocked', 'mayday-spring-diary-data', 'mayday-spring-diary-pending-data', 'mayday-spring-day-complete', 'mayday-march28-started', 'mayday-march28-visit-character', 'mayday-march28-visit-replies', 'mayday-march28-visit-complete', 'mayday-march28-day-complete', 'mayday-march29-started', 'mayday-march28-park-choice', 'mayday-march28-park-stay-replies', 'mayday-march28-morning-character', 'mayday-march28-morning-replies', 'mayday-march28-morning-complete', 'mayday-march28-diary-unlocked', 'mayday-march28-diary-data', 'mayday-march28-diary-copy-version', 'mayday-march29-progress', 'mayday-march29-aftershow-progress', 'mayday-march29-complete', 'mayday-march29-diary-unlocked', 'mayday-march29-diary-data', 'mayday-april12-started', 'mayday-april12-progress', 'mayday-april12-clock', 'mayday-april12-complete', 'mayday-april12-diary-unlocked', 'mayday-april12-diary-data', 'mayday-april20-started', 'mayday-april20-progress', 'mayday-april20-clock', 'mayday-april20-complete', 'mayday-april20-day-complete', 'mayday-april20-sms-seeded', 'mayday-april20-route', 'mayday-april20-character', 'mayday-april20-choices', 'mayday-april20-diary-unlocked', 'mayday-april20-diary-data', 'mayday-april30-affection-applied', 'mayday-april30-affection-backfill-v1', 'mayday-april30-affection-total', 'mayday-april30-comfort-choice', 'mayday-spring-selection-affection-backfill-v1', 'mayday-may10-started', 'mayday-may10-progress-v1', 'mayday-may10-clock', 'mayday-may10-complete', 'mayday-may10-day-complete', 'mayday-may10-diary-unlocked', 'mayday-may10-diary-data', 'mayday-may10-character', 'mayday-may10-character-selection-affection-v1', 'mayday-may10-choices', 'mayday-may10-jealousy-character', 'mayday-may10-jealousy-choices', 'mayday-current-drummer', 'mayday-drummer-joined-date', 'mayday-spring-free-chat-return-stage'].forEach((key) => localStorage.removeItem(key))
-    ;(['wen', 'ashin', 'masa', 'stone', 'yanming'] as SpringCharacterId[]).forEach((character) => localStorage.removeItem('mayday-spring-invite-thread-sent-' + character))
-    SAVE_SLOT_IDS.forEach((slot) => localStorage.removeItem(SAVE_SLOT_PREFIX + slot))
-    setPlayerName('')
-    setNameDraft('')
-    setActiveApp(null)
-    setSelectedSmsThread(null)
-    const initialSmsMessages = createInitialSmsMessages()
-    smsMessagesRef.current = initialSmsMessages
-    setSmsMessages(initialSmsMessages)
-    setStudioStep(0)
-    setReplyKey(null)
-    setWenAffection(0)
-    setReunionReplyKey(null)
-    setNicknameQuestionKey(null)
-    setDinnerReplyKey(null)
-    setMarthaAffection(0)
-    setFirstChapterComplete(false)
-    const emptyChatMessages: Record<CharacterId, SmsMessage[]> = { wen: [], masa: [], ashin: [], stone: [], yanming: [], youda: [] }
-    chatMessagesRef.current = emptyChatMessages
-    setChatMessages(emptyChatMessages)
-    setGreetingIndex(0)
-    setGreetingRound(0)
-    setGreetingReplied(false)
-    setClassroomReplySent(false)
-    setClassroomIntroReplied(false)
-    setMasaCheckInSent(false)
-    setMasaCheckInRound(0)
-    setMasaCheckInReplied(false)
-    setStoneCheckInSent(false)
-    setFreeChatTarget(null)
-    setFreeChatRound(0)
-    setFreeChatReplied(false)
-    setJuneFreeChatTarget(null)
-    setJuneFreeChatRound(0)
-    setJuneFreeChatReplied(false)
-    setJuneFreeChatStarted(false)
-    setJuneFreeChatReplies([])
-    setMonthVisitTarget(null)
-    setMonthVisitReplies([])
-    setMonthFreeChatTarget(null)
-    setMonthFreeChatRound(0)
-    setMonthFreeChatReplied(false)
-    setMonthFreeChatStarted(false)
-    setMonthFreeChatOpeningSent(false)
-    setMonthFreeChatReplies([])
-    setNextMonthInviteCandidates([])
-    setNextMonthInviteTarget(null)
-    setNextMonthInviteTeaseChoice(null)
-    setNextMonthOpenDayTarget(null)
-    setNextMonthOpenDayReplies([])
-    setNextMonthEventKind(null)
-    setNextMonthEventCharacter(null)
-    setNextMonthFreeChatTarget(null)
-    setNextMonthFreeChatRound(0)
-    setNextMonthFreeChatReplied(false)
-    setNextMonthFreeChatOpeningSent(false)
-    setNextMonthFreeChatReplies([])
-    setNextMonthDiaryUnlocked(false)
-    setNextMonthDiaryData(null)
-    setYearEndInviteCandidates([])
-    setYearEndInviteTarget(null)
-    setYearEndShoppingReplyChoice(null)
-    setYearEndShoppingReplies([])
-    setYearEndFireworksReplies([])
-    setYearEndGreetingQueue([])
-    setYearEndGreetingIndex(0)
-    setYearEndGreetingTarget(null)
-    setYearEndChatMode('incoming')
-    setYearEndFirstReplySent(false)
-    setYearEndFreeChatRound(0)
-    setYearEndFreeChatReplied(false)
-    setYearEndFreeChatReplies([])
-    setYearEndProactiveSent([])
-    setYearEndExtendedChatCharacters([])
-    setYearEndDiaryUnlocked(false)
-    setYearEndDiaryData(null)
-    setWinterExamChatReplyChoice(null)
-    setWinterExamTutoringUnlocked(false)
-    setWinterExamReplies([])
-    setWinterPracticeReplies([])
-    setWinterYanmingPickupAvailable(false)
-    setWinterBusStopCharacter(null)
-    setWinterDiaryUnlocked(false)
-    setWinterDiaryData(null)
-    ;['mayday-february-secret-target', 'mayday-february-secret-reply', 'mayday-february-dinner-reply', 'mayday-february-table-character', 'mayday-february-after-dinner-character', 'mayday-february-after-dinner-replies', 'mayday-february-diary-unlocked', 'mayday-february-diary-data', 'mayday-february-day-complete'].forEach((key) => localStorage.removeItem(key))
-    setFebruarySecretTarget(null)
-    setFebruarySecretReply(null)
-    setFebruaryDinnerReply(null)
-    setFebruaryTableCharacter(null)
-    setFebruaryAfterDinnerCharacter(null)
-    setFebruaryAfterDinnerReplies([])
-    setFebruaryDiaryUnlocked(false)
-    setFebruaryDiaryData(null)
-    setSpringInviteCandidates([])
-    setSpringInviteTarget(null)
-    setSpringInviteReplies([])
-    setSpringInviteDeclined([])
-    setSpringStoreCharacter(null)
-    setSpringStoreReply(null)
-    setSpringAfterChoice(null)
-    setSpringLessonCharacter(null)
-    setSpringLessonReplies([])
-    localStorage.removeItem('mayday-spring-lesson-replies')
-    localStorage.removeItem('mayday-spring-lesson-touch-choice')
-    localStorage.removeItem('mayday-spring-lesson-reply')
-    setSpringDinnerReplies([])
-    localStorage.removeItem('mayday-spring-dinner-replies')
-    localStorage.removeItem('mayday-spring-dinner-reply')
-    setSpringSmsTarget(null)
-    setSpringSmsRound(0)
-    setSpringSmsReplied(false)
-    setSpringSmsOpeningSent(false)
-    setSpringSmsOpeningChoice(null)
-    setSpringSmsReplies([])
-    setSpringSmsEventStarted(false)
-    setSpringSmsEventComplete(false)
-    setSpringDiaryUnlocked(false)
-    setSpringDiaryData(null)
-    setMarch29DiaryUnlocked(false)
-    setMarch29DiaryData(null)
-    setApril12DiaryUnlocked(false)
-    setApril12DiaryData(null)
-    setApril20DiaryUnlocked(false)
-    setApril20DiaryData(null)
-    setMay10DiaryUnlocked(false)
-    setMay10DiaryData(null)
-    setApril12Clock('14:30')
-    setMarch28VisitCharacter(null)
-    setMarch28VisitReplies([])
-    setMarch28DayComplete(false)
-    setMarch28MorningCharacter(null)
-    setMarch28MorningReplies([])
-    setRouteAffection({ wen: 0, masa: 0, ashin: 0, stone: 0, yanming: 0 })
-    setSharedExperienceLog({})
-    setCallExperienceContext(null)
-    setDay2StrollAccepted(false)
-    setDay2DiaryUnlocked(false)
-    setSelectedDiaryDate(null)
-    setPendingCallCharacter(null)
-    setIncomingCallCharacter(null)
-    setActiveCallCharacter(null)
-    setCallRoundIndex(0)
-    setCallReplied(false)
-    setCallTranscript([])
-    setCallHistory([])
-    setSaveSlots({ 1: null, 2: null, 3: null })
-    setSaveFeedback('')
-    setSelectedProfile(null)
-    setResumeStage('reunion')
-    setShowResetConfirm(false)
-    setStoryStage('notification')
-    setShowNameSetup(true)
+    const keysToRemove: string[] = []
+    for (let index = 0; index < localStorage.length; index += 1) {
+      const key = localStorage.key(index)
+      if (key?.startsWith('mayday-')) keysToRemove.push(key)
+    }
+    keysToRemove.forEach((key) => localStorage.removeItem(key))
+    window.location.reload()
   }
 
   const chooseReply = (key: ReplyKey) => {
@@ -9999,10 +9869,10 @@ function App() {
                           <div className="save-center-intro">
                             <span className="profile-eyebrow">SAVE DATA · 1996</span>
                             <strong>把故事好好收起來。</strong>
-                            <small>每份存檔都會保留當時的劇情、訊息紀錄與人物好感度。</small>
+                            <small>每份存檔都會保留當時的劇情、訊息紀錄與人物好感度。新增存檔後會自動出現下一格，不設固定數量上限。</small>
                           </div>
                           <div className="save-slot-list">
-                            {SAVE_SLOT_IDS.map((slot) => {
+                            {[...Object.keys(saveSlots).map(Number), getNextSaveSlotId(saveSlots)].sort((a, b) => a - b).map((slot) => {
                               const saved = saveSlots[slot]
                               return (
                                 <section className="save-slot-card" key={slot}>
@@ -10027,7 +9897,11 @@ function App() {
                             })}
                           </div>
                           <div className="save-center-feedback" aria-live="polite">
-                            {saveFeedback || '自動保存仍會持續運作；手動存檔可以留下不同時間點。'}
+                            {saveFeedback || '自動保存仍會持續運作；手動存檔可以保留不同時間點。實際可保存數量取決於瀏覽器本機空間。'}
+                          </div>
+                          <div className="save-center-reset">
+                            <button className="save-reset-action" onClick={() => setShowResetConfirm(true)}>清除全部紀錄，重新開始</button>
+                            <small>會刪除這台瀏覽器中的所有遊戲存檔與進度，且無法復原。</small>
                           </div>
                         </div>
                       ) : activeApp === 'settings' ? (
@@ -10159,7 +10033,7 @@ function App() {
           <div className="confirm-modal">
             <div className="modal-icon warning"><CircleHelp size={24} /></div>
             <h2>確定要重新開始嗎？</h2>
-            <p>這會清除目前這台瀏覽器保存的玩家姓名、劇情進度和好感度，讓你從第一條短信重新開始。</p>
+            <p>這會清除這台瀏覽器中的全部遊戲紀錄，包括所有手動存檔、自動進度、聊天訊息、日記、人物好感度和玩家姓名，並讓你從一九九六年的開場重新開始。此操作無法復原。</p>
             <div className="confirm-actions">
               <button onClick={() => setShowResetConfirm(false)}>先不要</button>
               <button className="danger-solid" onClick={resetLocalData}>清除資料</button>
