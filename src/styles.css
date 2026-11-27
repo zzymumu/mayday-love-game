@@ -1652,6 +1652,30 @@ button { cursor: pointer; }
 }
 .save-center-timeline-heading small,
 .day-snapshot-details small,
+
+.auto-step-timeline {
+  margin-top: 10px;
+}
+.auto-step-list {
+  display: flex;
+  max-height: 300px;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+  padding-right: 2px;
+  overscroll-behavior: contain;
+}
+.auto-step-card {
+  align-items: center;
+}
+.auto-step-card .day-snapshot-details strong {
+  font-variant-numeric: tabular-nums;
+}
+.auto-step-warning {
+  color: #a56f50;
+  font-size: 8px;
+  line-height: 1.5;
+}
 .day-snapshot-empty {
   color: #9a8878;
   font-size: 8px;
