@@ -58,7 +58,7 @@ const actionNarration = (text: string): string => {
 }
 const act = (text: string): Block => n(actionNarration(text))
 const isActionOption = (text: string): boolean =>
-  /^(把|把手|伸手|往|趁|故意|坐到|坐進|朝|跟著|拿起|拿過|拉住|站到|走到|蹲下|靠近|拍|推|摸|撿起|先把|先拿|接過|抬手|低頭|將|用手|替|輕輕|慢慢|挪到|脫下|踩著|握住|轉過身|拿出)/.test(text.trim())
+  /^(把|把手|伸手|往|趁|故意|坐到|坐進|朝|跟上|跟著|反手|抬頭|醒來後|靠到|坐下|站起|拿起|拿過|拉住|站到|走到|蹲下|靠近|拍|推|摸|撿起|先把|先拿|接過|抬手|低頭|將|用手|替|輕輕|慢慢|挪到|脫下|踩著|握住|轉過身|拿出)/.test(text.trim())
 const option = (text: string, speaker: string, reply: string, affection = 1): Choice => {
   const kind = isActionOption(text) ? 'action' : 'dialogue'
   return {
@@ -97,7 +97,7 @@ const trainRoutes: CharacterRecord = {
       n('你才剛坐好，車身便輕輕晃了一下。他一手扶住椅背，另一手把你放在膝上的車票抽走，看了一眼又還給你。'),
     ], '溫尚翊',
       ['你是不是早就想坐窗邊？', '把背包往座位底下推好，順手把車票收進書裡。', '坐裡面可以啊，那你不要一直擋住風景。'],
-      ['不然咧？我又不是要跟妳搶。妳要看就往前一點，玻璃又不會跑掉。', '妳才剛上車就要睡喔？好啦，睡妳的，東西掉了我再叫妳。', '蛤？我哪有擋，妳自己坐好就看得到啦。']),
+      ['不然咧？我又不是要跟妳搶。妳要看就往前一點，玻璃又不會跑掉。', '收好了喔？這樣就不會掉在地上了。妳的包我幫妳看著。', '蛤？我哪有擋，妳自己坐好就看得到啦。']),
     routeRound('晃了一下', [
       n('列車經過彎道，桌上的車票滑到地上。你彎腰去撿，剛好又遇上一陣晃動，額頭差點碰到前面的椅背。溫尚翊伸手擋了一下，手掌停在你額前，等車身穩了才收回去。'),
       d('溫尚翊', '小心啦，妳是跟地板有仇喔？'),
@@ -183,7 +183,7 @@ const trainRoutes: CharacterRecord = {
       n('他自己倒是吃得很順手，還把碎屑拍到掌心裡，沒有掉到你裙子上。'),
     ], '瑪莎',
       ['你剛剛明明吃最多。', '趁他伸手拿餅乾時，故意把袋子往自己這邊收。', '你手伸過來的時候差點碰到我欸。'],
-      ['我那叫試吃，妳那叫搶劫。', '拿啊，妳看妳等一下會不會掉滿身。', '不然咧？餅乾又不會自己飛過去。妳很在意喔？']),
+      ['我那叫試吃，妳那叫搶劫。', '妳還把整包收走喔？留一點給我啦，我又沒有要搶。', '不然咧？餅乾又不會自己飛過去。妳很在意喔？']),
     routeRound('快到站了', [
       n('廣播響起時，你開始把小包包裡的東西一樣樣收好。瑪莎看見你把車票夾進書裡，伸手幫你把滑出來的票根壓平，嘴上還嫌你什麼都能弄丟。'),
       d('瑪莎', '等一下下車不要又走錯方向，台東不是妳家巷口。'),
@@ -914,7 +914,7 @@ const rivalryRoutes: Record<SeptemberCharacter, [Round, Round, Round]> = {
       n('他抬起眼，發現你一直看著他，手上的動作停了半拍。'),
     ], '溫尚翊',
       ['你剛剛是不是一直看我們？', '伸手接過安全帽，故意沒有立刻鬆開他的手。', '你不用特地過來拿啦，我自己會回去。'],
-      ['我是在看妳有沒有把東西忘在那邊。妳想太多了啦。', '……妳真的很會使喚人欸。好啦，頭低一點。', '我知道啊。只是剛好拿過來，順便一起走。'],
+      ['我是在看妳有沒有把東西忘在那邊。妳想太多了啦。', '妳拿了安全帽，手怎麼還不放？……快點戴好，等一下大家要集合了。', '我知道啊。只是剛好拿過來，順便一起走。'],
       [2, 2, 1]),
     routeRound('留在身邊的位置', [
       n('遠處的瑪莎已經開始喊大家集合。溫尚翊把自己的琴袋背好，走了兩步又停下來，回頭看你。他抬手指了指自己旁邊的位置，表情還是那副不太自在的樣子。'),
@@ -1018,7 +1018,7 @@ const rivalryRoutes: Record<SeptemberCharacter, [Round, Round, Round]> = {
       n('他說得坦然，沒有責怪的意思，只是把自己的想法也告訴你。'),
     ], '劉諺明',
       ['下次你可以直接邀我，不用等。', '把他手裡的袋子接過來，示意他坐下休息。', '我其實也想跟你單獨聊聊。'],
-      ['好，那我下次就不客氣了。', '可以啊，走到大家那邊剛好。', '那我們等一下慢慢聊，不用趕。'],
+      ['好，那我下次就不客氣了。', '好，謝謝妳。妳今天也該玩，不用一直替我拿東西。', '那我們等一下慢慢聊，不用趕。'],
       [2, 2, 2]),
     routeRound('站到大家中間', [
       n('瑪莎已經在遠處催大家拍照。諺明哥站起來，替你把被風吹歪的背包帶拉正，接著朝大家的方向抬了抬下巴。'),
@@ -1496,7 +1496,7 @@ export function SeptemberStory({
           </>
         ) : (
           <div className="choice-area">
-            <div className="choice-heading">你想怎麼回應？</div>
+            <div className="choice-heading">你想怎麼做？</div>
             {round.choices.map((choice, index) => (
               <button className="reply-choice" key={index} onClick={() => chooseRouteOption(section, index)}>
                 <span>{choice.text}</span><ChevronRight size={15} />
@@ -1566,7 +1566,7 @@ export function SeptemberStory({
           </>
         ) : (
           <div className="choice-area">
-            <div className="choice-heading">你想怎麼回應？</div>
+            <div className="choice-heading">你想怎麼做？</div>
             {round.choices.map((choice, index) => (
               <button className="reply-choice" key={index} onClick={() => chooseRivalryOption(index)}>
                 <span>{choice.text}</span><ChevronRight size={15} />
