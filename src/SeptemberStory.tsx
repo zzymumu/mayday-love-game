@@ -950,7 +950,7 @@ export function SeptemberStory({
             ]} />
             <div className="reunion-pause-note">三天兩夜・台東轉船・綠島環島</div>
             <div className="story-action-bar story-inline-action">
-              <button className="story-primary-button" onClick={startTrain}>出發去火車站 <ChevronRight size={15} /></button>
+              <button className="story-primary-button" onClick={startTrain}>隔天一早，台北車站見 <ChevronRight size={15} /></button>
             </div>
           </>
         )}
@@ -1021,7 +1021,8 @@ export function SeptemberStory({
           <>
             <h2 className="story-scene-title">海邊停一下，拍張合照</h2>
             <Blocks blocks={[
-              n('繞過一段沿海公路後，大家在一處能直接看見海的空地停下來。風把衣角吹得亂飛，遠處的浪一層一層推上岸。你才剛摘下安全帽，瑪莎就說這裡很適合拍照；石頭把相機拿出來，找了一塊平穩的石頭架好，調整自拍定時器。'),
+              n('繞過一段沿海公路後，你們先在燈塔附近停了一會兒。白色的塔身被太陽曬得發亮，瑪莎拿著安全帽比了比，說這裡看起來像明信片；溫尚翊嫌他站的位置剛好擋住燈塔，兩個人又為了誰比較會找角度吵起來。再往前繞過一段海岸，路邊的風景忽然開闊起來，大家才把小綿羊停在一處能直接看見海的空地。'),
+              n('風把衣角吹得亂飛，遠處的浪一層一層推上岸。你才剛摘下安全帽，瑪莎就說這裡很適合拍照；石頭把相機拿出來，找了一塊平穩的石頭架好，調整自拍定時器。'),
               d('石錦航', '這次大家都要入鏡，不可以有人只負責拍照。'),
               n('諺明哥把鼓棒和小袋子放到一旁。溫尚翊走過來，像是想替你撥開黏在臉上的髮絲，手抬到一半又停住，只用下巴指了指你的耳邊，示意你自己勾好。阿信站在另一邊，笑著問要不要把安全帽拿在手上；瑪莎則已經跑到鏡頭前面，說自己一定要站在最中間。'),
               d('溫尚翊', '你站好啦，等一下倒數完不要又突然跑掉。'),
