@@ -891,6 +891,16 @@ button { cursor: pointer; }
   width: 100%;
   background: #fbf7ef;
 }
+
+.july-sms-screen {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.july-sms-thread {
+  flex: 1 1 auto;
+  min-height: 0;
+}
 .sms-thread-caption {
   display: flex;
   align-items: center;
