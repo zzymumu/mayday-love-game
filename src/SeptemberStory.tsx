@@ -1013,7 +1013,7 @@ export function SeptemberCamera() {
   )
 }
 
-export function SeptemberPhotoCard({ caption = '1997.09.05 · 綠島海邊 · 35mm 底片' }: { caption?: string }) {
+export function SeptemberPhotoCard({ caption = '1997.09.05 · 綠島海邊 · 底片待沖印' }: { caption?: string }) {
   return (
     <div className="september-photo-print" role="img" aria-label="綠島海邊的六人合照：你和溫尚翊、陳信宏、瑪莎、石錦航、劉諺明站在夕陽與海風裡">
       <div className="september-photo-image">
@@ -1023,6 +1023,7 @@ export function SeptemberPhotoCard({ caption = '1997.09.05 · 綠島海邊 · 35
           {ORDER.map((character) => <span key={character} className={'september-photo-person person-' + character} />)}
           <span className="september-photo-person person-you" />
         </div>
+        <span className="september-photo-stamp">1997 09 05</span>
       </div>
       <div className="september-photo-caption">
         <strong>綠島・海邊</strong>
@@ -1260,7 +1261,7 @@ export function SeptemberStory({
             <Blocks blocks={selected.response} />
             {section === 'poker' && state.roundIndex === 2 && (
               <Blocks blocks={[
-                n('最後一張牌落下，諺明哥把牌面看了一遍，宣布瑪莎這把輸得最徹底。瑪莎立刻把牌往桌上一放，說一定是有人剛才偷換過順序；溫尚翊笑到拍了兩下桌面，阿信伸手把差點翻倒的水果盤扶好，石頭則把散落的牌一張張收回來。諺明哥只提醒他願賭服輸，瑪莎最後還是摸出零錢，說自己去買宵夜。'),
+                n('最後一張牌落下，諺明哥把牌面看了一遍，宣布瑪莎輸得最徹底。瑪莎立刻把牌往桌上一攤，說一定是有人剛才偷換過順序；溫尚翊笑到拍桌，阿信伸手扶住差點翻倒的水果盤，石頭則把散落的牌一張張收回來。諺明哥指了指桌上的規則，叫他願賭服輸。瑪莎嘴上還在抗議，手卻已經摸出零錢，轉頭問你要不要一起去買宵夜。'),
               ]} />
             )}
             <div className="story-action-bar story-inline-action">
@@ -1404,6 +1405,7 @@ export function SeptemberStory({
               d('溫尚翊', '妳站好啦，等一下倒數完不要又突然跑掉。'),
               n('石頭把相機的自拍定時器轉好，按下快門後立刻往大家這邊跑。紅色的小燈一閃一閃，十秒倒數開始。六個人還在搶位置，瑪莎嫌溫尚翊的肩膀擋到他，阿信笑著把你往中間讓了一點，諺明哥伸手扶住差點被風吹倒的相機。你忽然發現，自己還沒決定要把誰拉到身邊。'),
             ]} />
+            <SeptemberCamera />
             {progress.photoChoice === null ? (
               <div className="choice-area">
                 <div className="choice-heading">倒數之前，你想把誰拉到身邊？</div>
@@ -1419,11 +1421,10 @@ export function SeptemberStory({
                 <Blocks blocks={photoChoices[progress.photoChoice].response} />
                 <Blocks blocks={[
                   n('你剛把人拉到身邊，石頭就按下倒數。你們六個人往鏡頭前擠，鞋底踩進細沙裡，肩膀挨著肩膀。瑪莎在最後一秒還不忘做鬼臉，溫尚翊笑著偏過頭，阿信也跟著笑起來。快門就在一陣笑聲裡落下。'),
-                  n('石頭跑回來把相機遞給大家看。六個人全都入鏡了，沒有誰被切掉。照片裡的海很藍，風很大，而你們看起來像是把整個夏天都留在那一秒。'),
+                  n('石頭跑回去把相機拿起來，轉動過片輪，確認底片已經前進。他沒有把相機背面轉給大家看——這台相機沒有螢幕，照片要等回台北送洗才看得到。瑪莎已經開始要求自己那張要多洗兩份，溫尚翊嫌他想太多，卻也問石頭能不能多洗一張。'),
                 ]} />
-                <SeptemberCamera />
                 <SeptemberPhotoCard />
-                <div className="reunion-pause-note">這張六人合照已經收進九月旅行的回憶裡。</div>
+                <div className="reunion-pause-note">快門已經記錄下這一秒；底片要等回台北沖洗，才看得到真正的照片。</div>
                 <div className="story-action-bar story-inline-action">
                   <button className="story-primary-button" onClick={continuePhoto}>收好相機，等照片洗出來 <ChevronRight size={15} /></button>
                 </div>
@@ -1449,7 +1450,7 @@ export function SeptemberStory({
               d('石錦航', '照片洗出來之後，再一起看吧。'),
               d('劉諺明', '先把船搭好，回台東再轉火車。大家的行李都拿好了嗎？'),
               n('船離開綠島時，你靠在欄杆旁，看著海面慢慢往後退。阿信站在你旁邊，溫尚翊把一瓶水遞過來，瑪莎還在和石頭爭論照片裡到底誰的表情最奇怪。諺明哥確認完行李，終於也空出手來，站到你們旁邊吹風。'),
-              n('回到台北時，天色已經暗了。大家在車站外把琴袋一個個分好，明明三天前還在討論要去哪裡，現在卻像是一下子就走完了。你低頭看著石頭先沖洗出來的那張小樣，照片裡六個人擠在海邊，誰也沒有站得端端正正。'),
+              n('回到台北時，天色已經暗了。大家在車站外把琴袋一個個分好，明明三天前還在討論要去哪裡，現在卻像是一下子就走完了。石頭把相機袋背回肩上，說明天就把底片送去沖洗；瑪莎還在追問自己是不是站在最中間，溫尚翊說你站哪裡都一樣吵。你看著他們又笑成一團，忽然很想把這一幕也拍下來。'),
             ]} />
             <div className="reunion-pause-note">1997 年 9 月 6 日・星期六・旅行結束</div>
             <div className="story-action-bar story-inline-action">
@@ -1462,8 +1463,8 @@ export function SeptemberStory({
           <>
             <h2 className="story-scene-title">夏天的海，和我們</h2>
             <Blocks blocks={[
-              n('你們在車站外道別。溫尚翊把琴袋往肩上拉好，還不忘提醒你回家不要忘記把照片收好；阿信說等底片洗出來，要找一天一起看；瑪莎已經開始嫌這趟旅行太累，卻又說下次可以換個地方；石頭答應會多洗幾張照片；諺明哥則確認大家都找到回家的車，才終於轉身離開。'),
-              n('你把那張六人合照小樣放進包包最裡層。紙片薄薄的，卻像是把這三天的海風、笑聲、琴聲和那些沒說出口的小心思，全都一起夾了進去。'),
+              n('你們在車站外道別。溫尚翊把琴袋往肩上拉好，還不忘提醒你回家不要忘記等照片洗出來；阿信說到時候要找一天一起看；瑪莎嫌這趟旅行太累，卻已經開始問下次要去哪裡；石頭答應會多洗幾張照片；諺明哥則確認大家都找到回家的車，才終於轉身離開。'),
+              n('相機裡的底片還沒洗出來，你卻已經記得快門落下前那一秒：瑪莎還在做鬼臉，溫尚翊被擠得皺起眉，阿信笑到眼睛彎起來，石頭剛跑進畫面，諺明哥也終於沒有站在最外面。'),
               n('九月還沒開學，夏天也還沒有真的結束。只是這一次，你知道自己會很想念這幾天。'),
             ]} />
             <SeptemberPhotoCard />
