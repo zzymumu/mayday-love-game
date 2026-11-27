@@ -3,6 +3,9 @@ export type April30DiaryData = {
   text: string
 }
 
+export type April30DiaryRoute = 'wen' | 'ashin' | 'masa' | 'stone' | 'yanming'
+
+
 const april30DiaryText = [
   '本來想早點睡的，結果一躺下來，腦子裡又開始想今天的事。',
   '錢佑達真的退團了。',
@@ -34,9 +37,20 @@ const april30DiaryText = [
   '……雖然我好像也沒有資格說別人。',
 ].join('\\n\\n')
 
-export function buildApril30DiaryData(): April30DiaryData {
+const april30RouteDiaryText: Record<April30DiaryRoute, string> = {
+  wen: '下午還是去找了怪獸。他一個人坐在天台上，旁邊放著幾個空罐子，平常那麼愛逞強的人，今天卻安靜得不像話。我沒有一直追問，只是陪他坐了一會兒。',
+  ashin: '下午去了練團室找阿信。他抱著木吉他坐在裡面，彈了幾段給我聽。明明只是很普通的一個下午，聽他慢慢把旋律彈出來，心裡倒是安定了一點。',
+  masa: '下午搭車去了輔仁大學找瑪莎。他看到我時先愣了一下，接著就開始嫌我怎麼從台大跑那麼遠。嘴巴還是一樣不饒人，走在校園裡卻一直記得配合我的步子。',
+  stone: '下午跑去淡水的淡江大學找石頭。從台大一路過去真的有點遠，看到他從教學大樓走出來時，突然覺得這趟路很值得。後來他還騎機車送我回家，替我拿安全帽、確認扣帶有沒有扣好。回程的風很大，我一開始抓著後座扶手，後來轉彎時還是忍不住捏住了他的外套。等紅燈時我們又聊起佑達和練團的事，他說我特地跑去找他，心情有好一點。明明一路上也沒有講什麼特別不得了的話，卻覺得那段回家的路好像過得很快。',
+  yanming: '下午沒有去找其他人，留在學校時遇到了諺明哥。他把佑達退團的事情又跟我說了一遍，講得很平靜，卻讓人更清楚地感覺到，大家真的要開始面對新的狀況了。',
+}
+
+export function buildApril30DiaryData(route?: April30DiaryRoute): April30DiaryData {
+  const savedRoute = route ?? (typeof localStorage !== 'undefined' ? localStorage.getItem('mayday-april30-route') as April30DiaryRoute | null : null)
+  const routeText = savedRoute ? april30RouteDiaryText[savedRoute] : ''
+  const text = routeText ? april30DiaryText.replace('算了。', `${routeText}\\n\\n算了。`) : april30DiaryText
   return {
     title: '少了一個人的練團室。',
-    text: april30DiaryText,
+    text,
   }
 }
