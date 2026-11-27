@@ -103,6 +103,7 @@ import { April20Story, type April20Character } from './April20Story'
 import { April30Story, getApril30AffectionTotal, type April30Route, type April30Selection } from './April30Story'
 import { May10Story, type May10Character, type May10Selection } from './May10Story'
 import { JuneStudyStory, type JuneStudySelection } from './JuneStudyStory'
+import { JulyLostKeyStory, type JulyLostKeySelection } from './JulyLostKeyStory'
 import { juneFreeChatScripts } from './JuneFreeChat'
 import { buildJuneDiaryData, type JuneDiaryData } from './juneDiary'
 import { buildApril20DiaryData, type April20DiaryData } from './april20Diary'
@@ -127,7 +128,7 @@ import {
 type AppKey = 'messages' | 'contacts' | 'calls' | 'diary' | 'calendar' | 'photos' | 'music' | 'notes' | 'settings'
 type CharacterId = 'wen' | 'masa' | 'ashin' | 'stone' | 'yanming' | 'youda'
 type RouteCharacterId = Exclude<CharacterId, 'youda'>
-type StoryStage = 'notification' | 'messages' | 'reply' | 'walk' | 'studio' | 'reunion' | 'reunion-chat' | 'nickname' | 'rehearsal' | 'dinner' | 'after-dinner' | 'ending' | 'completed' | 'greetings' | 'classroom' | 'masa-checkin' | 'stone-checkin' | 'ice-date' | 'stroll' | 'day2-diary' | 'free-time' | 'free-chat' | 'day2-complete' | 'month-free-time' | 'month-visit' | 'month-visit-complete' | 'month-free-chat' | 'month-diary' | 'next-month-intro' | 'next-month-invite-notification' | 'next-month-invite-picker' | 'next-month-invite' | 'next-month-invite-chat' | 'next-month-invite-date' | 'next-month-open-day' | 'next-month-open-day-picker' | 'next-month-open-day-visit' | 'next-month-open-day-visit-complete' | 'next-month-free-chat' | 'next-month-diary' | 'year-end-intro' | 'year-end-invite-notification' | 'year-end-invite-picker' | 'year-end-shopping-notification' | 'year-end-shopping-chat' | 'year-end-shopping' | 'year-end-fireworks' | 'year-end-new-year-notification' | 'year-end-new-year-chat' | 'year-end-free-chat' | 'year-end-free-chat-picker' | 'year-end-diary' | 'winter-exam-intro' | 'winter-exam-notification' | 'winter-exam-chat' | 'winter-exam-tutoring' | 'winter-break-practice' | 'winter-break-gig' | 'winter-break-pickup' | 'winter-break-bus-choice' | 'winter-break-bus' | 'winter-diary' | 'february-intro' | 'february-secret' | 'february-dinner' | 'february-table' | 'february-after-dinner-picker' | 'february-after-dinner' | 'february-diary' | 'spring-term-intro' | 'spring-invite-picker' | 'spring-invite-notification' | 'spring-invite-chat' | 'spring-store' | 'spring-rehearsal' | 'spring-after-picker' | 'spring-lesson' | 'spring-dinner' | 'spring-sms-picker' | 'spring-sms-chat' | 'spring-diary' | 'march28-intro' | 'march28-visit' | 'march28-end' | 'march28-park' | 'march28-park-stay' | 'march28-morning' | 'march28-diary' | 'march29-show' | 'april12-story' | 'april20-story' | 'april30-story' | 'may10-story' | 'june-study' | 'june-free-chat' | 'june-diary' | 'june-study-complete' | 'paused'
+type StoryStage = 'notification' | 'messages' | 'reply' | 'walk' | 'studio' | 'reunion' | 'reunion-chat' | 'nickname' | 'rehearsal' | 'dinner' | 'after-dinner' | 'ending' | 'completed' | 'greetings' | 'classroom' | 'masa-checkin' | 'stone-checkin' | 'ice-date' | 'stroll' | 'day2-diary' | 'free-time' | 'free-chat' | 'day2-complete' | 'month-free-time' | 'month-visit' | 'month-visit-complete' | 'month-free-chat' | 'month-diary' | 'next-month-intro' | 'next-month-invite-notification' | 'next-month-invite-picker' | 'next-month-invite' | 'next-month-invite-chat' | 'next-month-invite-date' | 'next-month-open-day' | 'next-month-open-day-picker' | 'next-month-open-day-visit' | 'next-month-open-day-visit-complete' | 'next-month-free-chat' | 'next-month-diary' | 'year-end-intro' | 'year-end-invite-notification' | 'year-end-invite-picker' | 'year-end-shopping-notification' | 'year-end-shopping-chat' | 'year-end-shopping' | 'year-end-fireworks' | 'year-end-new-year-notification' | 'year-end-new-year-chat' | 'year-end-free-chat' | 'year-end-free-chat-picker' | 'year-end-diary' | 'winter-exam-intro' | 'winter-exam-notification' | 'winter-exam-chat' | 'winter-exam-tutoring' | 'winter-break-practice' | 'winter-break-gig' | 'winter-break-pickup' | 'winter-break-bus-choice' | 'winter-break-bus' | 'winter-diary' | 'february-intro' | 'february-secret' | 'february-dinner' | 'february-table' | 'february-after-dinner-picker' | 'february-after-dinner' | 'february-diary' | 'spring-term-intro' | 'spring-invite-picker' | 'spring-invite-notification' | 'spring-invite-chat' | 'spring-store' | 'spring-rehearsal' | 'spring-after-picker' | 'spring-lesson' | 'spring-dinner' | 'spring-sms-picker' | 'spring-sms-chat' | 'spring-diary' | 'march28-intro' | 'march28-visit' | 'march28-end' | 'march28-park' | 'march28-park-stay' | 'march28-morning' | 'march28-diary' | 'march29-show' | 'april12-story' | 'april20-story' | 'april30-story' | 'may10-story' | 'june-study' | 'june-free-chat' | 'june-diary' | 'june-study-complete' | 'july-lost-key' | 'paused'
 type ReplyKey = 'a' | 'b' | 'c'
 type ReunionReplyKey = 'a' | 'b' | 'c'
 type NicknameQuestionKey = 'a' | 'b' | 'c'
@@ -264,7 +265,7 @@ const storyStageLabels: Record<StoryStage, string> = {
   'day2-complete': '第二天結束', 'month-free-time': '一個月後・自由活動', 'month-visit': '一個月後・外出見面', 'month-visit-complete': '一個月後・見面結束', 'month-free-chat': '一個月後・自由對話', 'month-diary': '一個月後・私人日記',
   'next-month-intro': '又一個月後・校園開放日', 'next-month-invite-notification': '有人想約你', 'next-month-invite-picker': '看看是誰想約你', 'next-month-invite': '回覆邀約', 'next-month-invite-chat': '邀約簡訊', 'next-month-invite-date': '赴約', 'next-month-open-day': '椰風搖滾社・校園開放日', 'next-month-open-day-picker': '一起逛校園', 'next-month-open-day-visit': '校園散步', 'next-month-open-day-visit-complete': '校園開放日・見面結束', 'next-month-free-chat': '十二月・自由對話', 'next-month-diary': '十二月・私人日記',
   'year-end-intro': '十二月三十一日・跨年篇', 'year-end-invite-notification': '收到年貨邀約', 'year-end-invite-picker': '選擇邀約對象', 'year-end-shopping-notification': '年貨邀約簡訊', 'year-end-shopping-chat': '回覆年貨邀約', 'year-end-shopping': '一起買年貨', 'year-end-fireworks': '七人跨年煙火', 'year-end-new-year-notification': '收到新年祝福', 'year-end-new-year-chat': '回覆新年祝福', 'year-end-free-chat': '新年自由聊天', 'year-end-free-chat-picker': '新年自由活動', 'year-end-diary': '1996 年最後一篇日記', 'winter-exam-intro': '一九九七年・期末考前一週', 'winter-exam-notification': '統計學補習提示', 'winter-exam-chat': '傳訊息給溫尚翊', 'winter-exam-tutoring': '圖書館・統計學補習', 'winter-break-practice': '寒假・諺明哥的練團室', 'winter-break-gig': '寒假・酒吧駐唱', 'winter-break-pickup': '諺明哥來接你', 'winter-break-bus-choice': '散場後・選擇同行的人', 'winter-break-bus': '一起走到公車站', 'winter-diary': '一九九七年・寒假日記', 'february-intro': '二月初・MAYDAY 的名字', 'february-secret': '練團室裡的小秘密', 'february-dinner': '一起吃晚餐', 'february-table': '餐桌上的小動作', 'february-after-dinner-picker': '飯後・選擇同行的人', 'february-after-dinner': '飯後單獨相處', 'february-diary': '二月初・私人日記',
-  'spring-term-intro': '開學後・春日邀約', 'spring-invite-picker': '看看誰約你去樂器行', 'spring-invite-notification': '收到樂器行邀約簡訊', 'spring-invite-chat': '回覆樂器行邀約', 'spring-store': '樂器行・一起逛逛', 'spring-rehearsal': '練團室・轧車', 'spring-after-picker': '練團結束・選擇去處', 'spring-lesson': '練團室・學樂器', 'spring-dinner': '和諺明一起吃飯', 'spring-sms-picker': '回家後・想傳訊息給誰', 'spring-sms-chat': '今晚的簡訊', 'spring-diary': '開學後・私人日記', 'march28-intro': '三月二十八日・野台開唱前一天', 'march28-visit': '白天・選擇一段相遇', 'march28-end': '晚飯後・公園散步', 'march28-park': '大安森林公園・遇見阿信', 'march28-park-stay': '大安森林公園・夜裡聊天', 'march28-morning': '三月二十九日・清晨早餐', 'march28-diary': '三月二十八日・私人日記', 'march29-show': '大安森林公園・野台開唱現場', 'april12-story': '四月十二日・練團室', 'april20-story': '四月二十日・佑達的訊息與練團室', 'april30-story': '四月三十日・少了一個人的練團室', 'may10-story': '五月十日・新鼓手面試', 'june-study': '六月中旬・期末複習', 'june-free-chat': '六月中旬・自由簡訊', 'june-diary': '六月中旬・私人日記', 'june-study-complete': '六月中旬・期末複習完成', paused: '故事暫停',
+  'spring-term-intro': '開學後・春日邀約', 'spring-invite-picker': '看看誰約你去樂器行', 'spring-invite-notification': '收到樂器行邀約簡訊', 'spring-invite-chat': '回覆樂器行邀約', 'spring-store': '樂器行・一起逛逛', 'spring-rehearsal': '練團室・轧車', 'spring-after-picker': '練團結束・選擇去處', 'spring-lesson': '練團室・學樂器', 'spring-dinner': '和諺明一起吃飯', 'spring-sms-picker': '回家後・想傳訊息給誰', 'spring-sms-chat': '今晚的簡訊', 'spring-diary': '開學後・私人日記', 'march28-intro': '三月二十八日・野台開唱前一天', 'march28-visit': '白天・選擇一段相遇', 'march28-end': '晚飯後・公園散步', 'march28-park': '大安森林公園・遇見阿信', 'march28-park-stay': '大安森林公園・夜裡聊天', 'march28-morning': '三月二十九日・清晨早餐', 'march28-diary': '三月二十八日・私人日記', 'march29-show': '大安森林公園・野台開唱現場', 'april12-story': '四月十二日・練團室', 'april20-story': '四月二十日・佑達的訊息與練團室', 'april30-story': '四月三十日・少了一個人的練團室', 'may10-story': '五月十日・新鼓手面試', 'june-study': '六月中旬・期末複習', 'june-free-chat': '六月中旬・自由簡訊', 'june-diary': '六月中旬・私人日記', 'june-study-complete': '六月中旬・期末複習完成', 'july-lost-key': '七月・忘記帶鑰匙', paused: '故事暫停',
 }
 const readSaveSlot = (slot: number): SaveSlotData | null => {
   try {
@@ -1909,7 +1910,7 @@ function App() {
     const day2PlanChosen = localStorage.getItem('mayday-day2-after-ice-choice') === 'accept' || localStorage.getItem('mayday-day2-after-ice-choice') === 'decline'
     if (['free-time', 'free-chat', 'day2-complete'].includes(saved ?? '') && !day2PlanChosen) return 'ice-date'
     if (saved === 'free-time' && savedTarget && freeTimeOrder.includes(savedTarget as RouteCharacterId) && localStorage.getItem('mayday-free-chat-complete') !== 'true') return 'free-chat'
-    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete', 'month-free-time', 'month-visit', 'month-visit-complete', 'month-free-chat', 'month-diary', 'next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-chat', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete', 'next-month-free-chat', 'next-month-diary', 'year-end-intro', 'year-end-invite-notification', 'year-end-invite-picker', 'year-end-shopping-notification', 'year-end-shopping-chat', 'year-end-shopping', 'year-end-fireworks', 'year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary', 'winter-exam-intro', 'winter-exam-notification', 'winter-exam-chat', 'winter-exam-tutoring', 'winter-break-practice', 'winter-break-gig', 'winter-break-pickup', 'winter-break-bus-choice', 'winter-break-bus', 'winter-diary', 'february-intro', 'february-secret', 'february-dinner', 'february-table', 'february-after-dinner-picker', 'february-after-dinner', 'february-diary', 'spring-term-intro', 'spring-invite-picker', 'spring-invite-notification', 'spring-invite-chat', 'spring-store', 'spring-rehearsal', 'spring-after-picker', 'spring-lesson', 'spring-dinner', 'spring-sms-picker', 'spring-sms-chat', 'spring-diary', 'march28-intro', 'march28-visit', 'march28-end', 'march28-park', 'march28-park-stay', 'march28-morning', 'march28-diary', 'march29-show', 'april12-story', 'april20-story', 'april30-story', 'may10-story', 'june-study', 'june-free-chat', 'june-diary', 'june-study-complete', 'paused']
+    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete', 'month-free-time', 'month-visit', 'month-visit-complete', 'month-free-chat', 'month-diary', 'next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-chat', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete', 'next-month-free-chat', 'next-month-diary', 'year-end-intro', 'year-end-invite-notification', 'year-end-invite-picker', 'year-end-shopping-notification', 'year-end-shopping-chat', 'year-end-shopping', 'year-end-fireworks', 'year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary', 'winter-exam-intro', 'winter-exam-notification', 'winter-exam-chat', 'winter-exam-tutoring', 'winter-break-practice', 'winter-break-gig', 'winter-break-pickup', 'winter-break-bus-choice', 'winter-break-bus', 'winter-diary', 'february-intro', 'february-secret', 'february-dinner', 'february-table', 'february-after-dinner-picker', 'february-after-dinner', 'february-diary', 'spring-term-intro', 'spring-invite-picker', 'spring-invite-notification', 'spring-invite-chat', 'spring-store', 'spring-rehearsal', 'spring-after-picker', 'spring-lesson', 'spring-dinner', 'spring-sms-picker', 'spring-sms-chat', 'spring-diary', 'march28-intro', 'march28-visit', 'march28-end', 'march28-park', 'march28-park-stay', 'march28-morning', 'march28-diary', 'march29-show', 'april12-story', 'april20-story', 'april30-story', 'may10-story', 'june-study', 'june-free-chat', 'june-diary', 'june-study-complete', 'july-lost-key', 'paused']
     return saved && valid.includes(saved as StoryStage) ? saved as StoryStage : 'notification'
   })
   const [march29Clock, setMarch29Clock] = useState(() => localStorage.getItem('mayday-march29-clock') ?? '15:30')
@@ -1941,6 +1942,11 @@ function App() {
   const updateJuneStudyClock = useCallback((time: string) => {
     localStorage.setItem('mayday-june-study-clock', time)
     setJuneStudyClock(time)
+  }, [])
+  const [julyLostKeyClock, setJulyLostKeyClock] = useState(() => localStorage.getItem('mayday-july-lost-key-clock') ?? '18:00')
+  const updateJulyLostKeyClock = useCallback((time: string) => {
+    localStorage.setItem('mayday-july-lost-key-clock', time)
+    setJulyLostKeyClock(time)
   }, [])
   const [studioStep, setStudioStep] = useState(() => Number(localStorage.getItem('mayday-studio-step') ?? '0'))
   const [replyKey, setReplyKey] = useState<ReplyKey | null>(() => {
@@ -2707,13 +2713,15 @@ function App() {
   const [selectedProfile, setSelectedProfile] = useState<string | null>(null)
   const [resumeStage, setResumeStage] = useState<StoryStage>(() => {
     const saved = localStorage.getItem('mayday-resume-stage')
-    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete', 'month-free-time', 'month-visit', 'month-visit-complete', 'month-free-chat', 'month-diary', 'next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-chat', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete', 'next-month-free-chat', 'next-month-diary', 'year-end-intro', 'year-end-invite-notification', 'year-end-invite-picker', 'year-end-shopping-notification', 'year-end-shopping-chat', 'year-end-shopping', 'year-end-fireworks', 'year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary', 'winter-exam-intro', 'winter-exam-notification', 'winter-exam-chat', 'winter-exam-tutoring', 'winter-break-practice', 'winter-break-gig', 'winter-break-pickup', 'winter-break-bus-choice', 'winter-break-bus', 'winter-diary', 'february-intro', 'february-secret', 'february-dinner', 'february-table', 'february-after-dinner-picker', 'february-after-dinner', 'february-diary', 'spring-term-intro', 'spring-invite-picker', 'spring-invite-notification', 'spring-invite-chat', 'spring-store', 'spring-rehearsal', 'spring-after-picker', 'spring-lesson', 'spring-dinner', 'spring-sms-picker', 'spring-sms-chat', 'spring-diary', 'march28-intro', 'march28-visit', 'march28-end', 'march28-park', 'march28-park-stay', 'march28-morning', 'march28-diary', 'march29-show', 'april12-story', 'april20-story', 'april30-story', 'may10-story', 'june-study', 'june-free-chat', 'june-diary', 'june-study-complete']
+    const valid: StoryStage[] = ['notification', 'messages', 'reply', 'walk', 'studio', 'reunion', 'reunion-chat', 'nickname', 'rehearsal', 'dinner', 'after-dinner', 'ending', 'completed', 'greetings', 'classroom', 'masa-checkin', 'stone-checkin', 'ice-date', 'stroll', 'day2-diary', 'free-time', 'free-chat', 'day2-complete', 'month-free-time', 'month-visit', 'month-visit-complete', 'month-free-chat', 'month-diary', 'next-month-intro', 'next-month-invite-notification', 'next-month-invite-picker', 'next-month-invite', 'next-month-invite-chat', 'next-month-invite-date', 'next-month-open-day', 'next-month-open-day-picker', 'next-month-open-day-visit', 'next-month-open-day-visit-complete', 'next-month-free-chat', 'next-month-diary', 'year-end-intro', 'year-end-invite-notification', 'year-end-invite-picker', 'year-end-shopping-notification', 'year-end-shopping-chat', 'year-end-shopping', 'year-end-fireworks', 'year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary', 'winter-exam-intro', 'winter-exam-notification', 'winter-exam-chat', 'winter-exam-tutoring', 'winter-break-practice', 'winter-break-gig', 'winter-break-pickup', 'winter-break-bus-choice', 'winter-break-bus', 'winter-diary', 'february-intro', 'february-secret', 'february-dinner', 'february-table', 'february-after-dinner-picker', 'february-after-dinner', 'february-diary', 'spring-term-intro', 'spring-invite-picker', 'spring-invite-notification', 'spring-invite-chat', 'spring-store', 'spring-rehearsal', 'spring-after-picker', 'spring-lesson', 'spring-dinner', 'spring-sms-picker', 'spring-sms-chat', 'spring-diary', 'march28-intro', 'march28-visit', 'march28-end', 'march28-park', 'march28-park-stay', 'march28-morning', 'march28-diary', 'march29-show', 'april12-story', 'april20-story', 'april30-story', 'may10-story', 'june-study', 'june-free-chat', 'june-diary', 'june-study-complete', 'july-lost-key']
     return saved && valid.includes(saved as StoryStage) ? saved as StoryStage : 'reunion'
   })
   const messageScrollRef = useRef<HTMLDivElement>(null)
   const callTranscriptRef = useRef<HTMLDivElement>(null)
   const currentTime =
-    storyStage === 'paused' && resumeStage === 'june-diary' ? '21:30'
+    storyStage === 'paused' && resumeStage === 'july-lost-key' ? julyLostKeyClock
+      : storyStage === 'july-lost-key' ? julyLostKeyClock
+        : storyStage === 'paused' && resumeStage === 'june-diary' ? '21:30'
       : storyStage === 'paused' && resumeStage === 'june-study' ? juneStudyClock
       : storyStage === 'june-study' ? juneStudyClock
         : storyStage === 'june-study-complete' ? '17:10'
@@ -2724,7 +2732,7 @@ function App() {
         : storyStage === 'dinner' ? '19:10'
           : storyStage === 'after-dinner' ? '20:35'
             : storyStage === 'ending' || storyStage === 'greetings' ? '21:18'
-              : storyStage === 'completed' ? (localStorage.getItem('mayday-june-diary-unlocked') === 'true' ? '21:30' : localStorage.getItem('mayday-may10-day-complete') === 'true' ? '17:25' : localStorage.getItem('mayday-april30-day-complete') === 'true' ? '17:30' : localStorage.getItem('mayday-april20-day-complete') === 'true' ? '17:50' : localStorage.getItem('mayday-april12-diary-unlocked') === 'true' ? '22:00' : localStorage.getItem('mayday-march29-diary-unlocked') === 'true' ? '21:30' : localStorage.getItem('mayday-march28-park-choice') === 'stay' && localStorage.getItem('mayday-march28-day-complete') === 'true' ? (localStorage.getItem('mayday-march28-morning-complete') === 'true' ? '07:30' : '05:40') : localStorage.getItem('mayday-march28-day-complete') === 'true' ? '18:45' : localStorage.getItem('mayday-february-day-complete') === 'true' ? '22:30' : localStorage.getItem('mayday-winter-break-day-complete') === 'true' ? '00:30' : localStorage.getItem('mayday-year-end-day-complete') === 'true' ? '00:40' : '21:18')
+              : storyStage === 'completed' ? (localStorage.getItem('mayday-july-lost-key-day-complete') === 'true' ? '21:15' : localStorage.getItem('mayday-june-diary-unlocked') === 'true' ? '21:30' : localStorage.getItem('mayday-may10-day-complete') === 'true' ? '17:25' : localStorage.getItem('mayday-april30-day-complete') === 'true' ? '17:30' : localStorage.getItem('mayday-april20-day-complete') === 'true' ? '17:50' : localStorage.getItem('mayday-april12-diary-unlocked') === 'true' ? '22:00' : localStorage.getItem('mayday-march29-diary-unlocked') === 'true' ? '21:30' : localStorage.getItem('mayday-march28-park-choice') === 'stay' && localStorage.getItem('mayday-march28-day-complete') === 'true' ? (localStorage.getItem('mayday-march28-morning-complete') === 'true' ? '07:30' : '05:40') : localStorage.getItem('mayday-march28-day-complete') === 'true' ? '18:45' : localStorage.getItem('mayday-february-day-complete') === 'true' ? '22:30' : localStorage.getItem('mayday-winter-break-day-complete') === 'true' ? '00:30' : localStorage.getItem('mayday-year-end-day-complete') === 'true' ? '00:40' : '21:18')
               : storyStage === 'classroom' || storyStage === 'masa-checkin' || storyStage === 'stone-checkin' ? '10:12'
                 : storyStage === 'ice-date' ? '16:20'
                   : storyStage === 'stroll' ? '17:05'
@@ -2785,7 +2793,7 @@ function App() {
   const isWinterBreak = ['winter-break-practice', 'winter-break-gig', 'winter-break-pickup', 'winter-break-bus-choice', 'winter-break-bus', 'winter-diary'].includes(effectiveDateStage) || isFebruary || localStorage.getItem('mayday-winter-break-day-complete') === 'true'
   const isYearEnd = ['year-end-intro', 'year-end-invite-notification', 'year-end-invite-picker', 'year-end-shopping-notification', 'year-end-shopping-chat', 'year-end-shopping', 'year-end-fireworks', 'year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary'].includes(effectiveDateStage) || localStorage.getItem('mayday-year-end-day-complete') === 'true'
   const isNewYear = ['year-end-new-year-notification', 'year-end-new-year-chat', 'year-end-free-chat', 'year-end-free-chat-picker', 'year-end-diary'].includes(effectiveDateStage) || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-year-end-day-complete') === 'true' && localStorage.getItem('mayday-winter-break-day-complete') !== 'true')
-  const saveGameDate = effectiveDateStage === 'june-study' || effectiveDateStage === 'june-free-chat' || effectiveDateStage === 'june-diary' || effectiveDateStage === 'june-study-complete' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-june-study-day-complete') === 'true') ? '1997.06.15' : effectiveDateStage === 'may10-story' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-may10-day-complete') === 'true') ? '1997.05.10' : effectiveDateStage === 'april30-story' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-april30-day-complete') === 'true') ? '1997.04.30' : effectiveDateStage === 'april20-story' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-april20-day-complete') === 'true') ? '1997.04.20' : effectiveDateStage === 'april12-story' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-april12-diary-unlocked') === 'true') ? '1997.04.12' : effectiveDateStage === 'march29-show' || effectiveDateStage === 'march28-morning' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-march29-diary-unlocked') === 'true') || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-march28-park-choice') === 'stay' && localStorage.getItem('mayday-march28-day-complete') === 'true') ? '1997.03.29' : isMarch28 ? '1997.03.28' : isSpringTerm ? '1997.02.17' : isFebruary ? '1997.02.03' : isWinterBreak ? '1997.01.22' : isWinterExam ? (effectiveDateStage === 'winter-exam-tutoring' ? '1997.01.08' : '1997.01.07') : isNewYear ? '1997.01.01' : isYearEnd ? '1996.12.31' : isNextMonth ? '1996.12.14' : isMonthLater ? '1996.11.16' : isSecondDay ? '1996.10.16' : '1996.10.15'
+  const saveGameDate = effectiveDateStage === 'july-lost-key' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-july-lost-key-day-complete') === 'true') ? '1997.07.15' : effectiveDateStage === 'june-study' || effectiveDateStage === 'june-free-chat' || effectiveDateStage === 'june-diary' || effectiveDateStage === 'june-study-complete' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-june-study-day-complete') === 'true') ? '1997.06.15' : effectiveDateStage === 'may10-story' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-may10-day-complete') === 'true') ? '1997.05.10' : effectiveDateStage === 'april30-story' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-april30-day-complete') === 'true') ? '1997.04.30' : effectiveDateStage === 'april20-story' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-april20-day-complete') === 'true') ? '1997.04.20' : effectiveDateStage === 'april12-story' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-april12-diary-unlocked') === 'true') ? '1997.04.12' : effectiveDateStage === 'march29-show' || effectiveDateStage === 'march28-morning' || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-march29-diary-unlocked') === 'true') || (effectiveDateStage === 'completed' && localStorage.getItem('mayday-march28-park-choice') === 'stay' && localStorage.getItem('mayday-march28-day-complete') === 'true') ? '1997.03.29' : isMarch28 ? '1997.03.28' : isSpringTerm ? '1997.02.17' : isFebruary ? '1997.02.03' : isWinterBreak ? '1997.01.22' : isWinterExam ? (effectiveDateStage === 'winter-exam-tutoring' ? '1997.01.08' : '1997.01.07') : isNewYear ? '1997.01.01' : isYearEnd ? '1996.12.31' : isNextMonth ? '1996.12.14' : isMonthLater ? '1996.11.16' : isSecondDay ? '1996.10.16' : '1996.10.15'
   const [calendarYear, calendarMonth, calendarDay] = saveGameDate.split('.')
   const calendarDate = new Date(Number(calendarYear), Number(calendarMonth) - 1, Number(calendarDay))
   const calendarWeekday = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'][calendarDate.getDay()]
@@ -5951,6 +5959,29 @@ function App() {
     changeStage('completed')
   }
 
+  const startJulyLostKeyStory = () => {
+    if (localStorage.getItem('mayday-june-study-day-complete') !== 'true' || localStorage.getItem('mayday-july-lost-key-day-complete') === 'true') return
+    localStorage.setItem('mayday-july-lost-key-started', 'true')
+    setActiveApp(null)
+    setSelectedDiaryDate(null)
+    setSelectedSmsThread(null)
+    changeStage('july-lost-key')
+  }
+
+  const finishJulyLostKeyStory = (selection: JulyLostKeySelection) => {
+    const validCharacters: JulyLostKeySelection['character'][] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
+    if (!validCharacters.includes(selection.character) || selection.choices.length !== 5 || !selection.choices.every((choice) => Number.isInteger(choice) && choice >= 0 && choice <= 2)) return
+    localStorage.setItem('mayday-july-lost-key-complete', 'true')
+    localStorage.setItem('mayday-july-lost-key-day-complete', 'true')
+    localStorage.setItem('mayday-july-lost-key-character', selection.character)
+    localStorage.setItem('mayday-july-lost-key-choices', JSON.stringify(selection.choices))
+    localStorage.setItem('mayday-july-lost-key-date', '1997.07.15')
+    setActiveApp(null)
+    setSelectedDiaryDate(null)
+    setSelectedSmsThread(null)
+    changeStage('completed')
+  }
+
   const finishApril12Story = (selection: { character: April12Character; choices: number[] }) => {
     if (selection.choices.length !== 3) return
     const data = buildApril12DiaryData(selection.character, selection.choices)
@@ -8787,6 +8818,15 @@ function App() {
                 />
               )}
 
+              {storyStage === 'july-lost-key' && (
+                <JulyLostKeyStory
+                  onAddAffection={addRouteAffection}
+                  onAppendMessages={(character, entries, date) => appendChatMessages(character, entries, date)}
+                  onClockChange={updateJulyLostKeyClock}
+                  onFinish={finishJulyLostKeyStory}
+                />
+              )}
+
               {storyStage === 'june-free-chat' && juneFreeChatStarted && juneFreeChatTarget === null && activeApp === null && (
                 <div className="story-screen-overlay">
                   <div className="story-screen-head">
@@ -9705,12 +9745,21 @@ function App() {
                               <>
                                 <button className="diary-detail-back" onClick={() => setSelectedDiaryDate(null)}><ArrowLeft size={13}/> 返回日記列表</button>
                                 {selectedDiaryDate === '1997-06-15' && juneDiaryUnlocked && juneDiaryData ? (
-                                  <div className="diary-paper">
-                                    <span className="diary-date">1997 年 6 月 15 日・星期日</span>
-                                    <h2>{juneDiaryData.title}</h2>
-                                    <div className="diary-section-label">星期日 · 期末複習與晚間簡訊</div>
-                                    <DiarySection label="日記" text={juneDiaryData.text} />
-                                  </div>
+                                  <>
+                                    <div className="diary-paper">
+                                      <span className="diary-date">1997 年 6 月 15 日・星期日</span>
+                                      <h2>{juneDiaryData.title}</h2>
+                                      <div className="diary-section-label">星期日 · 期末複習與晚間簡訊</div>
+                                      <DiarySection label="日記" text={juneDiaryData.text} />
+                                    </div>
+                                    {localStorage.getItem('mayday-july-lost-key-day-complete') !== 'true' && (
+                                      <div className="story-action-bar story-inline-action">
+                                        <button className="story-primary-button" onClick={startJulyLostKeyStory}>
+                                          繼續到七月・暑假篇 <ChevronRight size={15} />
+                                        </button>
+                                      </div>
+                                    )}
+                                  </>
                                 ) : selectedDiaryDate === '1997-05-10' && may10DiaryUnlocked && may10DiaryData ? (
                                   <>
                                     <div className="diary-paper">
