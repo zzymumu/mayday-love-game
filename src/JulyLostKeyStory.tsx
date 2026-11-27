@@ -2,19 +2,20 @@ import { useEffect, useRef, useState } from 'react'
 import { ChevronRight } from 'lucide-react'
 
 export type JulyLostKeyCharacter = 'wen' | 'ashin' | 'masa' | 'stone' | 'yanming'
-export type JulyLostKeySelection = { character: JulyLostKeyCharacter; choices: number[] }
+export type JulyLostKeyFlirtTarget = 'wen' | 'ashin'
+export type JulyLostKeySelection = { character: JulyLostKeyCharacter; choices: number[]; flirtTarget: JulyLostKeyFlirtTarget | null }
 
 type Block = { kind: 'narration' | 'dialogue'; text: string; speaker?: string }
 type MessageEntry = { from: JulyLostKeyCharacter | 'me'; text: string; time?: string }
 type Choice = { text: string; response: Block[]; affection: number }
 type Round = { title: string; blocks: Block[]; choices: [Choice, Choice, Choice] }
 type Route = { name: string; sms: Block[]; messages: MessageEntry[]; intro: Block[]; rounds: [Round, Round, Round, Round, Round]; ending: Block[] }
-type Phase = 'intro' | 'picker' | 'message' | 'route-intro' | 'interaction' | 'complete'
-type Progress = { phase: Phase; character: JulyLostKeyCharacter | null; roundIndex: number; pendingChoice: number | null; choices: number[] }
+type Phase = 'intro' | 'picker' | 'message' | 'route-intro' | 'flirt-choice' | 'flirt-result' | 'interaction' | 'complete'
+type Progress = { phase: Phase; character: JulyLostKeyCharacter | null; roundIndex: number; pendingChoice: number | null; choices: number[]; flirtTarget: JulyLostKeyFlirtTarget | null }
 
 const STORAGE_KEY = 'mayday-july-lost-key-progress-v1'
 const ORDER: JulyLostKeyCharacter[] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
-const initialProgress: Progress = { phase: 'intro', character: null, roundIndex: 0, pendingChoice: null, choices: [] }
+const initialProgress: Progress = { phase: 'intro', character: null, roundIndex: 0, pendingChoice: null, choices: [], flirtTarget: null }
 const n = (text: string): Block => ({ kind: 'narration', text })
 const d = (speaker: string, text: string): Block => ({ kind: 'dialogue', speaker, text })
 const c = (text: string, affection: number, response: Block[]): Choice => ({ text, affection, response })
@@ -27,14 +28,17 @@ function isCharacter(value: unknown): value is JulyLostKeyCharacter {
 function readProgress(): Progress {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null') as Partial<Progress> | null
-    if (!saved || !['intro', 'picker', 'message', 'route-intro', 'interaction', 'complete'].includes(saved.phase ?? '')) return initialProgress
+    if (!saved || !['intro', 'picker', 'message', 'route-intro', 'flirt-choice', 'flirt-result', 'interaction', 'complete'].includes(saved.phase ?? '')) return initialProgress
     const character = isCharacter(saved.character) ? saved.character : null
     const roundIndex = Number.isInteger(saved.roundIndex) ? Math.max(0, Math.min(4, Number(saved.roundIndex))) : 0
     const pendingChoice = Number.isInteger(saved.pendingChoice) && Number(saved.pendingChoice) >= 0 && Number(saved.pendingChoice) <= 2 ? Number(saved.pendingChoice) : null
     const choices = Array.isArray(saved.choices) ? saved.choices.filter((value): value is number => Number.isInteger(value) && value >= 0 && value <= 2).slice(0, 5) : []
     const phase = saved.phase as Phase
-    if (['message', 'route-intro', 'interaction', 'complete'].includes(phase) && !character) return initialProgress
-    return { phase, character, roundIndex, pendingChoice, choices }
+    const flirtTarget = saved.flirtTarget === 'wen' || saved.flirtTarget === 'ashin' ? saved.flirtTarget : null
+    if (['message', 'route-intro', 'flirt-choice', 'flirt-result', 'interaction', 'complete'].includes(phase) && !character) return initialProgress
+    if (phase === 'flirt-choice' && character !== 'wen' && character !== 'ashin') return initialProgress
+    if (phase === 'flirt-result' && !flirtTarget) return initialProgress
+    return { phase, character, roundIndex, pendingChoice, choices, flirtTarget }
   } catch {
     return initialProgress
   }
@@ -45,6 +49,8 @@ function clockForProgress(progress: Progress) {
   if (progress.phase === 'picker') return '18:12'
   if (progress.phase === 'message') return '18:18'
   if (progress.phase === 'route-intro') return '18:40'
+  if (progress.phase === 'flirt-choice') return '18:50'
+  if (progress.phase === 'flirt-result') return '18:55'
   if (progress.phase === 'interaction') return ['19:00', '19:25', '19:50', '20:15', '20:40'][progress.roundIndex]
   return '21:15'
 }
@@ -61,6 +67,34 @@ const transitionBlocks: Block[] = [
   n('偏偏爸媽今天都不在家。你試著聯絡他們，卻沒辦法馬上等到人回來。天色一點點暗下去，你只好抱著包坐在門邊，拿出手機。'),
   n('通訊錄裡幾個熟悉的名字排在眼前。你想了想，決定自己傳訊息求助。'),
 ]
+
+const sharedBedFlirtIntro: Block[] = [
+  n('房間裡慢慢安靜下來，冷氣的聲音在耳邊持續響著。你夾在兩個人中間，左右兩邊都還有細微的動靜，看來誰也沒有真的睡著。'),
+  n('你把棉被拉到胸口，忍不住轉了轉眼睛。難得三個人擠在同一張床上，忽然很想趁這個機會，偷偷逗其中一個人一下。'),
+]
+
+const sharedBedFlirtResponses: Record<JulyLostKeyFlirtTarget, Block[]> = {
+  wen: [
+    n('你把臉從棉被裡露出來，朝溫尚翊那邊輕輕叫了一聲。他原本正盯著天花板，聽見你叫他，立刻轉過頭來。'),
+    d('你', '怪獸，你剛剛是不是比我還緊張？'),
+    n('溫尚翊眉毛一下挑起來，像是沒想到你還記得剛才的事。'),
+    d('溫尚翊', '蛤？我哪有！'),
+    d('你', '那你剛剛怎麼一直坐得那麼僵？'),
+    n('他張了張嘴，像是想反駁，最後只把棉被往上拉了一點，視線又轉回天花板。'),
+    d('溫尚翊', '我是在想妳明天怎麼拿到鑰匙啦。'),
+    n('他說得理直氣壯，耳根卻悄悄紅了一點。隔了一會兒，他又把自己的被角拉好，故意不再看你。'),
+    d('溫尚翊', '快睡啦，明天再來笑我。'),
+  ],
+  ashin: [
+    n('你輕輕轉頭看向阿信。他察覺你的視線，沒有馬上說話，只是把聲音放低，免得吵到另一邊的溫尚翊。'),
+    d('你', '阿信，如果我睡不著，你會陪我聊到睡著嗎？'),
+    n('阿信先是愣了一下，隨即笑了。他把棉被邊緣理平，像是怕你又著涼。'),
+    d('陳信宏', '會啊。'),
+    d('陳信宏', '不過妳要是真的睏了，就不要硬撐著陪我聊天。'),
+    n('他側過身，留意著你這邊的動靜，聲音又輕了一點。'),
+    d('陳信宏', '妳想講什麼，我都聽。'),
+  ],
+}
 
 const routes: Record<JulyLostKeyCharacter, Route> = {
   wen: {
@@ -79,9 +113,10 @@ const routes: Record<JulyLostKeyCharacter, Route> = {
       n('他抬手抓了抓後腦勺，嘴上嫌棄，卻還是蹲下來幫你看了一眼包包側邊的夾層。確認真的沒有之後，他站起來，陪你又聯絡了一次爸媽。'),
       n('眼看一時半會兒等不到人回來，附近也沒有能立刻借住的親戚，溫尚翊看了看已經暗下來的天色，最後決定先帶你去附近找家旅館。'),
       n('你們走進附近一間旅館。櫃檯人員查了一下空房，抬頭時露出有些抱歉的表情。'),
-      n('櫃檯人員查過空房後，才抬頭告訴你們：今天只剩下一間雙人房，而且是一張大床的房型。'),
+      d('櫃檯人員', '不好意思，今天只剩下一間雙人房，而且是一張大床的房型。'),
       n('你和溫尚翊幾乎同時安靜下來。你下意識轉頭看他，他原本插在口袋裡的手慢慢抽了出來，視線在櫃檯和房間介紹之間來回了一次。'),
       d('溫尚翊', '啊……這樣喔。'), d('溫尚翊', '不然我們再去別家看看好了。'),
+      d('櫃檯人員', '不好意思，附近幾間旅館今天也都沒有空房了。'),
       n('他清了清喉嚨，像是想說什麼，卻又不知道該從哪裡開口。過了幾秒，他才抬手摸了摸鼻子，聲音比剛才小了一點。'),
       d('溫尚翊', '不然……'), d('溫尚翊', '妳要是不放心的話，我把陳信宏喊來。'), d('你', '啊？'),
       d('溫尚翊', '不是啦！我是說……'),
@@ -741,6 +776,7 @@ export function JulyLostKeyStory({
   const [progress, setProgress] = useState<Progress>(readProgress)
   const sendLocked = useRef(false)
   const choiceLocked = useRef(false)
+  const flirtChoiceLocked = useRef(false)
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(progress))
@@ -753,7 +789,7 @@ export function JulyLostKeyStory({
     if (!route || route.rounds.length !== 5 || route.messages.length === 0) return
     sendLocked.current = true
     onAppendMessages(character, route.messages, '1997年7月15日・傍晚')
-    setProgress({ phase: 'message', character, roundIndex: 0, pendingChoice: null, choices: [] })
+    setProgress({ phase: 'message', character, roundIndex: 0, pendingChoice: null, choices: [], flirtTarget: null })
   }
 
   const continueMessage = () => {
@@ -763,7 +799,21 @@ export function JulyLostKeyStory({
 
   const startRounds = () => {
     if (progress.phase !== 'route-intro' || !progress.character) return
-    setProgress((current) => ({ ...current, phase: 'interaction', roundIndex: 0, pendingChoice: null, choices: [] }))
+    const nextPhase: Phase = progress.character === 'wen' || progress.character === 'ashin' ? 'flirt-choice' : 'interaction'
+    flirtChoiceLocked.current = false
+    setProgress((current) => ({ ...current, phase: nextPhase, roundIndex: 0, pendingChoice: null, choices: [], flirtTarget: null }))
+  }
+
+  const chooseFlirtTarget = (target: JulyLostKeyFlirtTarget) => {
+    if (progress.phase !== 'flirt-choice' || (progress.character !== 'wen' && progress.character !== 'ashin') || progress.flirtTarget !== null || flirtChoiceLocked.current) return
+    flirtChoiceLocked.current = true
+    onAddAffection(target, 2)
+    setProgress((current) => ({ ...current, phase: 'flirt-result', flirtTarget: target }))
+  }
+
+  const continueFlirt = () => {
+    if (progress.phase !== 'flirt-result' || !progress.flirtTarget) return
+    setProgress((current) => ({ ...current, phase: 'interaction', roundIndex: 0, pendingChoice: null }))
   }
 
   const chooseChoice = (choiceIndex: number) => {
@@ -788,11 +838,12 @@ export function JulyLostKeyStory({
 
   const finish = () => {
     if (!progress.character || progress.choices.length !== 5 || progress.phase !== 'complete') return
-    onFinish({ character: progress.character, choices: [...progress.choices] })
+    onFinish({ character: progress.character, choices: [...progress.choices], flirtTarget: progress.flirtTarget })
   }
 
   const route = progress.character ? routes[progress.character] : null
   const currentRound = route?.rounds[progress.roundIndex]
+  const selectedFlirtResponse = progress.flirtTarget ? sharedBedFlirtResponses[progress.flirtTarget] : null
   const selectedChoice = progress.pendingChoice !== null && currentRound ? currentRound.choices[progress.pendingChoice] : null
 
   return (
@@ -800,13 +851,13 @@ export function JulyLostKeyStory({
       <div className="story-screen-head">
         <div className="chapter-mark">七月・暑假</div>
         <div className="story-contact-title">
-          <strong>忘記帶鑰匙的晚上</strong>
-          <small>1997 年 7 月 15 日・星期二</small>
+          <strong>{progress.phase === 'message' && route ? route.name : '忘記帶鑰匙的晚上'}</strong>
+          <small>{progress.phase === 'message' ? '簡訊・1997 年 7 月 15 日' : '1997 年 7 月 15 日・星期二'}</small>
         </div>
         <span className="story-head-spacer" />
       </div>
-      <div className="story-narrative-scroll">
-        <div className="story-kicker">JULY · SUMMER VACATION</div>
+      <div className={progress.phase === 'message' ? 'story-narrative-scroll july-sms-screen' : 'story-narrative-scroll'}>
+        {progress.phase !== 'message' && <div className="story-kicker">JULY · SUMMER VACATION</div>}
         {progress.phase === 'intro' && (
           <>
             <h2 className="story-scene-title">暑假總算開始了</h2>
@@ -834,16 +885,28 @@ export function JulyLostKeyStory({
           </>
         )}
         {progress.phase === 'message' && route && (
-          <>
-            <h2 className="story-scene-title">已傳送給{route.name}</h2>
-            <p className="narrative-paragraph">你按下傳送鍵後，手機很快就亮了起來。</p>
-            <Blocks blocks={route.sms} />
-            <div className="story-action-bar story-inline-action">
+          <div className="sms-thread july-sms-thread">
+            <div className="sms-thread-caption">
+              <span>與{route.name}的簡訊</span>
+              <small>訊息會一直保留在這裡</small>
+            </div>
+            <div className="story-message-scroll">
+              <div className="story-date-label">1997年7月15日・傍晚</div>
+              {route.messages.map((message, index) => {
+                const mine = message.from === 'me'
+                return (
+                  <div className={'message-row' + (mine ? ' mine' : '')} key={index}>
+                    <div className={'message-bubble' + (mine ? ' mine' : '')}>{message.text}</div>
+                  </div>
+                )
+              })}
+            </div>
+            <div className="sms-thread-actions">
               <button className="story-primary-button" onClick={continueMessage}>
                 看看他怎麼趕來 <ChevronRight size={15} />
               </button>
             </div>
-          </>
+          </div>
         )}
         {progress.phase === 'route-intro' && route && (
           <>
@@ -851,6 +914,32 @@ export function JulyLostKeyStory({
             <Blocks blocks={route.intro} />
             <div className="story-action-bar story-inline-action">
               <button className="story-primary-button" onClick={startRounds}>
+                繼續今晚的相處 <ChevronRight size={15} />
+              </button>
+            </div>
+          </>
+        )}
+        {progress.phase === 'flirt-choice' && route && (
+          <>
+            <h2 className="story-scene-title">三個人都還沒睡著</h2>
+            <Blocks blocks={sharedBedFlirtIntro} />
+            <div className="choice-area">
+              <div className="choice-heading">你想偷偷逗誰一下？</div>
+              <button className="reply-choice" onClick={() => chooseFlirtTarget('wen')}>
+                <span>轉頭逗逗溫尚翊，問他是不是比你還緊張</span><ChevronRight size={15} />
+              </button>
+              <button className="reply-choice" onClick={() => chooseFlirtTarget('ashin')}>
+                <span>小聲問阿信，如果你睡不著，他會不會陪你聊天</span><ChevronRight size={15} />
+              </button>
+            </div>
+          </>
+        )}
+        {progress.phase === 'flirt-result' && selectedFlirtResponse && progress.flirtTarget && (
+          <>
+            <h2 className="story-scene-title">{progress.flirtTarget === 'wen' ? '溫尚翊・睡前的小聲音' : '陳信宏・睡前的小聲音'}</h2>
+            <Blocks blocks={selectedFlirtResponse} />
+            <div className="story-action-bar story-inline-action">
+              <button className="story-primary-button" onClick={continueFlirt}>
                 繼續今晚的相處 <ChevronRight size={15} />
               </button>
             </div>
