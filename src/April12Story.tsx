@@ -97,8 +97,8 @@ const discussionBlocks: April12Block[] = [
   { kind: 'dialogue', speaker: '陳信宏', text: '說不定大家想的都差不多啊。' },
   { kind: 'narration', text: '阿信把紙攤平，拿起筆在上面補了幾個曲名。你坐在旁邊聽他們討論，這才注意到錢佑達今天格外安靜。' },
   { kind: 'narration', text: '佑達坐在鼓組旁邊，手裡拿著鼓棒，偶爾轉兩下，更多時候只是聽大家說話。平常這種時候，他總會跟著插幾句，今天卻一直沒怎麼出聲。你看了他一眼，沒太在意，又把注意力放回桌邊的討論。' },
-  { kind: 'dialogue', speaker: '石錦航', text: '不過我跟瑪莎最近真的要準備聯考了，可能沒那麼多時間。' },
-  { kind: 'dialogue', speaker: '瑪莎', text: '對啦！先讓我把聯考考完好不好？我現在看到書就頭痛。' },
+  { kind: 'dialogue', speaker: '石錦航', text: '不過我跟瑪莎最近真的要準備期中考了，可能沒那麼多時間。' },
+  { kind: 'dialogue', speaker: '瑪莎', text: '對啦！先讓我把期中考考完好不好？我現在看到書就頭痛。' },
   { kind: 'dialogue', speaker: '溫尚翊', text: '那就等你們考完再說啊。' },
   { kind: 'dialogue', speaker: '陳信宏', text: '這樣也好啦，先把想法留著。' },
   { kind: 'dialogue', speaker: '陳信宏', text: '等你們考完，我們再找一天慢慢弄，不用急啦。' },
@@ -111,7 +111,7 @@ const discussionBlocks: April12Block[] = [
   { kind: 'dialogue', speaker: '陳信宏', text: '好喔，那我們先練一遍。' },
   { kind: 'dialogue', speaker: '陳信宏', text: '剛剛講的先放著，等有空再繼續討論就好了。' },
   { kind: 'narration', text: '阿信把寫滿曲名的紙疊好，放在桌子旁邊。怪獸拿起吉他，瑪莎把 Bass 背好，石頭蹲下來整理導線，佑達也轉回鼓組後面，拿起鼓棒在鼓面上敲了兩下。' },
-  { kind: 'narration', text: '關於 Demo 和寄唱片公司的事情，暫時就這樣告一段落。沒有決定錄哪幾首，也沒有定下時間，只約好等瑪莎和石頭考完聯考，再找時間好好討論。練團室很快重新響起熟悉的聲音。' },
+  { kind: 'narration', text: '關於 Demo 和寄唱片公司的事情，暫時就這樣告一段落。沒有決定錄哪幾首，也沒有定下時間，只約好等瑪莎和石頭考完期中考，再找時間好好討論。練團室很快重新響起熟悉的聲音。' },
 ]
 
 const routes: Record<April12Character, April12Route> = {
@@ -249,7 +249,7 @@ export function buildApril12DiaryData(character: April12Character, choices: numb
   const text = [
     '今天回家以後，腦袋裡還一直回放佑達那句「好了好了，先練團啦！再講下去，今天是不是不用練了？」',
     '本來以為一進練團室就會聽見吉他聲，結果大家居然圍著桌子討論起 Demo。阿信說要先錄一份，不然光寄信人家也不知道他們的歌是什麼樣子；怪獸忙著想曲目，瑪莎則一直提醒錄音要花錢。幾個人明明是在講很認真的事，講著講著又差點吵起來。',
-    '石頭和瑪莎最近要準備聯考，最後只好約好等考完再繼續談。佑達一開始真的安靜得出奇，我有看他兩眼，不過也沒多想。等大家又開始繞著曲目打轉，他才把鼓棒往腿上一搭，直接把人都趕回去練團。那句「好了好了」現在想起來還是很好笑。',
+    '石頭和瑪莎最近要準備期中考，最後只好約好等考完再繼續談。佑達一開始真的安靜得出奇，我有看他兩眼，不過也沒多想。等大家又開始繞著曲目打轉，他才把鼓棒往腿上一搭，直接把人都趕回去練團。那句「好了好了」現在想起來還是很好笑。',
     memories[0],
     memories[1],
     memories[2],
@@ -344,7 +344,7 @@ export function April12Story({
           <>
             <h2 className="story-scene-title">今天還沒開始練，就先開起會來了。</h2>
             <April12Blocks blocks={discussionBlocks} />
-            <div className="reunion-pause-note">Demo 的事情先留到聯考結束以後，今天先把歌練好。</div>
+            <div className="reunion-pause-note">Demo 的事情先留到期中考結束以後，今天先把歌練好。</div>
             <div className="story-action-bar story-inline-action">
               <button className="story-primary-button" onClick={() => setProgress((current) => ({ ...current, phase: 'picker' }))}>
                 等大家開始練團 <ChevronRight size={15} />
@@ -407,7 +407,7 @@ export function April12Story({
           <>
             <h2 className="story-scene-title">1997 年 4 月 12 日・練團結束</h2>
             <p className="narrative-paragraph">{route.ending}</p>
-            <p className="narrative-paragraph">今天沒有把 Demo 的事情討論出結果，不過那張寫滿歌名的紙還留在桌邊。等瑪莎和石頭考完聯考，大家應該還會再把它拿出來。</p>
+            <p className="narrative-paragraph">今天沒有把 Demo 的事情討論出結果，不過那張寫滿歌名的紙還留在桌邊。等瑪莎和石頭考完期中考，大家應該還會再把它拿出來。</p>
             <div className="reunion-pause-note">回家洗完澡，今天的小事好像還值得記下來。</div>
             <div className="story-action-bar story-inline-action">
               <button className="story-primary-button" onClick={() => onFinish({ character: progress.character as April12Character, choices: progress.choices })}>
