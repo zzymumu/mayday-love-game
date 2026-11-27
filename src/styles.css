@@ -1971,6 +1971,100 @@ button { cursor: pointer; }
   box-shadow: 0 5px 16px rgba(85, 65, 49, .13);
   transform: rotate(-.65deg);
 }
+.september-camera-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  margin: 14px auto 18px;
+}
+.september-camera-body {
+  position: relative;
+  width: 188px;
+  height: 108px;
+  border: 1px solid #aaa9a4;
+  border-radius: 13px;
+  background: linear-gradient(145deg, #f5f3ed 0%, #d5d4cf 48%, #b7b7b2 100%);
+  box-shadow: inset 0 2px 4px rgba(255,255,255,.9), 0 5px 12px rgba(50,45,40,.18);
+}
+.september-camera-topline {
+  position: absolute;
+  top: 10px;
+  left: 13px;
+  color: #565a5c;
+  font: 700 7px/1 monospace;
+  letter-spacing: .12em;
+}
+.september-camera-viewfinder {
+  position: absolute;
+  top: 25px;
+  left: 15px;
+  width: 28px;
+  height: 17px;
+  border: 3px solid #777b7b;
+  border-radius: 3px;
+  background: linear-gradient(135deg, #53666a, #a8b7b4);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.45);
+}
+.september-camera-flash {
+  position: absolute;
+  top: 24px;
+  right: 20px;
+  width: 33px;
+  height: 15px;
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #fff7df, #d7e0dd);
+  box-shadow: inset 0 0 5px rgba(255,255,255,.9);
+}
+.september-camera-lens {
+  position: absolute;
+  left: 72px;
+  top: 29px;
+  display: grid;
+  place-items: center;
+  width: 61px;
+  height: 61px;
+  border: 5px solid #777b7c;
+  border-radius: 50%;
+  background: radial-gradient(circle, #17272c 0 18%, #48636a 19% 35%, #20292c 36% 55%, #a6a8a5 56% 62%, #555a5c 63%);
+  box-shadow: 0 0 0 3px #d5d4cf, inset 0 0 0 2px rgba(255,255,255,.25);
+}
+.september-camera-lens i {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: rgba(161,207,208,.42);
+  box-shadow: 4px -3px 0 -3px rgba(255,255,255,.85);
+}
+.september-camera-shutter {
+  position: absolute;
+  top: 13px;
+  right: 60px;
+  width: 13px;
+  height: 8px;
+  border-radius: 3px 3px 1px 1px;
+  background: #8c4e47;
+  box-shadow: 0 1px 1px rgba(0,0,0,.2);
+}
+.september-camera-counter {
+  position: absolute;
+  right: 15px;
+  bottom: 14px;
+  padding: 3px 5px;
+  border: 1px solid #a8a8a2;
+  border-radius: 2px;
+  background: #343a3a;
+  color: #d9e4d8;
+  font: 8px/1 monospace;
+  letter-spacing: .08em;
+}
+.september-camera-card small {
+  color: #9b8877;
+  font-size: 8px;
+  letter-spacing: .12em;
+}
 .september-photo-image {
   position: relative;
   height: 154px;
@@ -1986,6 +2080,25 @@ button { cursor: pointer; }
   border-radius: 50%;
   background: #fff0c8;
   box-shadow: 0 0 22px rgba(255, 237, 190, .65);
+}
+.september-photo-image::after {
+  content: '';
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  pointer-events: none;
+  opacity: .13;
+  background-image: repeating-linear-gradient(0deg, rgba(255,255,255,.35) 0 1px, transparent 1px 3px);
+}
+.september-photo-stamp {
+  position: absolute;
+  z-index: 4;
+  right: 8px;
+  bottom: 7px;
+  color: rgba(255, 242, 210, .9);
+  font: 7px/1 monospace;
+  letter-spacing: .08em;
+  text-shadow: 0 1px 2px rgba(30,35,35,.45);
 }
 .september-photo-sea {
   position: absolute;
