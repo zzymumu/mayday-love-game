@@ -1629,6 +1629,30 @@ button { cursor: pointer; }
   line-height: 1.7;
   text-align: center;
 }
+.save-center-reset {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  margin: 13px 2px 4px;
+  padding-top: 10px;
+  border-top: 1px solid #e9dccb;
+}
+.save-reset-action {
+  padding: 6px 9px;
+  border: 0;
+  background: transparent;
+  color: #ae746b;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 9px;
+  text-decoration: underline;
+}
+.save-center-reset small {
+  color: #a18d7b;
+  font-size: 7px;
+  line-height: 1.6;
+  text-align: center;
+}
 
 
 /* 0.4.7 — month-later visits */
