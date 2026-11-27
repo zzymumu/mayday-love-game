@@ -576,7 +576,7 @@ const DAY_START_STAGE_DATES: Partial<Record<StoryStage, string>> = {
 
 const isAtDayOpening = (stage: StoryStage, savedData?: Record<string, string>): boolean => {
   if (stage === 'september-story') {
-    const raw = savedData ? savedData['mayday-september-story-progress-v1'] : localStorage.getItem('mayday-september-story-progress-v1')
+    const raw = savedData ? savedData['mayday-september-story-progress-v2'] : localStorage.getItem('mayday-september-story-progress-v2')
     if (!raw) return true
     try {
       const saved = JSON.parse(raw) as { phase?: unknown } | null
@@ -614,7 +614,7 @@ const isAtDayOpening = (stage: StoryStage, savedData?: Record<string, string>): 
 
 const getDayStartDate = (stage: StoryStage, savedData?: Record<string, string>): string | null => {
   if (stage === 'september-story') {
-    const raw = savedData ? savedData['mayday-september-story-progress-v1'] : localStorage.getItem('mayday-september-story-progress-v1')
+    const raw = savedData ? savedData['mayday-september-story-progress-v2'] : localStorage.getItem('mayday-september-story-progress-v2')
     if (!raw) return '1997.09.03'
     try {
       const saved = JSON.parse(raw) as { phase?: unknown } | null
@@ -3565,6 +3565,32 @@ function App() {
       : saved.stage
     const legacyExtraChatStage = savedTimelineStage === 'spring-free-chat-picker' || savedTimelineStage === 'spring-free-chat'
     const eventTimelineStage = legacyExtraChatStage ? 'spring-diary' : savedTimelineStage
+
+    // September's revised Green Island trip replaces the earlier draft.
+    // When loading an old September save, keep all earlier game progress and affection,
+    // but restart only this chapter so the old in-chapter checkpoint cannot resume.
+    const hasLegacySeptemberProgress = Boolean(restoredData['mayday-september-story-progress-v1']) &&
+      !restoredData['mayday-september-story-progress-v2']
+    const isLegacySeptemberTimeline = eventTimelineStage === 'september-story' ||
+      eventTimelineStage === 'september-diary' ||
+      (saved.gameDate === '1997.09.06' &&
+        (eventTimelineStage === 'completed' || restoredData['mayday-september-day-complete'] === 'true'))
+    if (hasLegacySeptemberProgress && isLegacySeptemberTimeline) {
+      ;[
+        'mayday-september-story-progress-v1',
+        'mayday-september-story-selection',
+        'mayday-september-day-complete',
+        'mayday-september-photo-memory',
+        'mayday-september-diary-pending-data',
+        'mayday-september-diary-data',
+        'mayday-september-diary-unlocked',
+      ].forEach((key) => delete restoredData[key])
+      restoredData['mayday-story-stage'] = 'september-story'
+      delete restoredData['mayday-resume-stage']
+      restoredData['mayday-september-started'] = 'true'
+      restoredData['mayday-september-date'] = '1997.09.03'
+      restoredData['mayday-september-clock'] = '19:20'
+    }
     if (legacyExtraChatStage) {
       // Old saves from the mistakenly-added extra chat resume at the original diary.
       const pendingDiary = (() => {
