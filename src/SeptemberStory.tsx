@@ -1143,7 +1143,7 @@ const phaseClock = (progress: Progress): string => {
   if (progress.phase === 'day-two-morning') return '08:05'
   if (progress.phase === 'scooter-picker') return '09:15'
   if (progress.phase === 'scooter-interaction') return ['09:45', '10:10', '10:35', '11:00', '11:25'][progress.scooter.roundIndex]
-  if (progress.phase === 'coast-photo') return '20:00'
+  if (progress.phase === 'coast-photo') return '16:45'
   if (progress.phase === 'sunset-group') return ['17:10', '17:35', '18:00'][progress.sunsetGroup.roundIndex]
   if (progress.phase === 'sunset-picker') return '18:15'
   if (progress.phase === 'sunset-interaction') return ['18:25', '18:40', '18:55', '19:10', '19:25'][progress.sunset.roundIndex]
