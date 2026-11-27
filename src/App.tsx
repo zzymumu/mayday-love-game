@@ -2600,7 +2600,17 @@ function App() {
   const [april30DiaryData, setApril30DiaryData] = useState<April30DiaryData | null>(() => {
     try {
       const saved = JSON.parse(localStorage.getItem('mayday-april30-diary-data') ?? 'null') as Partial<April30DiaryData> | null
-      if (saved && typeof saved.title === 'string' && typeof saved.text === 'string') return { title: saved.title, text: saved.text }
+      if (saved && typeof saved.title === 'string' && typeof saved.text === 'string') {
+        const savedRoute = localStorage.getItem('mayday-april30-route') as April30Route | null
+        if (savedRoute && localStorage.getItem('mayday-april30-day-complete') === 'true') {
+          const rebuilt = buildApril30DiaryData(savedRoute)
+          if (saved.text !== rebuilt.text) {
+            localStorage.setItem('mayday-april30-diary-data', JSON.stringify(rebuilt))
+            return rebuilt
+          }
+        }
+        return { title: saved.title, text: saved.text }
+      }
     } catch { /* Rebuild the entry from the completed day below. */ }
     if (localStorage.getItem('mayday-april30-day-complete') === 'true') {
       const rebuilt = buildApril30DiaryData()
