@@ -576,7 +576,7 @@ const DAY_START_STAGE_DATES: Partial<Record<StoryStage, string>> = {
 
 const isAtDayOpening = (stage: StoryStage, savedData?: Record<string, string>): boolean => {
   if (stage === 'september-story') {
-    const raw = savedData ? savedData['mayday-september-story-progress-v3'] : localStorage.getItem('mayday-september-story-progress-v3')
+    const raw = savedData ? savedData['mayday-september-story-progress-v4'] : localStorage.getItem('mayday-september-story-progress-v4')
     if (!raw) return true
     try {
       const saved = JSON.parse(raw) as { phase?: unknown } | null
@@ -614,7 +614,7 @@ const isAtDayOpening = (stage: StoryStage, savedData?: Record<string, string>): 
 
 const getDayStartDate = (stage: StoryStage, savedData?: Record<string, string>): string | null => {
   if (stage === 'september-story') {
-    const raw = savedData ? savedData['mayday-september-story-progress-v3'] : localStorage.getItem('mayday-september-story-progress-v3')
+    const raw = savedData ? savedData['mayday-september-story-progress-v4'] : localStorage.getItem('mayday-september-story-progress-v4')
     if (!raw) return '1997.09.03'
     try {
       const saved = JSON.parse(raw) as { phase?: unknown } | null
@@ -3569,18 +3569,20 @@ function App() {
     // September's revised Green Island trip replaces the earlier draft.
     // When loading an old September save, keep all earlier game progress and affection,
     // but restart only this chapter so the old in-chapter checkpoint cannot resume.
-    const hasPreV3SeptemberProgress = Boolean(
+    const hasPreV4SeptemberProgress = Boolean(
       restoredData['mayday-september-story-progress-v1'] ||
-      restoredData['mayday-september-story-progress-v2']
-    ) && !restoredData['mayday-september-story-progress-v3']
-    const isPreV3SeptemberTimeline = eventTimelineStage === 'september-story' ||
+      restoredData['mayday-september-story-progress-v2'] ||
+      restoredData['mayday-september-story-progress-v3']
+    ) && !restoredData['mayday-september-story-progress-v4']
+    const isPreV4SeptemberTimeline = eventTimelineStage === 'september-story' ||
       eventTimelineStage === 'september-diary' ||
       (saved.gameDate === '1997.09.06' &&
         (eventTimelineStage === 'completed' || restoredData['mayday-september-day-complete'] === 'true'))
-    if (hasPreV3SeptemberProgress && isPreV3SeptemberTimeline) {
+    if (hasPreV4SeptemberProgress && isPreV4SeptemberTimeline) {
       ;[
         'mayday-september-story-progress-v1',
         'mayday-september-story-progress-v2',
+        'mayday-september-story-progress-v3',
         'mayday-september-story-selection',
         'mayday-september-day-complete',
         'mayday-september-photo-memory',
@@ -3588,7 +3590,7 @@ function App() {
         'mayday-september-diary-data',
         'mayday-september-diary-unlocked',
       ].forEach((key) => delete restoredData[key])
-      // Keep existing September affection guards so replaying the migrated chapter cannot farm points.
+      // Keep earlier affection history and its duplicate guards; only this chapter restarts.
       restoredData['mayday-story-stage'] = 'september-story'
       delete restoredData['mayday-resume-stage']
       restoredData['mayday-september-started'] = 'true'
@@ -6702,11 +6704,12 @@ function App() {
   }
 
   const startSeptemberStory = () => {
-    // Starting the revised September chapter clears only September's previous draft progress.
+    // Start the rewritten Green Island chapter from its opening, without touching earlier chapters or affection.
     ;[
       'mayday-september-story-progress-v1',
       'mayday-september-story-progress-v2',
       'mayday-september-story-progress-v3',
+      'mayday-september-story-progress-v4',
       'mayday-september-story-selection',
       'mayday-september-day-complete',
       'mayday-september-photo-memory',
@@ -6714,7 +6717,7 @@ function App() {
       'mayday-september-diary-data',
       'mayday-september-diary-unlocked',
     ].forEach((key) => localStorage.removeItem(key))
-    // Keep existing September affection guards to prevent duplicate affection from a replay.
+    // Keep existing September affection guards so replaying the chapter cannot farm points.
     localStorage.setItem('mayday-september-started', 'true')
     localStorage.setItem('mayday-september-date', '1997.09.03')
     localStorage.setItem('mayday-september-clock', '19:20')
