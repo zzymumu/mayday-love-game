@@ -369,7 +369,7 @@ export function rewindAugustStoryToStart(
   const validPhase = (value: unknown): value is Phase =>
     typeof value === 'string' && ['transition', 'store-intro', 'store-interaction', 'store-ending', 'evening-choice', 'fried-intro', 'fried-picker', 'yanming-intro', 'evening-interaction', 'evening-ending'].includes(value)
   const validChoice = (value: unknown): value is number =>
-    Number.isInteger(value) && Number(value) >= 0 && Number(value) <= 2
+    typeof value === 'number' && Number.isInteger(value) && value >= 0 && value <= 2
   const parseArray = (value: string | undefined): unknown[] => {
     try {
       const parsed = JSON.parse(value ?? '[]') as unknown
@@ -440,7 +440,10 @@ export function rewindAugustStoryToStart(
   const restoredAffection: Partial<Record<AugustCharacter, number>> = { ...currentAffection }
   ORDER.forEach((character) => {
     const current = currentAffection[character]
-    if (typeof current !== 'number' || !Number.isFinite(current)) return
+    if (typeof current !== 'number' || !Number.isFinite(current)) {
+      if (earned[character] !== 0) return null
+      return
+    }
     restoredAffection[character] = current - earned[character]
   })
   data['mayday-route-affection'] = JSON.stringify(restoredAffection)
