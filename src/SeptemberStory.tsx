@@ -1065,6 +1065,16 @@ const sunsetGroupRounds: [GroupRound, GroupRound, GroupRound] = [
 ]
 
 
+const photoChoices: [GroupChoice, GroupChoice, GroupChoice, GroupChoice, GroupChoice] = [
+  gc('拉住溫尚翊的外套袖子，叫他站近一點，不要躲到最旁邊。', 'wen', '溫尚翊', '我哪有躲？……好啦，妳站中間一點，這樣才拍得到。', 2),
+  gc('朝阿信招招手，讓他站到你旁邊一起看鏡頭。', 'ashin', '陳信宏', '好啊，我站這裡。妳頭髮被風吹起來了，等一下我提醒妳。', 2),
+  gc('抓住瑪莎的手臂，不准他趁倒數時跑去躲鏡頭。', 'masa', '瑪莎', '欸！我哪有要躲？妳先放手啦……好啦，站這裡。', 2),
+  gc('站到石頭旁邊，請他也不要只顧著按快門，這次要一起入鏡。', 'stone', '石錦航', '好，我把定時器設好就過去。妳幫我留個位置。', 2),
+  gc('把諺明哥拉到大家中間，說這張照片不能少了他。', 'yanming', '劉諺明', '好，這次我不站外面了。大家靠近一點，才不會有人被切掉。', 2),
+]
+
+const sunsetSoloRoutes: CharacterRecord = sunsetRoutes
+
 const initialInteraction = (): Interaction => ({ character: null, roundIndex: 0, pendingChoice: null, choices: [] })
 const initialGroup = (): GroupProgress => ({ roundIndex: 0, pendingChoice: null, choices: [] })
 const initialProgress = (): Progress => ({
