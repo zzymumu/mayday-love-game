@@ -6650,7 +6650,7 @@ function App() {
 
   const startSeptemberStory = () => {
     localStorage.setItem('mayday-september-started', 'true')
-    localStorage.setItem('mayday-september-date', '1997.09.04')
+    localStorage.setItem('mayday-september-date', '1997.09.03')
     setActiveApp(null)
     setSelectedDiaryDate(null)
     setSelectedSmsThread(null)
