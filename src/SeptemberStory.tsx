@@ -894,6 +894,11 @@ export function SeptemberStory({
           <>
             <Blocks blocks={[d('你', selected.text)]} />
             <Blocks blocks={selected.response} />
+            {section === 'poker' && state.roundIndex === 2 && (
+              <Blocks blocks={[
+                n('最後一張牌落下，諺明哥把牌面看了一遍，宣布瑪莎這把輸得最徹底。瑪莎立刻把牌往桌上一放，說一定是有人剛才偷換過順序；溫尚翊笑到拍了兩下桌面，阿信伸手把差點翻倒的水果盤扶好，石頭則把散落的牌一張張收回來。諺明哥只提醒他願賭服輸，瑪莎最後還是摸出零錢，說自己去買宵夜。'),
+              ]} />
+            )}
             <div className="story-action-bar story-inline-action">
               <button className="story-primary-button" onClick={() => continueGroupRound(section)}>
                 {state.roundIndex < 2 ? '下一把，繼續玩' : section === 'poker' ? '牌局結束，去外面透透氣' : '太陽快下山了'} <ChevronRight size={15} />
