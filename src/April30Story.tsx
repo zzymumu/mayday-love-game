@@ -409,7 +409,7 @@ const masaRounds: April30Round[] = [
       d('瑪莎', '妳今天不是還有課？怎麼有空跑這麼遠？'),
     ],
     choices: [
-      c('想你們了不行喔？', [
+      c('想你了不行喔？', [
         n('瑪莎瞥了你一眼，故意搓了搓手臂。'),
         d('瑪莎', '哇，講得這麼肉麻。'),
         d('瑪莎', '我雞皮疙瘩都起來了欸。'),
@@ -564,19 +564,19 @@ const stoneRounds: April30Round[] = [
       d('石錦航', '一路過來累不累？淡水今天風有點大。'),
     ],
     choices: [
-      c('我想來看看你們嘛。', [
+      c('還好啦，看到你就不累了。', [
         n('石頭笑了一下，順手把肩上的書包帶往上拉好。'),
-        d('石錦航', '那很好啊。'),
-        d('石錦航', '只是下次可以先跟我說，我怕妳等太久。'),
+        d('石錦航', '妳這樣講，我都不知道要先回哪一句了。'),
+        d('石錦航', '那我們慢慢走，妳也可以順便看看校園。'),
       ], 3),
-      c('我剛好有時間，就過來了。', [
-        d('石錦航', '嗯，最近課業還忙嗎？'),
-        n('他沒有繼續追問，只是配合你的步子慢慢往前走。'),
+      c('有一點，沒想到淡江這麼大。', [
+        d('石錦航', '第一次來會找不到路啦。'),
+        d('石錦航', '等一下我帶妳繞一下，免得妳下次又迷路。'),
       ], 1),
-      c('我怕你們兩個又偷偷跑去玩音樂。', [
+      c('我怕你一下課就直接走掉，所以先來堵人。', [
         n('石頭忍不住笑了。'),
         d('石錦航', '我們今天可是有乖乖上課喔。'),
-        d('石錦航', '而且妳怎麼只抓我們兩個？'),
+        d('石錦航', '我又不會放妳鴿子，幹嘛特地來堵我啦。'),
       ], 2),
     ],
   },
@@ -1050,7 +1050,7 @@ function readProgress(): April30Progress {
         && saved.phase !== 'complete' && saved.roundIndex === 4
         && saved.pendingChoice !== null && saved.route !== 'yanming'
       return {
-        phase: saved.phase as April30Phase,
+        phase: (saved.phase === 'schoolPicker' ? 'otherPicker' : saved.phase) as April30Phase,
         route: saved.route as April30Route | null,
         roundIndex: Math.max(0, Math.min(4, saved.roundIndex as number)),
         choices: saved.choices.filter((value): value is number => Number.isInteger(value) && value >= 0 && value <= 2),
@@ -1195,7 +1195,7 @@ export function April30Story({
     : progress.phase === 'ashin' ? '木吉他的聲音'
       : progress.phase === 'yanming' ? '帶來消息的人'
         : progress.route === 'masa' ? '輔大校園的午後'
-          : '淡水的風'
+          : '淡江校園的風'
 
   const routeIntro = progress.phase === 'ashin' ? ashinIntroBlocks
     : progress.phase === 'yanming' ? yanmingIntroBlocks
