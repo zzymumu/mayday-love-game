@@ -3588,9 +3588,7 @@ function App() {
         'mayday-september-diary-data',
         'mayday-september-diary-unlocked',
       ].forEach((key) => delete restoredData[key])
-      Object.keys(restoredData)
-        .filter((key) => key.startsWith('mayday-september-affection-'))
-        .forEach((key) => delete restoredData[key])
+      // Keep existing September affection guards so replaying the migrated chapter cannot farm points.
       restoredData['mayday-story-stage'] = 'september-story'
       delete restoredData['mayday-resume-stage']
       restoredData['mayday-september-started'] = 'true'
@@ -6716,9 +6714,7 @@ function App() {
       'mayday-september-diary-data',
       'mayday-september-diary-unlocked',
     ].forEach((key) => localStorage.removeItem(key))
-    Object.keys(localStorage)
-      .filter((key) => key.startsWith('mayday-september-affection-'))
-      .forEach((key) => localStorage.removeItem(key))
+    // Keep existing September affection guards to prevent duplicate affection from a replay.
     localStorage.setItem('mayday-september-started', 'true')
     localStorage.setItem('mayday-september-date', '1997.09.03')
     localStorage.setItem('mayday-september-clock', '19:20')
