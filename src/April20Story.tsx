@@ -621,9 +621,9 @@ const characterRoutes: Record<April20Character, April20Route> = {
         ]},
         { text: '你有沒有想過以後真的靠音樂生活？', affection: 2, response: [
           { kind: 'dialogue', speaker: '瑪莎', text: '蛤？妳想得也太遠了吧。' },
-          { kind: 'dialogue', speaker: '瑪莎', text: '我連高三都還沒搞定，妳就在幫我安排職涯了喔？' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '我連大一都還沒搞定，妳就在幫我安排職涯了喔？' },
           { kind: 'narration', text: '他忍不住笑了一下。' },
-          { kind: 'dialogue', speaker: '瑪莎', text: '先讓我把聯考考完再說啦，拜託。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '先讓我把期中考考完再說啦，拜託。' },
         ]},
       ]},
       { setup: [
@@ -671,7 +671,7 @@ const characterRoutes: Record<April20Character, April20Route> = {
           { kind: 'dialogue', speaker: '瑪莎', text: '嗯，現在追出去大概也只是繼續吵。' },
           { kind: 'dialogue', speaker: '瑪莎', text: '等他自己想清楚再說吧。' },
           { kind: 'narration', text: '他把撥片重新夾回指間。' },
-          { kind: 'dialogue', speaker: '瑪莎', text: '不過最好不要讓我等太久，聯考已經夠煩了。' },
+          { kind: 'dialogue', speaker: '瑪莎', text: '不過最好不要讓我等太久，期中考已經夠煩了。' },
         ]},
         { text: '你們也可以試著聽聽他真正想要什麼。', affection: 2, response: [
           { kind: 'dialogue', speaker: '瑪莎', text: '這個我知道啦。' },
