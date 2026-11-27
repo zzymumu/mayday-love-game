@@ -610,12 +610,13 @@ function readProgress(): Progress {
 }
 
 const phaseDate = (phase: Phase): string => {
+  if (phase === 'trip-intro') return '1997.09.03'
   if (['day-two-morning', 'scooter-picker', 'scooter-interaction', 'coast-photo', 'sunset-group', 'sunset-picker', 'sunset-interaction'].includes(phase)) return '1997.09.05'
   if (phase === 'return' || phase === 'ending') return '1997.09.06'
   return '1997.09.04'
 }
 const phaseClock = (progress: Progress): string => {
-  if (progress.phase === 'trip-intro') return '06:35'
+  if (progress.phase === 'trip-intro') return '19:20'
   if (progress.phase === 'train-picker') return '07:10'
   if (progress.phase === 'train-interaction') return ['08:10', '09:05', '10:05'][progress.train.roundIndex]
   if (progress.phase === 'arrival') return '12:30'
@@ -913,7 +914,9 @@ export function SeptemberStory({
     )
   }
 
-  const dayLabel = progress.phase === 'day-two-morning' || progress.phase === 'scooter-picker' || progress.phase === 'scooter-interaction' || progress.phase === 'coast-photo' || progress.phase === 'sunset-group' || progress.phase === 'sunset-picker' || progress.phase === 'sunset-interaction'
+  const dayLabel = progress.phase === 'trip-intro'
+    ? '1997 年 9 月 3 日・星期三・晚上'
+    : progress.phase === 'day-two-morning' || progress.phase === 'scooter-picker' || progress.phase === 'scooter-interaction' || progress.phase === 'coast-photo' || progress.phase === 'sunset-group' || progress.phase === 'sunset-picker' || progress.phase === 'sunset-interaction'
     ? '1997 年 9 月 5 日・星期五'
     : progress.phase === 'return' || progress.phase === 'ending'
       ? '1997 年 9 月 6 日・星期六'
@@ -936,14 +939,14 @@ export function SeptemberStory({
           <>
             <h2 className="story-scene-title">出發！去看海</h2>
             <Blocks blocks={[
-              n('九月的課表還沒有真正排滿，暑假卻已經快走到尾聲。那天下午，練團室的電風扇轉得吱呀作響，大家把琴袋靠在牆邊，誰也不太想立刻回家。瑪莎翻著一本不知道從哪裡拿來的旅遊手冊，忽然把它啪地放到桌上。'),
+              n('你把包放到牆邊，瑪莎正翻著那本旅遊手冊，忽然把它啪地放到桌上。練團室的電風扇轉得吱呀作響，幾個人剛收好樂器，誰也不太想立刻回家。'),
               d('瑪莎', '不然出去玩啊。趁還沒開學，去有海的地方。'),
               n('溫尚翊原本在收導線，聽見這句話抬起頭，嘴上先嫌了一句，手卻沒有停。阿信把木吉他抱在腿上，說最近每天都在練團，好像真的沒有好好出去玩過。石頭提議去東邊，諺明哥拿過手冊看了看，最後指向台東外海的綠島。'),
               d('劉諺明', '搭火車到台東，再轉船上島。三天兩夜剛好，不用趕。'),
               d('你', '綠島！我想去！'),
               n('你幾乎是從椅子上彈起來的。瑪莎看著你笑，溫尚翊把最後一條導線繞好，抬眼說了一句「那就真的去啊」，像是這件事本來就該這麼簡單。'),
-              n('隔天開始，大家真的忙起來。車票、船班、民宿、租車，一件一件確認。更誇張的是，幾個人還決定把樂器帶上：溫尚翊的電吉他、阿信的木吉他、石頭的吉他、瑪莎的 Bass，諺明哥則帶了鼓棒和一件小型打擊樂器。你看著排在門口的琴袋，突然覺得這趟旅行大概不會太安靜。'),
-              n('這次同行的只有你們六個人。沒有臨時加進來的朋友，也沒有誰要趕著回去上課。九月四日一早，大家約在台北車站，搭火車往台東去。'),
+              n('大家七嘴八舌地討論了好一會兒，最後把車票、船班和民宿都確認下來。更誇張的是，幾個人還決定把樂器帶上：溫尚翊的電吉他、阿信的木吉他、石頭的吉他、瑪莎的 Bass，諺明哥則帶了鼓棒和一件小型打擊樂器。你看著排在牆邊的琴袋，突然覺得這趟旅行大概不會太安靜。'),
+              n('這次同行的只有你們六個人。明天一早在台北車站集合，先搭火車到台東，再轉船上綠島。行程終於定下來，大家卻還坐在練團室裡，像是已經開始期待明天了。'),
             ]} />
             <div className="reunion-pause-note">三天兩夜・台東轉船・綠島環島</div>
             <div className="story-action-bar story-inline-action">
