@@ -45,7 +45,7 @@ type Progress = {
 type Section = 'train' | 'homestay' | 'scooter' | 'sunset'
 type CharacterRecord = Record<SeptemberCharacter, [Round, Round, Round, Round, Round]>
 
-const STORAGE_KEY = 'mayday-september-story-progress-v1'
+const STORAGE_KEY = 'mayday-september-story-progress-v2'
 const ORDER: SeptemberCharacter[] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
 const NAMES: Record<SeptemberCharacter, string> = {
   wen: '溫尚翊', ashin: '陳信宏', masa: '瑪莎', stone: '石錦航', yanming: '劉諺明',
@@ -1107,7 +1107,7 @@ function readProgress(): Progress {
 
 const phaseDate = (phase: Phase): string => {
   if (phase === 'trip-intro') return '1997.09.03'
-  if (['day-two-morning', 'scooter-picker', 'scooter-interaction', 'coast-photo', 'sunset-group', 'sunset-picker', 'sunset-interaction'].includes(phase)) return '1997.09.05'
+  if (['day-two-morning', 'scooter-picker', 'scooter-interaction', 'coast-photo', 'sunset-group', 'sunset-picker', 'sunset-interaction', 'sunset-rivalry'].includes(phase)) return '1997.09.05'
   if (phase === 'return' || phase === 'ending') return '1997.09.06'
   return '1997.09.04'
 }
