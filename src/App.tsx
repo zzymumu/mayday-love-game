@@ -232,6 +232,25 @@ const removeDuplicateMasaErrandLine = (messages: SmsMessage[]): SmsMessage[] => 
   })
   return removed ? normalized : messages
 }
+
+const migrateWenClassroomReplyCopy = (messages: SmsMessage[]): SmsMessage[] => {
+  const replacements: Record<string, string> = {
+    '他們兩個都才大一，今天想偷跑出去，剛好被老師逮到。': '他們大概覺得溜出去一下不會怎樣，結果運氣也太差。',
+    '現在還被留下來談話，今天練團才湊不齊人。': '我本來還想趁今天把那段練完，現在只好改天再說。',
+    '平常看起來都很乖，今天倒是很有默契，一起翹課、一起被抓。': '平常看起來都挺乖的，今天膽子倒是不小。',
+    '所以今天練團才湊不齊人。': '等他們回來，我再問問到底跑去哪裡玩，搞不好比我今天的練習還精彩。',
+    '他們兩個今天只是翹課被抓，跟練團有什麼關係。': '我只是難得不用趕去練團，才有空約妳出來。',
+  }
+  let changed = false
+  const normalized = messages.map((message) => {
+    if (message.from !== 'wen' || message.date !== '10月16日・上午' || message.time !== '10:14') return message
+    const replacement = replacements[message.text]
+    if (!replacement) return message
+    changed = true
+    return { ...message, text: replacement }
+  })
+  return changed ? normalized : messages
+}
 type ChatChoice = { text: string; response: string[]; affection: number; nextIncoming?: string }
 type ChatRound = { incoming: string; choices: ChatChoice[] }
 type CallLogEntry = { id: string; character: RouteCharacterId; status: 'answered' | 'missed'; time: string; date?: string }
@@ -274,11 +293,18 @@ const readSaveSlot = (slot: number): SaveSlotData | null => {
     const parsed = JSON.parse(raw) as Partial<SaveSlotData>
     if (parsed.version !== 1 || typeof parsed.savedAt !== 'string' || typeof parsed.gameDate !== 'string' || typeof parsed.gameTime !== 'string' || typeof parsed.stage !== 'string' || !Object.prototype.hasOwnProperty.call(storyStageLabels, parsed.stage) || !parsed.data || typeof parsed.data !== 'object' || Array.isArray(parsed.data)) return null
     const validated = parsed as SaveSlotData
+    let migratedData: Record<string, string> | null = null
+    const updateSavedValue = (key: string, value: string) => {
+      if (!migratedData) migratedData = { ...validated.data }
+      migratedData[key] = value
+    }
     const savedChats = validated.data['mayday-chat-messages']
     if (savedChats) {
       try {
         const chats = JSON.parse(savedChats) as Partial<Record<CharacterId, SmsMessage[]>>
-        const wenMessages = Array.isArray(chats.wen) ? removeDuplicateWenMovieInviteLine(chats.wen) : null
+        const wenMessages = Array.isArray(chats.wen)
+          ? migrateWenClassroomReplyCopy(removeDuplicateWenMovieInviteLine(chats.wen))
+          : null
         const masaMessages = Array.isArray(chats.masa) ? removeDuplicateMasaErrandLine(chats.masa) : null
         if ((wenMessages && wenMessages !== chats.wen) || (masaMessages && masaMessages !== chats.masa)) {
           const migratedChats = {
@@ -286,16 +312,26 @@ const readSaveSlot = (slot: number): SaveSlotData | null => {
             ...(wenMessages ? { wen: wenMessages } : {}),
             ...(masaMessages ? { masa: masaMessages } : {}),
           }
-          const migrated: SaveSlotData = {
-            ...validated,
-            data: { ...validated.data, 'mayday-chat-messages': JSON.stringify(migratedChats) },
-          }
-          localStorage.setItem(SAVE_SLOT_PREFIX + slot, JSON.stringify(migrated))
-          return migrated
+          updateSavedValue('mayday-chat-messages', JSON.stringify(migratedChats))
         }
       } catch {
         // Keep the save slot unchanged if its message history cannot be parsed.
       }
+    }
+    const savedApril30Route = validated.data['mayday-april30-route'] as April30Route | undefined
+    const validApril30Routes: April30Route[] = ['wen', 'ashin', 'masa', 'stone', 'yanming']
+    if (validated.data['mayday-april30-day-complete'] === 'true'
+      && savedApril30Route && validApril30Routes.includes(savedApril30Route)) {
+      const rebuiltDiary = JSON.stringify(buildApril30DiaryData(savedApril30Route))
+      if (validated.data['mayday-april30-diary-data'] !== rebuiltDiary) {
+        updateSavedValue('mayday-april30-diary-data', rebuiltDiary)
+        updateSavedValue('mayday-april30-diary-unlocked', 'true')
+      }
+    }
+    if (migratedData) {
+      const migrated: SaveSlotData = { ...validated, data: migratedData }
+      localStorage.setItem(SAVE_SLOT_PREFIX + slot, JSON.stringify(migrated))
+      return migrated
     }
     return validated
   } catch {
@@ -2006,7 +2042,7 @@ function App() {
         if (parsed && greetingOrder.every((id) => Array.isArray(parsed[id]))) {
           current = {
             ...parsed as Record<CharacterId, SmsMessage[]>,
-            wen: removeDuplicateWenMovieInviteLine(parsed.wen as SmsMessage[]).map((message) => message.text === '今天大家好像都滿喜歡妳的，尤其阿信，一直找妳聊天。'
+            wen: migrateWenClassroomReplyCopy(removeDuplicateWenMovieInviteLine(parsed.wen as SmsMessage[])).map((message) => message.text === '今天大家好像都滿喜歡妳的，尤其阿信，一直找妳聊天。'
               ? { ...message, text: '剛剛在唱片行，妳跟阿信聊得滿開心的嘛。' }
               : message),
             ashin: (parsed.ashin as SmsMessage[]).map((message) => ['剛剛在樂器行碰到你們，感覺你們今天心情很好。我也順利買到吉他弦了。', '剛剛一起逛唱片行滿開心的，妳最後有沒有挑到喜歡的？我本來還想多介紹幾張，結果得趕回去練團。'].includes(message.text)
