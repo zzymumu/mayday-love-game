@@ -1030,7 +1030,7 @@ const pokerRounds: [GroupRound, GroupRound, GroupRound] = [
 
 const sunsetGroupRounds: [GroupRound, GroupRound, GroupRound] = [
   groupRound('把練團室搬到海邊', [
-    n('太陽還掛在海面上，大家已經開始把樂器往避風的地方搬。溫尚翊把效果器和導線放到乾燥的石面上，阿信抱著木吉他找位置，石頭蹲下來幫忙理線。瑪莎扛著 Bass 走到一半就停住，故意把琴盒往溫尚翊那邊一靠。'),
+    n('拍完合照後，大家先把小綿羊牽回民宿，拿了樂器和譜紙，再一起走到海邊一處避風的空地。太陽還掛在海面上，大家開始把樂器往乾燥的石面上搬。溫尚翊把效果器和導線放到乾燥的石面上，阿信抱著木吉他找位置，石頭蹲下來幫忙理線。瑪莎扛著 Bass 走到一半就停住，故意把琴盒往溫尚翊那邊一靠。'),
     d('瑪莎', '我手快斷了，怪獸，幫我一下。'),
     d('溫尚翊', '你剛剛不是說這個重量還好？'),
     n('瑪莎立刻把琴盒往回拉，差點自己踉蹌一步。阿信伸手扶住琴盒，笑到彎下腰；石頭把被風吹走的譜紙壓在相機袋底下。諺明哥把小打擊樂器放好，還不忘提醒大家別把導線拖進沙裡。'),
@@ -1143,7 +1143,7 @@ const phaseClock = (progress: Progress): string => {
   if (progress.phase === 'day-two-morning') return '08:05'
   if (progress.phase === 'scooter-picker') return '09:15'
   if (progress.phase === 'scooter-interaction') return ['09:45', '10:10', '10:35', '11:00', '11:25'][progress.scooter.roundIndex]
-  if (progress.phase === 'coast-photo') return '16:45'
+  if (progress.phase === 'coast-photo') return '15:30'
   if (progress.phase === 'sunset-group') return ['17:10', '17:35', '18:00'][progress.sunsetGroup.roundIndex]
   if (progress.phase === 'sunset-picker') return '18:15'
   if (progress.phase === 'sunset-interaction') return ['18:25', '18:40', '18:55', '19:10', '19:25'][progress.sunset.roundIndex]
@@ -1238,7 +1238,7 @@ export function SeptemberStory({
   }
   const sectionNextPhase: Record<Section, Phase> = {
     train: 'arrival', homestay: 'day-two-morning',
-    scooter: 'sunset-group', sunset: 'coast-photo',
+    scooter: 'coast-photo', sunset: 'return',
   }
   const sectionRoutes: Record<Section, CharacterRecord> = {
     train: trainRoutes, homestay: homestayRoutes, scooter: scooterRoutes, sunset: sunsetSoloRoutes,
@@ -1326,7 +1326,7 @@ export function SeptemberStory({
         rivalry: { ...state.rivalry, roundIndex: state.rivalry.roundIndex + 1, pendingChoice: null },
       }))
     } else {
-      setProgress((state) => ({ ...state, phase: 'coast-photo' }))
+      setProgress((state) => ({ ...state, phase: 'return' }))
     }
   }
 
@@ -1373,7 +1373,7 @@ export function SeptemberStory({
   const continuePhoto = () => {
     if (progress.photoChoice === null) return
     choiceLock.current = false
-    setProgress((state) => ({ ...state, phase: state.sunsetGroup.choices.length === 0 ? 'sunset-group' : 'return' }))
+    setProgress((state) => ({ ...state, phase: 'sunset-group' }))
   }
 
   const startTrain = () => setProgress((state) => ({ ...state, phase: 'train-picker' }))
@@ -1449,7 +1449,7 @@ export function SeptemberStory({
             <Blocks blocks={selected.response} />
             <div className="story-action-bar story-inline-action">
               <button className="story-primary-button" onClick={() => continueRouteRound(section)}>
-                {state.roundIndex < 4 ? '繼續這段旅程' : section === 'train' ? '抵達台東，準備轉船' : section === 'homestay' ? '天亮了，準備出發' : section === 'scooter' ? '把樂器搬到海邊，準備彈唱' : '大家一起拍張合照'} <ChevronRight size={15} />
+                {state.roundIndex < 4 ? '繼續這段旅程' : section === 'train' ? '抵達台東，準備轉船' : section === 'homestay' ? '天亮了，準備出發' : section === 'scooter' ? '午後停在海邊，拍張合照' : '收好樂器，準備回民宿'} <ChevronRight size={15} />
               </button>
             </div>
           </>
@@ -1520,7 +1520,7 @@ export function SeptemberStory({
             <Blocks blocks={selected.response} />
             <div className="story-action-bar story-inline-action">
               <button className="story-primary-button" onClick={continueRivalryRound}>
-                {state.roundIndex < 2 ? '再聊一會兒' : '回到大家身邊，準備拍合照'} <ChevronRight size={15} />
+                {state.roundIndex < 2 ? '再聊一會兒' : '回到大家身邊，收好樂器'} <ChevronRight size={15} />
               </button>
             </div>
           </>
@@ -1656,7 +1656,7 @@ export function SeptemberStory({
           <>
             <h2 className="story-scene-title">海邊停一下，拍張合照</h2>
             <Blocks blocks={[
-              n('下午繞到海岸另一側時，大家看見一處能把整片海收進去的空地，便把小綿羊停在路邊。天邊還亮著，海面被陽光照得一閃一閃。瑪莎先跑到前面張開手臂，說這裡根本是明信片；溫尚翊嫌他擋住海，伸手把他往旁邊推，瑪莎立刻反推回去，兩個人差點又鬧成一團。'),
+              n('中午大家先回民宿吃了飯，休息一會兒，下午才又騎到海岸另一側。那裡有一處能把整片海收進去的空地，大家便把小綿羊停在路邊。天邊還亮著，海面被陽光照得一閃一閃。瑪莎先跑到前面張開手臂，說這裡根本是明信片；溫尚翊嫌他擋住海，伸手把他往旁邊推，瑪莎立刻反推回去，兩個人差點又鬧成一團。'),
               n('石頭從相機袋裡拿出一台銀灰色的三十五毫米傻瓜底片相機。機身邊角有些磨痕，背面的小窗能看見底片張數，鏡頭旁邊還有一顆小小的閃光燈。他轉了轉過片輪，確認底片還剩幾張，才把相機放到一塊平穩的石頭上。'),
               d('石錦航', '今天一定要拍一張六個人的。這卷底片快拍完了，留一張給我們。'),
               n('瑪莎一聽就跑去搶中間的位置，溫尚翊說他站那裡會把海擋掉；阿信笑著往旁邊挪，順手替你把被風吹到嘴邊的頭髮撥開。諺明哥把鼓棒和小袋子放到一旁，也走進鏡頭範圍，沒有再站在外面當負責收東西的人。'),
@@ -1685,7 +1685,7 @@ export function SeptemberStory({
                 <SeptemberPhotoCard />
                 <div className="reunion-pause-note">快門已經記錄下這一秒；底片要等回台北沖洗，才看得到真正的照片。</div>
                 <div className="story-action-bar story-inline-action">
-                  <button className="story-primary-button" onClick={continuePhoto}>收好相機，等照片洗出來 <ChevronRight size={15} /></button>
+                  <button className="story-primary-button" onClick={continuePhoto}>回民宿拿樂器，準備去海邊彈唱 <ChevronRight size={15} /></button>
                 </div>
               </>
             )}
