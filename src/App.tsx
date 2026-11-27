@@ -6684,7 +6684,7 @@ function App() {
     const validSoloLength = (length: number) => length === 5 || length === 3
     if (!selection) return
     const rivalryChoices = selection.rivalryChoices ?? []
-    if ( !validSoloLength(selection.trainChoices.length) || selection.pokerChoices.length !== 3 ||
+    if (!validSoloLength(selection.trainChoices.length) || selection.pokerChoices.length !== 3 ||
       !validSoloLength(selection.homestayChoices.length) || !validSoloLength(selection.scooterChoices.length) ||
       selection.sunsetGroupChoices.length !== 3 || !validSoloLength(selection.sunsetChoices.length) ||
       (selection.rivalCharacter ? rivalryChoices.length !== 3 : rivalryChoices.length !== 0) ||
