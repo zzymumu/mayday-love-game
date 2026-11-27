@@ -438,14 +438,14 @@ export function rewindAugustStoryToStart(
     return null
   }
   const restoredAffection: Partial<Record<AugustCharacter, number>> = { ...currentAffection }
-  ORDER.forEach((character) => {
+  for (const character of ORDER) {
     const current = currentAffection[character]
     if (typeof current !== 'number' || !Number.isFinite(current)) {
       if (earned[character] !== 0) return null
-      return
+      continue
     }
     restoredAffection[character] = current - earned[character]
-  })
+  }
   data['mayday-route-affection'] = JSON.stringify(restoredAffection)
 
   const pending = data['mayday-pending-call']
