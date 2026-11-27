@@ -576,11 +576,11 @@ const DAY_START_STAGE_DATES: Partial<Record<StoryStage, string>> = {
 
 const isAtDayOpening = (stage: StoryStage, savedData?: Record<string, string>): boolean => {
   if (stage === 'september-story') {
-    const raw = savedData ? savedData['mayday-september-story-progress-v4'] : localStorage.getItem('mayday-september-story-progress-v4')
+    const raw = savedData ? savedData['mayday-september-story-progress-v5'] : localStorage.getItem('mayday-september-story-progress-v5')
     if (!raw) return true
     try {
       const saved = JSON.parse(raw) as { phase?: unknown } | null
-      return Boolean(saved && ['trip-intro', 'train-picker', 'day-two-morning', 'return'].includes(String(saved.phase)))
+      return Boolean(saved && ['trip-intro', 'station', 'train-picker', 'day-two-morning', 'return'].includes(String(saved.phase)))
     } catch { return false }
   }
   const progressChecks: Partial<Record<StoryStage, { key: string; phase?: string; emptyArray?: boolean; companionKey?: string }>> = {
@@ -614,12 +614,12 @@ const isAtDayOpening = (stage: StoryStage, savedData?: Record<string, string>): 
 
 const getDayStartDate = (stage: StoryStage, savedData?: Record<string, string>): string | null => {
   if (stage === 'september-story') {
-    const raw = savedData ? savedData['mayday-september-story-progress-v4'] : localStorage.getItem('mayday-september-story-progress-v4')
+    const raw = savedData ? savedData['mayday-september-story-progress-v5'] : localStorage.getItem('mayday-september-story-progress-v5')
     if (!raw) return '1997.09.03'
     try {
       const saved = JSON.parse(raw) as { phase?: unknown } | null
       if (saved?.phase === 'trip-intro') return '1997.09.03'
-      if (saved?.phase === 'train-picker') return '1997.09.04'
+      if (saved?.phase === 'station' || saved?.phase === 'train-picker') return '1997.09.04'
       if (saved?.phase === 'day-two-morning') return '1997.09.05'
       if (saved?.phase === 'return') return '1997.09.06'
       return null
@@ -3566,23 +3566,24 @@ function App() {
     const legacyExtraChatStage = savedTimelineStage === 'spring-free-chat-picker' || savedTimelineStage === 'spring-free-chat'
     const eventTimelineStage = legacyExtraChatStage ? 'spring-diary' : savedTimelineStage
 
-    // September's revised Green Island trip replaces the earlier draft.
-    // When loading an old September save, keep all earlier game progress and affection,
-    // but restart only this chapter so the old in-chapter checkpoint cannot resume.
-    const hasPreV4SeptemberProgress = Boolean(
+    // September v5 replaces the earlier in-chapter draft with the complete revised route.
+    // Keep all earlier chapters and affection history; restart only an older September checkpoint.
+    const hasPreV5SeptemberProgress = Boolean(
       restoredData['mayday-september-story-progress-v1'] ||
       restoredData['mayday-september-story-progress-v2'] ||
-      restoredData['mayday-september-story-progress-v3']
-    ) && !restoredData['mayday-september-story-progress-v4']
-    const isPreV4SeptemberTimeline = eventTimelineStage === 'september-story' ||
+      restoredData['mayday-september-story-progress-v3'] ||
+      restoredData['mayday-september-story-progress-v4']
+    ) && !restoredData['mayday-september-story-progress-v5']
+    const isPreV5SeptemberTimeline = eventTimelineStage === 'september-story' ||
       eventTimelineStage === 'september-diary' ||
       (saved.gameDate === '1997.09.06' &&
         (eventTimelineStage === 'completed' || restoredData['mayday-september-day-complete'] === 'true'))
-    if (hasPreV4SeptemberProgress && isPreV4SeptemberTimeline) {
+    if (hasPreV5SeptemberProgress && isPreV5SeptemberTimeline) {
       ;[
         'mayday-september-story-progress-v1',
         'mayday-september-story-progress-v2',
         'mayday-september-story-progress-v3',
+        'mayday-september-story-progress-v4',
         'mayday-september-story-selection',
         'mayday-september-day-complete',
         'mayday-september-photo-memory',
@@ -6710,6 +6711,7 @@ function App() {
       'mayday-september-story-progress-v2',
       'mayday-september-story-progress-v3',
       'mayday-september-story-progress-v4',
+      'mayday-september-story-progress-v5',
       'mayday-september-story-selection',
       'mayday-september-day-complete',
       'mayday-september-photo-memory',
@@ -6728,7 +6730,7 @@ function App() {
   }
 
   const finishSeptemberStory = (selection: SeptemberSelection) => {
-    const validSoloLength = (length: number) => length === 5 || length === 3
+    const validSoloLength = (length: number) => length === 5
     if (!selection) return
     const rivalryChoices = selection.rivalryChoices ?? []
     if (!validSoloLength(selection.trainChoices.length) || selection.pokerChoices.length !== 3 ||
