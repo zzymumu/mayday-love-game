@@ -909,7 +909,10 @@ export function AugustStory({
         {progress.phase === 'store-ending' && (
           <>
             <h2 className="story-scene-title">{progress.storeCandidates.length === 1 ? '交班前的最後一眼' : '終於肯離開了'}</h2>
-            <Blocks blocks={progress.storeCandidates.length === 1 ? getSoloStoreEndingBlocks(progress.storeCandidates[0], progress.storeChoices[4]) : [
+            <Blocks blocks={progress.storeCandidates.length === 1 ? [
+              ...getSoloStoreEndingBlocks(progress.storeCandidates[0], progress.storeChoices[4]),
+              n('店長來接班時，天色已經慢慢暗下來。你換下制服，背起包包，終於可以想想晚餐要吃什麼了。'),
+            ] : [
               n('你把最後一件商品放回架上，幾個人這才像是想起自己原本只是來買東西的。'),
               ...(progress.storeCandidates.includes('masa') ? [d('瑪莎', '好啦，今天先放過妳。下次再來。')] : []),
               ...(progress.storeCandidates.includes('wen') ? [n('溫尚翊把手裡的袋子提起來，走到門口又回頭看了你一眼。'), d('溫尚翊', '妳下班記得吃東西，不要只喝飲料。')] : []),
