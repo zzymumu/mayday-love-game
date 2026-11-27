@@ -788,6 +788,121 @@ function Blocks({ blocks }: { blocks: Block[] }) {
   )
 }
 
+
+export function rewindJulyLostKeyStoryToStart(
+  source: Record<string, string>,
+  callThreshold = 10,
+): Record<string, string> | null {
+  const data = { ...source }
+  const validChoice = (value: unknown): value is number =>
+    typeof value === 'number' && Number.isInteger(value) && value >= 0 && value <= 2
+  const validPhase = (value: unknown): value is Phase =>
+    typeof value === 'string' && ['intro', 'picker', 'message', 'route-intro', 'flirt-choice', 'flirt-result', 'interaction', 'complete'].includes(value)
+
+  let progress: Partial<Progress> | null = null
+  const rawProgress = data[STORAGE_KEY]
+  if (rawProgress) {
+    try {
+      progress = JSON.parse(rawProgress) as Partial<Progress>
+      if (!validPhase(progress.phase)) return null
+    } catch {
+      return null
+    }
+  } else if (data['mayday-july-lost-key-day-complete'] === 'true' &&
+    !data['mayday-july-lost-key-character']) {
+    return null
+  }
+
+  const characterValue = progress ? progress.character : data['mayday-july-lost-key-character']
+  const character = isCharacter(characterValue) ? characterValue : null
+  let choicesRaw: unknown = progress ? progress.choices : []
+  if (!progress) {
+    try {
+      choicesRaw = JSON.parse(data['mayday-july-lost-key-choices'] ?? '[]') as unknown
+    } catch {
+      return null
+    }
+  }
+  const choices = Array.isArray(choicesRaw) ? choicesRaw.filter(validChoice).slice(0, 5) : []
+  if (Array.isArray(choicesRaw) && choices.length !== choicesRaw.length) return null
+  if (choices.length && !character) return null
+
+  const flirtValue = progress ? progress.flirtTarget : data['mayday-july-lost-key-flirt-target']
+  const flirtTarget = flirtValue === 'wen' || flirtValue === 'ashin' ? flirtValue : null
+  const earned: Record<JulyLostKeyCharacter, number> = { wen: 0, ashin: 0, masa: 0, stone: 0, yanming: 0 }
+  if (character) {
+    const route = routes[character]
+    for (let index = 0; index < choices.length; index += 1) {
+      const selected = route.rounds[index]?.choices[choices[index]]
+      if (!selected) return null
+      earned[character] += selected.affection
+    }
+  }
+  if (flirtTarget) earned[flirtTarget] += 2
+
+  let currentAffection: Partial<Record<JulyLostKeyCharacter, number>>
+  try {
+    currentAffection = JSON.parse(data['mayday-route-affection'] ?? 'null') as Partial<Record<JulyLostKeyCharacter, number>>
+    if (!currentAffection || typeof currentAffection !== 'object' || Array.isArray(currentAffection)) return null
+  } catch {
+    return null
+  }
+  const restoredAffection: Partial<Record<JulyLostKeyCharacter, number>> = { ...currentAffection }
+  ORDER.forEach((id) => {
+    const current = currentAffection[id]
+    if (typeof current !== 'number' || !Number.isFinite(current)) {
+      if (earned[id] !== 0) restoredAffection[id] = 0
+      return
+    }
+    restoredAffection[id] = current - earned[id]
+  })
+  data['mayday-route-affection'] = JSON.stringify(restoredAffection)
+
+  const pending = data['mayday-pending-call']
+  if (pending && isCharacter(pending)) {
+    const before = restoredAffection[pending]
+    const after = currentAffection[pending]
+    if (typeof before === 'number' && typeof after === 'number' &&
+      before < callThreshold && after >= callThreshold &&
+      data['mayday-call-v2-triggered-' + pending] !== 'true') {
+      delete data['mayday-pending-call']
+    }
+  }
+
+  const removeJulyMessages = (key: string) => {
+    const raw = data[key]
+    if (!raw) return
+    try {
+      const parsed = JSON.parse(raw) as unknown
+      if (Array.isArray(parsed)) {
+        data[key] = JSON.stringify(parsed.filter((message) =>
+          !message || typeof message !== 'object' || (message as { date?: unknown }).date !== '1997年7月15日・傍晚'))
+      } else if (parsed && typeof parsed === 'object') {
+        const threads = parsed as Record<string, unknown>
+        const cleaned: Record<string, unknown> = { ...threads }
+        Object.keys(cleaned).forEach((thread) => {
+          if (Array.isArray(cleaned[thread])) {
+            cleaned[thread] = (cleaned[thread] as unknown[]).filter((message) =>
+              !message || typeof message !== 'object' || (message as { date?: unknown }).date !== '1997年7月15日・傍晚')
+          }
+        })
+        data[key] = JSON.stringify(cleaned)
+      }
+    } catch {
+      return
+    }
+  }
+  removeJulyMessages('mayday-chat-messages')
+  removeJulyMessages('mayday-sms-messages')
+
+  Object.keys(data).forEach((key) => {
+    if (key.startsWith('mayday-july-lost-key-') || key.startsWith('mayday-august-')) delete data[key]
+  })
+  data['mayday-july-lost-key-clock'] = '18:00'
+  data['mayday-story-stage'] = 'july-lost-key'
+  return data
+}
+
 export function JulyLostKeyStory({
   onAddAffection,
   onAppendMessages,
