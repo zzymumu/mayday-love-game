@@ -1469,7 +1469,7 @@ const monthPreviousFreeChatOpeners: Record<RouteCharacterId, MonthFreeChatOpenin
     { text: '我今天聽到一首歌，副歌一直卡在腦袋裡，救命。', response: '哈哈，是不是做別的事也會一直哼那一段？我剛剛也在聽歌，差點跟著唱出來。', affection: 3 },
   ],
   masa: [
-    { text: '我今天本來想早點回家，結果在路上看到冰店又停下來了。', response: '哈哈，妳真的很容易被吃的吸引欸。我今天也差不多，放學後跑去買東西。', affection: 2 },
+    { text: '我今天本來想早點回家，結果在路上看到冰店又停下來了。', response: '哈哈，妳真的很容易被吃的吸引欸。我今天也差不多，下課後跑去買東西。', affection: 2 },
     { text: '我今天被報告追著跑，差點以為自己要住在圖書館。', response: '妳也太誇張了吧。我今天在學校也被事情拖住，回家還要幫忙跑腿。', affection: 1 },
     { text: '欸，我剛剛想到小時候那家冰店，不知道還在不在。', response: '妳突然講這個，我也想到以前那家。改天真的去看看啊。', affection: 3 },
   ],
@@ -1531,7 +1531,7 @@ const monthAwayFreeChatScripts: Record<RouteCharacterId, ChatRound[]> = {
       { text: '你要是嫌我品味不好怎麼辦？', response: ['怎麼會啦，我只是想知道妳喜歡聽什麼。', '妳喜歡的歌，我也想聽聽看。'], affection: 1 }),
   ],
   masa: [
-    makeMonthChatRound('我今天放學後被我媽叫去買東西，原本以為只有一樣，結果她講了一長串。',
+    makeMonthChatRound('我今天下課後被我媽叫去買東西，原本以為只有一樣，結果她講了一長串。',
       { text: '哈哈哈你是不是又忘記買其中一樣？', response: ['沒有好嗎，我都有買。', '只是回家才發現多買了一包餅乾。'], affection: 2, nextIncoming: '結果我回家還被問怎麼多買了餅乾。' },
       { text: '你媽是不是很會使喚你？', response: ['妳現在才知道喔？', '我在家就是跑腿的。'], affection: 1, nextIncoming: '我回家以後還被問怎麼多買了一包餅乾。' },
       { text: '那包餅乾分我，我就不笑你。', response: ['妳很會趁火打劫欸。', '下次再說啦。'], affection: 3, nextIncoming: '我回家才發現多買了一包餅乾，還被唸了一下。' }),
