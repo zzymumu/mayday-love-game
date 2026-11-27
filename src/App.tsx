@@ -10444,7 +10444,7 @@ function App() {
                                       </div>
                                     )}
                                   </>
-                                ) :                                 {selectedDiaryDate === '1997-06-15' && juneDiaryUnlocked && juneDiaryData ? (
+                                ) : selectedDiaryDate === '1997-06-15' && juneDiaryUnlocked && juneDiaryData ? (
                                   <>
                                     <div className="diary-paper">
                                       <span className="diary-date">1997 年 6 月 15 日・星期日</span>
