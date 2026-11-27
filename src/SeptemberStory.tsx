@@ -1492,7 +1492,7 @@ export function SeptemberStory({
       <>
         <h2 className="story-scene-title">{round.title}</h2>
         <div className="reunion-pause-note">和{NAMES[state.character!]}同行・第 {state.roundIndex + 1}／5 段</div>
-        <Blocks blocks={section === 'train' ? [...round.blocks, ...(trainCameos[state.roundIndex] ?? [])] : round.blocks} />
+        <Blocks blocks={section === 'train' ? [...round.blocks, ...(trainCameos[state.roundIndex] ?? []).filter((block) => block.speaker !== NAMES[state.character!])] : round.blocks} />
         {selected ? (
           <>
             <Blocks blocks={selected.response} />
