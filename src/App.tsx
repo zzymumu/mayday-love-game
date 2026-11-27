@@ -6595,18 +6595,34 @@ function App() {
 
   useEffect(() => {
     let cancelled = false
-    const initializeDaySnapshots = async () => {
+    const initializeAutoStepSnapshots = async () => {
       try {
-        const records = await listDaySnapshots()
-        const stepRecords = await listAutoStepSnapshots()
+        const records = await listAutoStepSnapshots()
         if (cancelled) return
-        setDaySnapshots(records)
-        setAutoStepSnapshots(stepRecords)
-        autoStepLastFingerprintRef.current = stepRecords.length ? stepRecords[stepRecords.length - 1].fingerprint : ''
+        setAutoStepSnapshots(records)
+        autoStepLastFingerprintRef.current = records.length ? records[records.length - 1].fingerprint : ''
         autoStepReadyRef.current = true
         setAutoStepSnapshotLoading(false)
         setAutoStepSnapshotError('')
         autoStepScheduleRef.current?.()
+      } catch {
+        if (!cancelled) {
+          setAutoStepSnapshotError('無法讀取自動進度紀錄。請確認瀏覽器允許網站使用本機資料。')
+          setAutoStepSnapshotLoading(false)
+        }
+      }
+    }
+    void initializeAutoStepSnapshots()
+    return () => { cancelled = true }
+  }, [])
+
+  useEffect(() => {
+    let cancelled = false
+    const initializeDaySnapshots = async () => {
+      try {
+        const records = await listDaySnapshots()
+        if (cancelled) return
+        setDaySnapshots(records)
 
         if (!playerName) {
           setDaySnapshotLoading(false)
@@ -6690,9 +6706,7 @@ function App() {
       } catch {
         if (!cancelled) {
           setDaySnapshotError('無法讀取自動時間回溯紀錄。請確認瀏覽器允許網站使用本機資料。')
-          setAutoStepSnapshotError('無法讀取自動進度紀錄。請確認瀏覽器允許網站使用本機資料。')
           setDaySnapshotLoading(false)
-          setAutoStepSnapshotLoading(false)
         }
       }
     }
