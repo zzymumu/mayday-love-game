@@ -3406,6 +3406,12 @@ function App() {
     }
   }, [])
 
+  // Also observe React-only progress changes that do not write localStorage directly.
+  // The snapshot fingerprint filters out ordinary UI-only renders.
+  useEffect(() => {
+    autoStepScheduleRef.current?.()
+  })
+
   const saveCurrentProgress = (slot: number) => {
     if (saveSlots[slot] && !window.confirm('要覆蓋第 ' + slot + ' 格存檔嗎？原本的存檔會被新的進度取代。')) return
     const saved = buildCurrentSaveSnapshot()
