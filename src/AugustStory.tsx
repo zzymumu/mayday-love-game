@@ -327,7 +327,7 @@ function readProgress(affection: Record<AugustCharacter, number>): Progress {
     const eveningPendingChoice = validChoice(saved.eveningPendingChoice) ? Number(saved.eveningPendingChoice) : null
     const eveningRoute = saved.eveningRoute === 'fried' || saved.eveningRoute === 'yanming' ? saved.eveningRoute : null
     const eveningCharacter = ORDER.includes(saved.eveningCharacter as AugustCharacter) ? saved.eveningCharacter as AugustCharacter : null
-    if (saved.phase === 'store-interaction' && candidates.length === 0) return { ...readProgressWithoutStorage(freshCandidates), phase: 'evening-choice' }
+    if ((saved.phase === 'store-intro' || saved.phase === 'store-interaction') && candidates.length === 0) return { ...readProgressWithoutStorage(freshCandidates), phase: 'evening-choice' }
     if (saved.phase === 'evening-interaction' && (!eveningRoute || !eveningCharacter)) return readProgressWithoutStorage(candidates)
     return {
       phase: saved.phase as Phase,
@@ -439,11 +439,13 @@ export function AugustStory({
         onAddAffection(progress.storeCandidates[0], selected.affection)
       }
     }
-    setProgress((current) => ({
-      ...current,
+    const nextProgress: Progress = {
+      ...progress,
       storePendingChoice: choiceIndex,
-      storeChoices: [...current.storeChoices, choiceIndex],
-    }))
+      storeChoices: [...progress.storeChoices, choiceIndex],
+    }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(nextProgress))
+    setProgress(nextProgress)
   }
   const continueStoreRound = () => {
     if (progress.phase !== 'store-interaction' || progress.storePendingChoice === null) return
@@ -485,11 +487,13 @@ export function AugustStory({
       localStorage.setItem(appliedKey, 'true')
       onAddAffection(progress.eveningCharacter, selected.affection)
     }
-    setProgress((current) => ({
-      ...current,
+    const nextProgress: Progress = {
+      ...progress,
       eveningPendingChoice: choiceIndex,
-      eveningChoices: [...current.eveningChoices, choiceIndex],
-    }))
+      eveningChoices: [...progress.eveningChoices, choiceIndex],
+    }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(nextProgress))
+    setProgress(nextProgress)
   }
   const continueEveningRound = () => {
     if (progress.phase !== 'evening-interaction' || progress.eveningPendingChoice === null) return
@@ -788,7 +792,7 @@ export function AugustStory({
               n('練團室裡的燈一盞盞關掉，諺明哥把鼓棒和器材收好，最後確認門窗都關妥。剛才那段鼓聲好像還留在耳邊，走出門時，夜風把白天的熱氣吹散了一些。'),
               n('他把門鎖好，回頭提醒你走路看著點路。你們沿著街邊慢慢往外走，沒有急著把話說完。'),
             ]} />
-            <div className="reunion-pause-note">今天沒有寫日記。八月的夜晚，就先留在這裡。</div>
+            <div className="reunion-pause-note">今晚的事情暫時告一段落，街上的招牌一盞盞亮起來。</div>
             <div className="story-action-bar story-inline-action">
               <button className="story-primary-button" onClick={finish}>
                 結束今天 <ChevronRight size={15} />
