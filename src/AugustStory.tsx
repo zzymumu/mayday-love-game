@@ -244,8 +244,7 @@ function getStoreIntroBlocks(candidates: AugustCharacter[]): Block[] {
       d('瑪莎', '不知道啊，看看有沒有什麼需要的。'),
     )
     if (candidates.includes('wen')) {
-      n('溫尚翊把汽水放到櫃檯邊，轉頭看了瑪莎一眼，眉毛微微挑起來。')
-      blocks.push(n('溫尚翊看了瑪莎一眼，眉毛微微挑起來。'), d('溫尚翊', '妳很閒是不是？'))
+      blocks.push(n('溫尚翊把汽水放到櫃檯邊，轉頭看了瑪莎一眼，眉毛微微挑起來。'), d('溫尚翊', '你很閒是不是？'))
     } else {
       blocks.push(n('瑪莎聽見你的問題，還故意把雜誌舉高了一點，像是打算在這裡待上一整個下午。'))
     }
