@@ -6698,8 +6698,21 @@ function App() {
   }
 
   const startSeptemberStory = () => {
+    // The intro button always starts the revised September chapter from its opening.
+    // Clear only September-specific checkpoints; keep earlier chapters and affection intact.
+    ;[
+      'mayday-september-story-progress-v1',
+      'mayday-september-story-progress-v2',
+      'mayday-september-story-selection',
+      'mayday-september-day-complete',
+      'mayday-september-photo-memory',
+      'mayday-september-diary-pending-data',
+      'mayday-september-diary-data',
+      'mayday-september-diary-unlocked',
+    ].forEach((key) => localStorage.removeItem(key))
     localStorage.setItem('mayday-september-started', 'true')
     localStorage.setItem('mayday-september-date', '1997.09.03')
+    localStorage.setItem('mayday-september-clock', '19:20')
     setActiveApp(null)
     setSelectedDiaryDate(null)
     setSelectedSmsThread(null)
