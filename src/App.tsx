@@ -575,6 +575,14 @@ const DAY_START_STAGE_DATES: Partial<Record<StoryStage, string>> = {
 }
 
 const isAtDayOpening = (stage: StoryStage, savedData?: Record<string, string>): boolean => {
+  if (stage === 'september-story') {
+    const raw = savedData ? savedData['mayday-september-story-progress-v1'] : localStorage.getItem('mayday-september-story-progress-v1')
+    if (!raw) return true
+    try {
+      const saved = JSON.parse(raw) as { phase?: unknown } | null
+      return Boolean(saved && ['trip-intro', 'train-picker', 'day-two-morning', 'return'].includes(String(saved.phase)))
+    } catch { return false }
+  }
   const progressChecks: Partial<Record<StoryStage, { key: string; phase?: string; emptyArray?: boolean; companionKey?: string }>> = {
     'april12-story': { key: 'mayday-april12-progress', phase: 'discussion' },
     'april20-story': { key: 'mayday-april20-progress', phase: 'notification' },
@@ -583,7 +591,6 @@ const isAtDayOpening = (stage: StoryStage, savedData?: Record<string, string>): 
     'june-study': { key: 'mayday-june-study-progress-v1', phase: 'intro' },
     'july-lost-key': { key: 'mayday-july-lost-key-progress-v1', phase: 'intro' },
     'august-story': { key: 'mayday-august-story-progress-v1', phase: 'transition' },
-    'september-story': { key: 'mayday-september-story-progress-v1', phase: 'trip-intro' },
     'winter-exam-tutoring': { key: 'mayday-winter-exam-replies', emptyArray: true },
     'winter-break-practice': { key: 'mayday-winter-practice-replies', emptyArray: true },
     'march28-morning': { key: 'mayday-march28-morning-replies', emptyArray: true, companionKey: 'mayday-march28-morning-character' },
@@ -603,6 +610,22 @@ const isAtDayOpening = (stage: StoryStage, savedData?: Record<string, string>): 
   } catch {
     return false
   }
+}
+
+const getDayStartDate = (stage: StoryStage, savedData?: Record<string, string>): string | null => {
+  if (stage === 'september-story') {
+    const raw = savedData ? savedData['mayday-september-story-progress-v1'] : localStorage.getItem('mayday-september-story-progress-v1')
+    if (!raw) return '1997.09.03'
+    try {
+      const saved = JSON.parse(raw) as { phase?: unknown } | null
+      if (saved?.phase === 'trip-intro') return '1997.09.03'
+      if (saved?.phase === 'train-picker') return '1997.09.04'
+      if (saved?.phase === 'day-two-morning') return '1997.09.05'
+      if (saved?.phase === 'return') return '1997.09.06'
+      return null
+    } catch { return null }
+  }
+  return DAY_START_STAGE_DATES[stage] ?? null
 }
 
 const readSaveSlot = (slot: number): SaveSlotData | null => {
@@ -6832,13 +6855,13 @@ function App() {
         for (const slot of getSaveSlotIds()) {
           const manualSave = readSaveSlot(slot)
           if (!manualSave) continue
-          const manualDate = DAY_START_STAGE_DATES[manualSave.stage]
+          const manualDate = getDayStartDate(manualSave.stage, manualSave.data)
           if (manualDate && manualDate === manualSave.gameDate && isAtDayOpening(manualSave.stage, manualSave.data)) {
             pendingRecords.push({ date: manualDate, snapshot: manualSave })
           }
         }
 
-        const openingDate = DAY_START_STAGE_DATES[storyStage]
+        const openingDate = getDayStartDate(storyStage, currentSnapshot.data)
         if (openingDate && openingDate === saveGameDate && isAtDayOpening(storyStage)) {
           pendingRecords.push({ date: openingDate, snapshot: currentSnapshot })
         }
