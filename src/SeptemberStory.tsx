@@ -14,6 +14,8 @@ export type SeptemberSelection = {
   sunsetGroupChoices: number[]
   sunsetCharacter: SeptemberCharacter
   sunsetChoices: number[]
+  rivalCharacter: SeptemberCharacter | null
+  rivalryChoices: number[]
 }
 type Block = { kind: 'narration' | 'dialogue'; text: string; speaker?: string }
 type Choice = { text: string; response: Block[]; affection: number }
@@ -26,7 +28,7 @@ type Phase =
   | 'trip-intro' | 'train-picker' | 'train-interaction' | 'arrival' | 'homestay-arrival'
   | 'poker' | 'homestay-picker' | 'homestay-interaction' | 'day-two-morning'
   | 'scooter-picker' | 'scooter-interaction' | 'coast-photo' | 'sunset-group'
-  | 'sunset-picker' | 'sunset-interaction' | 'return' | 'ending'
+  | 'sunset-picker' | 'sunset-interaction' | 'sunset-rivalry' | 'return' | 'ending'
 type Progress = {
   version: 1
   phase: Phase
@@ -37,6 +39,8 @@ type Progress = {
   photoChoice: number | null
   sunsetGroup: GroupProgress
   sunset: Interaction
+  rivalCharacter: SeptemberCharacter | null
+  rivalry: Interaction
 }
 type Section = 'train' | 'homestay' | 'scooter' | 'sunset'
 type CharacterRecord = Record<SeptemberCharacter, [Round, Round, Round, Round, Round]>
@@ -840,6 +844,139 @@ const sunsetRoutes: CharacterRecord = {
   ],
 }
 
+const rivalryRoutes: Record<SeptemberCharacter, [Round, Round, Round]> = {
+  wen: [
+    routeRound('有人走過來了', [
+      n('你們又聊了一會兒，海風把剛才的笑聲吹得有點遠。你正要轉身回去，溫尚翊從放樂器的地方走過來，手裡拿著你的安全帽。他先看了看你，又瞥了一眼陪你走到這裡的人，最後把安全帽往你面前一遞。'),
+      d('溫尚翊', '妳剛剛不是說還想看海？怎麼跑這麼遠。'),
+      n('他說得像只是順路，手指卻一直扣著安全帽的帶子，沒有馬上鬆開。'),
+    ], '溫尚翊',
+      ['你怎麼知道我在這裡？', '你是在找我喔？', '我們正準備回去啦。'],
+      ['我剛剛有看到妳走過來啊。……不然咧？', '誰找妳啦，我是拿安全帽過來。', '喔，那剛好，一起走。妳不要又走到別的地方去。'],
+      [2, 2, 1]),
+    routeRound('安全帽帶子', [
+      n('你伸手接安全帽，溫尚翊卻先把帶子理順，確認沒有扭在一起才交給你。他低頭做這件事時，眉頭微微皺著，像是比剛才看你們聊天還要專心。'),
+      d('溫尚翊', '這個扣子不要又弄反，等一下戴半天戴不起來。'),
+      n('他抬起眼，發現你一直看著他，手上的動作停了半拍。'),
+    ], '溫尚翊',
+      ['你剛剛是不是一直看我們？', '那你幫我扣啊，我怕又弄錯。', '你不用特地過來拿啦，我自己會回去。'],
+      ['我是在看妳有沒有把東西忘在那邊。妳想太多了啦。', '……妳真的很會使喚人欸。好啦，頭低一點。', '我知道啊。只是剛好拿過來，順便一起走。'],
+      [2, 2, 1]),
+    routeRound('留在身邊的位置', [
+      n('遠處的瑪莎已經開始喊大家集合。溫尚翊把自己的琴袋背好，走了兩步又停下來，回頭看你。他抬手指了指自己旁邊的位置，表情還是那副不太自在的樣子。'),
+      d('溫尚翊', '等一下拍照，妳站這邊啦。那邊風太大，頭髮會一直吹到臉上。'),
+      n('他說完便轉開視線，像是怕你追問為什麼特地替你留位置。'),
+    ], '溫尚翊',
+      ['好啊，那你不要又站到最旁邊。', '你是想跟我一起入鏡喔？', '那我站你旁邊，你要負責幫我擋風。'],
+      ['我哪有要躲？妳自己不要亂跑就好。', '不然咧？六個人本來就要站近一點啊。', '妳要求很多欸……好啦，站過來一點。'],
+      [2, 2, 2]),
+  ],
+  ashin: [
+    routeRound('遞過來的水', [
+      n('你們又聊了一會兒，阿信拿著一瓶水走到海邊。他沒有直接插進你們的話題，只先把水遞給你，等你接過去才笑著開口。'),
+      d('陳信宏', '我剛剛想說妳是不是還在這裡。海風很大，先喝一點水啦。'),
+      n('他的視線在你臉上停了一下，又很快落到手裡的瓶蓋，像是有些話還在心裡排隊。'),
+    ], '陳信宏',
+      ['你特地拿來給我的嗎？', '你剛剛也一直在找我嗎？', '謝謝你，我們正要回去。'],
+      ['嗯，剛好有多拿一瓶。妳先喝，不要客氣馁。', '有一點啦。只是想說妳會不會想一起看最後那點夕陽。', '好啊，那我們一起走回去。大家應該也快準備好了。'],
+      [2, 2, 1]),
+    routeRound('沒說完的話', [
+      n('阿信陪你往回走了一小段，走到比較聽得見浪聲的地方才慢下來。他低頭踢開一顆小石子，像是在想怎麼把話說得自然一點。'),
+      d('陳信宏', '剛剛看妳聊得很開心，我本來不想打擾妳。'),
+      n('他抬頭看你，笑容還是溫柔的，只是比平常多了一點點不確定。'),
+    ], '陳信宏',
+      ['你也可以過來一起聊啊。', '你是不是有一點在意？', '我其實也想跟你說話。'],
+      ['我怕妳們聊到一半被我打斷。下次我會直接過去。', '有一點點吧。可是我不是不開心，只是有點想妳。', '真的嗎？那我很高興欸。'],
+      [2, 2, 2]),
+    routeRound('一起看鏡頭', [
+      n('回到大家身邊時，阿信把木吉他放進琴袋，卻沒有立刻拉上拉鍊。他替你把被風吹亂的髮絲撥到耳後，指尖很快收回，接著朝相機的方向看了一眼。'),
+      d('陳信宏', '等一下拍照，妳站我旁邊好不好？我想跟妳一起看鏡頭。'),
+      n('他說得很輕，卻沒有把這句話收回去。'),
+    ], '陳信宏',
+      ['好啊，我也想跟你一起拍。', '那你等一下要笑，不可以躲鏡頭。', '你剛剛是不是還有話沒說完？'],
+      ['那就說好了。等一下我會站近一點。', '哈哈，好，我會看鏡頭，也會看妳。', '有啊，等回台北再慢慢跟妳說，好不好？'],
+      [2, 1, 2]),
+  ],
+  masa: [
+    routeRound('嘴上說順路', [
+      n('你們又聊了一會兒，瑪莎踢著腳邊的小石子走過來，手裡還拿著剛才那包沒吃完的餅乾。他看了看你，又看了看陪你的人，立刻露出一副「我懂了」的表情。'),
+      d('瑪莎', '欸，妳很忙欸。剛剛找不到人，原來在這裡開小型座談會喔？'),
+      n('他把餅乾袋往你手裡一塞，嘴上嫌你走太遠，腳步卻放慢等你跟上。'),
+    ], '瑪莎',
+      ['你是來找我的嗎？', '什麼座談會啦，我們只是聊天。', '你不要打擾我們啦。'],
+      ['我只是怕妳等一下又忘記集合時間。不要想太多。', '喔？那妳們聊得滿認真的嘛。', '好啊，那我走囉。……妳真的要我走喔？'],
+      [2, 1, 2]),
+    routeRound('餅乾分一半', [
+      n('瑪莎看你沒有立刻跟上，乾脆停在原地，把餅乾袋撕開。裡面剩下最後幾片，他挑了一片遞給你，自己把袋口折起來。'),
+      d('瑪莎', '拿啦。妳剛剛都沒吃東西，等一下又喊餓。'),
+      n('他故意看向別處，像是剛才那句關心只是順口講出來。'),
+    ], '瑪莎',
+      ['你怎麼知道我餓了？', '那你陪我一起吃，不准自己走。', '你是不是有點不高興？'],
+      ['妳肚子叫那麼大聲，是要全島都知道喔？', '好啦，我又沒說不陪。', '我哪有？……妳真的很會看人臉色欸。'],
+      [2, 2, 2]),
+    routeRound('站哪裡都要吵', [
+      n('大家開始往相機前集合，瑪莎先一步站到你旁邊，還伸手把溫尚翊往外推了半步。溫尚翊立刻回推，兩個人又在鏡頭前面鬧起來。'),
+      d('瑪莎', '妳站這裡啦，不然等一下又被怪獸擋住。'),
+      n('他嘴上說得理直氣壯，卻把自己肩膀往你這邊靠了一點。'),
+    ], '瑪莎',
+      ['你們兩個都不要擋我，我要站中間。', '好啊，那你不准趁拍照偷跑。', '你站這裡，我站你旁邊。'],
+      ['妳想得美，站中間還要看身高吧。', '我哪有要跑？妳才不要突然躲到阿信後面。', '成交。等一下不要嫌我肩膀太近喔。'],
+      [1, 2, 2]),
+  ],
+  stone: [
+    routeRound('相機帶在手上', [
+      n('你們又聊了一會兒，石頭拿著相機走過來。他沒有急著問你們聊了什麼，只先確認鏡頭蓋有沒有蓋好，接著才抬眼看你。'),
+      d('石錦航', '我剛剛想找妳，後來看妳在聊天，就沒有過來。'),
+      n('他把相機帶往肩上理好，語氣很平常，眼神卻比平常多停了一會兒。'),
+    ], '石錦航',
+      ['你可以直接來找我啊。', '你是不是有話想跟我說？', '我也想找你，只是剛剛沒看到你。'],
+      ['好，那下次我就不站遠遠的了。', '本來想問妳今天最喜歡哪一段，想聽妳自己說。', '那我們等一下再走一小段，好不好？'],
+      [2, 2, 2]),
+    routeRound('把話留給你', [
+      n('石頭把相機放低，陪你走到一塊比較平的石頭旁。你坐下時，他先伸手確認石面沒有濕滑，才在你身邊坐下。'),
+      d('石錦航', '剛剛看妳笑得很開心，我也覺得很好。只是有一點想把今天看到的風景先講給妳聽。'),
+      n('他說完笑了一下，像是覺得自己這句話有點太直接。'),
+    ], '石錦航',
+      ['那你現在講給我聽，我會好好聽。', '你可以不用等我一個人時才說。', '我也想先把今天的事情告訴你。'],
+      ['好。其實剛剛那片海，我覺得妳站在旁邊的樣子最好看。', '嗯，我知道。只是想讓這段時間安靜一點。', '那我們交換，好不好？我先聽妳說。'],
+      [2, 2, 2]),
+    routeRound('合照前的空位', [
+      n('石頭站起來，把相機重新架好，調整自拍定時器。他特地在自己旁邊留了一點位置，回頭朝你伸出手，示意你過去。'),
+      d('石錦航', '這裡還有位置。等一下我會一起入鏡，不會只站在相機後面。'),
+      n('他把手停在半空，等你走近才輕輕收回。'),
+    ], '石錦航',
+      ['那我就站你旁邊。', '你要記得笑，不要每次都只顧著拍照。', '我們六個人都要拍進去。'],
+      ['好啊，這次我也要留在照片裡。', '我會笑。妳也要看鏡頭喔。', '嗯，我會確認每個人都在。'],
+      [2, 2, 1]),
+  ],
+  yanming: [
+    routeRound('確認大家都在', [
+      n('你們又聊了一會兒，諺明哥把收好的鼓棒放回袋子，才走到你們身邊。他先看了一眼大家的位置，確認沒有誰走遠，接著才轉向你。'),
+      d('劉諺明', '剛剛看妳聊得挺開心，我就沒有過來打斷。'),
+      n('他笑得很自然，手裡還拿著剛才幫大家收好的小袋子。'),
+    ], '劉諺明',
+      ['你也可以過來一起聊啊。', '你是不是一直在注意我們？', '我還以為你在忙著收東西。'],
+      ['下次我就直接過去，反正也不是外人。', '總得看看大家有沒有走散。妳玩得開心就好。', '有一點忙，不過也有留意妳在哪裡。'],
+      [2, 2, 1]),
+    routeRound('不用每件事都安排', [
+      n('諺明哥把袋子放到腳邊，終於坐下來。他沒有像平常那樣先確認時間，只問你今天有沒有玩得盡興，聲音比剛才更放鬆。'),
+      d('劉諺明', '我剛剛本來想陪妳走一段，不過看妳有人陪，就先讓妳聊完。'),
+      n('他說得坦然，沒有責怪的意思，只是把自己的想法也告訴你。'),
+    ], '劉諺明',
+      ['下次你可以直接邀我，不用等。', '那現在還來得及一起走一段。', '我其實也想跟你單獨聊聊。'],
+      ['好，那我下次就不客氣了。', '可以啊，走到大家那邊剛好。', '那我們等一下慢慢聊，不用趕。'],
+      [2, 2, 2]),
+    routeRound('站到大家中間', [
+      n('瑪莎已經在遠處催大家拍照。諺明哥站起來，替你把被風吹歪的背包帶拉正，接著朝大家的方向抬了抬下巴。'),
+      d('劉諺明', '走吧，這張合照大家都要在。妳站我旁邊也可以，位置比較不會被擋到。'),
+      n('他先讓你走在前面，自己才跟上來，沒有再退回去當那個負責照顧所有人的人。'),
+    ], '劉諺明',
+      ['好啊，今天你也要好好入鏡。', '那我站你旁邊，不准又躲到外面。', '你今天也玩得很開心吧？'],
+      ['好，這次一定會拍到我。', '哈哈，好，我站裡面一點。', '有啊。難得大家都在，真的很開心。'],
+      [2, 2, 2]),
+  ],
+}
+
 const pokerRounds: [GroupRound, GroupRound, GroupRound] = [
   groupRound('第一把・牌還沒出就吵起來', [
     n('民宿客廳的木桌剛好夠六個人圍一圈。瑪莎把牌洗得啪啪響，洗到一半還故意把牌往空中一拋，幾張牌散到桌面和地上。溫尚翊伸手接住一張，立刻指控他想趁亂換牌；阿信笑到彎腰，差點把手裡的汽水碰倒。石頭趕緊把水果盤往裡推，諺明哥則一邊撿牌一邊提醒大家，桌子不是練團室，不要拆。'),
@@ -923,7 +1060,7 @@ const initialGroup = (): GroupProgress => ({ roundIndex: 0, pendingChoice: null,
 const initialProgress = (): Progress => ({
   version: 1, phase: 'trip-intro', train: initialInteraction(), poker: initialGroup(),
   homestay: initialInteraction(), scooter: initialInteraction(), photoChoice: null,
-  sunsetGroup: initialGroup(), sunset: initialInteraction(),
+  sunsetGroup: initialGroup(), sunset: initialInteraction(), rivalCharacter: null, rivalry: initialInteraction(),
 })
 const isCharacter = (value: unknown): value is SeptemberCharacter => typeof value === 'string' && ORDER.includes(value as SeptemberCharacter)
 const validChoices = (value: unknown): value is number[] => Array.isArray(value) && value.every((item) => Number.isInteger(item) && item >= 0 && item <= 2)
@@ -932,6 +1069,14 @@ const validInteraction = (value: unknown): value is Interaction => {
   const item = value as Partial<Interaction>
   return (item.character === null || isCharacter(item.character)) &&
     Number.isInteger(item.roundIndex) && Number(item.roundIndex) >= 0 && Number(item.roundIndex) <= 4 &&
+    (item.pendingChoice === null || (Number.isInteger(item.pendingChoice) && Number(item.pendingChoice) >= 0 && Number(item.pendingChoice) <= 2)) &&
+    validChoices(item.choices)
+}
+const validRivalry = (value: unknown): value is Interaction => {
+  if (!value || typeof value !== 'object') return false
+  const item = value as Partial<Interaction>
+  return (item.character === null || isCharacter(item.character)) &&
+    Number.isInteger(item.roundIndex) && Number(item.roundIndex) >= 0 && Number(item.roundIndex) <= 2 &&
     (item.pendingChoice === null || (Number.isInteger(item.pendingChoice) && Number(item.pendingChoice) >= 0 && Number(item.pendingChoice) <= 2)) &&
     validChoices(item.choices)
 }
@@ -945,12 +1090,16 @@ const validGroup = (value: unknown): value is GroupProgress => {
 function readProgress(): Progress {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null') as Partial<Progress> | null
-    const phases: Phase[] = ['trip-intro', 'train-picker', 'train-interaction', 'arrival', 'homestay-arrival', 'poker', 'homestay-picker', 'homestay-interaction', 'day-two-morning', 'scooter-picker', 'scooter-interaction', 'coast-photo', 'sunset-group', 'sunset-picker', 'sunset-interaction', 'return', 'ending']
+    const phases: Phase[] = ['trip-intro', 'train-picker', 'train-interaction', 'arrival', 'homestay-arrival', 'poker', 'homestay-picker', 'homestay-interaction', 'day-two-morning', 'scooter-picker', 'scooter-interaction', 'coast-photo', 'sunset-group', 'sunset-picker', 'sunset-interaction', 'sunset-rivalry', 'return', 'ending']
     if (saved?.version === 1 && saved.phase && phases.includes(saved.phase) &&
       validInteraction(saved.train) && validGroup(saved.poker) && validInteraction(saved.homestay) &&
       validInteraction(saved.scooter) && validGroup(saved.sunsetGroup) && validInteraction(saved.sunset) &&
       (saved.photoChoice === null || (Number.isInteger(saved.photoChoice) && Number(saved.photoChoice) >= 0 && Number(saved.photoChoice) <= 4))) {
-      return saved as Progress
+      return {
+        ...saved as Progress,
+        rivalCharacter: saved.rivalCharacter === null || isCharacter(saved.rivalCharacter) ? saved.rivalCharacter : null,
+        rivalry: validRivalry(saved.rivalry) ? saved.rivalry : initialInteraction(),
+      }
     }
   } catch { /* Start from the first trip scene if local progress is malformed. */ }
   return initialProgress()
@@ -978,6 +1127,7 @@ const phaseClock = (progress: Progress): string => {
   if (progress.phase === 'sunset-group') return ['17:10', '17:35', '18:00'][progress.sunsetGroup.roundIndex]
   if (progress.phase === 'sunset-picker') return '18:15'
   if (progress.phase === 'sunset-interaction') return ['18:25', '18:40', '18:55', '19:10', '19:25'][progress.sunset.roundIndex]
+  if (progress.phase === 'sunset-rivalry') return ['19:30', '19:40', '19:50'][progress.rivalry.roundIndex]
   if (progress.phase === 'return') return '09:30'
   return '16:20'
 }
@@ -1037,10 +1187,12 @@ export function SeptemberStory({
   onAddAffection,
   onClockChange,
   onFinish,
+  affectionScores,
 }: {
   onAddAffection: (character: SeptemberCharacter, amount: number) => void
   onClockChange: (time: string) => void
   onFinish: (selection: SeptemberSelection) => void
+  affectionScores: Record<SeptemberCharacter, number>
 }) {
   const [progress, setProgress] = useState<Progress>(readProgress)
   const choiceLock = useRef(false)
@@ -1076,10 +1228,21 @@ export function SeptemberStory({
     const current = sectionState(section)
     if (current.character !== null || choiceLock.current) return
     choiceLock.current = true
+    let rivalCharacter: SeptemberCharacter | null = null
+    if (section === 'sunset') {
+      const ranking = ORDER.map((id) => ({ id, score: Number(affectionScores[id] ?? 0) }))
+        .sort((left, right) => right.score - left.score)
+      const selectedScore = Number(affectionScores[character] ?? 0)
+      if (ranking[0].id !== character && ranking[0].score > selectedScore && ranking[0].score > ranking[1].score) {
+        rivalCharacter = ranking[0].id
+      }
+    }
     addAffectionOnce(section + '-seat-' + character, character, 1)
     setProgress((state) => ({
       ...state,
       phase: sectionPhase[section],
+      rivalCharacter: section === 'sunset' ? rivalCharacter : state.rivalCharacter,
+      rivalry: section === 'sunset' ? initialInteraction() : state.rivalry,
       [section]: { character, roundIndex: 0, pendingChoice: null, choices: [] },
     }))
     window.setTimeout(() => { choiceLock.current = false }, 0)
@@ -1108,7 +1271,42 @@ export function SeptemberStory({
         [section]: { ...current, roundIndex: current.roundIndex + 1, pendingChoice: null },
       }))
     } else {
-      setProgress((state) => ({ ...state, phase: sectionNextPhase[section] }))
+      setProgress((state) => {
+        if (section === 'sunset' && state.rivalCharacter) {
+          return {
+            ...state,
+            phase: 'sunset-rivalry',
+            rivalry: { character: state.rivalCharacter, roundIndex: 0, pendingChoice: null, choices: [] },
+          }
+        }
+        return { ...state, phase: sectionNextPhase[section] }
+      })
+    }
+  }
+
+  const chooseRivalryOption = (index: number) => {
+    const current = progress.rivalry
+    if (progress.phase !== 'sunset-rivalry' || !progress.rivalCharacter || current.pendingChoice !== null || choiceLock.current) return
+    const round = rivalryRoutes[progress.rivalCharacter][current.roundIndex]
+    const selected = round.choices[index]
+    if (!selected) return
+    choiceLock.current = true
+    addAffectionOnce('sunset-rivalry-round-' + current.roundIndex, progress.rivalCharacter, selected.affection)
+    const next = { ...current, pendingChoice: index, choices: [...current.choices, index] }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...progress, rivalry: next }))
+    setProgress((state) => ({ ...state, rivalry: next }))
+  }
+
+  const continueRivalryRound = () => {
+    if (progress.rivalry.pendingChoice === null) return
+    choiceLock.current = false
+    if (progress.rivalry.roundIndex < 2) {
+      setProgress((state) => ({
+        ...state,
+        rivalry: { ...state.rivalry, roundIndex: state.rivalry.roundIndex + 1, pendingChoice: null },
+      }))
+    } else {
+      setProgress((state) => ({ ...state, phase: 'coast-photo' }))
     }
   }
 
@@ -1171,7 +1369,8 @@ export function SeptemberStory({
     if (!train.character || !validSoloLength(train.choices.length) || poker.choices.length !== 3 ||
       !homestay.character || !validSoloLength(homestay.choices.length) ||
       !scooter.character || !validSoloLength(scooter.choices.length) || photoChoice === null ||
-      sunsetGroup.choices.length !== 3 || !sunset.character || !validSoloLength(sunset.choices.length)) return
+      sunsetGroup.choices.length !== 3 || !sunset.character || !validSoloLength(sunset.choices.length) ||
+      (progress.rivalCharacter ? progress.rivalry.choices.length !== 3 : progress.rivalry.choices.length !== 0)) return
     finishLock.current = true
     onFinish({
       trainCharacter: train.character, trainChoices: [...train.choices],
@@ -1180,6 +1379,7 @@ export function SeptemberStory({
       scooterCharacter: scooter.character, scooterChoices: [...scooter.choices],
       photoChoice, sunsetGroupChoices: [...sunsetGroup.choices],
       sunsetCharacter: sunset.character, sunsetChoices: [...sunset.choices],
+      rivalCharacter: progress.rivalCharacter, rivalryChoices: [...progress.rivalry.choices],
     })
   }
 
@@ -1284,9 +1484,43 @@ export function SeptemberStory({
     )
   }
 
+  const renderRivalry = () => {
+    if (progress.phase !== 'sunset-rivalry' || !progress.rivalCharacter) return null
+    const state = progress.rivalry
+    const round = rivalryRoutes[progress.rivalCharacter][state.roundIndex]
+    const selected = state.pendingChoice === null ? null : round.choices[state.pendingChoice]
+    return (
+      <>
+        <h2 className="story-scene-title">{round.title}</h2>
+        <div className="reunion-pause-note">多出來的一段心事・第 {state.roundIndex + 1}／3 段</div>
+        <Blocks blocks={round.blocks} />
+        {selected ? (
+          <>
+            <Blocks blocks={[d('你', selected.text)]} />
+            <Blocks blocks={selected.response} />
+            <div className="story-action-bar story-inline-action">
+              <button className="story-primary-button" onClick={continueRivalryRound}>
+                {state.roundIndex < 2 ? '再聊一會兒' : '回到大家身邊，準備拍合照'} <ChevronRight size={15} />
+              </button>
+            </div>
+          </>
+        ) : (
+          <div className="choice-area">
+            <div className="choice-heading">你想怎麼回應？</div>
+            {round.choices.map((choice, index) => (
+              <button className="reply-choice" key={index} onClick={() => chooseRivalryOption(index)}>
+                <span>{choice.text}</span><ChevronRight size={15} />
+              </button>
+            ))}
+          </div>
+        )}
+      </>
+    )
+  }
+
   const dayLabel = progress.phase === 'trip-intro'
     ? '1997 年 9 月 3 日・星期三・晚上'
-    : progress.phase === 'day-two-morning' || progress.phase === 'scooter-picker' || progress.phase === 'scooter-interaction' || progress.phase === 'coast-photo' || progress.phase === 'sunset-group' || progress.phase === 'sunset-picker' || progress.phase === 'sunset-interaction'
+    : progress.phase === 'day-two-morning' || progress.phase === 'scooter-picker' || progress.phase === 'scooter-interaction' || progress.phase === 'coast-photo' || progress.phase === 'sunset-group' || progress.phase === 'sunset-picker' || progress.phase === 'sunset-interaction' || progress.phase === 'sunset-rivalry'
     ? '1997 年 9 月 5 日・星期五'
     : progress.phase === 'return' || progress.phase === 'ending'
       ? '1997 年 9 月 6 日・星期六'
@@ -1438,6 +1672,8 @@ export function SeptemberStory({
         {progress.phase === 'sunset-picker' && picker('日落以後，想和誰多待一會兒？', '大家把樂器收好，卻沒有急著離開海邊。海面已經變成深藍色，遠處還留著一點橘紅。你想趁大家各自忙著收東西時，找一個人再聊一會兒。', 'sunset')}
 
         {progress.phase === 'sunset-interaction' && renderInteraction('sunset', sunsetCurrent)}
+
+        {progress.phase === 'sunset-rivalry' && renderRivalry()}
 
         {progress.phase === 'return' && (
           <>
