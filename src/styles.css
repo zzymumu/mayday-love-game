@@ -1629,6 +1629,78 @@ button { cursor: pointer; }
   line-height: 1.7;
   text-align: center;
 }
+
+.save-center-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 13px 2px 4px;
+  padding: 10px 9px;
+  border: 1px solid #e9dccb;
+  border-radius: 8px;
+  background: #fcf8f0;
+}
+.save-center-timeline-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.save-center-timeline-heading strong {
+  color: #725b4e;
+  font-family: 'Noto Serif TC', serif;
+  font-size: 11px;
+}
+.save-center-timeline-heading small,
+.day-snapshot-details small,
+.day-snapshot-empty {
+  color: #9a8878;
+  font-size: 8px;
+  line-height: 1.65;
+}
+.day-snapshot-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.day-snapshot-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 7px;
+  padding: 8px;
+  border: 1px solid #eee3d6;
+  border-radius: 6px;
+  background: #fffdf8;
+}
+.day-snapshot-details {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+}
+.day-snapshot-details strong {
+  color: #665246;
+  font-family: 'Noto Serif TC', serif;
+  font-size: 10px;
+}
+.day-snapshot-action {
+  flex: 0 0 auto;
+  min-height: 28px;
+  padding: 5px 8px;
+  border: 1px solid #b88773;
+  border-radius: 6px;
+  background: #b88773;
+  color: #fffaf4;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 8px;
+}
+.day-snapshot-empty {
+  padding: 8px;
+  border: 1px dashed #e4d6c7;
+  border-radius: 6px;
+  background: rgba(255,253,248,.65);
+  text-align: center;
+}
 .save-center-reset {
   display: flex;
   flex-direction: column;
