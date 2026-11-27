@@ -103,8 +103,8 @@ import { April20Story, type April20Character } from './April20Story'
 import { April30Story, getApril30AffectionTotal, type April30Route, type April30Selection } from './April30Story'
 import { May10Story, type May10Character, type May10Selection } from './May10Story'
 import { JuneStudyStory, type JuneStudySelection } from './JuneStudyStory'
-import { JulyLostKeyStory, julyLostKeyMessageArchive, type JulyLostKeySelection } from './JulyLostKeyStory'
-import { AugustStory, type AugustCharacter, type AugustSelection } from './AugustStory'
+import { JulyLostKeyStory, julyLostKeyMessageArchive, rewindJulyLostKeyStoryToStart, type JulyLostKeySelection } from './JulyLostKeyStory'
+import { AugustStory, rewindAugustStoryToStart, type AugustCharacter, type AugustSelection } from './AugustStory'
 import { juneFreeChatScripts } from './JuneFreeChat'
 import { buildJuneDiaryData, type JuneDiaryData } from './juneDiary'
 import { buildApril20DiaryData, type April20DiaryData } from './april20Diary'
@@ -266,6 +266,155 @@ type CharacterExperienceRecord = {
   choices?: number[]
 }
 type SaveSlotData = { version: 1; savedAt: string; gameDate: string; gameTime: string; stage: StoryStage; stageLabel: string; data: Record<string, string> }
+
+type DaySnapshotRecord = { date: string; snapshot: SaveSlotData }
+const DAY_SNAPSHOT_DB_NAME = 'mayday-day-start-snapshots-v1'
+const DAY_SNAPSHOT_STORE_NAME = 'day-starts'
+
+const openDaySnapshotDatabase = (): Promise<IDBDatabase> => new Promise((resolve, reject) => {
+  if (typeof indexedDB === 'undefined') {
+    reject(new Error('這個瀏覽器不支援時間回溯紀錄。'))
+    return
+  }
+  const request = indexedDB.open(DAY_SNAPSHOT_DB_NAME, 1)
+  request.onupgradeneeded = () => {
+    const database = request.result
+    if (!database.objectStoreNames.contains(DAY_SNAPSHOT_STORE_NAME)) {
+      database.createObjectStore(DAY_SNAPSHOT_STORE_NAME, { keyPath: 'date' })
+    }
+  }
+  request.onsuccess = () => resolve(request.result)
+  request.onerror = () => reject(request.error ?? new Error('無法開啟時間回溯紀錄。'))
+  request.onblocked = () => reject(new Error('時間回溯資料庫正在更新，請重新整理頁面後再試。'))
+})
+
+const listDaySnapshots = async (): Promise<DaySnapshotRecord[]> => {
+  const database = await openDaySnapshotDatabase()
+  return new Promise((resolve, reject) => {
+    const transaction = database.transaction(DAY_SNAPSHOT_STORE_NAME, 'readonly')
+    const request = transaction.objectStore(DAY_SNAPSHOT_STORE_NAME).getAll()
+    let records: DaySnapshotRecord[] = []
+    request.onsuccess = () => {
+      records = (request.result as DaySnapshotRecord[]).filter((record) =>
+        record && /^\d{4}\.\d{2}\.\d{2}$/.test(record.date) &&
+        record.snapshot && record.snapshot.version === 1)
+    }
+    request.onerror = () => reject(request.error ?? new Error('讀取時間回溯紀錄失敗。'))
+    transaction.oncomplete = () => {
+      database.close()
+      resolve(records.sort((left, right) => left.date.localeCompare(right.date)))
+    }
+    transaction.onerror = () => {
+      database.close()
+      reject(transaction.error ?? new Error('讀取時間回溯紀錄失敗。'))
+    }
+    transaction.onabort = () => {
+      database.close()
+      reject(transaction.error ?? new Error('讀取時間回溯紀錄已中斷。'))
+    }
+  })
+}
+
+const getDaySnapshot = async (date: string): Promise<DaySnapshotRecord | null> => {
+  const database = await openDaySnapshotDatabase()
+  return new Promise((resolve, reject) => {
+    const transaction = database.transaction(DAY_SNAPSHOT_STORE_NAME, 'readonly')
+    const request = transaction.objectStore(DAY_SNAPSHOT_STORE_NAME).get(date)
+    let record: DaySnapshotRecord | null = null
+    request.onsuccess = () => { record = (request.result as DaySnapshotRecord | undefined) ?? null }
+    request.onerror = () => reject(request.error ?? new Error('找不到這一天的回溯紀錄。'))
+    transaction.oncomplete = () => {
+      database.close()
+      resolve(record)
+    }
+    transaction.onerror = () => {
+      database.close()
+      reject(transaction.error ?? new Error('讀取時間回溯紀錄失敗。'))
+    }
+    transaction.onabort = () => {
+      database.close()
+      reject(transaction.error ?? new Error('讀取時間回溯紀錄已中斷。'))
+    }
+  })
+}
+
+const putDaySnapshotIfMissing = async (record: DaySnapshotRecord): Promise<boolean> => {
+  const database = await openDaySnapshotDatabase()
+  return new Promise((resolve, reject) => {
+    const transaction = database.transaction(DAY_SNAPSHOT_STORE_NAME, 'readwrite')
+    const store = transaction.objectStore(DAY_SNAPSHOT_STORE_NAME)
+    const request = store.get(record.date)
+    let inserted = false
+    request.onsuccess = () => {
+      if (!request.result) {
+        store.add(record)
+        inserted = true
+      }
+    }
+    request.onerror = () => reject(request.error ?? new Error('保存日初紀錄失敗。'))
+    transaction.oncomplete = () => {
+      database.close()
+      resolve(inserted)
+    }
+    transaction.onerror = () => {
+      database.close()
+      reject(transaction.error ?? new Error('保存日初紀錄失敗。'))
+    }
+    transaction.onabort = () => {
+      database.close()
+      reject(transaction.error ?? new Error('保存日初紀錄已中斷。'))
+    }
+  })
+}
+
+const deleteDaySnapshotsAfter = async (date: string): Promise<void> => {
+  const database = await openDaySnapshotDatabase()
+  return new Promise((resolve, reject) => {
+    const transaction = database.transaction(DAY_SNAPSHOT_STORE_NAME, 'readwrite')
+    const request = transaction.objectStore(DAY_SNAPSHOT_STORE_NAME).openCursor()
+    request.onsuccess = () => {
+      const cursor = request.result
+      if (!cursor) return
+      const record = cursor.value as DaySnapshotRecord
+      if (record.date > date) cursor.delete()
+      cursor.continue()
+    }
+    request.onerror = () => reject(request.error ?? new Error('更新時間線失敗。'))
+    transaction.oncomplete = () => {
+      database.close()
+      resolve()
+    }
+    transaction.onerror = () => {
+      database.close()
+      reject(transaction.error ?? new Error('更新時間線失敗。'))
+    }
+    transaction.onabort = () => {
+      database.close()
+      reject(transaction.error ?? new Error('更新時間線已中斷。'))
+    }
+  })
+}
+
+const clearDaySnapshots = async (): Promise<void> => {
+  const database = await openDaySnapshotDatabase()
+  return new Promise((resolve, reject) => {
+    const transaction = database.transaction(DAY_SNAPSHOT_STORE_NAME, 'readwrite')
+    transaction.objectStore(DAY_SNAPSHOT_STORE_NAME).clear()
+    transaction.oncomplete = () => {
+      database.close()
+      resolve()
+    }
+    transaction.onerror = () => {
+      database.close()
+      reject(transaction.error ?? new Error('清除時間回溯紀錄失敗。'))
+    }
+    transaction.onabort = () => {
+      database.close()
+      reject(transaction.error ?? new Error('清除時間回溯紀錄已中斷。'))
+    }
+  })
+}
+
 type YearEndDiaryData = { title: string; sections: { label: string; text: string }[] }
 type March28DiaryData = { title: string; text: string }
 type MonthVisitChoice = { text: string; response: string[]; affection: number }
@@ -303,6 +452,52 @@ const storyStageLabels: Record<StoryStage, string> = {
   'year-end-intro': '十二月三十一日・跨年篇', 'year-end-invite-notification': '收到年貨邀約', 'year-end-invite-picker': '選擇邀約對象', 'year-end-shopping-notification': '年貨邀約簡訊', 'year-end-shopping-chat': '回覆年貨邀約', 'year-end-shopping': '一起買年貨', 'year-end-fireworks': '七人跨年煙火', 'year-end-new-year-notification': '收到新年祝福', 'year-end-new-year-chat': '回覆新年祝福', 'year-end-free-chat': '新年自由聊天', 'year-end-free-chat-picker': '新年自由活動', 'year-end-diary': '1996 年最後一篇日記', 'winter-exam-intro': '一九九七年・期末考前一週', 'winter-exam-notification': '統計學補習提示', 'winter-exam-chat': '傳訊息給溫尚翊', 'winter-exam-tutoring': '圖書館・統計學補習', 'winter-break-practice': '寒假・諺明哥的練團室', 'winter-break-gig': '寒假・酒吧駐唱', 'winter-break-pickup': '諺明哥來接你', 'winter-break-bus-choice': '散場後・選擇同行的人', 'winter-break-bus': '一起走到公車站', 'winter-diary': '一九九七年・寒假日記', 'february-intro': '二月初・MAYDAY 的名字', 'february-secret': '練團室裡的小秘密', 'february-dinner': '一起吃晚餐', 'february-table': '餐桌上的小動作', 'february-after-dinner-picker': '飯後・選擇同行的人', 'february-after-dinner': '飯後單獨相處', 'february-diary': '二月初・私人日記',
   'spring-term-intro': '開學後・春日邀約', 'spring-invite-picker': '看看誰約你去樂器行', 'spring-invite-notification': '收到樂器行邀約簡訊', 'spring-invite-chat': '回覆樂器行邀約', 'spring-store': '樂器行・一起逛逛', 'spring-rehearsal': '練團室・轧車', 'spring-after-picker': '練團結束・選擇去處', 'spring-lesson': '練團室・學樂器', 'spring-dinner': '和諺明一起吃飯', 'spring-sms-picker': '回家後・想傳訊息給誰', 'spring-sms-chat': '今晚的簡訊', 'spring-diary': '開學後・私人日記', 'march28-intro': '三月二十八日・野台開唱前一天', 'march28-visit': '白天・選擇一段相遇', 'march28-end': '晚飯後・公園散步', 'march28-park': '大安森林公園・遇見阿信', 'march28-park-stay': '大安森林公園・夜裡聊天', 'march28-morning': '三月二十九日・清晨早餐', 'march28-diary': '三月二十八日・私人日記', 'march29-show': '大安森林公園・野台開唱現場', 'april12-story': '四月十二日・練團室', 'april20-story': '四月二十日・佑達的訊息與練團室', 'april30-story': '四月三十日・少了一個人的練團室', 'may10-story': '五月十日・新鼓手面試', 'june-study': '六月中旬・期末複習', 'june-free-chat': '六月中旬・自由簡訊', 'june-diary': '六月中旬・私人日記', 'june-study-complete': '六月中旬・期末複習完成', 'july-lost-key': '七月・忘記帶鑰匙', 'august-story': '八月・便利店與炸雞店', paused: '故事暫停',
 }
+
+const DAY_START_STAGE_DATES: Partial<Record<StoryStage, string>> = {
+  notification: '1996.10.15',
+  classroom: '1996.10.16',
+  'month-free-time': '1996.11.16',
+  'next-month-intro': '1996.12.14',
+  'year-end-intro': '1996.12.31',
+  'year-end-new-year-notification': '1997.01.01',
+  'winter-exam-intro': '1997.01.07',
+  'winter-exam-tutoring': '1997.01.08',
+  'winter-break-practice': '1997.01.22',
+  'february-intro': '1997.02.03',
+  'spring-term-intro': '1997.02.17',
+  'march28-intro': '1997.03.28',
+  'march28-morning': '1997.03.29',
+  'april12-story': '1997.04.12',
+  'april20-story': '1997.04.20',
+  'april30-story': '1997.04.30',
+  'may10-story': '1997.05.10',
+  'june-study': '1997.06.15',
+  'july-lost-key': '1997.07.15',
+  'august-story': '1997.08.01',
+}
+
+const isAtDayOpening = (stage: StoryStage): boolean => {
+  const progressKeys: Partial<Record<StoryStage, { key: string; phase: string }>> = {
+    'april12-story': { key: 'mayday-april12-progress', phase: 'discussion' },
+    'april20-story': { key: 'mayday-april20-progress', phase: 'notification' },
+    'april30-story': { key: 'mayday-april30-progress-v2', phase: 'intro' },
+    'may10-story': { key: 'mayday-may10-progress-v1', phase: 'intro' },
+    'june-study': { key: 'mayday-june-study-progress-v1', phase: 'intro' },
+    'july-lost-key': { key: 'mayday-july-lost-key-progress-v1', phase: 'intro' },
+    'august-story': { key: 'mayday-august-story-progress-v1', phase: 'transition' },
+  }
+  const progress = progressKeys[stage]
+  if (!progress) return true
+  const raw = localStorage.getItem(progress.key)
+  if (!raw) return true
+  try {
+    const saved = JSON.parse(raw) as { phase?: unknown } | null
+    return saved?.phase === progress.phase
+  } catch {
+    return false
+  }
+}
+
 const readSaveSlot = (slot: number): SaveSlotData | null => {
   try {
     const raw = localStorage.getItem(SAVE_SLOT_PREFIX + slot)
@@ -1911,6 +2106,10 @@ function App() {
   const [showResetConfirm, setShowResetConfirm] = useState(false)
   const [saveSlots, setSaveSlots] = useState<Record<number, SaveSlotData | null>>(() => Object.fromEntries(getSaveSlotIds().map((slot) => [slot, readSaveSlot(slot)])))
   const [saveFeedback, setSaveFeedback] = useState('')
+  const [daySnapshots, setDaySnapshots] = useState<DaySnapshotRecord[]>([])
+  const [daySnapshotLoading, setDaySnapshotLoading] = useState(true)
+  const [daySnapshotError, setDaySnapshotError] = useState('')
+
   const [selectedSmsThread, setSelectedSmsThread] = useState<CharacterId | null>(null)
   const [smsMessages, setSmsMessages] = useState<SmsMessage[]>(() => {
     const saved = localStorage.getItem('mayday-sms-messages')
@@ -2892,8 +3091,7 @@ function App() {
   const calendarDate = new Date(Number(calendarYear), Number(calendarMonth) - 1, Number(calendarDay))
   const calendarWeekday = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'][calendarDate.getDay()]
 
-  const saveCurrentProgress = (slot: number) => {
-    if (saveSlots[slot] && !window.confirm('要覆蓋第 ' + slot + ' 格存檔嗎？原本的存檔會被新的進度取代。')) return
+  const buildCurrentSaveSnapshot = (): SaveSlotData => {
     const data: Record<string, string> = {}
     for (let index = 0; index < localStorage.length; index += 1) {
       const key = localStorage.key(index)
@@ -3016,7 +3214,6 @@ function App() {
     put('mayday-call-round-index', activeCallCharacter ? String(callRoundIndex) : null)
     put('mayday-call-replied', activeCallCharacter ? String(callReplied) : null)
     put('mayday-call-transcript', activeCallCharacter ? JSON.stringify(callTranscript) : null)
-
     const saved: SaveSlotData = {
       version: 1,
       savedAt: new Date().toISOString(),
@@ -3026,6 +3223,12 @@ function App() {
       stageLabel: storyStageLabels[storyStage],
       data,
     }
+    return saved
+  }
+
+  const saveCurrentProgress = (slot: number) => {
+    if (saveSlots[slot] && !window.confirm('要覆蓋第 ' + slot + ' 格存檔嗎？原本的存檔會被新的進度取代。')) return
+    const saved = buildCurrentSaveSnapshot()
     try {
       localStorage.setItem(SAVE_SLOT_PREFIX + slot, JSON.stringify(saved))
       setSaveSlots((current) => ({ ...current, [slot]: saved }))
@@ -3035,11 +3238,7 @@ function App() {
     }
   }
 
-  const loadSaveSlot = (slot: number) => {
-    const saved = saveSlots[slot]
-    if (!saved) return
-    if (!window.confirm('確定讀取第 ' + slot + ' 格存檔嗎？目前未保存的進度會被這份存檔取代。')) return
-
+  const restoreSaveData = (saved: SaveSlotData) => {
     const keysToRemove: string[] = []
     for (let index = 0; index < localStorage.length; index += 1) {
       const key = localStorage.key(index)
@@ -3177,6 +3376,35 @@ function App() {
       if (key.startsWith('mayday-') && !key.startsWith(SAVE_SLOT_PREFIX)) localStorage.setItem(key, value)
     })
     window.location.reload()
+  }
+
+  const loadSaveSlot = async (slot: number) => {
+    const saved = saveSlots[slot]
+    if (!saved) return
+    if (!window.confirm('確定讀取第 ' + slot + ' 格存檔嗎？目前未保存的進度會被這份存檔取代。')) return
+    try {
+      await deleteDaySnapshotsAfter(saved.gameDate)
+      setDaySnapshots((current) => current.filter((record) => record.date <= saved.gameDate))
+    } catch {
+      setSaveFeedback('時間回溯紀錄暫時無法更新，仍會讀取你的手動存檔。')
+    }
+    restoreSaveData(saved)
+  }
+
+  const rollbackToDayStart = async (date: string) => {
+    try {
+      const record = await getDaySnapshot(date)
+      if (!record) {
+        setSaveFeedback('找不到這一天的日初紀錄，請重新整理後再試。')
+        return
+      }
+      if (!window.confirm('確定回到 ' + date + ' 的第一幕嗎？目前未保存的進度會被取代；手動存檔會完整保留。')) return
+      await deleteDaySnapshotsAfter(date)
+      setDaySnapshots((current) => current.filter((item) => item.date <= date))
+      restoreSaveData(record.snapshot)
+    } catch {
+      setSaveFeedback('時間回溯失敗，原本進度沒有變動。請重新整理後再試。')
+    }
   }
 
   useEffect(() => {
@@ -6159,6 +6387,95 @@ function App() {
     localStorage.setItem(rewriteKey, 'true')
   }, [])
 
+
+  useEffect(() => {
+    let cancelled = false
+    const initializeDaySnapshots = async () => {
+      try {
+        const records = await listDaySnapshots()
+        if (cancelled) return
+        setDaySnapshots(records)
+
+        if (!playerName) {
+          setDaySnapshotLoading(false)
+          return
+        }
+
+        const currentSnapshot = buildCurrentSaveSnapshot()
+        const pendingRecords: DaySnapshotRecord[] = []
+
+        if (currentSnapshot.gameDate === '1997.08.01') {
+          const augustStartData = rewindAugustStoryToStart(currentSnapshot.data, AFFECTION_CALL_THRESHOLD)
+          if (augustStartData) {
+            pendingRecords.push({
+              date: '1997.08.01',
+              snapshot: {
+                ...currentSnapshot,
+                gameDate: '1997.08.01',
+                gameTime: '15:05',
+                stage: 'august-story',
+                stageLabel: storyStageLabels['august-story'],
+                data: augustStartData,
+              },
+            })
+            const julyStartData = rewindJulyLostKeyStoryToStart(augustStartData, AFFECTION_CALL_THRESHOLD)
+            if (julyStartData) {
+              pendingRecords.push({
+                date: '1997.07.15',
+                snapshot: {
+                  ...currentSnapshot,
+                  gameDate: '1997.07.15',
+                  gameTime: '18:00',
+                  stage: 'july-lost-key',
+                  stageLabel: storyStageLabels['july-lost-key'],
+                  data: julyStartData,
+                },
+              })
+            }
+          }
+        } else if (currentSnapshot.gameDate === '1997.07.15') {
+          const julyStartData = rewindJulyLostKeyStoryToStart(currentSnapshot.data, AFFECTION_CALL_THRESHOLD)
+          if (julyStartData) {
+            pendingRecords.push({
+              date: '1997.07.15',
+              snapshot: {
+                ...currentSnapshot,
+                gameDate: '1997.07.15',
+                gameTime: '18:00',
+                stage: 'july-lost-key',
+                stageLabel: storyStageLabels['july-lost-key'],
+                data: julyStartData,
+              },
+            })
+          }
+        }
+
+        const openingDate = DAY_START_STAGE_DATES[storyStage]
+        if (openingDate && openingDate === saveGameDate && isAtDayOpening(storyStage)) {
+          pendingRecords.push({ date: openingDate, snapshot: currentSnapshot })
+        }
+
+        for (const record of pendingRecords) {
+          if (cancelled || records.some((existing) => existing.date === record.date)) continue
+          const inserted = await putDaySnapshotIfMissing(record)
+          if (inserted) records.push(record)
+        }
+        if (!cancelled) {
+          setDaySnapshots(records.sort((left, right) => left.date.localeCompare(right.date)))
+          setDaySnapshotError('')
+          setDaySnapshotLoading(false)
+        }
+      } catch {
+        if (!cancelled) {
+          setDaySnapshotError('無法讀取自動時間回溯紀錄。請確認瀏覽器允許網站使用本機資料。')
+          setDaySnapshotLoading(false)
+        }
+      }
+    }
+    void initializeDaySnapshots()
+    return () => { cancelled = true }
+  }, [storyStage, saveGameDate, playerName])
+
   const chooseReunionReply = (key: ReunionReplyKey) => {
     const selected = reunionReplies[key]
     const nextAffection = wenAffection + selected.affection
@@ -6257,13 +6574,14 @@ function App() {
     }
   }
 
-  const resetLocalData = () => {
+  const resetLocalData = async () => {
     const keysToRemove: string[] = []
     for (let index = 0; index < localStorage.length; index += 1) {
       const key = localStorage.key(index)
       if (key?.startsWith('mayday-')) keysToRemove.push(key)
     }
     keysToRemove.forEach((key) => localStorage.removeItem(key))
+    try { await clearDaySnapshots() } catch { /* The local game data is still cleared if IndexedDB is unavailable. */ }
     window.location.reload()
   }
 
@@ -9963,6 +10281,31 @@ function App() {
                           </div>
                           <div className="save-center-feedback" aria-live="polite">
                             {saveFeedback || '自動保存仍會持續運作；手動存檔可以保留不同時間點。實際可保存數量取決於瀏覽器本機空間。'}
+                          </div>
+                          <div className="save-center-timeline">
+                            <div className="save-center-timeline-heading">
+                              <strong>時間回溯</strong>
+                              <small>選擇曾經開始過的日期，回到當天第一幕。回退後，後續自動時間線會重新建立；手動存檔不受影響。</small>
+                            </div>
+                            {daySnapshotLoading ? (
+                              <div className="day-snapshot-empty">正在整理可以回去的日期……</div>
+                            ) : daySnapshots.length ? (
+                              <div className="day-snapshot-list">
+                                {[...daySnapshots].sort((left, right) => right.date.localeCompare(left.date)).map((record) => (
+                                  <section className="day-snapshot-card" key={record.date}>
+                                    <div className="day-snapshot-details">
+                                      <strong>{record.date}</strong>
+                                      <small>{record.snapshot.stageLabel} · 當日開場</small>
+                                    </div>
+                                    <button className="day-snapshot-action" onClick={() => { void rollbackToDayStart(record.date) }}>回到這一天</button>
+                                  </section>
+                                ))}
+                              </div>
+                            ) : (
+                              <div className="day-snapshot-empty">
+                                {daySnapshotError || '目前還沒有可回溯的日初紀錄。從新的故事日期開始，系統會自動保存當天開頭。'}
+                              </div>
+                            )}
                           </div>
                           <div className="save-center-reset">
                             <button className="save-reset-action" onClick={() => setShowResetConfirm(true)}>清除全部紀錄，重新開始</button>
