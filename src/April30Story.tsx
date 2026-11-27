@@ -371,8 +371,8 @@ const ashinRounds: April30Round[] = [
 ]
 
 const schoolIntroBlocks: April30Block[] = [
-  n('下午，你想起瑪莎和石頭還在附中上課，於是決定過去找他們。'),
-  n('輔導班剛好下課，走廊裡擠滿了收拾書包的學生。你站在教室外面等了一會兒，終於看見兩個人一起走出來。'),
+  n('下午，你想起瑪莎和石頭今天都還有課，於是決定去他們上課的校園找找。'),
+  n('下午的課剛好結束，教學大樓的走廊裡擠滿了收拾書包的學生。你站在教室外面等了一會兒，終於看見兩個人一起走出來。'),
   n('瑪莎手裡拿著一疊講義，石頭正低頭把筆收進筆袋。'),
   d('瑪莎', '……欸？'),
   d('瑪莎', '妳怎麼會跑來這裡？'),
@@ -404,7 +404,7 @@ const masaWalkIntroBlocks: April30Block[] = [
   d('瑪莎', '知道啦，快走。'),
   n('等石頭走遠，瑪莎才把書包往肩上重新扯了一下。'),
   d('瑪莎', '走啦。'),
-  n('你們一起穿過附中的走廊。剛好有一群學生從樓梯口跑下來，瑪莎下意識往旁邊讓了一步，伸手擋了一下，免得你被撞到。'),
+  n('你們一起穿過教學大樓的走廊。剛好有一群學生從樓梯口跑下來，瑪莎下意識往旁邊讓了一步，伸手擋了一下，免得你被撞到。'),
   d('瑪莎', '小心啦。'),
   n('等那群人過去，他才轉過頭看你。'),
 ]
@@ -430,7 +430,7 @@ const masaRounds: April30Round[] = [
       ], 2),
       c('我剛好路過嘛。', [
         n('瑪莎眯起眼睛，像是不太相信。'),
-        d('瑪莎', '附中跟台大是順路喔？'),
+        d('瑪莎', '台大到這裡是順路喔？'),
         d('瑪莎', '妳這個路過也太有誠意了吧。'),
         n('他笑了一聲，繼續往前走。'),
       ], 1),
@@ -1151,8 +1151,8 @@ export function April30Story({
   const routeTitle = progress.phase === 'wen' ? '學校天台・溫尚翊'
     : progress.phase === 'ashin' ? '一個人的練團室・陳信宏'
       : progress.phase === 'yanming' ? '系館外・劉諺明'
-        : progress.route === 'masa' ? '放學路上・瑪莎'
-          : '放學路上・石頭'
+        : progress.route === 'masa' ? '下課路上・瑪莎'
+           : '下課路上・石頭'
 
   const routeKicker = progress.phase === 'wen' ? 'ROOFTOP · WITH WEN'
     : progress.phase === 'ashin' ? 'THE REHEARSAL ROOM · ASHIN'
@@ -1184,7 +1184,7 @@ export function April30Story({
         <h2 className="story-scene-title">少了一個人的練團室</h2>
         <April30Blocks blocks={openingBlocks} />
         <div className="story-action-bar story-inline-action">
-          <button className="story-primary-button" onClick={() => commit({ ...progress, phase: 'mainChoice' })}>放學了，去看看吧 <ChevronRight size={15} /></button>
+          <button className="story-primary-button" onClick={() => commit({ ...progress, phase: 'mainChoice' })}>下課了，去看看吧 <ChevronRight size={15} /></button>
         </div>
       </April30Frame>
     )
@@ -1192,7 +1192,7 @@ export function April30Story({
 
   if (progress.phase === 'mainChoice') {
     return (
-      <April30Frame title="放學後的決定" kicker="AFTER CLASS · ONE PERSON IS MISSING">
+      <April30Frame title="下課後的決定" kicker="AFTER CLASS · ONE PERSON IS MISSING">
         <h2 className="story-scene-title">今天下午，你打算……</h2>
         <April30Blocks blocks={[n('你站在走廊邊想了一會兒。要不要去找找溫尚翊？')]} />
         <div className="march29-reply-list">
@@ -1210,7 +1210,7 @@ export function April30Story({
         <April30Blocks blocks={[n('你想了想，決定去看看其他人。')]} />
         <div className="march29-reply-list">
           <button className="reply-choice" onClick={() => chooseOtherRoute('ashin')}><span>去練團室找陳信宏</span><ChevronRight size={15} /></button>
-          <button className="reply-choice" onClick={() => chooseOtherRoute('school')}><span>去附中輔導班找瑪莎和石頭</span><ChevronRight size={15} /></button>
+          <button className="reply-choice" onClick={() => chooseOtherRoute('school')}><span>去教學大樓找瑪莎和石頭</span><ChevronRight size={15} /></button>
           <button className="reply-choice" onClick={() => chooseOtherRoute('yanming')}><span>留在學校，遇見來找你的諺明哥</span><ChevronRight size={15} /></button>
         </div>
       </April30Frame>
@@ -1219,8 +1219,8 @@ export function April30Story({
 
   if (progress.phase === 'schoolPicker') {
     return (
-      <April30Frame title="附中輔導班・放學後" kicker="AFTER SCHOOL · AT THE AFFILIATED HIGH SCHOOL">
-        <h2 className="story-scene-title">今天放學，你想跟誰一起走？</h2>
+      <April30Frame title="校園・下課後" kicker="AFTER CLASS · CAMPUS">
+        <h2 className="story-scene-title">今天下課，你想跟誰一起走？</h2>
         <April30Blocks blocks={schoolIntroBlocks} />
         <div className="choice-area">
           <div className="choice-heading">選一個人，陪你走一段路</div>
@@ -1308,8 +1308,8 @@ export function April30Story({
   if (progress.phase === 'complete' && progress.route) {
     const title = progress.route === 'wen' ? '天台上的午後'
       : progress.route === 'ashin' ? '一個人的練團室'
-        : progress.route === 'masa' ? '放學路上的瑪莎'
-          : progress.route === 'stone' ? '放學路上的石頭'
+        : progress.route === 'masa' ? '下課路上的瑪莎'
+          : progress.route === 'stone' ? '下課路上的石頭'
             : '帶著消息的午後'
     return (
       <April30Frame title="今天先到這裡" kicker="APRIL 30 · END OF DAY">
