@@ -139,6 +139,38 @@ function sunsetMemory(character: SeptemberCharacter, choices: number[]): string 
   return pick(memories[character], first === 0 ? 0 : middle === 0 ? 1 : last === 0 ? 2 : 1)
 }
 
+function rivalryMemory(character: SeptemberCharacter, choices: number[]): string {
+  const selected = choices[2] ?? 1
+  const memories: Record<SeptemberCharacter, string[]> = {
+    wen: [
+      '日落前我本來和別人聊得正開心，怪獸卻拿著我的安全帽走過來，嘴上說只是順路，卻一直站在旁邊等我。後來他替我理安全帽帶，還叫我拍照時站他旁邊。這個人真的很不會藏。',
+      '怪獸看起來像是有點在意我剛剛跟誰聊天，卻硬說自己只是怕我忘記集合。明明都把位置留好了，還要裝作沒事。',
+      '合照前怪獸特地叫我站到他旁邊，嘴上還嫌我要求多。可是他一直沒有走開，直到大家都站好才肯看鏡頭。',
+    ],
+    ashin: [
+      '阿信拿著水走過來找我，說剛剛本來想一起看海，怕打斷我們才沒有過來。他講得很輕，卻讓我有點心軟。',
+      '阿信說他有一點想我，還說下次會直接走過來找我。平常那麼溫柔的人，偶爾說得這麼坦白，反而讓我不知道怎麼接。',
+      '拍照前阿信問我能不能站在他旁邊，說想跟我一起看鏡頭。我答應以後，他笑得像是終於放心了。',
+    ],
+    masa: [
+      '瑪莎拿著餅乾過來，嘴上說我很忙，還故意問我們是不是在開小型座談會。明明有點在意，卻還是用最欠揍的方式表現。',
+      '瑪莎把最後幾片餅乾分給我，還說只是怕我等一下喊餓。被我問是不是不高興，他居然一下子答不出來。',
+      '合照時瑪莎硬要站在我旁邊，還跟怪獸推來推去。這兩個人真的很幼稚，但我笑得很開心。',
+    ],
+    stone: [
+      '石頭拿著相機來找我，說剛剛看我聊得開心，所以沒有打擾。他後來把想說的風景留給我聽，讓我覺得自己被很認真地放在心上。',
+      '石頭說他本來想陪我走一段，只是沒有想打斷我。他沒有責怪誰，只是把自己的心情也告訴我。',
+      '拍照前石頭把相機架好，特地在自己旁邊留了位置，說這次他也要一起入鏡。那個笑容很溫柔。',
+    ],
+    yanming: [
+      '諺明哥走過來時先確認大家都在，才跟我說他剛剛沒有過來，是不想打斷我。他總是這樣，連在意都很有分寸。',
+      '諺明哥說下次會直接邀我一起走，不用每次都等大家忙完。他難得把自己的想法說得這麼明白。',
+      '拍照前諺明哥替我理好背包帶，還說這次要站進大家中間。原來他也想好好留下這趟旅行。',
+    ],
+  }
+  return pick(memories[character], selected)
+}
+
 const photoMoments = [
   '合照倒數時，我拉住了怪獸的袖子，叫他不要躲到最旁邊。他嘴上說自己哪有躲，最後還是站到我旁邊。石頭用那台九十年代的三十五毫米傻瓜相機拍下來，照片還要等沖洗才看得到。',
   '拍照前我朝阿信招手，讓他站到我旁邊。他笑著走過來，還替我把被風吹起來的頭髮撥開。閃光燈亮起來的時候，他正好也在看我。底片要回台北才洗得出來，好想快點看到。',
@@ -152,6 +184,7 @@ export function buildSeptemberDiaryData(selection: SeptemberSelection): Septembe
   const homestay = homestayMemory(selection.homestayCharacter, selection.homestayChoices)
   const scooter = scooterMemory(selection.scooterCharacter, selection.scooterChoices)
   const sunset = sunsetMemory(selection.sunsetCharacter, selection.sunsetChoices)
+  const rivalry = selection.rivalCharacter ? rivalryMemory(selection.rivalCharacter, selection.rivalryChoices ?? []) : ''
   const photo = photoMoments[selection.photoChoice] ?? photoMoments[0]
   const poker = [
     '牌局開始以後，瑪莎洗牌洗得像在跟誰吵架，怪獸一直嫌他手法有問題，阿信笑到差點把牌掉到地上。最後諺明哥還提醒大家願賭服輸，結果每個人都在替自己找理由。',
@@ -173,6 +206,7 @@ export function buildSeptemberDiaryData(selection: SeptemberSelection): Septembe
     photo,
     sunsetGroup,
     sunset,
+    ...(rivalry ? [rivalry] : []),
     '九月六日，星期六。回程的時候大家都累得差不多了，琴袋一個比一個重，瑪莎還在抱怨下次不要帶這麼多東西。可是船離開綠島時，我一直回頭看海。石頭把那台傻瓜相機收得好好的，說回台北就把底片送去沖洗。照片現在還看不到，可是我已經記得快門響起來之前，大家擠成一團的樣子。',
     '我本來以為旅行結束就是回家、洗衣服、整理行李，結果現在坐下來，腦袋裡還是一直有海風的聲音。這三天好像很短，又好像發生了好多事。等開學以後，應該會很想念這個夏天吧。',
   ]
