@@ -41,7 +41,7 @@ function trainMemory(character: SeptemberCharacter, choices: number): string {
 }
 
 function homestayMemory(character: SeptemberCharacter, choices: number[]): string {
-  const last = choices[2] ?? 1
+  const last = choices[4] ?? choices[2] ?? 1
   const memories: Record<SeptemberCharacter, string[]> = {
     wen: [
       '牌局散了以後，我在陽台遇到怪獸。他手裡拿著兩瓶汽水，居然很自然地把其中一瓶遞給我。後來風把我的頭髮吹亂，他明明想伸手，最後卻只用眼神叫我自己整理。這人連關心都要拐彎。',
@@ -73,8 +73,8 @@ function homestayMemory(character: SeptemberCharacter, choices: number[]): strin
 }
 
 function scooterMemory(character: SeptemberCharacter, choices: number[]): string {
-  const middle = choices[1] ?? 1
-  const last = choices[2] ?? 1
+  const middle = choices[3] ?? choices[1] ?? 1
+  const last = choices[4] ?? choices[2] ?? 1
   const memories: Record<SeptemberCharacter, string[]> = {
     wen: [
       '今天我坐怪獸的小綿羊。他替我扣安全帽時手指離下巴很近，明明只是扣個扣子，我卻莫名其妙緊張。上路後海風吹得我睜不開眼，經過顛簸的地方，我抓住了他外套側邊。他沒有回頭，只把車騎得更穩。',
@@ -106,9 +106,9 @@ function scooterMemory(character: SeptemberCharacter, choices: number[]): string
 }
 
 function sunsetMemory(character: SeptemberCharacter, choices: number[]): string {
-  const first = choices[0] ?? 1
-  const middle = choices[1] ?? 1
-  const last = choices[2] ?? 1
+  const first = choices[2] ?? choices[0] ?? 1
+  const middle = choices[3] ?? choices[1] ?? 1
+  const last = choices[4] ?? choices[2] ?? 1
   const memories: Record<SeptemberCharacter, string[]> = {
     wen: [
       '日落時我坐在怪獸旁邊看他調吉他。他把撥片放到我掌心，教我怎麼撥弦，肩膀碰到的時候也沒有躲開。平常那麼愛鬥嘴的人，教起來倒是很認真。',
@@ -140,15 +140,15 @@ function sunsetMemory(character: SeptemberCharacter, choices: number[]): string 
 }
 
 const photoMoments = [
-  '合照倒數時，我拉住了怪獸的袖子，叫他不要躲到最旁邊。他嘴上說自己哪有躲，最後還是站到我旁邊。照片裡他看起來像是想裝酷，卻被海風吹得笑了。',
-  '拍照前我朝阿信招手，讓他站到我旁邊。他笑著走過來，還提醒我頭髮被風吹起來了。照片裡我們都在笑，旁邊的海亮得像一整片藍色的玻璃。',
-  '瑪莎本來想站到最邊邊，我直接抓住他的手臂不讓他跑。他還說我很會使喚人，最後卻乖乖站好。照片裡他的表情果然很欠揍。',
-  '石頭把相機架好後，我特地叫他也要進來。最後六個人都擠進畫面，照片裡有海、有風，還有他來不及收起來的笑。',
-  '我把諺明哥拉到大家中間，說這張照片不能少了他。他笑著站好，還提醒大家靠近一點。照片洗出來以後，這張一定要放在最前面。',
+  '合照倒數時，我拉住了怪獸的袖子，叫他不要躲到最旁邊。他嘴上說自己哪有躲，最後還是站到我旁邊。石頭用那台九十年代的三十五毫米傻瓜相機拍下來，照片還要等沖洗才看得到。',
+  '拍照前我朝阿信招手，讓他站到我旁邊。他笑著走過來，還替我把被風吹起來的頭髮撥開。閃光燈亮起來的時候，他正好也在看我。底片要回台北才洗得出來，好想快點看到。',
+  '瑪莎本來想站到最邊邊，我直接抓住他的手臂不讓他跑。他還說我很會使喚人，最後卻乖乖站好。石頭按下快門時，他還在瞪我，這張洗出來一定很好笑。',
+  '石頭把相機架好後，我特地叫他也要進來。最後他把自拍定時器按下，跑進我們中間。照片裡有海、有風，還有他來不及收起來的笑。',
+  '我把諺明哥拉到大家中間，說這張照片不能少了他。他笑著站好，還提醒大家靠近一點。快門響的那一刻，六個人都擠在一起，誰也沒有站在外面。'
 ]
 
 export function buildSeptemberDiaryData(selection: SeptemberSelection): SeptemberDiaryData {
-  const train = trainMemory(selection.trainCharacter, selection.trainChoices[2] ?? 1)
+  const train = trainMemory(selection.trainCharacter, selection.trainChoices[4] ?? selection.trainChoices[2] ?? 1)
   const homestay = homestayMemory(selection.homestayCharacter, selection.homestayChoices)
   const scooter = scooterMemory(selection.scooterCharacter, selection.scooterChoices)
   const sunset = sunsetMemory(selection.sunsetCharacter, selection.sunsetChoices)
@@ -173,13 +173,13 @@ export function buildSeptemberDiaryData(selection: SeptemberSelection): Septembe
     photo,
     sunsetGroup,
     sunset,
-    '九月六日，星期六。回程的時候大家都累得差不多了，琴袋一個比一個重，瑪莎還在抱怨下次不要帶這麼多東西。可是船離開綠島時，我一直回頭看海。石頭先洗出來的小樣被我收進包包裡，六個人都在照片裡，沒有誰被切掉。照片裡大家笑得很亂，卻比站得整整齊齊還好看。',
+    '九月六日，星期六。回程的時候大家都累得差不多了，琴袋一個比一個重，瑪莎還在抱怨下次不要帶這麼多東西。可是船離開綠島時，我一直回頭看海。石頭把那台傻瓜相機收得好好的，說回台北就把底片送去沖洗。照片現在還看不到，可是我已經記得快門響起來之前，大家擠成一團的樣子。',
     '我本來以為旅行結束就是回家、洗衣服、整理行李，結果現在坐下來，腦袋裡還是一直有海風的聲音。這三天好像很短，又好像發生了好多事。等開學以後，應該會很想念這個夏天吧。',
   ]
   return {
     version: 1,
     title: '夏天的海，和我們',
     text: text.join('\n\n'),
-    photoCaption: '1997.09.05 · 綠島海邊 · 六人合照',
+    photoCaption: '1997.09.05 · 綠島海邊 · 35mm 底片沖印',
   }
 }
