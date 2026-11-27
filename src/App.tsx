@@ -103,7 +103,7 @@ import { April20Story, type April20Character } from './April20Story'
 import { April30Story, getApril30AffectionTotal, type April30Route, type April30Selection } from './April30Story'
 import { May10Story, type May10Character, type May10Selection } from './May10Story'
 import { JuneStudyStory, type JuneStudySelection } from './JuneStudyStory'
-import { JulyLostKeyStory, type JulyLostKeySelection } from './JulyLostKeyStory'
+import { JulyLostKeyStory, julyLostKeyMessageArchive, type JulyLostKeySelection } from './JulyLostKeyStory'
 import { juneFreeChatScripts } from './JuneFreeChat'
 import { buildJuneDiaryData, type JuneDiaryData } from './juneDiary'
 import { buildApril20DiaryData, type April20DiaryData } from './april20Diary'
@@ -2124,6 +2124,29 @@ function App() {
         }
       }
       current = restored
+    }
+
+    // Refresh only the July 15 conversation entries that already exist. This repairs
+    // saved chat histories without changing any messages from earlier or later dates.
+    const julyDate = '1997年7月15日・傍晚'
+    for (const [characterKey, entries] of Object.entries(julyLostKeyMessageArchive)) {
+      const character = characterKey as CharacterId
+      const existing = current[character] ?? []
+      const firstJulyIndex = existing.findIndex((message) => message.date === julyDate)
+      if (firstJulyIndex < 0) continue
+      const lastJulyIndex = existing.length - 1 - [...existing].reverse().findIndex((message) => message.date === julyDate)
+      const refreshedJulyMessages: SmsMessage[] = entries.map((entry, index) => ({
+        id: 'july-lost-key-' + characterKey + '-' + index,
+        date: julyDate,
+        time: entry.time ?? '18:03',
+        from: entry.from,
+        text: entry.text,
+      }))
+      current[character] = [
+        ...existing.slice(0, firstJulyIndex),
+        ...refreshedJulyMessages,
+        ...existing.slice(lastJulyIndex + 1),
+      ]
     }
 
     if (JSON.stringify(current) !== saved) localStorage.setItem('mayday-chat-messages', JSON.stringify(current))
